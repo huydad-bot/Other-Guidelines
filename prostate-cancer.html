@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전립선암 진료지침 (EAU-EANM-ESTRO-ESUR-ISUP-SIOG, 2025)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --diag:     #0e7490;  /* 진단 — 시안 */
+    --local:    #15803d;  /* 국소치료 — 그린 */
+    --systemic: #7c2d92;  /* 전신치료 — 퍼플 */
+    --crpc:     #a16207;  /* 거세저항성 — 브라운골드 */
+    --fu:       #be185d;  /* 추적/삶의질 — 로즈 */
+    --tools:    #4b5563;  /* 약어/근거등급 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--fu);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--crpc);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--local);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:18px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 9px; font-size: calc(11.5px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(17px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-diag{background:#cffafe;border-left:3px solid var(--diag);color:#155e75;}
+  .alert-local{background:#dcfce7;border-left:3px solid var(--local);color:#15803d;}
+  .alert-systemic{background:#f3e8ff;border-left:3px solid var(--systemic);color:#7c2d92;}
+  .alert-crpc{background:#fef3c7;border-left:3px solid var(--crpc);color:#a16207;}
+  .alert-fu{background:#fce7f3;border-left:3px solid var(--fu);color:#9d174d;}
+  .alert-tools{background:#f1f5f9;border-left:3px solid var(--tools);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .strong{background:#1d4ed8;color:#fff;font-weight:700;text-align:center;white-space:nowrap;}
+  .weak{background:#93c5fd;color:#1e3a8a;font-weight:700;text-align:center;white-space:nowrap;}
+  .le1{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .le2{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .le3{background:#ffd8a8;color:#7d3b00;font-weight:700;text-align:center;}
+  .le4{background:#f1f5f9;color:#475569;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .risk-grid{display:flex;gap:0;margin:8px 0;overflow-x:auto;border:1px solid var(--border);border-radius:6px;}
+  .risk-col{flex:1;min-width:150px;padding:8px 10px;border-right:1px solid var(--border);font-size:calc(11px * var(--fscale,1));line-height:1.5;}
+  .risk-col:last-child{border-right:none;}
+  .risk-hdr{font-weight:800;font-size:calc(12px * var(--fscale,1));margin-bottom:4px;padding:3px 6px;border-radius:4px;text-align:center;color:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>P</span><span>C</span><span>a</span></div>
+      <h1>전립선암 진료지침 (EAU-EANM-ESTRO-ESUR-ISUP-SIOG, 2025)</h1>
+    </div>
+    <div class="meta-line">
+      European Association of Urology 외 5개 학회 공동 · 2025년 3월 한정판(Limited Update) · Strong/Weak 권고강도 체계
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 원문 요약·재구성본으로, 학회의 공식 승인을 받지 않음</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🔍 진단</div>
+    <div class="tab" onclick="showTab('local')">🔪 국소치료</div>
+    <div class="tab" onclick="showTab('systemic')">💊 재발·전신치료</div>
+    <div class="tab" onclick="showTab('crpc')">🧬 거세저항성</div>
+    <div class="tab" onclick="showTab('followup')">🔄 추적·삶의질</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·근거등급</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">2025.03</div><div class="stat-lbl">한정판 업데이트<br>(2024년판 기반)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">TNM 8판</div><div class="stat-lbl">UICC 2017<br>+ EAU 위험군 분류</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--local)">ISUP 1-5</div><div class="stat-lbl">2019 등급군<br>(구 Gleason score)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--crpc)">Strong/Weak</div><div class="stat-lbl">GRADE 기반<br>권고강도 체계</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 지침 개관</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>본 지침은 유럽비뇨의학회(EAU)를 비롯한 6개 학회(EANM·ESTRO·ESUR·ISUP·SIOG)가 공동 제작한 전립선암(PCa) 진료지침으로, <strong>2025년 3월 한정판(Limited Update)</strong>이다. 비뇨의학과·방사선종양학과·종양내과·영상의학과·병리과 전문의와 환자대표로 구성된 다학제 패널이 매년 문헌을 재평가하여 갱신한다. 지침은 권고일 뿐 법적 진료기준이 아니며, 개별 환자의 가치관·상황을 함께 고려해 임상 전문성을 대체하지 않는 것을 원칙으로 한다.</div>
+      <div style="margin-top:8px">주요 변경사항(2025)을 클릭하면 본문 상세 설명을 볼 수 있다.</div>
+
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>1. 가족력·유전성 전립선암 정의표 신설</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">Table 3.1 신설: <strong>가족성(familial)</strong>은 1촌 친족 2명이 어느 연령에서든 진단받았거나, 1촌 1명+2촌 이상 2명이 진단받은 경우로 정의한다. <strong>유전성(hereditary)</strong>은 같은 가계 내 ≥3명 발병, 3대에 걸친 발병, 또는 같은 가계 내 2명이 55세 미만 발병한 경우로 정의한다. 스웨덴 인구기반 연구에서는 아버지와 형제 2명이 모두 이환된 경우 65세 시점 고위험암 확률이 11.4%(인구 위험 1.4% 대비)까지 상승했다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>2. EAU 중간위험군의 양호/불량 세분화</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">NCCN 지침의 불량(unfavourable) 중간위험군 정의(ISUP3, 및/또는 조직검사 양성코어 ≥50%, 및/또는 위험인자 ≥2개)를 참고하여 EAU 중간위험군을 양호/불량으로 분리했다. Cambridge Prognostic Group(5단계 모델, ISUP·PSA·cT병기 기반)이 기존 3단계 EAU 위험군보다 암특이사망률 변별력이 우수함이 여러 코호트에서 검증되었으나, 초기 위험분류·치료결정은 여전히 EAU 위험군을 기준으로 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>3. 경회음(transperineal) 생검을 표준으로 격상</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">경직장 대비 경회음 생검의 국소마취 하 시행 가능성, 유사한 임상적유의암 발견율, 항생제 관리(stewardship) 중요성 증가를 근거로 <strong>경회음 접근을 1차 선택</strong>으로 격상했다. 메타분석(11개 연구, 3,306명)에서 경회음 생검이 감염성 합병증을 유의하게 감소시켰다. 유럽에서 플루오로퀴놀론의 생검 예방적 항생제 적응증이 정지된 것도 배경이 되었다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>4. 중간위험군 PSMA-PET/CT 병기설정 권고 갱신</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ISUP 등급군 3 중간위험군에서는 가능하면 PSMA-PET/CT로 정확도를 높이거나, 최소한 단면영상(복부골반)+골스캔을 시행하도록 권고가 갱신되었다(Weak). proPSMA 연구에서 68Ga-PSMA PET/CT는 기존 영상(CT+골스캔) 대비 골반림프절·원격전이 발견 정확도가 27%p 높았다(92% vs 65%).</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>5. mHSPC 1차 치료 — 다로루타마이드·다학제팀 신규 권고</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ARASENS 3상 연구(ADT+도세탁셀 6주기 표준요법에 다로루타마이드 또는 위약 추가, 1,306명)에서 다로루타마이드 추가군의 전체생존이 유의하게 개선되어(HR 0.68) ADT+다로루타마이드 병용이 신규 권고(Weak)로 추가되었다. 또한 모든 전이성 호르몬민감성암 환자를 <strong>다학제팀(MDT)에서 논의</strong>하도록 하는 권고가 신설되었다(Strong).</div>
+      </div>
+
+      <div class="alert alert-overview" style="margin-top:8px"><span>🎯</span><div>지침은 <strong>일반적 권고를 없애고 모든 권고를 질병 단계(위험군)별로 재구성</strong>했다 — 저위험/중간위험/고위험 국소, 국소진행성, cN1M0, 보조치료, 생화학적 재발, 전이성 호르몬민감성, 거세저항성 순으로 단계별 접근이 핵심이다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🌍</span> 역학 및 위험인자</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>전립선암은 전세계 남성에서 <strong>두 번째로 흔한 암</strong>으로 2020년 약 140만 명이 진단, 37만5천 명이 사망했다. 유럽에서는 남성 중 가장 흔한 암이자 암 사망원인 3위다. 항목을 클릭하면 상세 설명이 펼쳐진다.</div>
+
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📊 발생률·사망률의 지역 차이</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">부검연구 메타분석에서 30세 미만 유병률은 5%이나 79세 초과에서는 59%까지 증가한다. 발생률은 PSA 검사 시행률에 크게 좌우되어 호주/뉴질랜드·북미(인구 10만명당 연령표준화 97-112건)에서 가장 높고, 동아시아·중남부아시아(4.5-10.5건)에서 가장 낮다. 사망률은 아프리카계 인구(카리브해 29건, 사하라이남 14-19건)에서 높고 아시아(2.9건)에서 매우 낮다. 서구국가 대부분에서 사망률은 감소 추세다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧬 유전성 위험인자 — 인종·가족력</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">아프리카계 남성은 서구에서 더 진행된 병기로 진단되고 수술 후 등급상향 빈도가 높다고 보고되나, 인종은 조상·피부색·지리적 기원의 복합개념이며 278개 위험변이 기반 다인종 다유전자위험점수가 사하라이남 아프리카계에서 강한 연관성을 보였다. 전이성 PCa에서는 백인·흑인·히스패닉 간 전체생존·암특이사망률 차이가 없다는 보고도 있다. 흑인 남성은 PCa가 없어도 기저 PSA가 더 높아 과다검출로 이어질 수 있다는 체계적문헌고찰도 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧬 생식세포 유전자 변이(BRCA2·HOXB13·CHEK2·ATM 등)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>유전자</th><th>위험도</th><th>주요 소견</th></tr>
+            <tr><td>BRCA2</td><td>상대위험 2.5-4.6배 (55세 이하 발병 시 8-23배)</td><td>전이성 PCa의 최대 12%에서 생식세포변이 보유(BRCA2 5.3%). 독립적인 전이·암특이생존 불량 예측인자</td></tr>
+            <tr><td>HOXB13</td><td>OR 3.4-7.9배</td><td>비보유자 대비 진단시 PSA·Gleason score가 유의하게 높고 수술절제면양성 빈도 높음</td></tr>
+            <tr><td>CHEK2</td><td>OR 3.3배</td><td>전이성 PCa의 최대 12%에서 생식세포변이 보유(CHEK2 1.9%)</td></tr>
+            <tr><td>BRCA1</td><td>65세 이하 상대위험 1.8-3.8배</td><td>변이보유자에서 치명적 PCa 비율 높음(전이성 PCa 중 0.9%)</td></tr>
+            <tr><td>ATM</td><td>전이성 PCa 상대위험 6.3배</td><td>변이보유자에서 치명적 PCa 비율 높음(전이성 PCa 중 1.6%)</td></tr>
+            <tr><td>MMR 유전자(MLH1·MSH2·MSH6·PMS2)</td><td>상대위험 3.7배</td><td>린치증후군 원인 유전자, MSH2 변이보유자가 PCa 발병 위험이 가장 높음</td></tr>
+          </table>
+          <div style="margin-top:6px">영국 21,000명 대상 연구에서 PCa 진단 없는 남성의 1.6%가 BRCA2·HOXB13·CHEK2 중 하나 이상의 병원성 변이를 보유했다. 미국 다유전자패널검사 연구에서는 PCa 환자의 15.6%에서 병원성 변이가 발견되었다(가장 흔한 것은 BRCA2 4.5%, CHEK2 2.2%, ATM 1.8%, BRCA1 1.1%).</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧩 단일염기다형성(SNP)·다유전자위험점수(PRS)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">개별 생식세포 변이는 드물지만 영향이 큰 반면, <strong>SNP는 매우 흔하지만 개별 영향은 작다</strong>. 269개의 개별 SNP가 PCa 위험과 연관되어 확인되었으며, 이들의 누적효과(다유전자위험점수, PRS)는 발병 절대위험과 직접 연관되나, 현재까지 PSA에 추가되는 예후 예측력은 없어 위험층화에는 사용할 수 없다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚖️ 대사증후군·비만·당뇨·스타틴</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">대사증후군과 PCa의 연관성은 전반적으로 약하나 공격적 질환 하위군에서 다소 강하다(고혈압, 허리둘레≥102cm과 가장 강한 연관). REDUCE 연구에서 비만은 저등급암 위험은 낮추나(OR 0.79) 고등급암 위험은 높였다(OR 1.28). 당뇨 자체는 연관성이 확인되지 않았고, 메트포르민 사용은 인구수준에서 진단위험을 낮췄으나(OR 0.84) REDUCE 하위분석에서는 유의하지 않았다. 스타틴(특히 친지질성)은 전체·진행성 PCa 위험을 다소 낮춘다는 메타분석이 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🍽️ 식이요인</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>요인</th><th>연관성</th></tr>
+            <tr><td>커피</td><td>고섭취군에서 위험 감소 경향(RR 0.91)</td></tr>
+            <tr><td>토마토/라이코펜</td><td>섭취시 발생률 감소 경향이나 위약대조 RCT에서는 유의한 감소 미확인</td></tr>
+            <tr><td>식물성 식단/십자화과 채소</td><td>소폭의 위험 감소와 연관(120만 명 이상 대상 메타분석)</td></tr>
+            <tr><td>붉은고기·가공육</td><td>섭취 증가와 위험 증가 가능성</td></tr>
+            <tr><td>생선</td><td>발생위험과는 무관하나 고섭취시 암특이사망률(RR 0.55)·진행위험(RR 0.84) 감소와 연관</td></tr>
+            <tr><td>대두(식물성에스트로겐)</td><td>섭취 증가시 위험 감소와 연관</td></tr>
+            <tr><td>비타민D</td><td>U자형 연관 — 저농도·고농도 모두 위험 증가(특히 고등급암)</td></tr>
+            <tr><td>비타민E/셀레늄</td><td>혈중(특히 손톱) 셀레늄 농도와 공격적 PCa의 역상관, 그러나 보충제는 발생률에 영향 없음</td></tr>
+          </table>
+          <div style="margin-top:6px">현재까지 특정 식이·예방적 중재가 PCa 발생을 낮춘다는 인과적 근거는 부족하다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💊 호르몬 활성 약제(5-ARI·테스토스테론)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">5-알파환원효소억제제(5-ARI)는 ISUP1 암 발생을 25% 낮출 잠재력이 있으나 고등급암의 소폭 증가위험(암 사망률에는 영향 없음)과 상쇄되어야 하며, 유럽의약품청(EMA)은 화학예방 적응증으로 승인하지 않았다. 저성선기능 남성의 테스토스테론 보충은 PCa 위험을 높이지 않으며, 유리테스토스테론 최하위 10군은 오히려 위험이 낮다(OR 0.77). 근치치료 후 저성선기능 환자의 테스토스테론 보충도 근거는 제한적이나 불량한 예후와 연관되지 않는다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🏭 기타 위험요인(직업·생활습관)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">큰 키·정수리형 탈모는 위험 증가와 연관된다. 궤양성대장염을 포함한 염증성장질환에서 ISUP≥2 위험이 4배 높다는 보고가 있다. 직업적 화학물질/농약 노출, 카드뮴 노출, 교대근무(용량-반응 관계)는 위험을 높이는 것으로 보고된다. 현재 흡연은 PCa 사망위험을 높이고(RR 1.24) 금연 후에도 예후에 영향을 미친다. 아스피린/NSAID 사용, 자외선 노출, 포경, 높은 사정빈도(월 21회 이상 시 20% 위험감소)는 보호적 연관성을 보인다. 정관절제술·여드름 병력은 위험과 무관함이 확인되었다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 분류 및 병기(TNM, ISUP)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>임상병기는 <strong>직장수지검사(DRE)만을 근거</strong>로 하며, 영상소견에 의한 추가 병기정보는 별도로 기재한다(예: 촉지되지 않는 암에 MRI상 피막외침범이 있어도 cT1c로 분류). 항목을 클릭하면 상세 설명을 볼 수 있다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>병기</th><th>정의</th></tr>
+        <tr><td>T1</td><td>촉지되지 않는 임상적으로 불명확한 종양(T1a ≤5% 우연발견, T1b &gt;5%, T1c 침생검으로 발견)</td></tr>
+        <tr><td>T2</td><td>전립선에 국한, 촉지됨(T2a 한쪽엽 절반 이하, T2b 한쪽엽 절반 초과, T2c 양엽)</td></tr>
+        <tr><td>T3</td><td>피막을 뚫고 촉지되는 침범(T3a 피막외침범, T3b 정낭침범)</td></tr>
+        <tr><td>T4</td><td>정낭 이외 인접구조물(외괄약근·직장·거근·골반벽) 고정 또는 침범</td></tr>
+        <tr><td>N1 / M1</td><td>N1: 국소(골반)림프절 전이 · M1a 비국소림프절, M1b 골, M1c 기타부위(가장 진행된 범주)</td></tr>
+      </table>
+
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📋 병리학적 병기(pTNM)와 miTNM</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">병리학적 병기(pTNM)는 조직검사 기반으로 임상 TNM과 대체로 평행하나, cT1/T2 세부구분은 병리학적으로 존재하지 않는다 — 근치전절제술 후 조직국한암은 모두 <strong>pT2</strong>로 분류되며 현재 UICC는 pT2 하위구분을 인정하지 않는다. EANM은 PSMA-PET/CT 소견을 반영한 분자영상TNM('miTNM')을 제안했으나, 'Will Rogers 현상'으로 인해 miT/miN/miM의 예후가 실제보다 좋게 나타날 수 있어 UICC·AJCC의 공인을 받지 못했다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 Gleason 등급의 역사와 ISUP 2019 등급군</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">원래 Gleason 체계는 1-5등급으로 구성되었으나 2005년·2014년 ISUP 합의회의를 거치며 등급 1·2가 사실상 폐기되었다. 생검 Gleason score는 가장 흔한(주) 패턴+두번째로 흔한(부) 패턴의 합이며, 패턴이 하나뿐이면 이를 두 번 합산한다. 세 가지 패턴이 있으면 가장 흔한 등급+가장 높은 등급을 합산한다. 관내암종(IDC)이 침습암과 혼재하면 기저 구조패턴에 따라 Gleason score에 포함시킨다. Gleason 7(3+4)에서는 4형 패턴의 비율(%)을 보고해야 하며, 특히 <strong>사상형(cribriform) 패턴</strong>은 생화학적재발·전이·사망 위험 증가와 강하게 연관되어 별도 보고가 권고된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧭 '임상적으로 유의한 암(csPCa)'의 정의 논쟁</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ISUP1 단독 근치전절제표본 대규모 연구에서 피막외침범(0.3%)·생화학적재발(3.5%)이 드물었고 정낭침범·림프절전이는 전혀 관찰되지 않아 <strong>ISUP1은 임상적으로 무의미한 암</strong>으로 간주된다. 다만 생검에서 ISUP1로 진단된 환자가 실제 수술표본에서는 72%가 ISUP≥2, 25%가 pT3a로 나타난 연구도 있어 표본채취 오류 가능성을 항상 고려해야 한다. ISUP1은 매년 약 1%씩 고등급으로 진행할 수 있다. 최근 문헌들은 csPCa를 ISUP≥2 또는 ISUP≥3으로 다르게 정의하고 있어 합의가 부족하며, 각 연구는 사용한 정의를 명시해야 한다.</div>
+      </div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>Gleason score</th><th>ISUP 등급군(Grade Group)</th></tr>
+        <tr><td>2-6</td><td>1</td></tr>
+        <tr><td>7 (3+4)</td><td>2</td></tr>
+        <tr><td>7 (4+3)</td><td>3</td></tr>
+        <tr><td>8 (4+4, 3+5, 5+3)</td><td>4</td></tr>
+        <tr><td>9-10</td><td>5</td></tr>
+      </table>
+      <div>ISUP 등급군 1은 병리학적으로 피막외침범(0.3%)·생화학적재발(3.5%)이 드물고 정낭침범·림프절전이가 관찰되지 않아 <strong>임상적으로 무의미한 암</strong>으로 간주되나, 매년 약 1%씩 고등급으로 진행할 수 있어 연령·영상소견·생검 코어 수 등을 함께 고려해야 한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>⚖️</span> EAU 위험군 분류(생화학적 재발 기준)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="risk-grid">
+        <div class="risk-col"><div class="risk-hdr" style="background:#15803d">저위험</div>ISUP 1 그리고<br>PSA &lt;10 ng/mL 그리고<br>cT1-2a</div>
+        <div class="risk-col"><div class="risk-hdr" style="background:#0e7490">중간위험(양호)</div>ISUP2+PSA&lt;10+cT1-2b, 또는<br>ISUP1+PSA10-20+cT1-2b, 또는<br>ISUP1+PSA&lt;10+cT2b</div>
+        <div class="risk-col"><div class="risk-hdr" style="background:#a16207">중간위험(불량)</div>ISUP2+PSA10-20+cT1-2b, 또는<br>ISUP3+cT1-2b</div>
+        <div class="risk-col"><div class="risk-hdr" style="background:#cf222e">고위험(국소)</div>ISUP4-5, 또는<br>PSA&gt;20, 또는<br>cT2c</div>
+        <div class="risk-col"><div class="risk-hdr" style="background:#7c2d92">국소진행성</div>cT3-4 및/또는 cN+<br>(등급·PSA 무관)</div>
+      </div>
+      <div style="margin-top:6px">NCCN 지침의 양호/불량 중간위험군 세분화(불량 = ISUP3 및/또는 조직검사 양성코어 ≥50% 및/또는 위험인자 ≥2개)를 반영해 EAU 중간위험군도 <strong>2025년판에서 양호/불량으로 분리</strong>되었다.</div>
+
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📈 위험군 분류의 근거와 대안 모델</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">EAU 위험군은 본질적으로 D'Amico 분류체계에 기반하며, TNM 병기(해부학적 범위)·PSA·전신생검 병리소견을 결합한다. NCCN 지침은 중간위험군을 양호/불량으로 세분화(불량 특징: ISUP3 및/또는 양성코어 ≥50% 및/또는 중간위험인자 ≥2개)한다. 2016년 제안된 <strong>Cambridge Prognostic Group(CPG)</strong>은 ISUP·PSA·cT병기 기반 5단계 모델로, 기존 3단계 EAU 위험군보다 암특이사망률 변별력이 유의하게 우수함이 검증되었고 여러 코호트에서 재현되었다. NCCN·CPG 등 세분화된 모델이 EAU 분류보다 암특이사망률 예측 성능이 높다는 보고가 있으나, 이런 비교연구들은 후향적·예후적 성격이며 초기 위험분류·치료방침 결정 연구들은 대부분 EAU 위험군을 기준으로 설계되었기에 최적 위험분류체계는 아직 확정되지 않았다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>👤</span> 기대여명·건강상태 평가</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>전립선암은 고령남성(중앙값 68세)에서 흔하며, 유럽·미국에서 65세 이상 신규진단은 2030년까지 70% 증가할 전망이다. 활동적 치료의 이득은 대개 <strong>기대여명 10년 이상</strong>인 중간·고위험군 환자에서 가장 크다. 항목을 클릭하면 도구별 상세 내용을 볼 수 있다.</div>
+
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🚶 보행속도와 기대여명</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">보행속도(6m 평상시 보행)는 기대여명의 우수한 단일 예측인자다. 75세 남성의 10년 생존율은 보행속도 &lt;0.4m/s일 때 19%에 불과하나 ≥1.4m/s이면 87%에 이른다. 고령에서 신기능 저하가 뚜렷할수록 나이·수행능력(PS)만으로는 치료결정에 불충분하다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📋 G8(Geriatric-8) 선별도구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <div>국제 SIOG 전립선암 실무그룹은 70세 이상 성인의 치료방침을 G8 선별도구 기반 건강상태 평가로 결정할 것을 권고한다. 8개 항목(식욕/체중감소/이동성/신경정신문제/BMI/다약제/주관적건강/연령)을 0-17점으로 채점한다.</div>
+          <table class="tbl" style="margin-top:6px">
+            <tr><th>항목</th><th>평가내용</th></tr>
+            <tr><td>A. 식욕</td><td>지난 3개월 식이섭취 감소 정도(0-2점)</td></tr>
+            <tr><td>B. 체중감소</td><td>지난 3개월 체중감소량(0-3점)</td></tr>
+            <tr><td>C. 이동성</td><td>와상~외출 가능 여부(0-2점)</td></tr>
+            <tr><td>D. 신경정신문제</td><td>치매/우울 정도(0-2점)</td></tr>
+            <tr><td>E. BMI</td><td>체질량지수 구간(0-3점)</td></tr>
+            <tr><td>F. 다약제</td><td>1일 3종 초과 처방약 복용 여부(0-1점)</td></tr>
+            <tr><td>G. 주관적 건강상태</td><td>동년배 대비 자가평가(0-2점)</td></tr>
+            <tr><td>H. 연령</td><td>&gt;85/80-85/&lt;80(0-2점)</td></tr>
+          </table>
+          <div style="margin-top:6px">G8 점수 &gt;14점(건강)이거나 가역적 손상이 해결된 취약(vulnerable) 환자는 젊은 환자와 동일한 표준치료를 받아야 한다. <strong>G8 ≤14점은 3년 사망률과 연관</strong>되어 있어 전문 노인의학 평가(CGA)가 필요하다. 노쇠 환자는 조정된 치료를, 상태가 너무 나쁜 환자는 완화치료만 받아야 한다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧓 임상노쇠척도(Clinical Frailty Scale, CFS)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <div>CFS는 1(매우건강)~9(말기질환)의 9단계로 노쇠 정도를 표현하는 공통언어로, 암 분야에서 자주 쓰이지는 않으나 점수가 높을수록 수술 후 30일 사망률이 높고 자택퇴원 가능성이 낮다.</div>
+          <table class="tbl" style="margin-top:6px">
+            <tr><th>단계</th><th>상태</th></tr>
+            <tr><td>1-3</td><td>매우건강~양호관리(규칙적 활동 또는 잘 조절된 만성질환)</td></tr>
+            <tr><td>4</td><td>경미한 노쇠 이행기(증상으로 활동 제한, "처짐" 호소)</td></tr>
+            <tr><td>5</td><td>경도 노쇠(수단적 일상생활동작에 도움 필요 — 재정·이동·중노동)</td></tr>
+            <tr><td>6</td><td>중등도 노쇠(외부활동·집안일 전반 도움 필요, 계단·목욕에 어려움)</td></tr>
+            <tr><td>7-8</td><td>중증~고도 중증 노쇠(개인위생 완전 의존, 경미한 질환도 회복 어려움)</td></tr>
+            <tr><td>9</td><td>말기질환(기대여명 &lt;6개월)</td></tr>
+          </table>
+          <div style="margin-top:6px">노쇠 정도는 치매 정도와 대체로 비례하며, 임상적 판단만으로는 노쇠를 정확히 예측하지 못하므로 <strong>반드시 검증된 도구(G8 또는 CFS)</strong>를 사용해야 한다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩹 동반질환·인지기능·영양상태 평가</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">동반질환은 근치전절제술을 받은 국소전립선암의 비암성 사망을 예측하는 주요 인자로 <strong>연령보다 더 중요</strong>하다 — 관찰대기 10년 후 동반질환 점수가 높은 환자 대부분은 나이·종양공격성과 무관하게 경쟁사인(競爭死因)으로 사망했다. 평가도구로 CISR-G(14개 신체계통을 0-4점씩 총 56점으로 평가)와 Charlson 동반질환지수가 있다. 영양상태는 최근 3개월 체중변화로 추정(5% 미만: 양호, 5-10%: 영양불량 위험, 10% 초과: 중증 영양불량)한다. 인지기능은 mini-COG(3단어 회상+시계그리기, 5분 이내 시행, ≤3/5점이면 전체 인지평가 의뢰)로 선별한다. 신체기능은 Karnofsky·ECOG 점수, 일상생활동작(ADL/IADL)으로 평가한다.</div>
+      </div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>PCa 관리에 개인별 기대여명·건강상태·동반질환을 활용한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>건강상태 선별에 G8, mini-COG, Clinical Frailty Scale을 활용한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>G8 점수 ≤14인 환자는 전문 노인의학 평가를 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>가역적 손상이 있는 취약(vulnerable) 환자는 문제해결 후 기대여명&gt;10년이면 표준치료를 고려한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>비가역적 손상 환자는 조정된 치료 또는 관찰대기를 제공한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>노쇠(frail) 환자에게는 완화적 증상완화 치료만 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 진단 ══════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩺</span> 조기발견(Early Detection) 권고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-diag"><span>⚠️</span><div>PSA는 장기(organ)특이적이나 암특이적이지 않아 BPH·전립선염 등에서도 상승할 수 있다 — 검사 전 반드시 <strong>위험·이득에 대한 상담</strong>이 선행되어야 한다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>상담 없이 PSA 검사를 시행하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>기대여명 ≥15년인 남성에게 개인별 위험적응 조기발견 전략을 제공한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>고위험군에게 조기 PSA 검사를 제공: 50세부터(일반), 45세부터(가족력 또는 아프리카계), 40세부터(BRCA2 변이)</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>초기 PSA 기준 위험적응 재검주기: 40세 PSA&gt;1 또는 60세 PSA&gt;2인 경우 2년마다, 그 외는 최대 8년까지 연기</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>기대여명 &lt;15년이면 조기진단을 중단한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🧬</span><div><strong>BRCA2 변이 보유자(IMPACT 연구)</strong>는 비보유자 대비 발생률이 높고, 진단연령이 낮으며, 임상적으로 유의한 종양이 더 많다. BRCA1의 영향은 아직 불명확하다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 근거가 된 본문 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⏱️ 재검주기의 근거 — 기저 PSA에 따른 위험적응</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">60세 남성에서 PSA 중앙값(≤1.0ng/mL) 이하이면 85세까지 PCa로 사망할 위험이 0.2% 이하로 낮다. 이에 따라 60세 이하 남성 대다수에게 8-10년 재검주기를, 60세 이후에는 약 절반에서 추가 선별검사를 면제할 수 있다. 반면 초기 위험군(40세 PSA&gt;1, 60세 PSA&gt;1-2ng/mL)은 2년 주기 재검이 권고된다. PIVOT·ERSPC 자료에 따르면 기대여명 15년 미만 무증상 남성은 조기진단의 이득이 없다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🗺️ 진단 흐름도(생검 결정 알고리즘)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">무증상(개별 조기발견) 경로에서는 기대여명(&gt;10-15년)과 공유의사결정을 전제로 초기위험평가(PSA·DRE·기대여명·가족력·인종)를 시행한다. 이후 MRI·위험계산기·혈청/요 바이오마커를 이용한 생검 위험층화를 거쳐, 저위험이면 개별화 추적을, 고위험이면 표적+병변주위 생검을 시행한다. 증상이 있거나 PSA&gt;50ng/mL·cT3-4인 경우는 직접 생검 적응증에 해당하며 위험층화 단계를 건너뛴다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📊 인구집단 선별검사(Population Screening)의 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">2018년 갱신된 Cochrane 문헌고찰(5개 RCT, 72만 명 이상)에서 선별검사는 진단율 증가(발생비 1.23), 국소병 발견 증가·진행병 감소와 연관되었으나, <strong>암특이생존·전체생존의 유의한 이득은 확인되지 않았다</strong>(모든 시험의 주요 종점). 다만 ERSPC 연구(16년 추적, 유럽 18만2천 명 이상)는 21-29%의 사망률 감소를 보였고, 선별검사 1건당 필요대상자수(NNS)는 시간이 지날수록 감소해(9년 1,410명→16년 570명) 유방암 선별검사보다 낮아졌다. 예테보리(Göteborg) 연구는 18년 추적에서 사망위험비 0.65(55-59세 시작군은 0.47)를 보고했다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 유전성 전립선암 - 생식세포(germline) 검사</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>다음 남성은 유전상담 후 생식세포 검사를 고려한다: ① 표적치료 후보인 전이성 PCa, ② 체세포검사에서 BRCA 변이 확인, ③ 60세 미만 임상적유의암 진단 가족구성원 다수 또는 PCa 사망 가족력, ④ 고위험 생식세포 변이 가족력 또는 같은 가계 다발암 가족력.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>60세 미만 다발 가족력 또는 PCa 사망 가족력 시 생식세포 검사를 고려한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>고위험 생식세포 변이 가족력 또는 같은 가계 다발암 가족력 시 검사를 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>체세포검사에서 BRCA 변이가 확인된 환자에게 생식세포 검사를 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div><small>*생식세포검사 이전·이후 반드시 유전상담이 필요하다. 생식세포 BRCA1/2 변이는 일반인구의 약 0.2-0.3%에서 발견된다.</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔬</span> 진단검사(PSA·DRE·바이오마커) 및 선별검사 권고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>비정상 DRE는 PSA와 무관하게 약 18%에서 암을 발견하며, PSA 상승과 동반 시 양성 생검 위험이 2배 이상 증가한다(48.6% vs 22.4%). PSA는 연속변수로 절대적 정상수치 기준은 없다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>PSA 3-10ng/mL, DRE 정상인 무증상 남성은 추가검사 전 PSA를 재검한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>PSA 3-20ng/mL, DRE 정상인 경우 생검 여부 결정에 MRI를 활용한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>동일 상황에서 (교정된) 위험계산기 또는 혈청/요 바이오마커 검사를 활용할 수 있다</td><td><span class="stage weak">Weak</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📉 낮은 PSA 수치에서도 존재하는 암 위험</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>PSA(ng/mL)</th><th>암 발견율</th><th>ISUP&gt;2 발견율</th></tr>
+            <tr><td>0.0-0.5</td><td>6.6%</td><td>0.8%</td></tr>
+            <tr><td>0.6-1.0</td><td>10.1%</td><td>1.0%</td></tr>
+            <tr><td>1.1-2.0</td><td>17.0%</td><td>2.0%</td></tr>
+            <tr><td>2.1-3.0</td><td>23.9%</td><td>4.6%</td></tr>
+            <tr><td>3.1-4.0</td><td>26.9%</td><td>6.7%</td></tr>
+          </table>
+          <div style="margin-top:6px">PSA가 낮아도 암이 존재할 수 있음을 보여준다. 임상에 의뢰된 증상환자에서 PSA≥4.0ng/mL의 진단정확도는 민감도 0.93·특이도 0.20이다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚠️ PSA 측정의 오차요인</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>요인</th><th>영향</th></tr>
+            <tr><td>개인 내 변동</td><td>±15%까지 변동 가능</td></tr>
+            <tr><td>측정법 차이</td><td>검사실 간 최대 약 5% 차이</td></tr>
+            <tr><td>급성/열성 요로감염</td><td>PSA&gt;100ng/mL까지 급등 가능, 정상화까지 최대 1년 소요</td></tr>
+            <tr><td>급성요저류</td><td>중등도 상승</td></tr>
+            <tr><td>생검 직후</td><td>생검 후 최소 1개월간 PSA 검사를 지연해야 함</td></tr>
+            <tr><td>저성선기능증</td><td>테스토스테론 의존성으로 인한 저평가 가능</td></tr>
+            <tr><td>5-알파환원효소억제제(피나스테리드·두타스테리드)</td><td>PSA를 약 50% 감소시킴 — 해석시 보정 필요</td></tr>
+            <tr><td>DRE</td><td>PSA 값에 영향 없음</td></tr>
+          </table>
+          <div style="margin-top:6px">PSA 3-10ng/mL로 이상소견 없는 남성은 4주 후 동일 검사실·동일 검사법으로 재검을 권고하며(사정·시술·요로감염 없는 상태), Stockholm3 연구에서 재검으로 16.8%가 생검을 회피할 수 있었다(단 ISUP&gt;1의 5.4%를 놓칠 위험).</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📐 PSA 밀도(PSA-D)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PSA-D(혈청PSA÷전립선용적)는 값이 높을수록 임상적유의암 가능성이 높으며, 특히 작은 전립선에서 <strong>0.15ng/mL/cc</strong> 이상이면 예측력이 높다. 0.09 미만인 환자는 csPCa 진단 가능성이 4%로 매우 낮다. DRE 기반 용적추정은 과소평가되는 경향이 있고, 경복부초음파는 오히려 용적을 과대평가(약 9.9mL)하므로 권장되지 않는다. MRI 기반 용적측정이 TRUS보다 수술표본과 상관성이 더 높다. PSA-D는 MRI PI-RADS 점수와 결합했을 때도 csPCa 예측력을 유지한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩸 혈액 기반 바이오마커(PHI·4K·Stockholm3·IsoPSA·Proclarix)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>검사</th><th>특징</th></tr>
+            <tr><td>PHI(Prostate Health Index)</td><td>유리/총PSA+[-2]proPSA 조합, FDA 승인, PSA 2-10ng/mL 구간에서 f/tPSA보다 우수</td></tr>
+            <tr><td>4K score</td><td>유리·intact·총PSA+hK2+연령·DRE·이전생검 여부를 결합, PHI와 성능 동등</td></tr>
+            <tr><td>IsoPSA</td><td>PSA 이성질체의 구조 자체를 분석, 총PSA·f/tPSA보다 우수한 AUC(0.784)</td></tr>
+            <tr><td>Stockholm3</td><td>임상변수+혈액바이오마커(hK2·MIC-1·MSMB 등)+다유전자위험점수 결합, MRI와 병용시 무의미한 암 비율 감소</td></tr>
+            <tr><td>Proclarix</td><td>트롬보스폰딘-1·카텝신D·PSA 조합, PI-RADS 3(판정불가) 병변에서 유용</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧪 요(尿) 기반 바이오마커(PCA3·SelectMDX·MPS/MPS2·ExoDX)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PCA3(Progensa 검사)는 DRE 후 요침전물에서 측정하는 lncRNA 표지자이나 생검결정에서의 임상적 유용성은 아직 불확실하다. SelectMDX(HOXC6·DLX1 mRNA)는 PI-RADS&lt;3-4 환자에서 최대 45.8%의 생검을 회피시키나 3.2-6.5%의 csPCa를 놓칠 수 있다. MyProstateScore(MPS)는 PCA3+TMPRSS2-ERG 융합을 결합하며, 18유전자 기반 MPS2는 기존 모델보다 예측력이 유의하게 우수하다. ExoDx(엑소좀 mRNA)는 표준진료 대비 27%의 불필요한 생검을 회피시켰다. 현재 두 검사(MiPS, ExoDx) 모두 연구단계로 간주된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📡 영상기법 비교 — MRI·마이크로초음파·PSMA-PET</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">표준 경직장초음파는 암 발견 신뢰도가 낮다. 고해상도 마이크로초음파는 공간해상도가 좋으나 큰 전립선의 전방부 평가에 제한이 있다. 두 전향연구에서 MRI와 마이크로초음파의 csPCa 발견율은 유사(각 76% vs 73%, 39% vs 35%)했고 서로 보완적이었다(MRI가 놓친 병변을 마이크로초음파가 발견, 특히 첨부 병변). PSMA-PET/CT는 csPCa 발견에 민감도 0.89·특이도 0.56이며, MRI와 병용 시 음성예측도가 72%→91%로 개선되나 특이도는 다소 감소한다(53%→40%).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧲</span> MRI 및 생검 지침·전략</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>MRI를 초기 선별검사로 사용하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>PI-RADS 지침에 따라 MRI를 획득·판독하고, 병리소견과 함께 다학제회의에서 평가한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>기질장기국한 의심 시 생검 전 MRI를 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>DRE상 국소진행 의심 및/또는 PSA&gt;50ng/mL, 또는 근치적 치료대상이 아닌 경우 MRI 없이 제한적 생검을 고려한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>MRI 양성(PI-RADS≥4)이면 표적생검+병변주위(perilesional) 샘플링을 병행한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>MRI 음성(PI-RADS≤2)이고 임상적 의심이 낮으면(PSA밀도&lt;0.20, DRE 음성, 가족력 없음) 생검을 생략하고 PSA 추적을 제공한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>MRI 판정불가(PI-RADS=3)이고 임상적 의심이 매우 낮으면(PSA밀도&lt;0.10) 생검을 생략, 그 외는 표적+병변주위 생검을 고려한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>MRI를 이용할 수 없으면 위험계산기와 전신(systematic) 생검을 사용한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>전신생검만 시행 시 최소 12개 코어를 권장한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧮 위험계산기(Risk Calculator)의 역할과 한계</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ERSPC 코호트 기반 계산기(2014 ISUP 등급·사상형 성장패턴 반영 갱신판)와 PCPT 코호트 기반 PCPTRC 2.0이 대표적이다. 위험계산기는 훈련집단과 다른 유병률의 인구에 적용하면 오보정(miscalibration)되는 한계가 있어 지역 유병률에 맞춘 재보정이 이상적이나 실제로는 어렵다. 로테르담 위험계산기를 선제 적용한 후향분석에서 200명 중 73명(37%)의 MRI·생검을 회피할 수 있었으나 이 중 4명은 ISUP≥2 암을 놓쳤다. PHI 임계값 &gt;30 적용 시 25%의 MRI·생검을 회피하면서 ISUP≥2 암의 8%를 놓쳤다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🎯 병변주위(perilesional) 생검의 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">MRI 병변이 편측인 경우, 반대측(MRI 음성) 전신생검의 추가가치는 매우 낮으나(0.3-4%), 같은 쪽(동측) 전신생검의 추가가치는 상대적으로 높다(4.9-18.4%) — 이는 주로 병변이 위치한 구역 또는 인접 구역에서 비롯된다. 병변주위 생검을 표준 6분획 생검 대신 사용하면 총 코어 수를 줄이면서도 <strong>기존 결합생검이 발견하던 무의미한 암의 12-17%를 회피</strong>할 수 있다. MRI 병변에서 10mm 반경 이내 코어를 결합하면 csPCa의 90-92%, 15mm 이내면 94-97%가 발견된다. PI-RADS 5 병변은 추가생검의 부가가치가 매우 낮다(ISUP≥2 기준 4% 미만).</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔁 MRI·생검 재현성과 등급이동(Grade Shift)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PI-RADS 체계에도 불구하고 MRI 판독자 간 일치도는 중등도 수준에 머물며, 숙련된 영상의학과 전문의·고볼륨센터에서 성능이 더 우수하다. PRECISION과 PRECISE 두 유사설계 연구는 상이한 결과를 보여(ISUP≥2 발견율 차이 +12.1% vs +5.2%) 센터 간 변동성에 대한 우려를 낳았다. MRI로 발견된 ISUP≥2 암은 평균적으로 전통적 방식으로 발견된 암보다 예후가 양호한 경향(등급이동)이 있어, 위험군 정의의 향후 개정이 필요할 수 있다. 인공지능 보조판독은 유망하나 다기관·다장비 환경에서의 재현성은 아직 불확실하다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔂 재검생검·포화생검·정낭/이행대 생검</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">음성 전신생검 후 추적 중 PCa 발생률은 높아지나 PCa 사망위험은 인구평균보다 낮다. 이전 생검이 음성이고 지속적 의심이 있으면 MRI를 시행하며, MRI 이상+표적생검 음성이어도 유의한 암이 존재할 수 있어 위험인자(PSA밀도·PI-RADS)에 따라 추적 또는 즉시 재생검을 고려한다. 비정형 소생포증식(ASAP)·고등급 PIN 진단 후 추적생검에서 csPCa 발견율은 6-8%로 일반 재생검과 차이가 없어 관행적 재생검은 불필요하다. 포화생검(&gt;20코어)은 재생검에서 30-43%의 발견율을 보이나 요저류 등 부작용이 있고, 현재 MRI 중심 진단경로에서 임상적 유용성은 불확실하다. 정낭생검은 PSA&gt;15ng/mL에서 침범확률 20-25%로, 근치적 절제 배제 등 치료방침에 결정적 영향을 줄 때만 유용하다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> 생검 방식 및 감염예방(경회음 vs 경직장)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-diag"><span>✅</span><div>경직장 대비 <strong>경회음(transperineal) 생검</strong>이 감염 위험이 낮고 항생제 관리 측면에서 유리하여 <strong>1차 선택</strong>으로 권고된다 — 메타분석(11개 연구, 3,306명)에서 감염성 합병증이 유의하게 낮았다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>낮은 감염위험·우수한 항생제 관리를 이유로 경회음 생검을 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>경회음 생검 시 회음부 피부의 통상적 외과적 소독을 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>경직장 생검 전 포비돈아이오딘 직장세정을 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>경직장 생검 시 직장도찰/대변배양 기반 표적예방 또는 병합예방(항생제 2계열 이상)을 사용한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>각 부위 생검코어는 분리하여 병리검사에 제출한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>💊</span><div>유럽 내 <strong>플루오로퀴놀론은 부작용으로 인해 전립선생검 예방적 항생제 적응증이 정지</strong>되었다. 세팔로스포린·아미노글리코사이드가 대안이며, 포스포마이신 트로메타몰은 독일에서 적응증이 철회되었으므로 현지 지침을 확인해야 한다.</div></div>
+
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📋 생검 합병증 발생률(경직장 vs 경회음)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">234명 대상 3개 표적생검군 비교연구에서 합병증 없음 비율은 경직장MRI표적생검군 47.4%, 경회음융합표적생검군 29.1%, 경직장인지등록표적생검군 15.4%였다(전체 이상반응 등급3 이상은 없음). 혈뇨(전체 53.4%)·혈정액증(37.2%)이 가장 흔한 이상반응이며, 요로감염(3.4%)·발열(3%)·요저류(3%)는 상대적으로 드물다. 경회음 생검이 국소마취 하 시행 가능하고 경직장 대비 패혈증 등 중증 감염 위험이 낮다는 것이 표준 권고의 핵심 근거다. 저용량 아스피린은 생검의 절대적 금기가 아니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📡</span> 병기설정(N/M-staging, PSMA-PET)</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>68Ga-PSMA PET/CT는 기존 영상(CT+골스캔) 대비 정확도가 27%p 높고(92% vs 65%, proPSMA 연구), 민감도(85% vs 38%)·특이도(98% vs 91%) 모두 우수하며 방사선노출도 낮다(8.4 vs 19.2 mSv).</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>위험군</th><th>권고</th><th>등급</th></tr>
+        <tr><td>모든 위험군</td><td>국소병기 정보를 위해 생검 전 MRI를 사용한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>저위험 국소</td><td>추가 병기영상을 사용하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>중간위험(ISUP3)</td><td>가능하면 PSMA-PET/CT, 아니면 최소 복부골반 단면영상+골스캔을 시행</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>고위험/국소진행성</td><td>가능하면 PSMA-PET/CT, 아니면 최소 복부골반 단면영상+골스캔으로 전이선별을 시행</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔍 T-병기설정 — MRI의 역할과 한계</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">cT병기는 TNM 분류상 DRE 소견만을 근거로 하며, 영상·생검 결과는 T병기·EAU 위험군 분류에 아직 포함되지 않는다. T2강조 MRI는 국소병기설정에 가장 유용한 시퀀스로, 피막외침범(EPE) 민감도 0.57·특이도 0.91, 정낭침범(SVI) 민감도 0.58·특이도 0.96 수준이다. 552명 대상 연구에서 MRI는 DRE보다 비장기국한암 발견 민감도가 유의하게 높았으나(51% vs 12%) 특이도는 낮았다(82% vs 97%). MRI의 국소(미세)EPE에 대한 민감도가 낮아 <strong>저위험군에서는 국소병기 목적의 MRI가 권고되지 않으나</strong>, 치료계획 수립에는 여전히 유용하다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 N-병기설정 — CT/MRI vs 콜린PET vs PSMA-PET</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>영상기법</th><th>민감도</th><th>특이도</th><th>비고</th></tr>
+            <tr><td>CT/MRI(크기 기반)</td><td>&lt;40%</td><td>-</td><td>골반 &gt;8mm, 골반외 &gt;10mm를 악성 기준으로 사용하나 미세전이 검출 &lt;1%</td></tr>
+            <tr><td>콜린 PET/CT</td><td>62%</td><td>92%</td><td>중간위험군(전이확률 10-35%)에서는 민감도 8.2%까지 낮아져 임상적 가치 제한적</td></tr>
+            <tr><td>68Ga-PSMA PET/CT</td><td>40-77%(연구별 상이)</td><td>95-99%</td><td>MRI·콜린PET·CT보다 민감도 우수, 미세전이는 여전히 놓칠 수 있음</td></tr>
+          </table>
+          <div style="margin-top:6px">확대 골반림프절절제술(ePLND)은 병기·예후 정보를 정확히 제공하나, 체계적문헌고찰과 2건의 RCT에서 <strong>확대 방식이 제한적 방식 대비 종양학적 생존 이득을 보이지 못했다</strong>. ePLND는 제한적 PLND 대비 합병증률이 높다(19.8% vs 8.2%, 주로 림프낭종). 감시림프절생검(SNB)은 SENTINELLE 연구에서 민감도 95.4%·특이도 100%로 유망하나 아직 표준으로 자리잡지 못했다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🦴 M-병기설정 — 골스캔·불화물PET·전신MRI</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">99mTc 골스캔은 민감도 79%·특이도 82% 수준으로, PSA·임상병기·ISUP 등급에 따라 진단수율이 크게 달라진다. 증상이 있는 환자는 PSA·등급·병기와 무관하게 골스캔을 시행해야 한다. 18F-불화물 PET/CT는 골스캔과 특이도는 유사하나 민감도가 우수하다. 확산강조 전신/축골격 MRI는 골스캔·표적방사선촬영보다 민감하며 내장·림프절전이도 함께 발견할 수 있다. 메타분석에서 전신MRI는 환자단위 골전이 발견에서 콜린PET·골스캔보다 민감하나, 특이도는 콜린PET가 가장 높다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════ TAB 3: 국소·국소진행성 치료 ══════════ -->
+<div id="tab-local" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>👁️</span> 관찰대기(WW) vs 능동감시(AS)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>구분</th><th>능동감시(AS)</th><th>관찰대기(WW)</th></tr>
+        <tr><td>치료의도</td><td>근치적</td><td>완화적</td></tr>
+        <tr><td>추적</td><td>사전 정의된 일정(PSA≥6개월, DRE≥연1회, 반복생검 2-3년마다)</td><td>환자맞춤(증상 발생시까지 대기)</td></tr>
+        <tr><td>기대여명</td><td>&gt;10년</td><td>&lt;10년</td></tr>
+        <tr><td>적용대상</td><td>저위험 및 선택적 중간위험</td><td>전 위험군 적용 가능</td></tr>
+      </table>
+      <div class="alert alert-local" style="margin-top:8px"><span>📊</span><div>비치료 관찰 코호트에서 <strong>10년 암특이생존율 82-87%</strong>(T1/T2, ISUP≤2에서는 80-95%)로 보고되나, 오래된 연구는 현재 등급체계 기준 저평가된 경우가 많아 실제 성적은 더 양호할 것으로 추정된다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 근거를 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🏥 관찰대기(WW)의 실제 — 스웨덴 등록연구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">전통적으로 WW는 증상 발생을 기다리는 것을 의미했으나, PSA배가시간&lt;12개월·PSA&gt;30-50ng/mL인 경우 조기 호르몬치료가 단기생존을 개선할 수 있어 <strong>고위험군에서는 더 적극적인 추적</strong>이 이득이 될 수 있다. 스웨덴 등록연구에서 WW 중인 저위험 환자의 66.2%(5년)·25.5%(10년)가 ADT 없이 생존했으며, 고위험 환자는 각각 36.1%·10.4%였다. 저위험군의 92.3%, 고위험군의 84.1%가 10년 후 PCa가 아닌 다른 원인으로 사망했다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚖️ WW vs 근치전절제술 — SPCG-4·PIVOT·Cochrane</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PSA 이전시대 연구인 SPCG-4(695명)는 23.6년 추적에서 RP가 암특이생존·전체생존·무진행생존 모두 우월했으나 <strong>이득은 10년 이후에나 나타났다</strong>. 반면 PSA 초기시대 연구인 PIVOT(731명, 42% 저위험)은 18.6년 추적에서 RP의 이득이 미미했고(전체사망 RR 0.92), 중간위험군에서만 경계적 이득(RR 0.84)을 보였다. 세 연구(SPCG-4·PIVOT·VACURG)의 Cochrane 통합분석에서는 RP가 전체사망(HR 0.79)·암사망(HR 0.57)·전이진행(HR 0.56) 위험을 낮췄으나 요실금(RR 3.97)·발기부전(RR 2.67) 위험이 유의하게 높았다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 ProtecT 연구 — 능동관찰(AM)의 15년 성적</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ProtecT는 1,643명을 RP·EBRT·능동관찰(AM, 정식 AS와 달리 반복생검 없이 PSA만으로 관찰)로 무작위배정했다. 15년째 암특이생존율은 AM 96.9% vs RP 97.8% vs EBRT 97.1%로 <strong>세 군 간 차이가 없었으나</strong>, AM군의 전이진행률(9.4% vs 4.7-5.0%)·임상진행률(25.9% vs 10.7%)은 더 높았다. 진행 환자의 53%가 생검상 ISUP1이었고, RP 후 진행한 환자 중 병리학적 ISUP1은 한 명도 없어, <strong>ProtecT의 AM 프로토콜(10코어 TRUS생검)이 현대 AS 프로토콜보다 감시강도가 낮았음</strong>을 시사한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧮 기대여명·동반질환 평가도구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">65세 이상 비근치치료 환자 19,639명 분석에서 Charlson동반질환지수(CCI)≥2인 대부분의 환자는 진단시 연령과 무관하게 10년 내 경쟁사인으로 사망했고 종양공격성은 전체생존에 거의 영향을 주지 않았다 — 이는 생검·진단 자체가 불필요했을 수 있음을 시사한다. 반면 CCI≤1인 환자는 특히 고·중등도 분화암에서 10년 사망위험이 낮았다. 활동적 치료 대비 관찰의 경쟁적 이득을 추정하는 PREDICT Prostate 도구(영국 NICE 승인)가 임상에서 활용되고 있다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥇</span> 저위험 질환 관리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>기대여명 &lt;10년 환자는 관찰대기(WW)로 관리한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>기대여명 &gt;10년, 저위험 환자는 능동감시(AS)로 관리한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div>전절제·방사선치료 등 전선치료(whole-gland)나 국소소작술은 저위험군에서는 과잉치료일 가능성이 높아 임상시험 밖에서는 사용하지 않는다. 사상선세포조직(cribriform) 또는 관내암종(IDC) 소견은 AS 제외기준이다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥈</span> 능동감시(AS) 프로토콜 요약</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>사상선세포/관내암종 조직소견이 있으면 AS에서 제외한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>초기생검 전 MRI가 없었다면 확인생검 전에 MRI를 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>확인/반복생검 시 PI-RADS≥3 병변에 표적+병변주위 생검코어를 채취한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>MRI 없이는 프로토콜에 따른 확인생검을 시행한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>초기 MRI+표적생검을 받은 환자는 확인생검을 생략할 수 있다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>PSA(≥6개월), DRE(≥연1회), 반복생검(10년간 2-3년마다)의 엄격한 추적 프로토콜을 따른다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>저위험+안정된 MRI(PRECISE 3)+안정된 낮은 PSA밀도(&lt;0.15)이면 반복생검을 제외할 수 있다(DRE도 생략가능)</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>PSA가 상승 중이면(배가시간&lt;3년) MRI와 반복생검을 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>치료전환은 생검상 진행 소견에 근거하며, MRI/PSA/DRE 단독 변화로는 결정하지 않는다</td><td><span class="stage weak">Weak</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📋 AS 포함기준 상세 — PRIAS 프로토콜</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">가장 널리 쓰이는 고전적 기준은 ISUP1(전신생검), cT1c-T2a, PSA&lt;10ng/mL, PSA밀도&lt;0.15ng/mL/cc다. 대규모 전향 PRIAS 연구는 MRI+표적생검을 사용할 때 다음과 같이 기준을 확대했다: cT≤2, ISUP1 또는 (사상형·관내암종이 없는) ISUP2, PSA≤20ng/mL, PSA밀도&lt;0.25ng/mL/cc, 양성코어 수는 ISUP1은 제한 없음·ISUP2는 전신코어의 50% 이하. 병리컨센서스그룹은 사상형조직·주성분관상암종(관내암종 포함)·육종모양암종·소세포암종·생검상 피막외침범 또는 림프혈관침범이 있으면 AS 제외를 권고한다. 초기 아프리카계 혈통·높은 PSA밀도·전신생검 양성코어&gt;2개는 재분류(진행) 위험과 유의하게 연관된 3대 임상병리변수다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🗺️ MRI 재분류 기준(PRECISE) 및 반복생검 개별화</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PRECISE 기준은 AS 중 연속 MRI 소견 변화를 표준화하며 병리학적 등급상향의 강력한 예측인자다. 메타분석에서 MRI 진행 소견만으로 생검을 결정하면 생검의 약 2/3을 회피할 수 있으나 조직학적 진행의 40%를 놓칠 수 있다. 낮은 PSA밀도, 낮은 PSA속도, 확인/반복생검 음성(암 전혀 없음), 안정된 MRI는 재분류 위험이 낮은 인자로, 이런 환자는 반복생검 주기를 개별화할 수 있다 — 음성 반복생검은 향후 재분류 위험을 50% 낮춘다. 안정된 MRI(PRECISE 3)+낮은 PSA밀도(&lt;0.15) 조합은 반복생검 생략을 고려할 수 있는 근거가 된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔄 AS 중 치료전환 기준의 진화</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">조직학적 기준(ISUP3으로 재분류, 사상형/관내암종 발견)이 치료전환의 가장 강력한 근거다. MRI표적생검은 등급이동을 유발하므로 표적생검으로 발견된 ISUP2-3은 전신생검으로 발견된 경우보다 평균적으로 예후가 양호하다 — 따라서 표적생검에서 발견된 ISUP2로의 진행만으로 AS를 중단할 강한 근거는 아니라는 것이 최근 컨센서스다. MUSIC 등록연구에서는 양호 중간위험 AS 환자의 절반 이상이 진단 5년 후에도 치료 없이 유지되어, 적절히 선택된 환자에서 AS가 종양학적으로 안전함을 뒷받침한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>😟 심리적 요인 및 AS 중 개입(5-ARI 등)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">AS 환자의 약 10%가 지속적 불안을 겪으며, 이는 활동적 치료로 전환하는 타당한 이유로 인정된다 — 생검·재분류 대신 심리적 지지를 제공하는 것이 대안이 될 수 있다. 5-알파환원효소억제제 사용은 AS 중 무진행생존을 개선시켰다는 보고가 있으나(HR 0.59), 엔잘루타미드를 이용한 소규모 2상 연구는 PSA진행 지연과 음성생검 증가를 보였지만 부작용만 늘고 장기적 이득은 확인되지 않았다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥉</span> 중간위험 질환 관리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>영역</th><th>권고</th><th>등급</th></tr>
+        <tr><td>관찰대기</td><td>기대여명&lt;10년 무증상 환자에게 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>능동감시</td><td>ISUP2(&lt;10% 4형태), PSA&lt;10, ≤cT2a, 낮은 영상·생검범위 등 선택된 환자에서 고려(전이위험 증가 가능성 설명 필요)</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>능동감시 제외</td><td>ISUP3 질환은 AS 프로토콜에서 제외한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>근치전절제술(RP)</td><td>기대여명&gt;10년 환자에게 제공(최대 3개월까지 지연 가능)</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>신경보존술식</td><td>피막외침범 위험이 낮은 쪽에 신경보존 수술 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>저선량률(LDR) 근접치료</td><td>배뇨기능 양호+NCCN 양호 중간위험군에 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>IMRT/VMAT+IGRT</td><td>76-78Gy 또는 중등도 과분할(60Gy/20fx 등)+단기 ADT(4-6개월) 병용</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>근접치료 부스트</td><td>NCCN 불량 중간위험군에 IMRT/VMAT+LDR 또는 HDR 부스트+단기ADT</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>전선 소작술(냉동/HIFU)</td><td>임상시험·레지스트리 내에서만 시행</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>ADT 단독요법</td><td>국소치료가 불가한 무증상 남성에게 제공하지 않는다</td><td><span class="stage weak">Weak</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📚 중간위험군 AS 확대의 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ProtecT 연구(중간·고위험 34% 포함)는 15년 암특이생존에서 통계적으로 유의한 차이가 없었다. 3건의 체계적문헌고찰·메타분석이 중간위험 AS 성적을 저위험과 비교했으나 AS 정의가 통일되지 않았고 MRI를 진단시·추적중 모두 사용한 연구는 1건뿐이었다는 한계가 있다. 그럼에도 다수 연구가 중간위험(특히 양호군) AS의 종양학적 안전성을 뒷받침하고 있어, 2025년판에서 관련 권고가 확대되었다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔪 RP의 근거 — SPCG-4·PIVOT·ProtecT 중간위험 하위분석</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">SPCG-4에서 중간위험군의 18년 성적은 RP가 전체사망(RR 0.71)·암사망(RR 0.38)·원격전이(RR 0.49) 모두 유의하게 낮췄다. PIVOT의 사전계획 하위분석에서는 중간위험군에서만 RP가 전체사망을 유의하게 낮췄으나(HR 0.69) 암특이사망에는 유의한 차이가 없었다. ProtecT에서는 중간위험군(전체의 24%)에서 RP와 능동관찰 간 암사망 차이가 유의하지 않았다(HR 0.68, 신뢰구간이 넓음). 3개 연구를 통합한 메타분석은 RP가 관찰 대비 사망위험 9%·질병진행위험 43% 감소와 연관됨을 보였으나 위험군별 층화분석은 이루어지지 않았다. 동시대 6,883명 코호트에서 중간위험군의 림프절침범율은 2.9%였다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🎖️</span> 고위험 국소 질환 관리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>비근치적 관리시 10·15년 암특이사망률은 각각 28.8%·35.5%로 보고되며, 최적치료에 대한 컨센서스는 아직 없다. <strong>3개월까지의 치료 지연은 종양학적으로 안전</strong>하다는 근거가 있다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>영역</th><th>권고</th><th>등급</th></tr>
+        <tr><td>관찰대기</td><td>기대여명&lt;10년 무증상 환자에게 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>근치전절제술(RP)</td><td>다중요법의 일환으로 선택된 환자에게 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>확대 골반림프절절제술</td><td>림프절절제 시행시 확대(extended) 방식으로 시행</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>동결절편검사</td><td>RP 중 림프절 동결절편검사로 수술지속 여부를 결정하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>IMRT/VMAT+IGRT</td><td>76-78Gy 또는 중등도 과분할+<strong>장기 ADT(2-3년)</strong> 병용</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>근접치료 부스트</td><td>배뇨기능 양호 환자에 HDR/LDR 부스트+장기ADT(2-3년)</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>전선/국소 소작술</td><td>제공하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>ADT 단독요법</td><td>국소치료 불가·거부 환자 중 PSA배가시간&lt;12개월+PSA&gt;50 또는 저분화암인 경우만 제공</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📈 방사선 선량증가(Dose Escalation)의 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">국소치료 실패는 5-10년 후 2차 전이의 원인이 되어 암 사망을 예측한다. 여러 RCT가 74-80Gy로의 선량증가가 10년 생화학적재발·전이·암특이사망률을 유의하게 개선함을 보였다. MD앤더슨 연구(301명)에서 78Gy군은 70Gy군 대비 무생화학적실패생존이 우수했고(88% vs 81.1%, 15년) 원격전이(1.1% vs 3.4%)·암특이사망(3.2% vs 6.2%) 모두 낮았다(단 전체생존 차이는 없음). MRI 기반 우세 병변에 대한 국소 부스트(최대 18Gy 추가)는 571명 대상 RCT에서 생화학적무진행생존을 개선시켰다(국소실패 HR 0.33).</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⏱️ 과분할(Hypofractionation)·초과분할(Ultra-HFX)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">전립선암은 증식속도가 느려 분할당 선량을 높이는 과분할 방사선치료(2.5-3.4Gy/fx)가 이론적으로 더 효과적일 수 있다. Cochrane 문헌고찰(11개 연구, 8,278명)에서 중등도 과분할은 표준분할 대비 암특이생존 차이가 없었고(HR 1.00) 만성 요로·장독성도 유사했다. 초과분할(&gt;3.4Gy/fx, 정위체부방사선치료 SBRT)은 HYPO-RT-PC 연구(1,200명)에서 표준분할과 무진행생존 차이가 없었으나 초기 요로독성이 다소 높은 경향(23% vs 28%)을 보였다. PACE-B 연구(74개월 추적)에서는 5년 생화학적/임상적무진행생존이 SBRT에서 비열등함을 확인했으나(HR 0.73) 5년째 요로독성(RTOG grade2+)은 SBRT군에서 더 높았다(26.9% vs 18.3%, 대부분 일시적).</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💉 ADT 병용기간의 근거 — 단기 vs 장기</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">10,853명을 포함한 MARCAP 컨소시엄 개별환자자료 메타분석(12개 연구)에서 ADT 병용은 방사선 선량·연령·위험군과 무관하게 생화학적재발·전이재발·무전이생존·전체생존을 모두 유의하게 개선시켰다. 중간위험군에서는 <strong>4-6개월의 단기 ADT</strong>가 최적이며, 고위험군에서는 <strong>2-3년의 장기 ADT</strong>가 필요하다는 것이 핵심 메시지다. 고위험 국소암에서 단기ADT만으로는 전체생존 개선을 보이지 못한 연구들이 있어 장기ADT(최소 2-3년)가 현재 권고된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔗 골반림프절 방사선조사(cN0) 논란</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">cN0 중간·고위험군에서 골반 예방적 방사선조사의 명확한 근거는 부족하다. NRG/RTOG 9413 장기추적(1,322명)에서 신보조호르몬치료+전골반방사선이 신보조ADT+전립선방사선+보조ADT 대비 무진행생존을 개선했으나 3등급 이상 위장관독성 위험이 증가했다. 224명 대상 단일센터 RCT(cN0, 양성노드위험&gt;20%)는 전골반방사선이 전립선단독방사선 대비 원격무전이생존(95.9% vs 89.2%)·무질병생존을 유의하게 개선했으나 비뇨기계 이상반응도 증가시켜(17.7% vs 7.5%) 표준진료 변경의 근거로는 부족하다고 평가된다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔪</span> 근치전립선절제술(RP) — 수술기법·합병증</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>RP는 로봇보조복강경(RARP)·개복(RRP)·복강경 방식이 있으며, 목표는 골반장기 기능을 최대한 보존하면서 암을 완전히 제거하는 것이다. 항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧠 신경보존술식(Nerve-sparing)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">신경혈관다발(NVB) 보존은 발기기능뿐 아니라 요실금 회복에도 도움이 될 수 있다(양측 신경보존 시 12개월 요실금 회복 RR 1.08). 외측·중간·내측 박리평면 중 전립선에 가까울수록, 양측으로 시행할수록 초기 기능 회복이 우수하다. 고위험 환자도 촉진되지 않고 MRI상 피막외침범이 없다면 신경보존을 고려할 수 있다 — 대규모 후향연구에서 병기·등급과 무관하게 신경보존이 생화학적재발·전이·사망 위험에 영향을 주지 않았다. 다만 근거의 질은 낮아(무작위연구 없음) 강한 권고는 어렵다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔗 방광경부 보존·요도길이 보존</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">요실금의 대부분은 막양부요도 외괄약근이 담당하나 방광경부의 내조임근도 일부 기여한다. 방광경부 보존은 12개월·4년 요실금 회복을 개선시키며 종양학적으로 안전하나, <strong>전립선 기저부에 암이 있는 경우 기저부 절제면양성률이 높아질 수 있어(4.9% vs 1.9%) 주의가 필요</strong>하다. 술전 MRI로 측정한 막양부요도 길이가 길수록(1mm 증가당) 조기 요실금 회복이 개선되어, 술전 상담에 이 지표를 활용할 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📊 수술 접근법별 합병증 비교(RARP vs 복강경 vs 개복)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>합병증</th><th>RARP</th><th>복강경RP</th><th>개복RRP</th></tr>
+            <tr><td>방광경부협착</td><td>1.0%</td><td>2.1%</td><td>4.9%</td></tr>
+            <tr><td>문합부누출</td><td>1.0%</td><td>4.4%</td><td>3.3%</td></tr>
+            <tr><td>감염</td><td>0.8%</td><td>1.1%</td><td>4.8%</td></tr>
+            <tr><td>Clavien-Dindo II(수혈 등)</td><td>3.9%</td><td>7.2%</td><td>17.5%</td></tr>
+            <tr><td>Clavien-Dindo IIIb(전신마취 재시술)</td><td>0.9%</td><td>3.6%</td><td>2.5%</td></tr>
+          </table>
+          <div style="margin-top:6px">14개 센터 전향비교연구에서 12개월 요실금률은 RARP 21.3% vs RRP 20.2%로 큰 차이가 없었으나 발기부전은 RARP에서 다소 낮았다(70.4% vs 74.7%). 수술 후 응급실 방문율 12%, 30일 재입원율 4%로 보고된다(6만례, 20년 자료).</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩹 전방/후방 재건술의 요실금 회복 효과</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">요도괄약근 지지구조 재건(전방현수·후방재건)이 요실금 회복에 미치는 영향은 연구마다 결과가 엇갈린다. 일부 RCT는 조기(1-3개월) 회복 개선을 보였으나 6-12개월 장기 성적에서는 유의한 차이가 사라지는 경우가 많았다. 전후방재건을 결합한 방법(ARVUS 기법)은 2주-12개월 전 기간에서 유의한 요실금 개선을 보인 예도 있다. 현재까지 근거가 상충하여 특정 재건술식에 대한 강한 권고는 없으나, 재건술이 종양학적 결과나 합병증을 악화시킨다는 증거도 없다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>☢️</span> 방사선치료 — 근접치료·양성자·투자기술</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>IMRT/VMAT+IGRT가 외부방사선치료(EBRT)의 표준이다. 항목을 클릭하면 근접치료·양성자치료·투자적 기법의 상세를 볼 수 있다.</div>
+
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💎 저선량률(LDR) vs 고선량률(HDR) 근접치료</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>구분</th><th>LDR</th><th>HDR</th></tr>
+            <tr><td>선원</td><td>영구 삽입 씨앗(요오드-125 등)</td><td>일시적 삽입(이리듐-192)</td></tr>
+            <tr><td>선량전달</td><td>수주-수개월에 걸쳐 서서히</td><td>수분 내 전달</td></tr>
+            <tr><td>급성부작용</td><td>수개월에 걸쳐 소실</td><td>수주 내 소실</td></tr>
+            <tr><td>방사선안전</td><td>환자·보호자 방사선노출 고려 필요</td><td>방사선노출 문제 없음</td></tr>
+          </table>
+          <div style="margin-top:6px">LDR 단독요법은 D90(전립선용적 90% 커버 선량)&gt;140Gy일 때 4년 생화학적조절률이 유의하게 높다(92% vs 68%). ASCENDE-RT 연구는 EBRT+LDR부스트가 EBRT단독 대비 10년 PSA무진행생존을 개선시켰으나(85% vs 70%) 3등급 이상 요로독성이 증가했다(18% vs 8%, 치료관련 사망 2례). HDR 근접치료 부스트는 TROG 03.04 RADAR 연구(10년 추적)에서 원격진행을 유의하게 감소시켰다(HR 0.68).</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧲 조직간 스페이서(Spacer) — 직장 보호</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">생분해성 하이드로겔 스페이서를 전립선-직장 사이에 주입하면 직장이 받는 고선량 방사선용적이 5-8% 감소한다. RCT에서 스페이서 삽입군은 기저치 대비 장기능 저하가 없었던 반면, 미삽입군은 임상적으로 유의한 수준의 장기능 저하를 보였다. 드물지만 전립선농양·누공·패혈증 등 중증 합병증이 보고되어 경험 있는 팀만 시행해야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚛️ 양성자빔치료(Proton Beam Therapy)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">양성자는 조직 내 일정 깊이(Bragg peak)에서 에너지를 집중 방출한 뒤 급격히 감소해 이론적으로 정상조직을 더 보존할 수 있다. 그러나 PARTIQoL 3상 RCT(450명, 양성자 vs IMRT)에서 60.3개월 추적 결과 <strong>삶의 질·무진행생존 모든 영역에서 차이가 없었다</strong> — 즉 자원소모가 큰 양성자치료가 IMRT/VMAT 대비 이점을 보이지 못했다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧊 투자적(Investigational) 국소치료 — HIFU·냉동술·국소치료</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">전선(whole-gland) 냉동술·HIFU는 각각 발기부전(18%/23%), 요실금(2-20%/10%), 직장요도누공(0-6%/0-5%) 등의 부작용이 있고 장기 종양학적 성적에 대한 전향비교자료가 부족해 확립된 근치치료의 대안으로 간주되지 않는다. <strong>국소(focal)치료</strong>는 종양이 있는 구역만 선택적으로 제거해 신경혈관다발·괄약근·요도를 보존하는 개념으로, 5,827명 72개 연구 분석에서 HIFU·광역동치료가 상대적으로 양호한 데이터를 보였으나(1년 요실금없음 &gt;95%) 대상자의 45%가 ISUP1이었다는 한계가 있다. 전향적 연구에서는 1년째 재구역 내 ISUP≥2 재발이 8.8%로 보고되어, 현재 국소치료는 <strong>임상시험 또는 전향적 레지스트리 내에서만</strong> 시행이 권고된다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔗</span> 국소진행성(cN0/cN1M0) 질환 관리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>영역</th><th>권고</th><th>등급</th></tr>
+        <tr><td>근치전절제술(cN0)</td><td>다중요법의 일환으로 제공</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>확대 골반림프절절제술</td><td>림프절절제 시행시 확대 방식으로 시행</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>방사선치료(cN0)</td><td>IMRT/VMAT+IGRT와 장기 ADT 병용</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div class="alert alert-local" style="margin-top:8px"><span>📈</span><div><strong>cN1M0 병기</strong>는 신규진단 PCa의 5-10%를 차지한다. 아비라테론(2년) 추가+표준요법(ADT 3년+전립선±골반방사선)이 STAMPEDE 하위분석에서 무전이생존(HR 0.49)·전체생존(HR 0.53) 개선을 보여 표준치료로 자리잡고 있다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 분자영상(PSMA-PET)에 의한 병기이동(miN1)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PSMA-PET/CT 등 분자영상은 기존 영상(골스캔+골반CT/MRI)에서 음성이었던 환자의 32%에서 전립선 밖 질환을 추가로 발견한다. proPSMA 연구는 PSMA-PET/CT가 기존영상 대비 골반림프절전이 발견 정확도를 32%p 높인다는 것을 확인했다. 다만 더 민감한 영상이 miN1로 분류되는 사례를 늘리면서도(병기이동) 개별 환자의 실제 림프절 병소 부담은 기존 cN1보다 평균적으로 낮은 경향을 보였다. 특히 PSMA 발현이 높으나 크기가 정상(&lt;10mm)인 림프절의 최적 치료는 아직 규명되지 않았다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📚 cN1M0 국소치료 추가의 근거 — STAMPEDE 등</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">cN1M0 관리는 전통적으로 장기ADT+국소치료(주로 방사선, 근치전절제술보다 흔함) 조합에 기반한다. 무작위연구는 없으나 STAMPEDE 사후분석·후향연구의 메타분석(4개 연구, 4,597명)에서 국소치료 추가군이 모든 시점에서 전체생존이 개선되었다(OR 1.49-1.81). STAMPEDE 대조군 자료는 국소치료 추가가 무실패생존을 개선시켰음을 보였다(HR 0.48). 도세탁셀 병용시대의 탐색적 하위분석에서는 방사선 추가의 무실패생존 이득이 유지되었으나(HR 0.68) 암특이생존·전체생존 이득은 확인되지 않았다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 근치전절제술 후 보조치료(pN0/pN1)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>pN0 환자에게 보조 ADT를 처방하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>pN0+ISUP4-5+pT3±절제면양성 환자는 보조 IMRT/VMAT+IGRT를 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>pN1 환자(확대림프절절제 후)는 ①보조ADT, ②보조ADT+IMRT/VMAT+IGRT, ③관찰(≤2개 양성노드+PSA 검출불가 시) 중 논의한다</td><td><span class="stage weak">Weak</span></td></tr>
+      </table>
+      <div>병리학적 5-20%에서 <strong>수술 후 지속 PSA</strong>가 관찰되며, 이는 생화학적 재발보다 예후가 불량(15년 무전이생존 53% vs 93.2%)하다. 전이 확인 없는 지속·상승 PSA 환자는 조건부로 PSMA PET/CT 및 구제방사선치료+호르몬치료를 고려한다(권고등급 Weak).</div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>👀 pN1 관찰(observation) 전략의 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">여러 후향연구·체계적문헌고찰에서 <strong>양성노드가 1-2개로 제한적인 pN1</strong> 환자군은 추가치료 없이도 양호한 종양학적 결과를 보인다. 209명(양성노드 1-2개) 분석에서 37%가 60.2개월 추적 시점까지 구제치료 없이 무전이 상태를 유지했다. 369명 분석(40명 보조치료·329명 무보조치료)에서는 높은 병리등급과 양성노드&gt;3개가 생화학적재발의 유의한 위험인자였다. 무보조치료군의 생화학적무재발생존은 4년 43%·10년 28%였고 5년 암특이생존은 78%였다 — 이런 환자 대부분은 양호한 질병특성(63%가 단일 양성노드)을 가져, 초기 관찰 후 재발시 조기 구제치료가 저부담 질환 환자에게 안전한 선택지가 될 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>☢️ pN1 보조방사선치료의 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">후향 다기관 코호트에서 pN1 후 지속적 ADT(수술 후 6개월 이내 시작)에 최대국소제어 목적의 전립선와 방사선을 추가하는 것이 이득이 될 수 있으나, 그 효과는 종양특성에 크게 좌우된다. 저용적 노드질환(&lt;3개)·ISUP2-5·pT3-4 또는 절제면양성, 또는 3-4개 양성노드를 가진 환자군이 방사선의 이득을 볼 가능성이 가장 높았다. 미국 국가암데이터베이스 분석(8,074명 pN1)에서는 하나 이상의 불량 병리학적 특징이 있는 모든 환자에서 ADT+EBRT(골반림프절 포함)가 관찰 및 ADT단독 대비 전체생존을 개선시켰으나, 불량 병리특징이 없는 환자는 즉시 보조치료의 이득이 없었다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /local -->
+
+
+<!-- ══════════ TAB 4: 재발·전신치료 ══════════ -->
+<div id="tab-systemic" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📈</span> 생화학적 재발(BCR) — 영상 및 치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>구분</th><th>권고</th><th>등급</th></tr>
+        <tr><td>RP 후 PSA재발 영상</td><td>PSA&gt;0.2이고 결과가 치료결정에 영향을 준다면 PSMA-PET/CT 시행</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>PSMA 불가 시</td><td>PSA≥1이면 fluciclovine 또는 콜린 PET/CT 시행</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>RT 후 PSA재발</td><td>국소구제치료 적합자는 전립선 MRI로 병변국소화, PSMA/fluciclovine/콜린 PET/CT 시행</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>RP 후 구제방사선</td><td>2회 연속 PSA 상승 시 조기 구제 IMRT/VMAT+IGRT 제공, PET/CT 음성이어도 지연하지 않음</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>EAU 저위험 BCR</td><td>PSA 모니터링(감시)을 제공한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>구제방사선+호르몬치료</td><td>BCR 환자에서 SRT에 호르몬치료를 추가 제공할 수 있다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>RT 후 BCR</td><td>구제전절제·근접치료·SBRT·HIFU·냉동술은 임상시험/전향적 코호트에서만 고도로 선택된 환자에 시행</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>고위험 BCR 전신치료</td><td>PSA배가시간≤9개월+PSA≥2(RT후 최저치대비) 또는 ≥1(RP후)인 M0 환자에 엔잘루타마이드±ADT 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>PSA배가시간&gt;12개월</td><td>M0 환자에게 ADT를 제공하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div class="alert alert-systemic" style="margin-top:8px"><span>📊</span><div>PSA 0.5ng/mL 미만에서 구제방사선을 시작한 환자의 &gt;60%가 PSA 검출불가에 도달(5년 무진행 약 80%)한다. PSA&gt;0.25에서 SRT 시작 시 전체사망위험이 유의하게 높아, <strong>조기(저PSA) 구제방사선</strong>이 핵심이다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚖️ EAU BCR 위험군 정의 — 저위험 vs 고위험</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>구분</th><th>EAU 저위험 BCR</th><th>EAU 고위험 BCR</th></tr>
+            <tr><td>RP 후</td><td>PSA배가시간&gt;1년 그리고 병리ISUP&lt;4</td><td>PSA배가시간≤1년 또는 병리ISUP4-5</td></tr>
+            <tr><td>RT 후</td><td>생화학적실패까지 간격&gt;18개월 그리고 생검ISUP&lt;4</td><td>생화학적실패까지 간격≤18개월 또는 생검ISUP4-5</td></tr>
+          </table>
+          <div style="margin-top:6px">이 위험군 분류는 유럽 코호트에서 외부검증되었다. BCR은 원격전이·암특이사망·전체사망 위험을 높이나 그 영향의 크기는 매우 다양하다(RP 후 HR 1.03-2.32) — 즉 BCR 환자 중 일부 하위군만이 실제로 사망위험이 유의하게 증가한다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📐 PSA 속도(PSAV)·배가시간(PSA-DT) 계산의 함정</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PSA-DT·PSAV 계산법은 20종 이상이 보고되어 있고 정의에 따라 값이 크게 달라질 수 있다. 권장되는 원칙은: ① 최소 3회 이상의 PSA 측정, ② 통계적 잡음을 피하기 위해 측정 간 최소 4주 간격(단, 매우 공격적 질환에서는 예외), ③ 최근 12개월 이내 수치만 포함하여 현재 질병활동을 반영, ④ 매우 활동적인 질환에서는 개월이 아닌 주 단위로 표현. PSA-DT는 PSA 수치 자체보다 추가정보를 주지 않는다는 지적도 있으나, 비전이성 CRPC에서는 무전이생존·전체생존과 연관되어 배가시간&lt;10개월인 고위험군 식별에 사용된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📡 영상기법별 BCR 발견 성능 비교</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>영상기법</th><th>민감도/특이도</th><th>비고</th></tr>
+            <tr><td>골스캔+복부골반CT</td><td>낮음</td><td>PSA&lt;7이면 골스캔 양성률&lt;5%, CT 양성률 11-14%에 불과</td></tr>
+            <tr><td>콜린 PET/CT</td><td>86-89%/89-93%</td><td>PSA&lt;1에서 발견율 5-24%로 급감, PSA&gt;5면 67-100%로 상승</td></tr>
+            <tr><td>플루시클로빈 PET/CT</td><td>콜린보다 다소 높음</td><td>전체발견율 67.7%(국소38.7%+골반림프절32.6%), PSA&lt;1에서 민감도&lt;50%</td></tr>
+            <tr><td>PSMA PET/CT(18F/68Ga)</td><td>0.92-0.93/0.83-0.94</td><td>콜린보다 유의하게 우수, 특히 PSA&lt;1에서 격차가 큼(PSA&lt;0.2 양성률 33%, PSA≥2 양성률 95%)</td></tr>
+          </table>
+          <div style="margin-top:6px">RP 후 국소재발 평가에는 <strong>MRI</strong>가 우수(PSA 0.3-0.5ng/mL부터 양성 소견), RT 후 국소재발 평가에도 MRI가 정확도가 높다. EMPIRE-1 RCT(365명)에서 플루시클로빈PET/CT를 병행한 방사선치료 계획이 기존영상 단독 대비 무사건생존을 유의하게 개선시켰다(HR 2.04).</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 RT 실패 후 구제치료 — 옵션별 성적 비교</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>구제치료</th><th>5년 무재발생존</th><th>중증 비뇨기독성</th></tr>
+            <tr><td>구제전절제술(SRP)</td><td>47-82%(10년 28-53%)</td><td>&gt;21%(요실금 21-90%, 대부분 발기부전)</td></tr>
+            <tr><td>구제냉동술(SCAP)</td><td>50.3%</td><td>중등도</td></tr>
+            <tr><td>구제근접치료(HDR/LDR)</td><td>56-60%</td><td>8-8.1%(가장 낮음)</td></tr>
+            <tr><td>구제정위체부방사선(SABR)</td><td>2년 61.6%</td><td>&lt;10%(3등급 이상)</td></tr>
+            <tr><td>구제HIFU</td><td>52.7%</td><td>22.7%(가장 높음, 직장요도누공 위험 포함)</td></tr>
+          </table>
+          <div style="margin-top:6px">구제전절제술은 방사선으로 인한 섬유화·창상치유 지연으로 <strong>일차수술보다 합병증 위험이 훨씬 높다</strong>(문합부협착 47% vs 5.8%, 요저류 25.3% vs 3.5%). 근거의 질이 전반적으로 낮아(대부분 단일군 비대조 증례군) 특정 기법에 대한 강한 권고는 어려우며, 경험 있는 센터에서 임상시험/전향적 레지스트리 내 시행이 권고된다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💊 고위험 BCR 조기 호르몬치료 — EMBARK 연구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">고위험 BCR(PSA배가시간≤9개월+최저치 대비 PSA≥2/1ng/mL)에서 조기 호르몬치료의 효과는 논란이 있었으나, 3군 3상 EMBARK 연구(1,068명)가 이를 명확히 했다 — 엔잘루타미드+류프로리드 병용군은 류프로리드 단독 대비 5년 무전이생존을 유의하게 개선시켰다(87.3% vs 71.4%, HR 0.42). 엔잘루타미드 단독요법도 류프로리드 단독보다 우수했다(80.0% vs 71.4%, HR 0.63). 이 결과로 2023년 11월 FDA가 고위험 BCR에서 엔잘루타미드 단독 또는 ADT 병용을 승인했다. PSA가 검출불가(&lt;0.2ng/mL)로 떨어지면 36주 후 치료를 중단하는 <strong>간헐적 치료</strong>도 고려할 수 있다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> 호르몬요법(ADT) 기본원칙</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>방법</th><th>특징</th></tr>
+        <tr><td>양측 고환절제술</td><td>가장 빠른 거세도달(12시간 이내), 비가역적, 간헐치료 불가</td></tr>
+        <tr><td>LHRH 작용제(agonist)</td><td>1·3·6개월/1년 제형, 초기 테스토스테론 급등(flare-up) 유발 가능 — 항안드로겐 병용으로 완화</td></tr>
+        <tr><td>LHRH 길항제(antagonist)</td><td>flare 없이 즉시 억제(데가렐릭스, 3일째 거세수치 도달) — 월 1회 제형만 존재</td></tr>
+        <tr><td>렐루골릭스(경구 길항제)</td><td>류프로렐린 대비 지속적 억제에서 비열등+우월성 입증, 심혈관 이상반응 낮음</td></tr>
+      </table>
+      <div>거세수치는 역사적으로 &lt;50ng/dL로 정의되나, 최신 분석법 기준 &lt;20ng/dL이 더 적절한 기준으로 제안된다.</div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔁 간헐적 vs 지속적 ADT</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">가장 큰 규모의 간헐치료(IAD) 연구인 SWOG 9346은 3,040명 중 1,535명(약 50%)만이 최적 PSA반응을 보여 IAD 대상기준을 충족했다 — 즉 M1b 환자의 절반 정도만 IAD 후보가 될 수 있다. 이 비열등성 연구는 결론이 불확실했다(HR 1.1, 사전설정 상한 1.2를 넘어섬). 최근 ARPI 병용 지속치료가 표준으로 자리잡으며 IAD의 활용은 줄어들고 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚖️ 고환절제술·LHRH작용제·길항제의 선택 기준</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">종양학적 결과 면에서 특정 ADT 방식(고환절제술 vs LHRH작용제/길항제)이 우월하다는 고품질 근거는 없다. 그러나 고환절제술과 LHRH길항제는 테스토스테론을 훨씬 빠르게 낮추므로, <strong>척수압박 등 급박한 합병증 위험이 있는 환자</strong>에게 우선 고려된다. 심혈관질환 병력·위험인자가 있는 환자는 길항제가 작용제보다 심혈관 부작용이 적다는 보고들이 있어 화학적 거세를 선택할 경우 길항제 사용을 고려할 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💊 구형 항안드로겐(NSAA) 단독요법의 위치</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">Cochrane 문헌고찰에 따르면 구형 비스테로이드성 항안드로겐(NSAA) 단독요법은 전체생존·임상진행·치료실패 측면에서 ADT(약물 또는 수술적 거세)보다 열등해 일반적으로 권고되지 않는다. 안드로겐수용체 표적제(ARPI)를 포함한 ADT 기반 병용요법이 표준으로 자리잡은 현재는 NSAA 단독요법의 역할이 더욱 제한적이다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🎯</span> 전이성 호르몬민감성암(mHSPC) 1차 치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-systemic"><span>👥</span><div>모든 mHSPC 환자는 <strong>다학제팀(MDT)에서 논의</strong>되어야 하며(신규 권고), 금기가 없고 병용요법의 이득을 볼 수 있는 기대여명(≥1년)이면 <strong>ADT 단독요법은 제공하지 않는다</strong>.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>M1 유증상 환자에 즉시 ADT를 제공하여 증상완화 및 척수압박·병적골절·요관폐색 등 위험을 낮춘다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>LHRH작용제 시작 시 flare-up 위험 감소를 위해 구형 항안드로겐을 단기 병용한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>척수압박·방광출구폐색 등 급박한 합병증 위험 시 LHRH길항제 또는 고환절제술을 우선 고려한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>ADT+아비라테론/프레드니손 또는 아팔루타미드 또는 엔잘루타미드를 적합환자에 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>ADT+다로루타마이드를 적합환자에 제공한다</td><td><span class="stage weak">Weak</span></td></tr>
+        <tr><td>도세탁셀은 반드시 ADT+아비라테론 또는 다로루타마이드와의 <strong>3제요법(triplet)</strong>으로만 제공(도세탁셀 적합 환자)한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>저용적(CHAARTED 기준) M1 환자에 ADT+전립선방사선(최대 72Gy 상당)을 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>M1 환자에 ADT+수술 병용은 임상시험 밖에서 제공하지 않는다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>전이표적치료(MDT)는 임상시험/전향적 코호트 내에서만 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>지지요법</th><th>등급</th></tr>
+        <tr><td>장기 ADT 시작 시 골다공증 위험인자 평가 및 DEXA 스캔 시행</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>병용치료 환자에 골절방지를 위한 골보호요법 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>데노수맙/비스포스포네이트 처방 시 칼슘·비타민D 보충 및 혈청칼슘 모니터링</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>통증성 골전이는 IMRT/VMAT+IGRT 및 적절한 진통제로 조기 완화치료</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>척수압박 시 즉시 고용량 스테로이드 투여 및 척추수술 평가(±방사선)</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🔬</span><div><strong>ARASENS(다로루타마이드+ADT+도세탁셀)</strong>는 위약 대비 전체생존을 유의하게 개선(HR 0.68). PEACE-1에서는 저용적 전이군에서 전립선방사선 추가 시 무진행생존이 4.4년→7.5년으로 연장되었다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📊 예후인자 — CHAARTED 용적·LATITUDE 위험도</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>분류체계</th><th>고위험/고용적</th></tr>
+            <tr><td>CHAARTED(용적)</td><td>골전이&gt;4개(척추·골반 외 &gt;1개 포함) 및/또는 내장전이</td></tr>
+            <tr><td>LATITUDE(위험도)</td><td>다음 중 2개 이상: 골전이&gt;3개, 내장전이, ISUP등급&gt;4</td></tr>
+          </table>
+          <div style="margin-top:6px">ADT 단독 신규진단 전이환자의 중앙생존은 약 50개월이나 이질성이 크다. <strong>전이성 질환 후 발생(metachronous)</strong>이 최초진단시 동시성 전이(synchronous/de novo)보다 예후가 양호하다. SWOG 9346 코호트 기반으로 ADT 7개월 후 PSA가 예후를 예측한다 — PSA≤0.2ng/mL군 중앙생존 75개월, 0.2-4ng/mL군 44개월, &gt;4ng/mL군 13개월로 뚜렷이 갈린다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💊 ARPI+ADT 병용 — 대표 임상시험 요약</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>연구(약제)</th><th>대상</th><th>OS HR</th><th>비고</th></tr>
+            <tr><td>STAMPEDE/LATITUDE(아비라테론)</td><td>M1(±N1)</td><td>0.61-0.62</td><td>최초 ARPI+ADT 근거, 위험군 무관 이득</td></tr>
+            <tr><td>ENZAMET(엔잘루타미드)</td><td>M1, 저용적47%</td><td>0.70(68개월)</td><td>절반이 도세탁셀 병용</td></tr>
+            <tr><td>ARCHES(엔잘루타미드)</td><td>M1, 저용적35-38%</td><td>0.66</td><td>1차종점 rPFS(HR 0.39)</td></tr>
+            <tr><td>TITAN(아팔루타미드)</td><td>M1, 저용적37-38%</td><td>0.65</td><td>rPFS·OS 공동1차종점</td></tr>
+            <tr><td>CHART(레즈빌루타마이드, 중국)</td><td>고용적 M1</td><td>0.58</td><td>비칼루타마이드 대조</td></tr>
+            <tr><td>ARANOTE(다로루타마이드)</td><td>M1, 저용적29%</td><td>0.81(미성숙)</td><td>1차종점 rPFS(HR 0.54)만 유의, 2025년 신규 권고 근거</td></tr>
+          </table>
+          <div style="margin-top:6px">모든 ARPI가 위약/표준요법 대비 일관되게 이득을 보였으며 하위군(용적·동시성 여부) 간 효과 차이는 뚜렷하지 않아, 근치국소치료 후 재발한 전이환자(metachronous)에게도 병용요법을 제공하는 근거가 된다.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💉 도세탁셀 병용의 근거 — GETUG15·CHAARTED·STAMPEDE</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">3개 대규모 RCT(GETUG15·CHAARTED·STAMPEDE)의 메타분석에서 ADT+도세탁셀은 표준요법 대비 생존을 개선시켰다(HR 0.77, 4년 절대생존이득 9%). 이득은 <strong>동시성·고용적 질환에서 가장 뚜렷</strong>했으며, 근치국소치료 후 재발한 저용적(metachronous) 환자에서는 개별참가자자료 메타분석 상 의미있는 이득이 없었다. 독성은 주로 혈액학적으로(3-4등급 호중구감소 12-15%, 발열성호중구감소 6-12%) G-CSF 예방투여로 경감할 수 있다. ARPI가 이용 가능하면 도세탁셀 단독 추가보다 ARPI 병용이 우선 고려되어야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🎯 3제요법(Triplet) — PEACE-1·ARASENS 상세</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PEACE-1(2×2 요인설계)은 ADT+도세탁셀을 표준요법으로 받은 하위군(710명)에서 아비라테론 추가가 rPFS(HR 0.5)·OS(HR 0.75) 모두 유의하게 개선시켰다. ARASENS(1,306명, 표준 ADT+도세탁셀 6주기 기반)는 다로루타마이드 추가가 전체생존을 유의하게 개선시켰다(HR 0.68). 두 연구 모두 고용적·고위험 환자에서 참여자 대부분을 차지했으나, 하위군분석에서 저용적군도 이득의 방향성은 일관되었다. 3제요법(ADT+ARPI+도세탁셀) vs 2제요법(ADT+ARPI)의 직접비교 고품질 근거는 아직 부족해, 도세탁셀 적합성·질환 성상(고용적/저용적, 동시성/이시성)·환자선호·부작용·접근성을 종합해 선택해야 한다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /systemic -->
+
+
+<!-- ══════════ TAB 5: 거세저항성(CRPC) ══════════ -->
+<div id="tab-crpc" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> CRPC 정의 및 일반원칙</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>거세혈청 테스토스테론(&lt;50ng/dL, 1.7nmol/L) 상태에서 다음 중 하나: ① <strong>생화학적 진행</strong>(1주 이상 간격 PSA 3회 연속상승, 최저치대비 50% 증가 2회+PSA&gt;2ng/mL), ② <strong>영상학적 진행</strong>(골스캔상 신규병변 2개 이상 또는 RECIST 기준 연부조직병변), ③ 명백한 임상적 진행. <strong>증상 진행만으로는 CRPC 진단이 불충분</strong>하다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>CRPC 진단 전 테스토스테론 &lt;50ng/dL를 반드시 확인한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>mCRPC 환자는 다학제팀에서 상담·관리·치료한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>mCRPC 환자에게 생명연장 치료제를 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>체세포·생식세포 분자검사 및 MMR결핍/MSI 검사를 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div class="alert alert-crpc" style="margin-top:8px"><span>🧬</span><div>모든 전이성 환자는 mCRPC 1차 치료 이전에 <strong>상동재조합복구(HRR)·MMR결손 체세포유전자검사</strong>를 받도록 권고된다. BRCA1/2 변이 확인 시 PARP억제제를 우선 고려한다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧪 분자진단 — 검체 종류와 검사 방법</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">체세포유전체검사는 가급적 전이암조직에서 시행하되 원발종양 조직도 사용 가능하며, 순환종양DNA(ctDNA) 액체생검도 일부 임상시험에서 활용된다(FoundationOne® Liquid CDx가 FDA 승인). MMR결손은 면역조직화학염색(MSH2·MSH6·MLH1·PMS2)과/또는 차세대염기서열분석(NGS)으로 평가한다. 고위험·특히 전이성 질환에서는 임상적 적응이 있으면 BRCA1/2·ATM·MMR 생식세포검사도 권고된다. 분자진단은 공인기관에서 표준 NGS 다중분석법(최소 200배 커버리지)으로 시행해야 하며, DNA 변이뿐 아니라 융합·단백발현 확인을 위한 RNA 분석도 필요하다. 이상적으로는 분자종양위원회가 결과해석과 임상적용을 지원해야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧭 치료 순서 결정에 영향을 주는 요인</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">mCRPC 치료 선택은 다음 요인들의 복합적 고려에 기반한다: mHSPC·비mCRPC 단계에서의 이전 치료, 이전 치료 반응의 질과 진행속도, ARPI 간 알려진 교차저항성, 병용약물·약물상호작용, 유전자변이 및 현미부수체불안정성(MSI-H)/불일치복구결핍(dMMR) 여부, 조직학적 변이·DNA복구결손(백금계 또는 PARP억제제 표적 고려), 약제의 국가별 승인·급여 상황, 이용가능한 임상시험, 환자의 동반질환. 일반적으로 반응기간이 짧았던(6-12개월 이하) ARPI 순차사용은 권고되지 않으며, 적합한 환자에서는 도세탁셀-카바지탁셀 순차사용이 높은 근거수준으로 뒷받침된다. 확인된 BRCA 변이가 있으면 PARP억제제 사용이 항상 우선 고려되어야 한다(rPFS·OS 개선).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🚫</span> 비전이성 CRPC(nmCRPC)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>PSA배가시간&lt;10개월인 고위험 M0 CRPC에 아팔루타미드·다로루타마이드·엔잘루타미드를 제공하여 무전이생존·전체생존을 연장한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div>PROSPER(엔잘루타미드)·SPARTAN(아팔루타미드)·ARAMIS(다로루타마이드) 3대 3상 연구 모두 유의한 무전이생존 개선 및 30개월 이상 추적에서 생존이득을 보였다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> mCRPC 전신치료 권고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>상황</th><th>권고</th><th>등급</th></tr>
+        <tr><td>치료 선택 일반</td><td>수행능력(PS)·증상·동반질환·질병범위·유전체프로파일·이전 mHSPC 치료를 근거로 선택(아비라테론·카바지탁셀·도세탁셀·엔잘루타미드·¹⁷⁷Lu-PSMA·라듐-223·시퓨루셀-T 등)</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>ARPI 순차사용</td><td>안드로겐수용체 표적제(ARPI)의 순차 사용은 피한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>화학요법 도입시점</td><td>아비라테론·엔잘루타미드 치료경험자에게 화학요법을 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>1차 도세탁셀</td><td>세포독성치료 후보·미경험자에 75mg/m² 3주마다 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>HRR/BRCA 변이+ARPI 미경험</td><td>아비라테론+올라파립, 또는 아비라테론+니라파립(BRCA), 또는 엔잘루타미드+탈라조파립(HRR) 병용을 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>PARP억제제</td><td>DNA복구유전자 변이가 있는 치료경험 mCRPC에 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>도세탁셀 후 진행</td><td>아비라테론·카바지탁셀·엔잘루타미드·라듐-223·(HRR변이 시)올라파립 등 추가 생명연장치료 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>카바지탁셀</td><td>도세탁셀 치료경험자, 특히 아비라테론/엔잘루타미드 치료 12개월 이내 진행 시 제공</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>¹⁷⁷Lu-PSMA-617</td><td>PSMA 고발현(간섭취 초과) 병변을 가진 치료경험 mCRPC에 제공</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>ARPI+PARP억제제 병용은 무진행생존 이득이 HRR/BRCA 변이군에서 뚜렷하나 전체생존 이득은 아직 불명확하고 부작용이 추가되므로, <strong>HRR/BRCA 변이가 없는 환자에는 권고하지 않는다</strong>.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 개별 임상시험의 상세를 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🥇 1차 mCRPC 치료제 — 핵심 임상시험</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>약제(연구)</th><th>대상</th><th>결과</th></tr>
+            <tr><td>아비라테론(COU-AA-302)</td><td>화학요법 미경험, 무증상/경증증상</td><td>rPFS 16.5 vs 8.2개월, OS 34.7 vs 30.3개월(HR 0.81)</td></tr>
+            <tr><td>엔잘루타미드(PREVAIL)</td><td>화학요법 미경험(내장전이 포함 가능)</td><td>rPFS HR 0.186, OS HR 0.706, PSA 50%이상감소 78%</td></tr>
+            <tr><td>도세탁셀</td><td>세포독성치료 적합</td><td>75mg/m² 3주마다, 최대 10주기 — 위험인자(내장전이·통증·빈혈·골스캔진행·에스트라무스틴 과거력)로 저/중/고위험군 구분(중앙생존 25.7/18.7/12.8개월)</td></tr>
+            <tr><td>시퓨루셀-T</td><td>무증상/경증증상</td><td>OS 25.8 vs 21.7개월(HR 0.78), PSA반응 없음 — 유럽 미출시</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧬 ARPI+PARP억제제 병용 3대 연구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>연구(병용)</th><th>전체군 결과</th><th>BRCA/HRR 변이군</th></tr>
+            <tr><td>PROpel(아비라테론+올라파립)</td><td>rPFS 24.8 vs 16.6개월(HR 0.66), OS 유의차 없음</td><td>BRCA변이군 rPFS HR 0.24, OS HR 0.30 — 전체 이득이 주로 이 군에서 견인됨</td></tr>
+            <tr><td>MAGNITUDE(아비라테론+니라파립)</td><td>HRR양성군 rPFS 16.5 vs 13.7개월(HR 0.73)</td><td>BRCA변이군 rPFS 19.5 vs 10.9개월(HR 0.55)</td></tr>
+            <tr><td>TALAPRO-2(엔잘루타미드+탈라조파립)</td><td>rPFS HR 0.63(전체군)</td><td>HRR변이군 HR 0.46, BRCA변이군 HR 0.23</td></tr>
+          </table>
+          <div style="margin-top:6px">PARP억제제 추가는 빈혈(최대46%)·피로·오심 등 부작용을 상당히 늘리며 수혈이 필요한 경우가 많다(최대39%). 혈전색전증 위험이 약 2배(OR 1.98), 골수형성이상증후군/급성골수성백혈병 위험도 유의하게 증가한다(OR 2.63) — 이런 이유로 <strong>HRR/BRCA 변이가 없는 환자에는 권고되지 않는다</strong>.</div>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🥈 도세탁셀 후 2차 치료 — 카바지탁셀·라듐-223·PARP·Lu-PSMA</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <table class="tbl">
+            <tr><th>약제(연구)</th><th>결과</th></tr>
+            <tr><td>카바지탁셀(TROPIC)</td><td>도세탁셀 진행 후 미톡산트론 대비 OS 15.1 vs 12.7개월 — 20mg/m²가 25mg/m²와 비열등하며 독성이 낮아 우선 사용</td></tr>
+            <tr><td>아비라테론(COU-AA-301)/엔잘루타미드(AFFIRM)</td><td>도세탁셀 후 위약 대비 OS 각각 15.8 vs 11.2개월(HR 0.74), 18.4 vs 13.6개월(HR 0.63)</td></tr>
+            <tr><td>라듐-223(ALSYMPCA)</td><td>유증상 골전이 mCRPC에서 OS 3.6개월 연장(HR 0.70) — 도세탁셀 및 1개 이상 ARPI 이후 사용으로 제한, 반드시 골보호제 병용</td></tr>
+            <tr><td>루카파립(TRITON-3)</td><td>BRCA/ATM변이+ARPI진행 환자에서 rPFS 10.2 vs 6.4개월(대조군 도세탁셀 또는 미투여 ARPI, HR 0.61)</td></tr>
+            <tr><td>¹⁷⁷Lu-PSMA-617(PSMAfore)</td><td>탁산미경험+ARPI진행 환자에서 rPFS 11.6 vs 5.6개월(ARPI 교체 대비, HR 0.49), OS는 유사(교차투여 57% 영향)</td></tr>
+          </table>
+          <div style="margin-top:6px">CARD 연구는 <strong>ARPI 12개월 이내 진행한 환자에서 카바지탁셀이 2번째 ARPI보다 우수</strong>함을 입증했다(rPFS 2배 이상 개선, 사망위험 36% 감소) — ARPI 순차사용을 피해야 하는 핵심 근거다. 12개월 이상 반응한 환자는 2차 화학요법·라듐-223(골전이만 있는 경우)·Lu-PSMA·PARP억제제(BRCA변이) 중 선택할 수 있다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🦴</span> 골전이 합병증 관리 및 모니터링</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>졸레드론산은 골관련사건(SRE)을 44%→33%로 감소시키나 생존이득은 없다. 데노수맙은 졸레드론산 대비 첫 SRE까지 시간을 연장하나(20.7 vs 17.1개월) 역시 생존이득은 없다. 두 약제 모두 <strong>턱뼈괴사·저칼슘혈증</strong> 위험이 있어 치료 전 치과검진, 칼슘·비타민D 보충이 필요하다.</div>
+      <div style="margin-top:8px">모니터링은 PSA 단독으로 불충분하며(무증상 내장전이 가능), <strong>골스캔+CT+PSA+임상적 이득</strong>을 종합 평가한다. 치료중단은 PSA진행 단독이 아닌 3개 기준(PSA·영상·임상) 중 2개 이상 충족 시 고려한다.</div>
+    </div>
+  </div>
+
+</div><!-- /crpc -->
+
+
+<!-- ══════════ TAB 6: 추적관찰·삶의 질 ══════════ -->
+<div id="tab-followup" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔄</span> 근치적 치료 후 추적관찰</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>재발을 시사하는 PSA 상승은 임상적으로 의미있는 재발과 구분되어야 한다. RP 후에는 <strong>PSA&gt;0.4ng/mL</strong>, IMRT/VMAT±ADT 후에는 <strong>최저치+2ng/mL</strong>가 이후 전이를 가장 잘 예측하는 기준이다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>무증상 환자는 최소한 질병특이 병력청취와 PSA 측정으로 정기 추적한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>재발 시 치료계획에 영향을 줄 경우에만 영상검사를 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📉 RP 후 PSA 모니터링 — 초민감도 검사의 의미</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">RP 후 PSA는 2개월 이내 검출불가 수준이 되어야 한다. 통상 3년까지는 6개월마다, 이후 매년 검사가 권고되나 특정 간격에 대한 근거 수준은 낮다 — 조기재발이 더 빠른 진행과 연관된다는 관찰에 기반한다. 재발의 약 절반이 3년 이후에 발생할 수 있어 장기추적이 중요하나, 기대여명이 10년 미만으로 떨어지면 추적을 종료하는 것이 타당하다. 초민감도 PSA 검사(&lt;0.01ng/mL)는 논란이 있는데, 최저치&lt;0.01ng/mL 환자의 96%가 2년 내 무재발 상태를 유지하는 반면, 최초 최저치&lt;0.1ng/mL였던 환자의 최대 86%는 5년째 PSA&lt;0.2ng/mL를 유지해 초민감도 상승만으로 과도한 불안을 유발할 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📈 RT 후 PSA 모니터링 — Phoenix 정의</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">방사선치료 후 PSA는 RP보다 훨씬 서서히 감소하며 최저치 도달까지 3년 이상 걸릴 수 있다. PSA최저치&lt;0.5ng/mL는 양호한 예후와 연관되나 최적 기준값은 아직 논란이 있다. 2006년 RTOG-ASTRO 합의회의에서 제안된 <strong>Phoenix 정의</strong>(치료 후 최저치+2ng/mL 이상 상승)가 임상결과(주로 전이)와 상관성이 더 좋아 표준으로 사용되며, ADT를 병용한 환자에게도 동일하게 적용된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🚩 PSA 상승 없는 증상성 재발 — 경고증상</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PSA 상승 없는 증상성 재발은 극히 드물지만, 정기적 PSA 추적을 받지 않는 환자에서는 다음 증상이 있으면 재발 배제를 위해 PSA를 검사해야 한다: 골반/골격통증, 혈뇨, 진행성 하부요로증상, 진행성 하지부종, 진행성 배변장애, 원인불명의 피로·근감소·체중감소. DRE는 PSA 상승이 없는 상태에서 국소재발을 발견하는 경우가 매우 드물어(899명 중 0례), RP 후에는 PSA 측정이 가장 효율적인 단독 검사로 간주된다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> 호르몬치료 중 추적관찰</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>병기·이전 증상·예후인자·치료방법에 따라 추적전략을 개별화한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>장기 ADT 환자는 골절위험 평가를 위해 초기 골밀도를 측정한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>병용치료 환자는 골절방지를 위한 골보호요법을 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>M0 환자는 최소 6개월마다 병력·PSA·간·신장기능을 포함한 추적을 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>M1 환자는 최소 3-6개월마다 정기적 영상을 포함한 추적을 시행한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>PSA·테스토스테론을 확인하고 대사증후군 관련 증상을 모니터링한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>장기 ADT 환자는 혈색소·크레아티닌·ALP·지질프로파일·HbA1c를 포함한 병력을 확인한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>M1b 환자는 척수압박 시사 임상징후를 상담한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>진행 의심 시 재병기를 시행하고 추적을 개별화한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩸 간기능·신장기능·혈액학 모니터링</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">병용ADT(특히 비스테로이드성 항안드로겐) 환자는 최소 연 1회, 특히 치료 시작 후 첫 6개월간 간효소를 확인해야 한다 — 대규모 임상시험에서 간기능 이상이 비교적 조기에 나타났기 때문이다. 아비라테론아세테이트 등 일부 약제는 간독성 위험으로 더 잦은 확인이 필요하다. 추정사구체여과율 모니터링은 요관폐색·방광저류와 연관될 수 있어 좋은 임상관행이다. ADT 3개월 후 혈색소의 유의한 감소는 무진행생존·전체생존 단축과 독립적으로 연관되며 피로의 원인이 될 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>❤️ 대사·심혈관 모니터링</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">안드로겐억제의 가장 심각한 합병증은 대사증후군·심혈관질환·정신건강문제·골흡수다. 모든 환자는 공복혈당·HbA1c·지질을 기저치 및 정기적으로 확인해야 하며, 내당능장애/당뇨 환자는 내분비내과 협진을 고려한다. ADT 시작 전 심전도를 시행하고, 심혈관질환 병력이 있는 환자는 최소한 심장내과 협진(병용약제에 따라 심초음파 포함)을 권고한다. 더 강력한 안드로겐억제일수록 심혈관 독성이 높고 심폐체력은 ADT 6개월만으로도 저하된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🦴 골 문제 모니터링</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ADT는 골다공증 위험을 높이며, 아팔루타미드·다로루타마이드·엔잘루타미드·아비라테론+프레드니손·도세탁셀과의 병용은 골절위험을 더욱 높인다. ADT 사용기간이 1년을 초과하면 1년 미만 대비 골다공증 위험이 유의하게 높다(HR 1.77 vs 1.38). FRAX·OST·ORAI·OSIRIS·SCORE 등 다양한 골절위험평가도구가 있으나 ADT 상황에서의 검증은 아직 부족하다. ADT 시작 시 DEXA 스캔으로 기초골밀도를 평가해야 하며, 골보호제를 사용하지 않는 경우 최소 2년마다 DEXA를 반복해야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧠 생활습관·인지기능·성기능 모니터링</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ADT 환자는 우울보고 위험이 3배 높아 정신건강 관찰이 추적의 필수 요소가 되어야 한다. 피로는 전신염증과 관련될 수 있으며, 인지기능 저하·피로는 ADT 시작 후 6개월 이내 나타날 수 있으나 시간이 지나며 호전되는 경우가 많다. ADT는 성기능장애를 유발해 <strong>부부의 80% 이상이 성생활을 완전히 중단</strong>하게 되며, 이는 환자뿐 아니라 배우자에게도 영향을 미쳐 부부상담을 고려해야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📡 전이성 환자 추적 — PSA만으로는 불충분</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">전이성 환자는 척수압박·요로합병증·병적골절 조기징후에 대해 상담이 필수적이다. TITAN 연구 2차분석에서는 영상학적 진행을 보인 환자의 절반 가까이가 <strong>동반된 PSA 진행이 없었다</strong>. PREVAIL 연구에서는 엔잘루타미드 치료 mCRPC 환자의 약 1/4에서 PSA 상승 없이 영상학적 진행이 확인되었다. CHAARTED 연구에서는 도세탁셀 병용 여부와 무관하게 PSA&lt;2ng/mL인 환자 8명 중 1명에서 임상적 진행이 관찰되어, ADT+ARPI 병용 시대에는 <strong>PSA 단독 감시로는 진행을 놓칠 수 있어 정기적 영상 병행이 필요</strong>하다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>❤️</span> 국소치료 후 삶의 질(QoL)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>ProtecT 연구(6-12년 추적)에서 근치전절제술은 요실금(6년 20%, 12년 18-24%)·발기부전이 가장 뚜렷했고, 방사선치료는 장기능 저하(직장출혈·변실금)가 특징적이었다. 능동감시군은 연령에 따른 점진적 배뇨·성기능 저하를 보였으나 전체 삶의 질 지표는 세 군 간 유사했다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>능동감시 적합자에게 5년까지 전체 삶의 질이 수술·방사선치료와 동등함을 설명한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>수술·방사선치료의 배뇨·성기능 저하, 방사선치료의 장기능 저하 위험을 상담한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>근접치료 환자는 1년째 자극성 배뇨증상 악화 가능성(5년째는 소실)을 상담한다</td><td><span class="stage weak">Weak</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>👁️ 능동감시(AS) 중의 장기 삶의 질</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">5년 이상 장기추적 체계적문헌고찰에서 AS군은 전반적 삶의 질·심리적안녕이 양호했고, 요실금 보존에서 수술 대비 명확한 우위를 보였으며 이는 장기간 지속되었다. 배뇨폐색증상은 AS군에서 오히려 수술 후 환자보다 흔했다. 성기능은 AS군이 활동적 치료군보다 양호하거나 동등했다. 미국 등록연구에서 AS 환자는 중등도의 암특이 불안을 겪을 수 있으나 시간이 지나며 유의하게 감소해, 2년 이내 대부분 낮은 불안 수준에 적응한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔪 수술(RP) 후 합병증 상세</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">가장 흔한 합병증은 발기부전이며, 무정액사정·오르가즘 질 변화·오르가즘통도 동반될 수 있다. 음경길이 감소를 호소하는 환자도 있다(3.73%). 12개월 요자제율은 RARP 89-100% vs RRP 80-97%로 보고되나, 14개 센터 전향비교연구에서는 12개월 요실금률에 유의한 차이가 없었다(21.3% vs 20.2%). 수술은 서혜부탈장 위험을 높이며(특히 개복술), 최소침습수술 후에도 트로카 부위탈장이 발생할 수 있다(0.66%, 12mm 트로카 기준). 하지·음경림프부종은 골반림프절절제 병행 RP 후 각각 0-14%·0-1%에서 보고되며, 골반방사선까지 병행한 경우 하지림프부종이 18-29%까지 증가한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>☢️ 방사선치료 후 합병증 — 장독성·2차암</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ProtecT 연구에서 EBRT+6개월 ADT군은 지속성 설사·배변절박/실금·직장출혈 등 장독성을 보고했으며, IMRT 사용 연구에서는 과거 3D-CRT 대비 장독성이 낮았다. 관찰연구 메타분석에서 방사선치료 노출군은 방광암(OR 1.39)·대장암(OR 1.68)·직장암(OR 1.62) 등 <strong>2차암 위험이 증가</strong>했으나 10년 절대위험 증가는 1-4%로 작아 특히 젊은 환자에서 상담이 필요하다. 근접치료 병행 시 만성 비뇨기 이상반응(요도협착 등)이 최대 20%까지 발생할 수 있으며, 요도협착이 비뇨기 합병증의 절반 이상을 차지하나 대부분 확장술로 해결된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧊 냉동술·HIFU·국소치료의 기능적 결과</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">전선냉동술은 RP 대비 1년째 요실금 발생률이 낮으나 추적기간이 길어질수록 그 차이가 줄어든다. 전선HIFU는 RP보다 1년째 요실금이 유의하게 낮다(OR 0.06). 국소(focal)치료는 5,827명 분석에서 HIFU·냉동술 시행 시 요실금없음 &gt;95%, 발기기능 저하는 중앙값 12%에 불과해 전선치료(43% 저하) 대비 기능보존이 우수한 것으로 보고되나, 장기 종양학적 안전성 근거는 아직 부족하다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🏃</span> 전신치료 중 삶의 질 개선 및 지지요법</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>ADT 환자에게 전문 운동지도자가 감독하는 12주 유산소+저항운동을 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>ADT 환자는 건강한 체중·식단 유지, 금연, 음주 일 2단위 이하로 감량, 매년 당뇨·고콜레스테롤혈증 선별검사, 칼슘·비타민D 충분섭취를 권고한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>근치적 치료 후 요실금·성기능·우울·재발공포·사회적지지를 다루는 전문간호사 중심 다학제 재활을 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>장기 ADT 시작 시 골밀도 평가를 위한 DEXA 스캔을 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+        <tr><td>BMD T-score&lt;-2.5 또는 추가 골절위험인자·연간 골손실&gt;5% 시 항흡수치료를 제공한다</td><td><span class="stage strong">Strong</span></td></tr>
+      </table>
+      <div>운동요법은 심폐기능·근기능 개선, 요로독성 감소(SMD -0.71)와 관련되며, ADT 병용 환자에서 QoL·피로·오심 등 증상척도를 유의하게 개선시킨다.</div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💔 성기능·안면홍조 관리</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ADT 환자의 최대 93%가 성생활을 중단한다. 안면홍조는 ADT 환자의 44-80%에서 발생하며(치료 시작 3개월 후 나타나 대개 장기간 지속) 삶의 질에 상당한 영향을 준다. 위약효과가 최대 30%까지 관찰되어 해석에 주의가 필요하나, 프로게스테론계 약물(시프로테론·메드록시프로게스테론)이 세로토닌재흡수억제제(벤라팍신)보다 안면홍조 감소 효과가 더 크다는 RCT 근거가 있다(일일 홍조점수 감소율 -94.5%/-83.7% vs -47.2%). 에스트라디올 경피제제도 홍조빈도를 유의하게 줄인다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🦴 골절위험 상세 — ARPI 병용시 위험 증가</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">장기 ADT는 골절위험을 최대 45%까지 높이며, 중증 골절은 사망위험 증가와 연관된다. 11,382명 메타분석에서 엔잘루타미드·아팔루타미드·다로루타마이드를 ADT에 추가한 군은 대조군(위약·비칼루타미드·아비라테론) 대비 골절이 유의하게 많았다(전체등급 RR 1.59, 3등급 이상 RR 1.71). 비만(체지방량 최대 10%↑)과 근감소증(제지방량 최대 3%↓)이 ADT 첫해에 흔히 발생해 골절위험을 더 높인다. 비칼루타미드 단독요법은 골밀도에 미치는 영향이 적으나 M1 질환에는 효능이 부족해 대안이 되기 어렵다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚖️ 대사증후군·체성분 변화</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ADT 시작 3개월 이내부터 지질이상이 흔히 나타나며, 인슐린감수성 저하·공복인슐린 상승도 동반된다. 당뇨환자에서 메트포르민이 대사영향으로부터 보호적일 수 있다는 후향분석이 있으나 비당뇨환자 사용의 근거는 부족하다. 대사증후군(허리둘레&gt;102cm, 중성지방&gt;1.7mmol/L, 혈압&gt;130/80, HDL&lt;1mmol/L, 혈당&gt;5.6mmol/L 중 3개 이상)의 유병률은 ADT 환자에서 더 높다. 252명 전향연구에서 제지방량은 1년 1.0%, 2년 2.1%, 3년 2.4% 감소했고 70세 이상에서 더 두드러졌다. mCRPC 환자의 27%에서 발견되는 기저 근감소증은 ARPI 시작 후 중증독성·응급실방문의 유의한 예측인자였다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>❤️ 심혈관 위험 — 길항제 vs 작용제</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ADT는 시작 6개월만으로도 당뇨·심혈관질환·심근경색 위험을 높인다는 보고가 있다. 관찰연구 메타분석에서 LHRH작용제와 비치명적/치명적 심근경색·뇌졸중의 연관성이 확인되었다(RR 1.57/1.51). 경구 LHRH길항제 렐루골릭스는 주사형 작용제 류프로렐린 대비 주요심혈관사건 위험이 낮았다(2.9% vs 6.2%, HR 0.46) — 이를 포함한 체계적문헌고찰(11개 연구, 약 4,200명)에서도 길항제가 작용제보다 주요심혈관사건 위험이 유의하게 낮았다(HR 0.57). FDA는 이와 관련해 경고문을 발행했으며, 체중감량·운동증가·금주·금연 등 예방적 조치가 권고된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>😴 피로·신경학적 부작용</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">피로는 ADT의 흔한 부작용으로 규칙적 운동이 최선의 예방책이다. 임상적으로 유의한 피로는 심한 심리적 고통과 연관되어 불안·우울 선별검사를 유발해야 한다. 빈혈이 피로의 원인이 될 수 있어 원인(골수침범·신부전·철결핍·만성출혈)에 따른 개별화된 치료가 필요하며 중증 빈혈은 정기적 수혈이 필요할 수 있다. 거세는 뇌졸중 위험 증가와 연관되며, 우울·인지저하(알츠하이머 등) 위험 증가와도 관련된 것으로 의심된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🦷 비스포스포네이트·데노수맙 관련 턱뼈괴사(ONJ)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">두 약제 모두 턱뼈괴사와 연관되며, 위험은 치료 용량·기간에 비례한다 — 12개월째 1% 초과에서 4년째 11%까지 증가하며, 졸레드론산 단독은 3년째 21%까지 상승할 수 있다. 7개 RCT(8,963명, 다양한 고형암) 분석에서 데노수맙군의 ONJ 발생률은 1.7%로 비스포스포네이트/위약보다 유의하게 높았다(RR 1.61). 전립선암에서도 유사한 결과가 확인되었다(RR 3.358). 발치·구강위생불량 등 위험인자가 병존하면 위험이 더 높아지므로, 약제 시작 전 반드시 치과검진과 구강위생 관리가 필요하다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🤝</span> 공유의사결정과 후회(Decision Regret)</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>국소전립선암의 근치적 치료 옵션들은 10년 전체생존이 유사하나 부작용 프로파일이 다르므로, 환자의 <strong>기대이득 대비 부작용 감수도</strong>가 공유의사결정의 핵심이다. 약 25%의 환자가 예상보다 나쁜 부작용을 경험했다고 보고하며, 수술 후 요실금이 후회와 가장 강하게 연관된다. 의사결정과정에 능동적으로 참여할수록 후회가 감소한다.</div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📋 환자보고성과지표(PROM) 도구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">삶의 질은 주관적이라 측정이 어렵지만, 검증된 설문도구들이 활용된다. 대표적으로 <strong>EORTC QLQ-C30</strong>(일반암 공통 — 신체·역할·인지·정서·사회기능 및 피로·통증·오심 등 증상척도)과 <strong>QLQ-PR25</strong>(전립선암 특이 — 비뇨기·장·치료관련 증상, 성기능)가 있다. 이 둘의 결합이 국소전립선암 환자의 PROM 평가에서 가장 근거가 탄탄한 조합으로 확인되었다. 이외에 FACT-G/FACT-P, EPIC(-26), UCLA-PCI, PCQoL 등이 비뇨·장·성·호르몬 영역을 평가하는 데 사용된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>😟 재발공포와 재정독성(Financial Toxicity)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">여러 연구를 종합하면 재발공포·PSA불안의 유병률은 각각 16%·22%로 보고된다. 인지행동치료 기반 심리중재는 환자의 우울·불안·고통을 개선시키며, 배우자·간병인의 우울·불안·스트레스 감소에도 도움이 된다. 전립선암 진단은 환자와 가족 모두에게 <strong>재정적 부담(financial toxicity)</strong>을 초래할 수 있으며, 이는 젊은 연령·흑인·낮은 사회경제적지위·낮은 교육수준·농촌거주와 연관된다. 임상의는 재정적 어려움에 대해 상담하고 지원서비스를 안내하여 삶의 질과 치료순응도를 유지하도록 도와야 한다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /followup -->
+
+
+<!-- ══════════ TAB 7: 약어·근거등급 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> 권고강도 및 근거수준 체계</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고 강도</th><th>정의</th></tr>
+        <tr><td><span class="stage strong">Strong</span></td><td>편익이 위해(또는 부담)를 확실히 상회하거나 그 반대 — 대다수 환자·상황에 적용 가능. 근거 질이 낮아도 임상적 이득이 명확하거나 법적 함의가 있는 경우(예: 생검 시 플루오로퀴놀론 회피) Strong으로 격상될 수 있음</td></tr>
+        <tr><td><span class="stage weak">Weak</span></td><td>편익-위해 균형이 근소하거나 근거·환자가치관에 따라 접근이 달라질 수 있음 — 개별화된 의사결정 필요</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>근거수준(LE, Oxford 방식)</th><th>정의</th></tr>
+        <tr><td><span class="stage le1">1</span></td><td>메타분석·체계적 문헌고찰·다수의 무작위대조시험(RCT)에 기반</td></tr>
+        <tr><td><span class="stage le2">2</span></td><td>소규모 RCT 또는 대규모 비무작위 연구</td></tr>
+        <tr><td><span class="stage le3">3</span></td><td>후향적 코호트·환자대조군 연구</td></tr>
+        <tr><td><span class="stage le4">4</span></td><td>전문가 의견 또는 증례보고 수준</td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>ℹ️</span><div>2025년판부터 EAU는 GRADE 방법론에 기반한 <strong>Strong/Weak 2단계 권고체계</strong>를 사용하며, 근거수준(LE)은 개별 요약문(Summary of evidence)에 병기된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-info"><span>🔗</span><div>EAU-EANM-ESTRO-ESUR-ISUP-SIOG Guidelines on Prostate Cancer. Cornford P, Tilki D, van den Bergh RCN, et al. European Association of Urology, 2025 (Limited Update March 2025). 전문은 uroweb.org/guideline/prostate-cancer 에서 확인 가능.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"PCa", def:"Prostate Cancer — 전립선암" },
+  { term:"TNM", def:"Tumour, Node, Metastasis — 종양·림프절·전이 병기분류(UICC 8판)" },
+  { term:"ISUP GG", def:"International Society of Urological Pathology Grade Group — ISUP 등급군(1-5)" },
+  { term:"csPCa", def:"clinically significant Prostate Cancer — 임상적으로 유의한 전립선암" },
+  { term:"DRE", def:"Digital Rectal Examination — 직장수지검사" },
+  { term:"PSA / PSA-DT", def:"Prostate-Specific Antigen / PSA Doubling Time — 전립선특이항원 / 배가시간" },
+  { term:"BRCA1/2", def:"Breast Cancer gene 1/2 — 유방암 감수성 유전자(생식세포 변이시 PCa 위험 증가)" },
+  { term:"MRI / mpMRI", def:"(multiparametric) Magnetic Resonance Imaging — (다중매개변수) 자기공명영상" },
+  { term:"PI-RADS", def:"Prostate Imaging Reporting and Data System — 전립선영상 보고·데이터체계" },
+  { term:"TRUS / TP / TR", def:"Transrectal Ultrasound / Transperineal / Transrectal — 경직장초음파 / 경회음 / 경직장(생검경로)" },
+  { term:"PSMA-PET/CT", def:"Prostate-Specific Membrane Antigen PET/CT — 전립선특이막항원 양전자단층촬영" },
+  { term:"EPE", def:"Extra-Prostatic Extension — 피막외침범" },
+  { term:"WW / AS", def:"Watchful Waiting / Active Surveillance — 관찰대기 / 능동감시" },
+  { term:"RP", def:"Radical Prostatectomy — 근치전립선절제술" },
+  { term:"PLND", def:"Pelvic Lymph Node Dissection — 골반림프절절제술(e = extended, 확대)" },
+  { term:"EBRT / IMRT / VMAT", def:"External Beam RT / Intensity-Modulated RT / Volumetric Modulated Arc Therapy — 외부방사선치료 / 세기변조 / 용적변조회전 방사선치료" },
+  { term:"IGRT", def:"Image-Guided Radiotherapy — 영상유도 방사선치료" },
+  { term:"SBRT", def:"Stereotactic Body Radiotherapy — 정위체부방사선치료" },
+  { term:"BT (LDR/HDR)", def:"Brachytherapy (Low/High-Dose Rate) — 근접치료(저/고선량률)" },
+  { term:"ADT", def:"Androgen Deprivation Therapy — 안드로겐박탈요법" },
+  { term:"LHRH", def:"Luteinising-Hormone-Releasing Hormone — 황체형성호르몬방출호르몬" },
+  { term:"ARPI", def:"Androgen Receptor Pathway Inhibitor — 안드로겐수용체 경로억제제(아비라테론·엔잘루타미드·아팔루타미드·다로루타마이드 등)" },
+  { term:"NSAA", def:"Non-Steroidal Anti-Androgen — 비스테로이드성 항안드로겐" },
+  { term:"BCR", def:"Biochemical Recurrence — 생화학적 재발" },
+  { term:"SRT / ART", def:"Salvage / Adjuvant Radiotherapy — 구제 / 보조 방사선치료" },
+  { term:"HSPC / mHSPC", def:"Hormone-Sensitive PCa / metastatic HSPC — 호르몬민감성 전립선암 / 전이성" },
+  { term:"CRPC / mCRPC / nmCRPC", def:"Castration-Resistant PCa — 거세저항성 전립선암(m=전이성, nm=비전이성)" },
+  { term:"HRR", def:"Homologous Recombination Repair — 상동재조합복구(유전자 변이시 PARP억제제 표적)" },
+  { term:"PARPi", def:"Poly(ADP-Ribose) Polymerase inhibitor — PARP억제제(올라파립·니라파립·탈라조파립 등)" },
+  { term:"MSI-H / dMMR", def:"Microsatellite Instability-High / mismatch repair-deficient — 고빈도 현미부수체불안정성 / 불일치복구결핍" },
+  { term:"OS / CSS / PFS / MFS", def:"Overall / Cancer-Specific / Progression-Free / Metastasis-Free Survival — 전체/암특이/무진행/무전이 생존" },
+  { term:"SRE", def:"Skeletal-Related Event — 골관련사건" },
+  { term:"MDT", def:"Metastasis-Directed Therapy 또는 Multidisciplinary Team(문맥에 따라) — 전이표적치료 또는 다학제팀" },
+  { term:"QoL / PROM", def:"Quality of Life / Patient-Reported Outcome Measure — 삶의 질 / 환자보고성과지표" },
+  { term:"DEXA", def:"Dual-energy X-ray Absorptiometry — 이중에너지 X선 흡수계측(골밀도측정)" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+const ALL_ABBR = ABBR_DATA;
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

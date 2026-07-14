@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>결핵 진료지침 (5판, 2024)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --diag:     #0e7490;  /* 진단 — 시안 */
+    --susc:     #15803d;  /* 감수성결핵치료 — 그린 */
+    --mdr:      #b91c1c;  /* 약제내성결핵 — 레드 */
+    --special:  #7c2d92;  /* 특수상황/HIV — 퍼플 */
+    --extra:    #a16207;  /* 폐외결핵 — 브라운골드 */
+    --child:    #be185d;  /* 소아청소년 — 로즈 */
+    --ltbi:     #0369a1;  /* 잠복결핵감염 — 스카이블루 */
+    --mgmt:     #4b5563;  /* 환자관리 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--mdr);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--ltbi);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--susc);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:19px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 9px; font-size: calc(11.5px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(18px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-diag{background:#cffafe;border-left:3px solid var(--diag);color:#155e75;}
+  .alert-susc{background:#dcfce7;border-left:3px solid var(--susc);color:#15803d;}
+  .alert-mdr{background:#fee2e2;border-left:3px solid var(--mdr);color:#b91c1c;}
+  .alert-special{background:#f3e8ff;border-left:3px solid var(--special);color:#7c2d92;}
+  .alert-extra{background:#fef3c7;border-left:3px solid var(--extra);color:#a16207;}
+  .alert-child{background:#fce7f3;border-left:3px solid var(--child);color:#9d174d;}
+  .alert-ltbi{background:#e0f2fe;border-left:3px solid var(--ltbi);color:#0369a1;}
+  .alert-mgmt{background:#f1f5f9;border-left:3px solid var(--mgmt);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .ev1{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .ev2{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .ev3{background:#ffd8a8;color:#7d3b00;font-weight:700;text-align:center;}
+  .rec-a{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .rec-b{background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center;}
+  .rec-c{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .rec-d{background:#ffd8d8;color:#82071e;font-weight:700;text-align:center;}
+  .rec-e{background:#7f1d1d;color:#fff;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .pico{display:inline-block;padding:2px 8px;border-radius:12px;font-size:calc(10px * var(--fscale,1));font-weight:700;margin-right:6px;color:#fff;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .stage-timeline{display:flex;align-items:stretch;gap:0;margin:10px 0;overflow-x:auto;}
+  .stage-box{flex:1;min-width:120px;padding:10px 10px 12px;border-right:2px solid var(--bg);text-align:center;cursor:pointer;}
+  .stage-box:last-child{border-right:none;}
+  .stage-box .st-num{font-size:calc(14px * var(--fscale,1));font-weight:800;margin-bottom:4px;}
+  .stage-box .st-lbl{font-size:calc(10px * var(--fscale,1));line-height:1.4;}
+  .gear-row{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;}
+  .gear-box{flex:1;min-width:140px;border-radius:6px;padding:10px 12px;font-size:calc(12px * var(--fscale,1));}
+  .gear-title{font-weight:700;font-size:calc(13px * var(--fscale,1));margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>결</span><span>핵</span><span>5판</span></div>
+      <h1>결핵 진료지침 (5판, 2024)</h1>
+    </div>
+    <div class="meta-line">
+      질병관리청 · 대한결핵 및 호흡기학회 결핵 진료지침 개정위원회 · 2024년 1월 전면개정
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 기관의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🔬 진단</div>
+    <div class="tab" onclick="showTab('susc')">💊 감수성치료</div>
+    <div class="tab" onclick="showTab('mdr')">🧬 약제내성</div>
+    <div class="tab" onclick="showTab('special')">🩺 특수상황·HIV</div>
+    <div class="tab" onclick="showTab('extra')">🫁 폐외결핵</div>
+    <div class="tab" onclick="showTab('child')">🧒 소아청소년</div>
+    <div class="tab" onclick="showTab('ltbi')">🛡️ 잠복결핵감염</div>
+    <div class="tab" onclick="showTab('mgmt')">📋 환자관리</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·근거등급</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">16,264명</div><div class="stat-lbl">2022년 국내<br>결핵 신환자수</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--mdr)">2.7%</div><div class="stat-lbl">전체 환자 중<br>다제내성/리팜핀내성 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--susc)">2HREZ<br>/4HR</div><div class="stat-lbl">감수성결핵<br>표준 처방</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--mdr)">6개월</div><div class="stat-lbl">BPaLM 요법<br>(기존 18-20개월→단축)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 5판 개정 배경</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>2011년 초판 이후 4차례 개정을 거쳐, 2024년 1월 <strong>7년 만에 전면 개정</strong>된 5판이 발간되었다. 대한결핵 및 호흡기학회 개정위원회가 주관했으며, 대한결핵협회·대한감염학회·대한내과학회·대한소아감염학회 등 다수 학회의 승인을 받았다.</div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🌍</span><div>세계보건기구(WHO) 지침의 단기 치료 권고(다제내성/리팜핀내성결핵 치료중단 감소 목적)를 수용하되, 국내 연구결과를 반영하여 <strong>일부 WHO 지침과 차이를 둔 국내 실정 맞춤형 지침</strong>으로 개정되었다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>장(Chapter)</th><th>주요 내용</th></tr>
+        <tr><td>Ⅰ. 결핵의 진단</td><td>증상, 흉부영상, 검사실 진단, 조직학적 진단</td></tr>
+        <tr><td>Ⅱ. 결핵의 치료</td><td>치료원칙, 감수성결핵 치료, 부작용 대처, 재치료</td></tr>
+        <tr><td>Ⅲ. 약제내성결핵의 치료</td><td>분류, 약제, INH 단독내성, MDR-TB(BPaLM/MDR-END/BPaL), 만성배균자</td></tr>
+        <tr><td>Ⅳ. 특수한 상황에서의 결핵치료</td><td>임신·수유, 장기이식, 간질환, 신부전</td></tr>
+        <tr><td>Ⅴ. HIV 감염과 결핵</td><td>HIV 감염인의 결핵치료, 잠복결핵감염</td></tr>
+        <tr><td>Ⅵ. 폐외 결핵</td><td>흉막염, 기관지·림프절·수막염·복부·좁쌀·골관절·비뇨생식기·심낭 결핵</td></tr>
+        <tr><td>Ⅶ. 소아청소년 결핵</td><td>특징, 진단, 치료, 잠복결핵감염, 환자관리, BCG</td></tr>
+        <tr><td>Ⅷ. 잠복결핵감염</td><td>정의·현황, 검사대상, 진단, 치료, 생물학적제제, 이식, 의료기관종사자</td></tr>
+        <tr><td>Ⅸ. 환자관리</td><td>신고·보고, 접촉자조사, 환자관리, 의료기관 감염관리</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>본 지침은 결핵 관련 <strong>행정사항(환자관리·역학조사 등)</strong>은 질병관리청의 「2024 국가결핵관리지침」을 참고하도록 안내하며, 신고서식 등 최신 법령은 국가법령정보센터(law.go.kr)를 확인해야 한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗺️</span> 전체 진단·치료 흐름</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="stage-timeline">
+        <div class="stage-box" style="background:#cffafe"><div class="st-num" style="color:var(--diag)">①</div><div class="st-lbl">증상+영상+검체<br>도말·배양·분자진단</div></div>
+        <div class="stage-box" style="background:#dcfce7"><div class="st-num" style="color:var(--susc)">②</div><div class="st-lbl">신속감수성검사<br>(리팜핀/이소니아지드)</div></div>
+        <div class="stage-box" style="background:#dcfce7"><div class="st-num" style="color:var(--susc)">③-A</div><div class="st-lbl">감수성 확인<br>→ 2HREZ/4HR</div></div>
+        <div class="stage-box" style="background:#fee2e2"><div class="st-num" style="color:var(--mdr)">③-B</div><div class="st-lbl">리팜핀내성 확인<br>→ MDR-TB 처방</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 진단 ══════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--diag)">Ⅰ-1</span> 결핵의 증상</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-diag"><span>✅</span><div>뚜렷한 원인 없이 <strong>2-3주 이상</strong> 기침 등 호흡기 증상이 있으면 결핵을 의심하고 검사해야 한다 <span class="stage ev3">ⅢA</span>. 결핵이 의심되면 과거력·접촉력을 반드시 확인한다 <span class="stage ev3">ⅢA</span>.</div></div>
+      <div style="margin-top:8px">가장 흔한 증상은 지속되는 기침이며, 체중감소·야간발한·발열·전신무력감·식욕부진 등 전신증상이 동반될 수 있다. 공동성 폐결핵·기관지결핵에서는 객혈이 발생할 수 있다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--diag)">Ⅰ-2</span> 흉부영상 검사</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-diag"><span>📷</span><div>흉부X선은 유용하지만 <span class="stage ev1">ⅠA</span>, <strong>단독으로 결핵을 진단하지 않는다</strong> <span class="stage ev1">ⅠD</span>. 과거 사진과 비교 검토 <span class="stage ev2">ⅡA</span>, 결핵 의심 시 객담검사로 확진 노력 <span class="stage ev3">ⅢA</span>.</div></div>
+      <div style="margin-top:8px">일차결핵(소아 다발)은 하폐야·폐문림프절비대·무기폐·흉수가 흔하고, 이차결핵(재활성화)은 상엽 첨/후분절, 하엽 상분절에 호발한다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💻</span><div><strong>흉부 CT</strong>: 도말음성 폐결핵의 활동성 판단이 어려울 때 <span class="stage ev3">ⅢB</span>, 타질환과의 감별이 어려울 때 <span class="stage ev3">ⅢB</span> 고려한다. 폐문/종격동 림프절비대, 경한 침윤, 반흔에 가려진 활동성 상엽병변, 미약한 좁쌀결핵 음영은 X선보다 CT에서 더 잘 발견된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--diag)">Ⅰ-3</span> 검사실 진단</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>검사</th><th>권고</th></tr>
+        <tr><td>객담 채취</td><td>최소 2회, 가능하면 3회 채취하여 도말·배양 시행 <span class="stage ev1">ⅠA</span>. 도말은 신속 시행 후 양성 시 24시간 내 통보 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>도말+배양 동시시행</td><td>모든 검체에 도말과 배양을 함께 시행 <span class="stage ev1">ⅠA</span>. 고체+액체배지 동시 접종 <span class="stage ev2">ⅡA</span></td></tr>
+        <tr><td>핵산증폭검사(Xpert 등)</td><td>결핵 의심 시 도말·배양과 함께 Xpert MTB/RIF(또는 Ultra) 시행 <span class="stage ev1">ⅠA</span>. MDR-TB 의심 시에도 동일 <span class="stage ev1">ⅠA</span></td></tr>
+        <tr><td>약제감수성검사</td><td>모든 신환의 첫 배양균주에 INH·RIF 신속+통상감수성검사 병행 <span class="stage ev1">ⅠA</span>. INH내성 시 퀴놀론 신속+통상검사 <span class="stage ev1">ⅠA</span>. RIF내성 확인 시 퀴놀론+Group A 포함 통상감수성검사 <span class="stage ev1">ⅠA</span></td></tr>
+        <tr><td>결핵감염검사(TST/IGRA)</td><td><strong>활동성 결핵 진단에는 사용하지 않는다</strong> <span class="stage ev1">ⅠD</span> — 잠복결핵과 구별 불가. 단, 폐외결핵 등 검사음성·진단모호 시 보조적 사용 가능 <span class="stage ev2">ⅠB</span></td></tr>
+        <tr><td>조직검사</td><td>조직검체에 항산균 배양 + (림프절인 경우) Xpert 시행 가능 <span class="stage ev2">ⅡA</span>, 핵산증폭검사 시행 가능 <span class="stage ev2">ⅡA</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════ TAB 3: 감수성치료 ══════════ -->
+<div id="tab-susc" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 표준 처방 및 일차 약제 용량</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-susc"><span>✅</span><div><strong>표준처방: 2HRZE/4HR</strong> — INH·RIF 감수성 확인 시 에탐부톨 중단 가능 <span class="stage ev2">ⅡB</span>. 치료 시작 시 공동 있고 2개월 후 객담배양 양성이면 유지기 연장 고려 <span class="stage ev2">ⅡB</span>.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>약제</th><th>용량(최대용량)</th><th>주요 부작용</th></tr>
+        <tr><td>Isoniazid (H)</td><td>5mg/kg (300mg), 1일1회 공복</td><td>간독성, 말초신경병증, 피부과민반응</td></tr>
+        <tr><td>Rifampin (R)</td><td>10mg/kg (450mg &lt;50kg / 600mg ≥50kg), 1일1회 공복</td><td>간독성, 독감양증후군, 혈소판감소, 체액변색</td></tr>
+        <tr><td>Rifabutin (RFB)</td><td>5mg/kg (300mg)</td><td>간독성, 호중구감소증</td></tr>
+        <tr><td>Ethambutol (E)</td><td>15-20mg/kg (체중별 800/1200/1600mg)</td><td>시신경병증(시력저하·색각변화)</td></tr>
+        <tr><td>Pyrazinamide (Z)</td><td>20-30mg/kg (체중별 1000/1500/2000mg)</td><td>간독성, 관절통, 위장장애</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>💊</span><div><strong>4제 고정용량복합제(FDC, 튜비스®)</strong> 1정=INH 75mg+RIF 150mg+EMB 275mg+PZA 400mg. 체중 30-37kg: 2정, 38-54kg: 3정, 55-70kg: 4정, &gt;70kg: 5정. 2제 FDC(튜비스투®)는 INH 150mg+RIF 300mg.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>⚡</span> 주요 약물 상호작용</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>항결핵제</th><th>상호작용 약제</th><th>대처</th></tr>
+        <tr><td rowspan="2">Isoniazid</td><td>Phenytoin, Carbamazepine</td><td>항전간제 혈중농도↑ — 모니터링·감량</td></tr>
+        <tr><td colspan="2"></td></tr>
+        <tr><td rowspan="6">Rifampin</td><td>칼슘채널차단제, 베타차단제(atenolol 제외)</td><td>혈압 모니터링, 용량 증가 또는 대체</td></tr>
+        <tr><td>Sulfonylureas</td><td>혈당 모니터링, 다른 당뇨약 추가</td></tr>
+        <tr><td>경구피임제</td><td>차단법 등 다른 피임법 병행</td></tr>
+        <tr><td>Warfarin, Cyclosporine, 항진균제</td><td>혈중농도 모니터링·용량 증가</td></tr>
+        <tr><td>항바이러스제(ART)</td><td>다른 항바이러스제 사용 또는 리파부틴 대체</td></tr>
+        <tr><td>Corticosteroid</td><td>스테로이드 용량 증가</td></tr>
+        <tr><td>Pyrazinamide</td><td>Zidovudine, Thiazide계 이뇨제</td><td>병용 회피 또는 allopurinol 용량 조정</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div><strong>리팜핀은 CYP450을 활성화</strong>시켜 병용약물 혈중농도를 낮춘다. 치료 종결로 리팜핀 중단 시에도 병용약제 용량 재평가 없이 유지하면 부작용(과다효과) 위험이 있다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📊</span> 치료 반응 평가 및 부작용 대처</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>항목</th><th>권고</th></tr>
+        <tr><td>치료 전 평가</td><td>부작용 위험평가+시력검사 등 기저검사 <span class="stage ev3">ⅢA</span>, 일반혈액·간기능·신기능검사 확인 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>치료 중 모니터링</td><td>도말·배양 양성 환자는 2회 연속 음성까지 매달 검사, 종결시점 마지막 검사 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>치료실패 의심 시</td><td>도말·배양+신속감수성검사 추가시행 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>치료 반응 평가</td><td>흉부X선 단독으로 평가하지 않는다 <span class="stage ev1">ⅠD</span></td></tr>
+        <tr><td>치료 종결 시</td><td>모든 환자에서 결핵후폐질환 평가. 호흡곤란/유의한 후유증 시 종결 시점 또는 6개월 이내 폐기능검사 <span class="stage ev3">ⅢA</span></td></tr>
+      </table>
+      <div class="alert alert-danger" style="margin-top:8px"><span>🚨</span><div><strong>간독성</strong>: ALT가 정상상한 5배 이상, 또는 간염증상+정상상한 3배 이상이면 즉시 원인약제 중단 <span class="stage ev3">ⅢA</span>. <strong>혈소판감소</strong>: 리팜핀 과민반응 가능성 최우선 — 중단 후 재투여 금지 <span class="stage ev3">ⅢA</span>. <strong>피라진아미드 관절통</strong>: NSAID 병용하며 지속 가능하나 통풍 발생 시 중단 <span class="stage ev3">ⅢA</span>.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔄</span> 재치료 (재발·치료실패·추적중단)</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>상황</th><th>권고</th></tr>
+        <tr><td>치료성공 후 재발</td><td>감수성결핵에 준해 재치료 <span class="stage ev3">ⅢA</span>. 2년 이내 재발 시 재치료기간 3개월 연장 권고 <span class="stage ev3">ⅢA</span>. 재치료 시작 시 신속감수성검사로 INH/RIF 내성 조기확인 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>치료 실패</td><td>자세한 병력청취 <span class="stage ev3">ⅢA</span>, INH/RIF 신속감수성+전체 통상감수성검사 <span class="stage ev3">ⅢA</span>. <strong>새 약제를 한 가지씩 추가 금지</strong> <span class="stage rec-e">ⅢE</span>. 전문가 의뢰 권고 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>추적방문 중단</td><td>중단 원인 파악 <span class="stage ev3">ⅢA</span>, 재치료 시작 시 건강교육·상담·사회적 지지 병행 <span class="stage ev3">ⅢA</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /susc -->
+
+
+<!-- ══════════ TAB 4: 약제내성 ══════════ -->
+<div id="tab-mdr" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗂️</span> 약제내성결핵의 분류</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>분류</th><th>정의</th></tr>
+        <tr><td>이소니아지드 단독내성(Hr-TB)</td><td>INH 내성, RIF 감수성</td></tr>
+        <tr><td>리팜핀내성(RR-TB)</td><td>RIF에 내성 (INH 내성/감수성 무관)</td></tr>
+        <tr><td>다제내성(MDR-TB)</td><td>RIF와 INH 모두 내성</td></tr>
+        <tr><td>광범위약제내성 전단계(pre-XDR-TB)</td><td>RR/MDR-TB + 퀴놀론(Lfx/Mfx) 내성</td></tr>
+        <tr><td>광범위약제내성(XDR-TB)</td><td>RR/MDR-TB + 퀴놀론 내성 + Group A(베다퀼린 또는 리네졸리드) 내성</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 이소니아지드 단독내성결핵</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-mdr"><span>✅</span><div>내성 확인 시점부터 <strong>RIF+EMB+PZA+레보플록사신 6개월</strong> 치료 <span class="stage ev2">ⅡA</span>. 공동 없고 배균량 적으면 PZA를 3개월 이내로 단축 가능 <span class="stage ev2">ⅡB</span>.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--mdr)">핵심</span> 다제내성/리팜핀내성결핵 — 퀴놀론 감수성</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-mdr"><span>🎯</span><div><strong>6개월 BPaLM 요법</strong> 또는 <strong>9개월 MDR-END 요법</strong>을 권고 <span class="stage ev1">ⅠA</span>. 두 요법 모두 부적합 시에만 <strong>18-20개월 장기요법</strong> 사용 <span class="stage ev1">ⅠA</span>. 두 단기요법 간 우선순위는 없으며 과거 치료력·감수성결과·병소특성·부작용·상호작용을 종합해 선택한다.</div></div>
+
+      <div class="gear-row">
+        <div class="gear-box" style="background:#fee2e2;border:1.5px solid var(--mdr);color:#7f1d1d">
+          <div class="gear-title">6개월 BPaLM 요법 (26주)</div>
+          베다퀼린[B]+프레토마니드[Pa]+리네졸리드[L]+목시플록사신[M]<br>
+          베다퀼린: 첫 2주 400mg 매일 → 이후 200mg 주3회<br>
+          Pa 200mg/L 600mg/M 400mg 매일, 전체 치료기간<br>
+          대상: 폐결핵 전체, 중추신경계·골관절·파종성 제외 폐외결핵, 14세 이상
+        </div>
+        <div class="gear-box" style="background:#fef3c7;border:1.5px solid var(--extra);color:#78350f">
+          <div class="gear-title">9개월 MDR-END 요법</div>
+          레보플록사신+델라마니드+리네졸리드+피라진아미드<br>
+          대상: 19세 이상 성인, <strong>폐결핵만</strong> (폐외결핵 제외)
+        </div>
+      </div>
+
+      <div class="alert alert-warn" style="margin-top:8px"><span>🇰🇷</span><div>2022 WHO 지침의 <strong>9개월 베다퀼린 포함 단기요법</strong>(에치온아미드/리네졸리드 변형요법)은 국내 기저 내성률이 높아(적합 환자 약 25%) 표준으로 권고하지 않으나, 전체 약제 감수성이 확인되면 사용 가능하다.</div></div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>BPaLM 치료 중 약제 조절 원칙</th></tr>
+        <tr><td>베다퀼린/프레토마니드/리네졸리드 내성 확인 → BPaLM 영구중단, 다른 요법 전환</td></tr>
+        <tr><td>퀴놀론 내성 확인 → 목시플록사신 제외한 BPaL로 전환 가능</td></tr>
+        <tr><td>리네졸리드: 치료 첫 9주 이내 영구중단 시 다른 요법 전환. 9주 이후 부작용 시 300mg 감량 또는 8주 이내 일시중단 가능</td></tr>
+        <tr><td>전체약제 동시중단은 연속 2주/누적 4주 초과 금지</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--mdr)">핵심</span> 다제내성결핵 — 퀴놀론 내성</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-mdr"><span>🎯</span><div><strong>6개월 BPaL 요법</strong>(베다퀼린+프레토마니드+리네졸리드) 권고 <span class="stage ev2">ⅡA</span>. 부적합 시 18-20개월 장기요법 <span class="stage ev2">ⅡA</span>.</div></div>
+      <div style="margin-top:8px">Nix-TB 연구에서 치료성공률 90%. 리네졸리드는 초기 고용량(1200mg) 사용 시 부작용으로 15%만 완주 가능했으나, 후속 ZeNix 연구에서 <strong>600mg/26주</strong>로 효과 유지·부작용 감소를 확인해 본 지침은 이 용량을 권고한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🧪</span> 18-20개월 장기요법 — 약제 분류(A/B/C군)</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>군</th><th>약제</th><th>역할</th></tr>
+        <tr><td><strong>A군</strong></td><td>레보플록사신 또는 목시플록사신, 베다퀼린, 델라마니드, 리네졸리드</td><td>매우 효과적인 핵심약제 — 금기 없으면 반드시 포함</td></tr>
+        <tr><td><strong>B군</strong></td><td>시클로세린, 클로파지민</td><td>A군 다음 선택 동반약제</td></tr>
+        <tr><td><strong>C군</strong></td><td>아미카신/카나마이신(스트렙토마이신), 에탐부톨, 이미페넴-실라스타틴/메로페넴, 파스, 프로치온아미드, 피라진아미드</td><td>A+B군만으로 구성 안 될 때 추가 (순위 아님, 개별화)</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🇰🇷</span><div>국내 지침은 WHO와 달리 <strong>델라마니드를 A군으로 분류</strong>한다(WHO는 C군). 베다퀼린·델라마니드 중 1가지 선택이 원칙이며, 동시사용은 전문가위원회 심의를 거쳐야 한다. 집중치료기는 최소 4-5가지 효과적 약제로 구성하며 A→B→C군 순서로 선택한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🏥</span> 전문가위원회 · 수술적 치료 · 신약</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>다제내성결핵 치료는 치료경험 많은 전문가에게 의뢰 권고 <span class="stage ev3">ⅢA</span>. 분자약제감수성검사에서 RIF내성 유전자변이 확인 시 즉시 MDR-TB 처방 시작 <span class="stage ev2">ⅡA</span>.</div>
+      <div class="alert alert-mdr" style="margin-top:8px"><span>🔪</span><div><strong>수술적 치료</strong>: 항결핵제 반응 없고 병변이 국소적이며 전신상태 양호, 감수성 약제 2-3개 남은 경우 수술적 제거 고려 <span class="stage ev3">ⅢA</span>. 치료 시작 2-3개월 후 결정 <span class="stage ev3">ⅢA</span>. 장기요법 중이었다면 배양음전 후 15-17개월 항결핵제 유지 <span class="stage ev3">ⅢA</span>.</div></div>
+      <div style="margin-top:8px">신규 도입 항결핵신약은 전문가위원회 승인을 거쳐 사용해야 한다 <span class="stage ev2">ⅡA</span>.</div>
+    </div>
+  </div>
+
+</div><!-- /mdr -->
+
+
+<!-- ══════════ TAB 5: 특수상황·HIV ══════════ -->
+<div id="tab-special" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🤰</span> 임신 및 모유수유</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-special"><span>✅</span><div>가임 여성은 치료 전 임신여부·계획 확인 <span class="stage ev3">ⅢA</span>. 초치료는 <strong>2HREZ/4HRE</strong> 또는 <strong>9HRE</strong> 권고 <span class="stage ev3">ⅢA</span>. 일차 약제 치료 중 모유수유 중단 불필요, INH 사용 시 <strong>피리독신 병용</strong> <span class="stage ev3">ⅢA</span>.</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🫀</span> 고형장기 이식</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>감수성결핵은 일반결핵과 동일하게 <strong>6개월 표준치료</strong> 권고 <span class="stage ev1">ⅠA</span>. 면역억제제와 상호작용 우려 시 <strong>리팜핀 대신 리파부틴</strong> 사용 가능 <span class="stage ev3">ⅢB</span>.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🫘</span> 간질환 / 신부전</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>상황</th><th>권고</th></tr>
+        <tr><td>간질환</td><td>중증도에 따라 약제 선택 <span class="stage ev3">ⅢA</span>. 간손상 심하지 않은 만성 간질환은 간기능 정기관찰 하에 <strong>9HRE</strong> 가능 <span class="stage ev3">ⅢA</span>. 중증·불안정 간질환은 전문가 의뢰 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>신부전</td><td>INH·RIF·목시플록사신은 용량조절 불필요 <span class="stage ev3">ⅢA</span>. 기타 약제는 신기능에 따라 투여간격/용량 조정. <strong>투석 환자는 투석 직후 투여</strong> <span class="stage ev3">ⅢA</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🦠</span> HIV 감염과 결핵</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-special"><span>✅</span><div>치료원칙은 HIV 비감염인과 동일 <span class="stage ev1">ⅠA</span>. 결핵 진단 즉시 치료 시작 <span class="stage ev3">ⅢA</span>.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>상황</th><th>ART 시작 시기</th></tr>
+        <tr><td>CD4 &lt;50/mm³</td><td>결핵약 시작 후 2주, 늦어도 4주 이내 <span class="stage ev1">ⅠA</span></td></tr>
+        <tr><td>CD4 ≥50/mm³</td><td>8주 이내, 가능한 조기 <span class="stage ev1">ⅠA</span></td></tr>
+        <tr><td>HIV 감염 임신부</td><td>가능한 빨리 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>결핵성 수막염</td><td>8주까지 보류 가능하나 조기투여·부작용 집중관찰 고려 가능 <span class="stage ev3">ⅢA</span></td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>Rifamycin은 ART 약제와 상호작용 위험이 높아 개별 검토 필요 <span class="stage ev1">ⅠA</span>. IRIS 고위험군은 prednisone 4주 예방투여 고려 <span class="stage ev1">ⅠA</span>, 중증 IRIS는 스테로이드 치료 고려 <span class="stage ev1">ⅠA</span>.</div></div>
+      <div class="alert alert-ltbi" style="margin-top:8px"><span>🛡️</span><div><strong>HIV 감염인의 LTBI</strong>: IGRA 또는 TST로 진단 <span class="stage ev1">ⅠA</span>. CD4&lt;200이고 검사 음성이면 CD4 200 이상 회복 후 재검사 <span class="stage ev2">ⅡA</span>. LTBI는 적극 치료 <span class="stage ev1">ⅠA</span> — <strong>3HR</strong> 우선 권고 <span class="stage ev2">ⅡA</span>, 9H도 선택적 고려 가능 <span class="stage ev2">ⅠB</span>.</div></div>
+    </div>
+  </div>
+
+</div><!-- /special -->
+
+
+<!-- ══════════ TAB 6: 폐외결핵 ══════════ -->
+<div id="tab-extra" class="panel">
+
+  <table class="tbl">
+    <tr><th>부위</th><th>치료기간·핵심 권고</th></tr>
+    <tr><td>결핵성 흉막염</td><td>일측성 흉수는 결핵성 흉막염 의심 <span class="stage ev3">ⅢB</span>. 흉수 ADA&gt;40 IU/L + 림프구우세 삼출성 흉수면 결핵 가능성 높음 <span class="stage ev2">ⅡA</span>. <strong>6개월 표준치료</strong> <span class="stage ev2">ⅡA</span>. 배액은 필수는 아니나 호흡곤란 심하거나 방형성 흉수 시 배액+섬유용해제 고려 <span class="stage ev2">ⅡC</span></td></tr>
+    <tr><td>기관지 결핵</td><td>조기진단·치료로 기관지협착 예방 중요 <span class="stage ev3">ⅢA</span>. 일괄적 스테로이드는 비권고 <span class="stage ev2">ⅡD</span>이나 협착 위험 높으면 고려 가능 <span class="stage ev3">ⅢC</span></td></tr>
+    <tr><td>림프절 결핵</td><td>세침흡인+병리·배양검사 <span class="stage ev2">ⅡA</span>. IGRA 음성은 배제에 참고되나 단독 배제·확진 불가. <strong>6개월</strong> 치료 <span class="stage ev1">ⅠA</span>. 수술적 제거는 특수한 경우에 한해 제한적 <span class="stage ev3">ⅢC</span></td></tr>
+    <tr><td>결핵성 수막염</td><td>뇌척수액 ≥6mL 채취해 도말·배양 <span class="stage ev2">ⅡA</span>, Xpert 권고(단독 배제 목적 사용은 비권고) <span class="stage ev2">ⅡA</span>/<span class="stage ev2">ⅡD</span>. 초기 2개월 HRZE 후 HR로 <strong>7-10개월 유지</strong> <span class="stage ev2">ⅡB</span>. <strong>모든 단계에서 스테로이드 사용 권고</strong> <span class="stage ev1">ⅠA</span></td></tr>
+    <tr><td>복부결핵(복막염·장결핵)</td><td>복강경 복막생검 권고 <span class="stage ev2">ⅡB</span>. <strong>6개월 표준치료</strong> <span class="stage ev1">ⅠA</span></td></tr>
+    <tr><td>좁쌀 결핵</td><td><strong>6개월 표준치료</strong> <span class="stage ev2">ⅡA</span></td></tr>
+    <tr><td>골 및 관절 결핵</td><td><strong>6-9개월</strong> 치료 권고(장기치료 선호 의견도 있어 연장 가능) <span class="stage ev2">ⅡA</span>. 반응불량·신경손상 시 수술 고려 <span class="stage ev2">ⅡB</span></td></tr>
+    <tr><td>비뇨생식기 결핵</td><td><strong>6개월</strong> 치료 <span class="stage ev2">ⅡA</span></td></tr>
+    <tr><td>결핵성 심낭염</td><td><strong>6개월</strong> 표준치료 <span class="stage ev2">ⅡA</span>. <strong>스테로이드 보조요법은 통상 비권고</strong> <span class="stage ev1">ⅠD</span></td></tr>
+  </table>
+
+  <div class="alert alert-extra" style="margin-top:10px"><span>🔬</span><div>공통 진단원칙: 조직검사 시 <strong>멸균 식염수</strong>에 담아 조직배양 의뢰 <span class="stage ev2">ⅡA</span>. 약제내성 판단을 위해 초기 진단 시 체액·조직검체로 배양검사 시행, 양성 시 약제감수성검사 시행 <span class="stage ev2">ⅡA</span>.</div></div>
+
+</div><!-- /extra -->
+
+
+<!-- ══════════ TAB 7: 소아청소년 ══════════ -->
+<div id="tab-child" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔍</span> 진단</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-child"><span>✅</span><div>기침이 2주 이상 지속되며 다른 치료에 반응 없으면 결핵 의심 <span class="stage ev3">ⅢA</span>. 소아는 균 검출률이 낮아 <strong>접촉력+감염검사+흉부X선</strong>이 필수적 <span class="stage ev1">ⅠA</span>. 흉부X선 단독 진단·치료반응평가는 주의 <span class="stage ev1">ⅠD</span>. 소견 모호 시 흉부 CT 고려 <span class="stage ev3">ⅢB</span>.</div></div>
+      <div style="margin-top:8px">접촉력+X선 의심 소견 시 적극적 검체채취(연령·증상별 적절한 방법) <span class="stage ev3">ⅢA</span>. 도말/배양 <span class="stage ev1">ⅠA</span>, 고체+액체배지 동시접종 <span class="stage ev2">ⅡA</span>, Xpert 계열을 도말/배양과 병행 <span class="stage ev3">ⅢA</span>, 첫 배양균주 INH·RIF 신속+통상감수성검사 <span class="stage ev1">ⅠA</span>.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>분류</th><th>처방</th></tr>
+        <tr><td>감수성 폐결핵</td><td>2HRZE/4HR(E) — INH·RIF 감수성 확인 시 EMB 중단 가능 <span class="stage ev2">ⅡA</span></td></tr>
+        <tr><td>폐외결핵(골관절·수막염 제외)</td><td>2HRZE/4HR(E) <span class="stage ev2">ⅡA</span></td></tr>
+        <tr><td>골관절결핵</td><td>2HRZE/10HR(E) 고려 <span class="stage ev2">ⅡB</span></td></tr>
+        <tr><td>결핵성 수막염</td><td>2HRZE/10HR(E) 고려 <span class="stage ev2">ⅡB</span>. 초기 스테로이드(프레드니솔론/덱사메타손) 6-8주 점진적 감량 병합 권고 <span class="stage ev2">ⅡA</span></td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>소아 결핵은 성인 접촉력이 흔하므로 감염원의 <strong>약제내성 여부 반드시 확인</strong> <span class="stage ev3">ⅢA</span>. 소아 약제내성결핵 치료제는 허가사항 제한이 있어 <strong>전문가 의뢰 권고</strong> <span class="stage ev3">ⅢA</span>.</div></div>
+      <div class="gear-row" style="margin-top:8px">
+        <div class="gear-box" style="background:#fee2e2;border:1.5px solid var(--mdr);color:#7f1d1d"><div class="gear-title">퀴놀론 감수성 MDR-TB</div>전체 약제감수성 확인 시 베다퀼린 포함 9개월 단기요법 <span class="stage ev3">ⅢA</span>. 14세 이상은 성인과 동일 6개월 BPaLM <span class="stage ev3">ⅢA</span></div>
+        <div class="gear-box" style="background:#fef3c7;border:1.5px solid var(--extra);color:#78350f"><div class="gear-title">퀴놀론 내성 MDR-TB</div>14세 이상은 성인과 동일 6개월 BPaL <span class="stage ev3">ⅢA</span>. 부적합 시 18-20개월 장기요법 <span class="stage ev3">ⅢA</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> BCG 백신</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-child"><span>✅</span><div><strong>생후 4주 이내(34일까지)</strong> 모든 신생아 접종 <span class="stage ev1">ⅠA</span>. 면역저하·HIV감염·임신·TST양성자는 금기. 피내주사가 가장 신뢰할 수 있는 방법 <span class="stage ev2">ⅡA</span> — 0.05mL(1세 이후 0.1mL) 삼각근 피내주사, 5-7mm 팽진 형성.</div></div>
+      <div style="margin-top:8px">국소궤양·림프절염은 가장 흔한 국소 이상반응으로 대부분 자연치유되며 약제투여는 비권고, 필요시 배농/절제 고려 <span class="stage ev2">ⅡB</span>.</div>
+    </div>
+  </div>
+
+</div><!-- /child -->
+
+
+<!-- ══════════ TAB 8: 잠복결핵감염 ══════════ -->
+<div id="tab-ltbi" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🎯</span> 검사 대상자</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-ltbi"><span>✅</span><div>전염성 결핵 접촉자, HIV 감염자, 면역억제치료 전 고위험군에서 <strong>반드시 검사</strong> 시행 <span class="stage ev1">ⅠA</span>. 가족/밀접접촉자·고위험군(면역억제자, 5세 미만)은 가능한 빨리 검사하고 음성이면 <strong>8주 후 재검사</strong> <span class="stage ev1">ⅠA</span>. 5세 이상 일상접촉 BCG접종 건강 소아청소년은 접촉 8주 후 1회만 검사 가능 <span class="stage ev2">ⅡB</span>.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧪</span> 진단 (TST / IGRA)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>대상군</th><th>권고 검사</th></tr>
+        <tr><td>BCG 1회(영아기) 접종 정상면역 성인</td><td>TST 또는 IGRA</td></tr>
+        <tr><td>BCG 2회 이상 또는 영아 이후 추가접종</td><td>IGRA 단독</td></tr>
+        <tr><td>면역저하 성인</td><td>IGRA 단독 또는 TST+IGRA 병합 <span class="stage ev2">ⅡA</span></td></tr>
+        <tr><td>5세 미만 소아</td><td>IGRA 사용 금지 <span class="stage ev2">ⅡD</span> — TST 사용</td></tr>
+        <tr><td>5-18세 소아청소년</td><td>IGRA 또는 TST 가능</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>📏</span><div><strong>TST 판독</strong>: 2TU PPD RT23 피내주사 후 48-72시간 판독. 경결 <strong>10mm 이상 양성</strong>(비접종 신생아는 5mm 이상). 1세 이전 BCG 접종력은 판독 시 고려하지 않음. 3개월 미만 영아는 감염 있어도 위음성 가능성 높음.</div></div>
+      <div style="margin-top:8px">전염성 결핵환자 가족/밀접접촉자에서 TST≥10mm면 결핵감염으로 진단하고 <strong>추가 IGRA는 권장하지 않음</strong> <span class="stage rec-d" style="background:#ffd8d8;color:#82071e">ⅢD</span>.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-ltbi"><span>✅</span><div>치료 결정 전 <strong>반드시 활동성 결핵 배제</strong>. 표준치료는 <strong>리팜핀 4개월(4R)</strong> <span class="stage ev1">ⅠA</span> 또는 <strong>3개월 INH/RIF(3HR)</strong> <span class="stage ev2">ⅡA</span> 권고, <strong>INH 9개월(9H)</strong>도 선택적 고려 가능 <span class="stage ev2">ⅠB</span>.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>대상군</th><th>치료</th></tr>
+        <tr><td>18세 이하 소아청소년</td><td>3개월 INH+RIF <span class="stage ev2">ⅡA</span>, 9개월 INH <span class="stage ev1">ⅠA</span>, 또는 4개월 리팜핀 단독 <span class="stage ev2">ⅡA</span></td></tr>
+        <tr><td>5세 미만 접촉자 검진</td><td>TST로 검사, 양성이면 치료 <span class="stage ev2">ⅡA</span></td></tr>
+        <tr><td>5-18세 접촉자/면역저하자</td><td>TST 또는 IGRA 중 한가지라도 양성이면 진단·치료 <span class="stage ev2">ⅡA</span></td></tr>
+      </table>
+      <div>최근 접촉자의 경우 전염원(index case)의 약제감수성 결과를 참고해 약제 선택. 치료 전 기저혈액검사, 간독성 고위험군은 정기 혈액검사 <span class="stage ev2">ⅡA</span>. 치료 중 활동성 결핵 발생 시 사용중 약제 포함 초치료 표준처방으로 전환 <span class="stage ev3">ⅢA</span>.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> 생물학적제제·소분자억제제 / 장기이식 / 의료기관종사자</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>상황</th><th>권고</th></tr>
+        <tr><td>TNF 길항제 예정</td><td>결핵발병 위험 유의하게 증가 — LTBI 검사 필수 <span class="stage ev1">ⅠA</span></td></tr>
+        <tr><td>非TNF 생물학적제제/소분자억제제</td><td>LTBI 검사 시행 <span class="stage ev2">ⅡA</span> (TNF 대비 위험 낮음)</td></tr>
+        <tr><td>생물학적제제 치료 개시 시점</td><td>LTBI 치료 시작 <strong>3주 후</strong> 개시 권고 <span class="stage ev2">ⅡA</span>(긴급 시 동시 시작 고려 <span class="stage ev2">ⅡB</span>)</td></tr>
+        <tr><td>고형장기/조혈모세포 이식(예정)</td><td>활동성·잠복결핵감염 검사 필수 <span class="stage ev1">ⅠA</span>, 자연치유 병변은 감염검사와 무관하게 LTBI 간주·치료 <span class="stage ev2">ⅡA</span>. 이식 전 치료 시작 원칙(개별화) <span class="stage ev3">ⅢB</span></td></tr>
+        <tr><td>의료기관 종사자</td><td>신규고용 시 기저검사 필수 <span class="stage ev2">ⅡB</span>. 기존 양성자는 재검사 불필요 <span class="stage ev1">ⅠA</span>. 위험군(1-3군)은 주기적 검진 <span class="stage ev3">ⅢB</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /ltbi -->
+
+
+<!-- ══════════ TAB 9: 환자관리 ══════════ -->
+<div id="tab-mgmt" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📢</span> 신고 및 보고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-mgmt"><span>⚖️</span><div>결핵은 <strong>제2급 법정감염병</strong>. 진단(폐외결핵 포함) 또는 사망 시 의료기관은 <strong>24시간 이내</strong> 질병보건통합관리시스템(is.kdca.go.kr) 신고 또는 서식 작성 후 관할 보건소 팩스 송부. 치료결과도 관할 보건소장에게 보고. <strong>잠복결핵감염 치료자·비결핵항산균감염증 환자는 신고 대상 아님.</strong></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>👥</span> 접촉자 조사</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>호흡기 결핵환자의 <strong>밀접접촉자</strong> 검진 실시 권고 <span class="stage ev2">ⅡA</span>. 일상접촉자는 전염성 강도·감염 가능기간에 따라 검진 실시 <span class="stage ev2">ⅡA</span>.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🏨</span> 의료기관 감염관리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>항목</th><th>권고</th></tr>
+        <tr><td>격리병실</td><td>공기매개 전염병 전파차단 격리병실 구비 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>격리 개시</td><td>전염성 의심 시 확진 전이라도 격리 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>격리 해제</td><td>최소 2주 효과적 치료+임상호전+도말양성자는 3회 추구도말 음성 또는 배양음성 확인 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>조기 퇴원</td><td>임상 호전 시 도말 미음전 상태로도 퇴원해 재택 격리 가능 <span class="stage ev3">ⅢB</span></td></tr>
+        <tr><td>의료진 보호</td><td><strong>N95 마스크</strong> 착용 후 진료·시술 <span class="stage ev3">ⅢA</span></td></tr>
+        <tr><td>의료기관 종사자 검진</td><td>정기적 결핵검진 및 잠복결핵감염검진 필수 <span class="stage ev3">ⅢA</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /mgmt -->
+
+
+<!-- ══════════ TAB 10: 약어·근거등급 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> 근거수준·권고수준 (미국흉부학회 방식)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>근거수준</th><th>정의</th></tr>
+        <tr><td><span class="stage ev1">Ⅰ</span></td><td>하나 이상의 잘 고안·해석된 무작위배정 임상시험</td></tr>
+        <tr><td><span class="stage ev2">Ⅱ</span></td><td>무작위배정 아니거나 다른 집단에서 시행된 임상시험</td></tr>
+        <tr><td><span class="stage ev3">Ⅲ</span></td><td>전문가 의견</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고수준</th><th>정의</th></tr>
+        <tr><td><span class="stage rec-a">A</span></td><td>일반적으로 권고되어야 한다</td></tr>
+        <tr><td><span class="stage rec-b">B</span></td><td>대체 방법으로 권고될 수 있다</td></tr>
+        <tr><td><span class="stage rec-c">C</span></td><td>일반/대체 방법을 쓸 수 없을 때 권고될 수 있다</td></tr>
+        <tr><td><span class="stage rec-d">D</span></td><td>일반적으로 권고되지 않아야 한다</td></tr>
+        <tr><td><span class="stage rec-e">E</span></td><td>절대로 권고되지 않아야 한다</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 항결핵제 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-drug-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 기타 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>대한결핵 및 호흡기학회, 질병관리청. 「결핵 진료지침」 5판, 2024. 질병관리청·결핵ZERO(tbzero.kdca.go.kr)·질병보건통합관리시스템에서 원문 확인 가능하다. 결핵환자 관리·역학조사 등 행정사항은 「2024 국가결핵관리지침」을 참고한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"MDR-TB", def:"Multidrug-Resistant Tuberculosis — 다제내성결핵 (RIF+INH 모두 내성)" },
+  { term:"RR-TB", def:"Rifampicin-Resistant Tuberculosis — 리팜핀내성결핵" },
+  { term:"XDR-TB", def:"Extensively Drug-Resistant Tuberculosis — 광범위약제내성결핵" },
+  { term:"Hr-TB", def:"Isoniazid 단독내성결핵 (RIF 감수성)" },
+  { term:"LTBI", def:"Latent Tuberculosis Infection — 잠복결핵감염" },
+  { term:"TST", def:"Tuberculin Skin Test — 투베르쿨린 피부반응검사" },
+  { term:"IGRA", def:"Interferon-Gamma Releasing Assay — 인터페론감마 분비검사" },
+  { term:"BCG", def:"Bacille Calmette-Guérin — 결핵 예방백신" },
+  { term:"ART", def:"Antiretroviral Therapy — 항레트로바이러스 치료" },
+  { term:"IRIS", def:"Immune Reconstitution Inflammatory Syndrome — 면역재구성염증증후군" },
+  { term:"Xpert", def:"Xpert MTB/RIF — 결핵균 및 리팜핀내성 신속 핵산증폭검사" },
+  { term:"LPA", def:"Line Probe Assay — 분자선검사(신속 약제감수성검사)" },
+  { term:"ADA", def:"Adenosine Deaminase — 흉수·체액 내 결핵 보조진단 효소지표" },
+  { term:"NTM", def:"Nontuberculous Mycobacterium — 비결핵 항산균" },
+  { term:"PPM", def:"Private-Public Mix — 민간·공공협력 결핵관리사업" },
+  { term:"WGS/NGS", def:"전장유전체분석 / 차세대염기서열분석 — 신속 약제감수성 판정 기술" },
+];
+const DRUG_ABBR = [
+  { term:"H", def:"Isoniazid (이소니아지드)" },
+  { term:"R", def:"Rifampin/Rifampicin (리팜핀)" },
+  { term:"E", def:"Ethambutol (에탐부톨)" },
+  { term:"Z", def:"Pyrazinamide (피라진아미드)" },
+  { term:"S", def:"Streptomycin (스트렙토마이신)" },
+  { term:"Km/Am", def:"Kanamycin / Amikacin (카나마이신/아미카신)" },
+  { term:"Cs", def:"Cycloserine (시클로세린)" },
+  { term:"Pto", def:"Prothionamide (프로치온아미드)" },
+  { term:"PAS", def:"p-aminosalicylic acid (파스)" },
+  { term:"Lfx / Mfx", def:"Levofloxacin / Moxifloxacin (레보플록사신/목시플록사신)" },
+  { term:"RFB / RPT", def:"Rifabutin / Rifapentine (리파부틴/리파펜틴)" },
+  { term:"Cm", def:"Capreomycin (카프레오마이신)" },
+  { term:"Lzd", def:"Linezolid (리네졸리드)" },
+  { term:"Dlm", def:"Delamanid (델라마니드)" },
+  { term:"Bdq", def:"Bedaquiline (베다퀼린)" },
+  { term:"Pa", def:"Pretomanid (프레토마니드)" },
+  { term:"Cfz", def:"Clofazimine (클로파지민)" },
+  { term:"Ipm / Mpm", def:"Imipenem / Meropenem (이미페넴/메로페넴)" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+renderGrid('abbr-drug-grid',DRUG_ABBR);
+const ALL_ABBR = ABBR_DATA.concat(DRUG_ABBR);
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

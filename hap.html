@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성인 병원획득 폐렴 진료 및 항생제 사용 지침 (2023)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --diag:     #0e7490;  /* 진단 — 시안 */
+    --abx:      #15803d;  /* 항생제 선택 — 그린 */
+    --dur:      #b45309;  /* 치료기간·축소 — 앰버브라운 */
+    --epi:      #7c2d92;  /* 국내역학 — 퍼플 */
+    --tools:    #4b5563;  /* 약어·근거등급 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--dur);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--diag);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--abx);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:19px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 9px; font-size: calc(11.5px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(18px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-diag{background:#cffafe;border-left:3px solid var(--diag);color:#155e75;}
+  .alert-abx{background:#dcfce7;border-left:3px solid var(--abx);color:#15803d;}
+  .alert-dur{background:#fef3c7;border-left:3px solid var(--dur);color:#92400e;}
+  .alert-epi{background:#f3e8ff;border-left:3px solid var(--epi);color:#7c2d92;}
+  .alert-tools{background:#f1f5f9;border-left:3px solid var(--tools);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .ev-high{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .ev-mod{background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center;}
+  .ev-low{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .ev-vlow{background:#ffd8a8;color:#7d3b00;font-weight:700;text-align:center;}
+  .rec-strongfor{background:#155724;color:#fff;font-weight:700;text-align:center;}
+  .rec-condfor{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .rec-condagainst{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .rec-strongagainst{background:#f8d7da;color:#82071e;font-weight:700;text-align:center;}
+  .rec-inconclusive{background:#e2e3e5;color:#41464b;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .pico{display:inline-block;padding:2px 8px;border-radius:12px;font-size:calc(10px * var(--fscale,1));font-weight:700;margin-right:6px;color:#fff;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .stage-timeline{display:flex;align-items:stretch;gap:0;margin:10px 0;overflow-x:auto;}
+  .stage-box{flex:1;min-width:120px;padding:10px 10px 12px;border-right:2px solid var(--bg);text-align:center;cursor:default;}
+  .stage-box:last-child{border-right:none;}
+  .stage-box .st-num{font-size:calc(14px * var(--fscale,1));font-weight:800;margin-bottom:4px;}
+  .stage-box .st-lbl{font-size:calc(10px * var(--fscale,1));line-height:1.4;}
+  .gear-row{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;}
+  .gear-box{flex:1;min-width:140px;border-radius:6px;padding:10px 12px;font-size:calc(12px * var(--fscale,1));}
+  .gear-title{font-weight:700;font-size:calc(13px * var(--fscale,1));margin-bottom:4px;}
+  .kq-num{display:inline-block;background:var(--overview);color:#fff;border-radius:5px;padding:2px 8px;font-size:calc(11px * var(--fscale,1));font-weight:700;margin-right:6px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>HAP</span><span>/</span><span>VAP</span></div>
+      <h1>성인 병원획득 폐렴 진료 및 항생제 사용 지침 (2023)</h1>
+    </div>
+    <div class="meta-line">
+      질병관리청 · 대한결핵 및 호흡기학회 호흡기감염병연구회 · 2023년 신규 개발
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 기관의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🔬 진단</div>
+    <div class="tab" onclick="showTab('abx')">💊 항생제 선택</div>
+    <div class="tab" onclick="showTab('dur')">⏱️ 치료기간·축소</div>
+    <div class="tab" onclick="showTab('epi')">📊 국내역학</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·근거등급</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">2.50<br>/1,000명</div><div class="stat-lbl">국내 병원획득<br>폐렴 발생률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--dur)">12.5%</div><div class="stat-lbl">병원획득 폐렴 중<br>인공호흡기 관련 폐렴 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--abx)">7-8일</div><div class="stat-lbl">임상반응 좋을 시<br>단축 가능 치료기간</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--epi)">69.0%</div><div class="stat-lbl">배양 확인균 중<br>다제내성균 비율</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 배경 및 목적</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>세계보건기구(WHO)는 항생제 내성(AMR)이 공중보건뿐 아니라 경제·안보를 위협하는 범세계적 문제임을 경고하고 있으나, 국내 의료현장에서는 표준 항생제 사용 지침의 부족으로 의료진 간 처방 변이가 크다.</div>
+      <div style="margin-top:8px">병원획득폐렴(hospital acquired pneumonia/ventilator associated pneumonia, HAP/VAP)은 입원 후 최소 48시간 이후 발생하는 폐렴(HAP)으로 정의되며, 중환자실에서 인공호흡기 치료를 위해 기도삽관을 경험한 환자에서 48시간 이후 발생하는 인공호흡기 관련 폐렴(VAP)을 포함한다.</div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🌍</span><div>국외 자료는 국내 폐렴의 원인균 및 항생제 내성 패턴을 반영하지 못하므로, 본 지침은 <strong>국내 역학연구를 통해 확인된 원인 병원체·내성 유형·치료현황</strong>을 바탕으로 개발되어 국내 실정에 적합한 항생제 사용 원칙을 제시한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗂️</span> 지침의 대상·범위 및 개발과정</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>항목</th><th>내용</th></tr>
+        <tr><td>대상</td><td>병원획득 폐렴/인공호흡기 관련 폐렴(HAP/VAP)으로 의심 또는 진단된 국내 <strong>19세 이상 성인</strong>. 면역저하 환자에게도 개념 적용 가능하나 권고사항 대상은 아님</td></tr>
+        <tr><td>대상 의료기관</td><td>국내 종합병원 및 상급종합병원 (규모 제한 없음)</td></tr>
+        <tr><td>개발방식</td><td>권고문·근거에 대한 의견수렴(COnvergence of Recommendations and Evidence, CORE) 방식으로 신규 개발</td></tr>
+        <tr><td>핵심임상질문(KQ)</td><td>초기 13개 → 학회 의견수렴 후 14개 → CORE 조사 및 개발위원회 검토를 거쳐 최종 <strong>11개</strong> 확정</td></tr>
+        <tr><td>문헌검색</td><td>2022년 기준 최근 10년 이내 임상연구(체계적 문헌고찰, 무작위 비교임상시험, 관찰연구). 국외: OVID-MEDLINE·OVID-EMBASE / 국내: KMbase·KoreaMed</td></tr>
+        <tr><td>CORE 조사</td><td>호흡기감염병연구회 회원 대상 2차 조사(1차 62명 중 54명 87.1% 응답 → 2차 54명 중 51명 94.4% 응답), 70% 이상 동일 등급 합의 시 권고 확정</td></tr>
+        <tr><td>지원</td><td>질병관리청 정책용역사업(2019-2808-00)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📏</span> 근거수준 및 권고등급 (GRADE 기반)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>근거수준</th><th>정의</th></tr>
+        <tr><td><span class="stage ev-high">높음</span></td><td>다른 연구가 효과 추정에 대한 신뢰를 바꾸는 경우가 거의 없다</td></tr>
+        <tr><td><span class="stage ev-mod">중등도</span></td><td>다른 연구가 신뢰에 중요한 영향을 미칠 수 있으며 추정값이 변할 수 있다</td></tr>
+        <tr><td><span class="stage ev-low">낮음</span></td><td>다른 연구가 신뢰에 매우 중요한 영향을 미칠 수 있으며 추정값이 변할 수 있다</td></tr>
+        <tr><td><span class="stage ev-vlow">매우 낮음</span></td><td>효과의 추정값에 대한 확신이 거의 없다</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고등급</th><th>정의</th></tr>
+        <tr><td><span class="stage rec-strongfor">강력 권고</span></td><td>이득과 위해, 근거수준, 가치와 선호, 자원을 고려했을 때 대부분의 임상 상황에서 강하게 권고</td></tr>
+        <tr><td><span class="stage rec-condfor">조건부 권고</span></td><td>임상 상황·환자/사회적 가치에 따라 달라질 수 있어 선택적으로 사용하거나 조건부로 권고</td></tr>
+        <tr><td><span class="stage rec-condagainst">조건부 반대</span></td><td>위해가 이득보다 클 수 있어 일부 상황·조건에서는 시행을 권고하지 않음</td></tr>
+        <tr><td><span class="stage rec-strongagainst">강력 반대</span></td><td>위해가 이득보다 크고, 대부분의 임상 상황에서 시행을 권고하지 않음</td></tr>
+        <tr><td><span class="stage rec-inconclusive">권고 보류</span></td><td>근거수준이 너무 낮거나 이득/위해 저울질이 심각하게 불확실·변이가 커서 시행 여부를 결정하지 않음 (임상의 판단 존중)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 핵심질문(KQ) 11개 권고 요약</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>KQ</th><th>권고 요지</th><th>등급</th><th>근거</th></tr>
+        <tr><td>1</td><td>침습적 검사(BAL/PSB) 정량배양 — <strong>일상적 시행 권고 안함</strong></td><td><span class="stage rec-condagainst">조건부반대</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>2</td><td>임상상 외 procalcitonin으로 치료 여부 결정 — <strong>권고 안함</strong></td><td><span class="stage rec-condagainst">조건부반대</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>3</td><td>비정형 폐렴 원인균 확인 PCR 검사 — <strong>권고 안함</strong></td><td><span class="stage rec-condagainst">조건부반대</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>4</td><td>경험적 piperacillin/tazobactam vs cefepime — <strong>권고 보류</strong></td><td><span class="stage rec-inconclusive">권고보류</span></td><td><span class="stage ev-low">낮음</span></td></tr>
+        <tr><td>5</td><td>다제내성·고위험군에서 β-lactam+fluoroquinolone 병합 — <strong>가능</strong></td><td><span class="stage rec-condfor">조건부권고</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>6</td><td>경험적 항생제 선정 시 혐기성균 고려 — <strong>권고 안함</strong></td><td><span class="stage rec-condagainst">조건부반대</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>7</td><td>녹농균 확인 시 병합요법 — <strong>권고 안함</strong>(단일요법 권고)</td><td><span class="stage rec-condagainst">조건부반대</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>8</td><td>카바페넴내성 그람음성균 VAP — 콜리스틴 전신+흡입 병합 <strong>가능</strong></td><td><span class="stage rec-condfor">조건부권고</span></td><td><span class="stage ev-low">낮음</span></td></tr>
+        <tr><td>9</td><td>임상반응 좋으면 항생제 치료기간 <strong>7-8일로 단축 가능</strong></td><td><span class="stage rec-condfor">조건부권고</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>10</td><td>미생물검사 기반 <strong>단계적 축소(de-escalation) 가능</strong></td><td><span class="stage rec-condfor">조건부권고</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+        <tr><td>11</td><td>치료기간 개별화 필요 시 procalcitonin 참고 <strong>가능</strong></td><td><span class="stage rec-condfor">조건부권고</span></td><td><span class="stage ev-mod">중등도</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 진단 ══════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ1</span> 침습적 검사를 이용한 정량배양</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">인공호흡기 관련 폐렴이 의심되는 환자에서 병원균 확인을 위해 침습적 검사(BAL 또는 PSB)를 이용한 정량배양을 해야 하는가?</div>
+      <div class="alert alert-diag"><span>📌</span><div><strong>인공호흡기 관련 폐렴이 의심되는 환자에서 병원균 확인을 위해 일상적인 침습적 검사를 이용한 정량배양을 권고하지 않는다.</strong> <span class="stage rec-condagainst">조건부반대</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">1998-2006년 시행된 5개 무작위 비교임상시험 중 1개 연구를 제외하고 사망률·중환자실 재원기간·인공호흡기 사용기간에 차이가 없었고, 메타분석에서도 침습적 검사를 통한 정량 배양이 사망률을 낮추는 경향(OR 0.91, 95% CI 0.75-1.11)만 확인되었다. 기관 흡인을 통한 반정량검사는 배양 빈도가 더 높으나(86% vs 43%), 정성검사는 집락균과 실제 병원균 구분이 어려워 항생제 무분별 사용·내성 증가 위험이 있다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구(연도)</th><th>침습적 정량배양 사망률</th><th>경기관흡인 반정량배양 사망률</th><th>비고</th></tr>
+        <tr><td>Sanchez-nieto (1998)</td><td>46%</td><td>26%</td><td>Crude, P=NS</td></tr>
+        <tr><td>Fagon (2000)</td><td>16.2%</td><td>25.8%</td><td>14일 사망률, P=0.022</td></tr>
+        <tr><td>Ruiz (2000)</td><td>38%</td><td>46%</td><td>30일 사망률, P=0.46</td></tr>
+        <tr><td>Violán (2000)</td><td>22.2%</td><td>20.9%</td><td>전체 사망률, P=NS</td></tr>
+        <tr><td>Heyland (2006)</td><td>18.9%</td><td>18.4%</td><td>28일 사망률, P=0.94</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016년 미국흉부학회/미국감염학회: 기관흡인 반정량검사를 약하게 권고(weak, low-quality). 2017년 유럽진료지침: 정량배양을 약하게 권고하되 ARDS·심한 패혈성쇼크 환자는 제외하고 안정적 환자에서만 시행 권고(weak, low-quality).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ2</span> Procalcitonin 참고한 치료 여부 결정</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">병원획득 폐렴/인공호흡기 관련 폐렴 의심 환자에서 임상상 외 procalcitonin을 참고하여 치료 여부를 결정해야 하는가?</div>
+      <div class="alert alert-diag"><span>📌</span><div><strong>병원획득 폐렴 의심 환자에서 임상상 외 procalcitonin을 참고하여 치료 여부를 결정하는 것을 권고하지 않는다.</strong> <span class="stage rec-condagainst">조건부반대</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">Procalcitonin은 감염 외에도 수술·외상·화상·심장쇼크·심한 췌장염·자가면역질환·심한 신부전/간부전 등에서 증가할 수 있고, 전신 징후 없는 국소 감염이거나 세균 감염 초기에는 정상일 수 있어 해석에 주의가 필요하다. 2016년 미국흉부학회/미국감염학회 메타분석에서 민감도·특이도는 67%, 83%로 낮았다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구(연도)</th><th>범주</th><th>결정점</th><th>민감도</th><th>특이도</th></tr>
+        <tr><td>Duflo (2002)</td><td>VAP</td><td>3.9 ng/mL</td><td>41%</td><td>100%</td></tr>
+        <tr><td>Luyt (2008)</td><td>VAP</td><td>0.5 ng/mL</td><td>72%</td><td>24%</td></tr>
+        <tr><td>Ramirez (2008)</td><td>VAP</td><td>2.99 ng/mL</td><td>78%</td><td>97%</td></tr>
+        <tr><td>Dallas (2011)</td><td>HAP/VAP</td><td>1 ng/mL</td><td>50%</td><td>49%</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016년 미국흉부학회/미국감염학회: 임상상 단독 고려를 강력 권고(strong, moderate-quality). 2017년 유럽지침: 치료 여부 결정 관련 임상질문 없음.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ3</span> 비정형 폐렴 원인균 PCR 검사</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">병원획득 폐렴/인공호흡기 관련 폐렴 환자에서 비정형 폐렴 원인균 확인을 위한 PCR 검사를 시행해야 하는가?</div>
+      <div class="alert alert-diag"><span>📌</span><div><strong>비정형 폐렴 원인균 확인을 위한 PCR 검사는 권고하지 않는다.</strong> <span class="stage rec-condagainst">조건부반대</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">Mycoplasma·Chlamydia는 병원획득 폐렴에서 거의 보고되지 않는다. Legionella는 1990년대 원내감염의 약 10%를 차지했으나, 2010년 이후 배관·수질 관리 개선으로 현재는 전 세계적으로 10만 명 중 10-15건만 보고된다. 2021년 국내 다기관 후향적 연구에서는 약 17.5% 환자에서 비정형 병원체 검사가 이루어졌으나 <strong>검출된 사례는 단 한 건도 없었다</strong>. 반면 바이러스는 중증 병원획득 폐렴 환자의 약 22.5%, 정상면역 환자의 약 11%, 비교적 경증 환자의 약 22.7%에서 검출된 바 있다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 현재까지 다른 국가 임상진료지침에는 이 주제에 대한 임상질문이나 권고가 없다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════ TAB 3: 항생제 선택 ══════════ -->
+<div id="tab-abx" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ4</span> 경험적 Piperacillin/tazobactam vs Cefepime</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">경험적 piperacillin/tazobactam이 cefepime에 비해 사망률을 줄이는가?</div>
+      <div class="alert alert-abx"><span>📌</span><div><strong>경험적 치료 시 piperacillin/tazobactam 또는 cefepime 중 특정 항생제 사용에 대한 권고를 보류한다.</strong> <span class="stage rec-inconclusive">권고보류</span> <span class="stage ev-low">낮음</span></div></div>
+      <div style="margin-top:8px">2021년 국내 다기관 후향적 연구에서 두 약제는 각각 59.3%, 6.7% 빈도로 처방되는 대표 경험적 항생제였다. 패혈증 쇼크·호중구감소성 발열 환자 대상 연구에서는 cefepime군의 사망률이 더 높다는 보고가 있었으나, 교란변수 보정이 이루어지지 않아 해석에 제한이 있다. 병원획득 폐렴 환자를 대상으로 두 약물을 직접 비교한 문헌은 찾을 수 없었다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구(연도)</th><th>연구설계·대상</th><th>Pip/Tazo</th><th>Cefepime</th><th>P-value</th></tr>
+        <tr><td>Yahav (2007)</td><td>메타분석, 호중구감소성 발열 (n=814)</td><td>15/416</td><td>30/398</td><td>2.14 (1.17-3.89)</td></tr>
+        <tr><td>Lee (2018)</td><td>국내 후향적, 중증 지역사회폐렴 (n=43)</td><td>18%</td><td>14%</td><td>NS</td></tr>
+        <tr><td>Smith (2020)</td><td>후향적, 패혈성쇼크 (n=400)</td><td>39.8/50.8%</td><td>52.8/65.3%</td><td>P&lt;0.05</td></tr>
+        <tr><td>Ross (2021)</td><td>후향적, 패혈성쇼크 (n=120)</td><td>37.5/52.5%</td><td>55.8/65.8%</td><td>P&lt;0.01/0.049</td></tr>
+      </table>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>참고: 약력학·안전성 비교자료</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>폐상피내막액 투과율: piperacillin/tazobactam 0.568/0.913 vs cefepime 0.99-1.12 (cefepime이 더 높음)</li>
+            <li>그람음성균 정균/살균 목표 달성 확률: cefepime 88%/81% vs pip/tazo 79%/71%</li>
+            <li>Pip/tazo + vancomycin 병합 시 cefepime 대비 신손상 위험이 더 높다는 보고가 다수 있으나, 인과관계·기전은 명확하지 않고 임상적 의미는 크지 않음</li>
+            <li>Cefepime은 혈액-뇌장벽을 통과, GABA 길항으로 의식저하·실어증·근간대성 근경련·발작 등 신경독성을 유발할 수 있음 (대부분 중단 시 호전)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회, 2017 유럽지침 모두 pip/tazo, cefepime, levofloxacin, carbapenem 중 특정 약물 우위 없음. 유럽지침은 다제내성 위험 높거나 사망률 15% 이상이지만 패혈성 쇼크 없는 경우 단일 제제로 이들을 권고.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ5</span> 고위험군 경험적 Fluoroquinolone 병합요법</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">다제내성 및 사망 위험이 높은 환자에서 경험적 fluoroquinolone 병합 치료가 β-lactam 단독 치료에 비해 사망률을 줄이는가?</div>
+      <div class="alert alert-abx"><span>📌</span><div><strong>다제내성 및 사망 위험이 높은 환자의 경험적 치료 시, β-lactam 항생제에 fluoroquinolone 병합 치료를 할 수 있다.</strong> <span class="stage rec-condfor">조건부권고</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">단일요법과 병합요법 사이 사망률·임상반응·부작용·내성 발생 빈도에 차이가 없다는 보고가 있으나, 다수 연구가 동반질환자·내성균 집락화 환자를 제외하여 적용에 제한이 있다. 2021년 국내 다기관 코호트에서는 초기 경험적 항생제의 47.3%가 병합 치료였고, 가장 많이 사용된 조합은 piperacillin/tazobactam(59.3%)+respiratory fluoroquinolone(32.1%)이었다. 다만 일반 병동 환자만 분석한 연구에서는 병합요법이 사망률 감소와 관련이 없었다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구(연도)</th><th>연구설계·대상</th><th>단일요법 사망률</th><th>병합요법 사망률</th><th>P-value</th></tr>
+        <tr><td>Damas (2006)</td><td>RCT, VAP</td><td>cefepime 단독(n=20)</td><td>+levo(n=20)/+amikacin(n=19)</td><td>NS (P=0.74)</td></tr>
+        <tr><td>Heyland (2008)</td><td>RCT, Late VAP</td><td>meropenem 25.6%(10/39)</td><td>+levo 29.4%(5/17)</td><td>RR 1.05, P=0.74</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>병합요법 시행 시에도 미생물검사 결과에 따른 항생제 범위 축소·중단, 임상 호전 시 투여기간 축소 등 <strong>단계적 축소</strong>가 뒤따라야 한다.</div></div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회: 다제내성 위험인자(90일 이내 정주 항생제, 발생 시 패혈성 쇼크, 발생 전 ARDS, 5일 이상 입원, 신대체요법 등) 보유 시 약하게 병합요법 권고. 2017 유럽지침: '고위험' 환자에서 강하게 권고하며 대상균주에 MRSA도 포함.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ6</span> 경험적 항생제 선정 시 혐기성균 고려</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">경험적 항생제 선정 시 혐기성 균을 고려하여 약제를 선택해야 하는가?</div>
+      <div class="alert alert-abx"><span>📌</span><div><strong>경험적 항생제 선정 시 혐기성 균을 고려한 약제 선택을 권고하지 않는다.</strong> <span class="stage rec-condagainst">조건부반대</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">1990년대까지의 연구에서 흡인성 폐렴 원인균의 60-90%가 혐기성 균으로 보고되어 왔으나, 2000년대 이후 연구에서는 흡인성 폐렴 원인균도 지역사회획득/병원획득 폐렴 원인균과 유사하며 혐기성 균의 비율은 1-2%로 매우 낮다. moxifloxacin과 ampicillin/sulbactam을 비교한 임상연구에서도 두 약제 간 치료 결과·안정성 차이가 없었다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회 및 2017 유럽지침 모두 관련 임상질문·권고가 없다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ7</span> 녹농균 확인 시 병합요법</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">녹농균이 원인균주로 확인된 경우 병합요법을 하여야 하는가?</div>
+      <div class="alert alert-abx"><span>📌</span><div><strong>녹농균이 원인 균주로 확인된 경우 병합요법 시행을 권고하지 않는다.</strong>(감수성 있는 단일 항생제 치료 권고) <span class="stage rec-condagainst">조건부반대</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">녹농균 균혈증을 동반한 폐렴에서도 단일요법과 병합요법의 사망률에 차이가 없었다. 국내 후향적 연구에서 병합요법이 균혈증 동반 폐렴 사망률을 줄이는 경향이 관찰되었으나, 최근 메타분석에서는 관련성이 확인되지 않았다. 다제내성 녹농균에서도 일부 중증 폐렴 연구에서 콜리스틴 기반 병합요법의 이점이 보고되었으나, 이후 비교임상시험·메타분석에서는 확인되지 않았다. 신약 ceftolozane/tazobactam은 콜리스틴 기반 병합요법보다 치료율이 높고 부작용이 적어 다제내성 녹농균에서도 단일요법이 권고되고 있다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구(연도)</th><th>연구설계</th><th>단일요법 사망률</th><th>병합요법 사망률</th><th>P-value</th></tr>
+        <tr><td>Garnacho-Montero (2007)</td><td>관찰, 다기관</td><td>12/34 (35.3%)</td><td>60/144 (41.7%)</td><td>0.69</td></tr>
+        <tr><td>Park (2012)</td><td>후향적 코호트</td><td>17/32 (53.1%)</td><td>10/33 (30.3%)</td><td>0.01</td></tr>
+        <tr><td>Peña (2013)</td><td>전향적 코호트 사후분석</td><td>70/339 (20.6%)</td><td>13/71 (18.3%)</td><td>0.97</td></tr>
+        <tr><td>Onorato (2022)</td><td>메타분석 (19개 연구)</td><td>537/2563 (20.9%)</td><td>283/1244 (22.7%)</td><td>0.658</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회: 패혈성 쇼크·사망 위험 낮으면 단일요법(strong), 위험 높으면 병합요법(weak) 권고. 2021 미국감염학회(다제내성 균주): ceftolozane/tazobactam 등 가능하면 단일요법. 2022 유럽 임상미생물감염학회: 심하지 않으면 단일요법 권고.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ8</span> 카바페넴내성 그람음성균 — 콜리스틴 흡입 병합</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">카바페넴내성 그람음성균에 의한 인공호흡기 관련 폐렴 치료에서 콜리스틴 전신항생제요법에 흡입 치료를 추가할 수 있는가?</div>
+      <div class="alert alert-abx"><span>📌</span><div><strong>카바페넴내성 그람음성균에 의한 VAP 치료에서 콜리스틴 전신항생제요법에 흡입 치료를 추가할 수 있다.</strong> <span class="stage rec-condfor">조건부권고</span> <span class="stage ev-low">낮음</span></div></div>
+      <div style="margin-top:8px">콜리스틴은 정맥투여 시 폐조직 침투율이 낮아 인공호흡기 관련 폐렴에서 적절한 항생제 역할이 명확하지 않다. 흡입치료 병합요법에 대해 다제내성 <em>A. baumannii</em> 혹은 <em>P. aeruginosa</em> 대상 후향적 연구들에서 사망률 차이는 없었으나, 높은 치료성공률(69.2% vs 54.8%, P=0.03)·적은 기계환기시간(8일 vs 12일, P=0.001)과 관련이 있었다. 메타분석에서는 정맥투여 단독 대비 임상적 치료 반응·미생물학적 박멸·감염 관련 사망에서 흡입치료 병합요법이 우월했고, 신독성은 차이가 없었다. 국내·대만 후속 연구에서도 흡입 병합요법이 미생물학적 박멸률 개선 및 치료 실패율 감소와 관련이 있었다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>2017 유럽 임상미생물감염학회 및 2022 미국감염학회 carbapenem 내성 <em>A. baumannii</em> 지침에서는, 임상적 이득에 대한 근거가 충분하지 않고 흡입치료를 받는 환자의 10-20%에서 기관지 수축과 같은 호흡기 합병증이 우려되어 <strong>흡입치료를 피할 것을 권고</strong>하는 상반된 입장도 있다.</div></div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회: 콜리스틴이 유일한 감수성 항생제일 경우 흡입치료 병합요법을 약하게 권고(weak, very low-quality).</div></div>
+    </div>
+  </div>
+
+</div><!-- /abx -->
+
+
+<!-- ══════════ TAB 4: 치료기간·축소 ══════════ -->
+<div id="tab-dur" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ9</span> 항생제 치료 기간 단축 (7-8일 vs 10-15일)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">항생제 치료 기간을 재발의 증가 없이 10-15일에 비해 7-8일로 단축할 수 있는가?</div>
+      <div class="alert alert-dur"><span>📌</span><div><strong>치료에 대한 임상 반응이 좋은 환자의 경우 항생제 치료 기간을 7-8일로 단축할 수 있다.</strong> <span class="stage rec-condfor">조건부권고</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">과거 미국흉부학회는 최소 14-21일 치료를 권고했으나, 이후 비교임상연구에서 단기치료가 전통적 장기치료와 임상 결과 차이가 없음이 확인되어 2005년 지침에서 7일로 단축하는 근거가 되었다. 2016년 지침의 자체 메타분석에서도 7-8일 단기치료와 10-15일 장기치료 간 사망률·완치율·재발률에 차이가 없어 <strong>강하게</strong> 권고하였다.</div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>⚠️</span><div>단, 대부분 <em>Pseudomonas</em>·<em>Acinetobacter</em>가 포함된 <strong>포도당 비발효 그람음성막대균(non-glucose fermenting GNB)</strong>에 의한 폐렴은 단기치료 시 재발 위험이 더 높은 경향이 시사되어 <strong>주의가 필요</strong>하다. 2022년 발표된 <em>P. aeruginosa</em> VAP 대상 8일 vs 15일 비열등성 시험은 대상자 등록 어려움으로 조기 종결되었고 8일군에서 중환자실 재원기간·사망률 증가 추세를 보였다(해석에 제한 있음).</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구(연도)</th><th>병원체</th><th>단기과정 재발</th><th>장기과정 재발</th><th>추적기간</th></tr>
+        <tr><td>Chastre (2003)</td><td>P.aeruginosa, A.baumanii, S.maltophilia</td><td>40.6% (26/64)</td><td>25.4% (16/63)</td><td>28일</td></tr>
+        <tr><td>Medina (2007)</td><td>P.aeruginosa, A.baumanii</td><td>44.4% (12/27)</td><td>22.7% (5/22)</td><td>NA</td></tr>
+        <tr><td>Fekih Hassen (2009)</td><td>P.aeruginosa, A.baumanii</td><td>14.3% (2/14)</td><td>12.5% (2/16)</td><td>ICU 재원</td></tr>
+        <tr><td>Bouglé (2022)</td><td>P.aeruginosa only</td><td>17.0% (15/88)</td><td>9.2% (9/98)</td><td>90일</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회: HAP/VAP 모두 7일 단기치료 강력 권고(strong, moderate-quality), 비발효 그람음성막대균에도 별도 권고사항은 제시하지 않음. 2017 유럽지침: 위험인자(면역결핍·낭포성섬유증·농흉·폐농양·공동/괴사성 폐렴) 없고 반응 좋으면 7-8일 제안(weak), 초기 치료 부적절 시 개별화 필요.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ10</span> 항생제 단계적 축소(De-escalation)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">병원획득 폐렴/인공호흡기 관련 폐렴 환자에서 항생제 치료의 단계적 축소를 할 수 있는가?</div>
+      <div class="alert alert-dur"><span>📌</span><div><strong>항생제 치료 중 하나 이상의 다음 과정을 통해 단계적 축소를 할 수 있다.</strong> <span class="stage rec-condfor">조건부권고</span> <span class="stage ev-mod">중등도</span>
+        <ol style="margin:6px 0 0 18px">
+          <li>미생물검사 결과에 따른 항생제 범위 축소</li>
+          <li>미생물검사 결과에 따른 하나 이상의 항생제 중단</li>
+          <li>임상 징후가 호전되는 경우 항생제 투여 기간 축소</li>
+        </ol>
+      </div></div>
+      <div style="margin-top:8px">2001년 컨센서스 콘퍼런스에서 단계적 축소가 처음 공론화되었고, 2016년 지침은 항생제 비용 감소·부작용/내성 발생 감소 측면에서 이점이 있다는 전문가 의견을 반영해 권고하였다. 이후 체계적 고찰·메타분석에서는 15일째 사망률·재원기간·비용 측면 이점이 확인되었으나 대부분 다른 평가 항목에서는 뚜렷한 이점을 규명하지 못하였다. 연구가 적고 대부분 관찰연구이며, 축소 정의·과정이 연구마다 상이하고 환자 선택 편향이 존재한다는 한계가 있다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>결과지표</th><th>단계적 축소 vs 미적용</th></tr>
+        <tr><td>사망률</td><td>유사함</td></tr>
+        <tr><td>중환자실 체류기간</td><td>비슷함(감소 경향?)</td></tr>
+        <tr><td>의료기관 체류기간</td><td>감소</td></tr>
+        <tr><td>감염 재발</td><td>논쟁 중(비슷함?)</td></tr>
+        <tr><td>중복감염</td><td>논쟁 중</td></tr>
+        <tr><td>항생제 사용기간</td><td>논쟁 중(감소?)</td></tr>
+        <tr><td>내성균 출현</td><td>증가 가능성?</td></tr>
+        <tr><td>비용(항생제·입원)</td><td>감소</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회: 상반된 결과에도 불구하고 비용·부작용·내성 감소 이점을 반영해 약하게 권고(weak, very low-quality). 2017 유럽지침: 관련 임상질문·권고 없음.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">KQ11</span> Procalcitonin 참고한 항생제 중단 결정</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">항생제 치료 기간의 개별화가 필요한 환자에서 임상상 외 procalcitonin을 참고하여 항생제 중단을 결정할 수 있는가?</div>
+      <div class="alert alert-dur"><span>📌</span><div><strong>항생제 치료 기간의 개별화가 필요한 환자에서 항생제 중단을 결정할 때 임상상 외 procalcitonin을 참고할 수 있다.</strong> <span class="stage rec-condfor">조건부권고</span> <span class="stage ev-mod">중등도</span></div></div>
+      <div style="margin-top:8px">급성 호흡기 감염 환자 4,221명을 포함한 14개 연구 메타분석에서 procalcitonin 참고 시 항생제 사용기간을 약 3.5일 단축할 수 있었으며 사망률·치료 실패율 차이는 없었다. 2016년 미국흉부학회/미국감염학회의 인공호흡기 관련 폐렴 환자 308명 자체 메타분석에서도 procalcitonin 군이 유의하게 짧은 항생제 사용기간을 보였다(9.1일 vs 12.1일, P&lt;0.001).</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>다만 7-8일 단기치료가 이미 예정된 환자에서 procalcitonin의 역할은 제한적일 수 있다. <strong>개별화가 특히 필요한 경우</strong>: ① 포도당 비발효 그람음성막대균에 의한 폐렴, ② 기타 내성 균주(카바페넴내성 장내세균, MRSA 등)로 인한 폐렴, ③ 기존 임상연구에서 제외된 환자군(초기 부적절 항생제 치료, 면역저하자 등).</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구(연도)</th><th>항생제 사용기간 - PCT군</th><th>대조군</th><th>비고</th></tr>
+        <tr><td>Stolz (2009)</td><td>10일</td><td>15일</td><td>기계환기·재원기간·28일사망률 차이 없음</td></tr>
+        <tr><td>Bouadma (2010)</td><td>10.3일</td><td>13.3일</td><td>28·60일 사망률 열등하지 않음</td></tr>
+        <tr><td>De Jong (2016)</td><td>7.5일</td><td>9.3일</td><td>PCT군 사망률 감소</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🌐</span><div><strong>국외 비교</strong> — 2016 미국흉부학회/미국감염학회: 항생제 중단 시 임상기준과 procalcitonin을 함께 고려 권고(weak, low-quality). 2017 유럽지침: 치료기간이 7-8일로 이미 짧아 연속 측정을 강력히 권고하지 않되(strong), 포도당 비발효균·내성균·면역저하자 등에서는 연속측정 참고 가능(good practice statement).</div></div>
+    </div>
+  </div>
+
+</div><!-- /dur -->
+
+
+<!-- ══════════ TAB 5: 국내역학 (부록) ══════════ -->
+<div id="tab-epi" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗒️</span> 연구 개요</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>국내 종합병원 이상 의료기관을 대상으로 한 다기관 후향적 관찰연구로, 2019년 1월-12월 1년간 <strong>국내 16개 종합병원·상급종합병원</strong>에 입원한 19세 이상 성인 <strong>477,734명</strong>을 대상으로 하였다. 병원획득 폐렴 진단기준은 2016년 IDSA/ATS 진료지침을 참고하였다(입원 당시 원인균 미배양, 입원 후 48시간 이상 지나 발생, 흉부영상 새 침윤+발열·화농성객담·백혈구증가·산소화감소 동반).</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>선택/배제 기준</th><th>내용</th></tr>
+        <tr><td>선택기준</td><td>참여병원 3일 이상 입원, 폐렴 관련 국제기준 분류자, 퇴원 시 ICD-10 폐렴코드(J13-J18, J85), 19세 이상 성인</td></tr>
+        <tr><td>배제기준</td><td>타병원에서 72시간 이상 항생제 투여 받았거나, 타병원 이송 후 48시간 이내 폐렴 발생</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📊</span> 발생 현황 및 환자 특성</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-val" style="color:var(--epi)">1,196명</div><div class="stat-lbl">병원획득 폐렴<br>(0.3%)</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--epi)">150명</div><div class="stat-lbl">인공호흡기 관련 폐렴<br>(12.5%)</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--epi)">72세</div><div class="stat-lbl">중앙연령<br>(62.0-80.0)</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--epi)">69.1%</div><div class="stat-lbl">남자 비율</div></div>
+      </div>
+      <table class="tbl">
+        <tr><th>특성</th><th>결과</th></tr>
+        <tr><td>Charlson 동반질환지수(중앙값)</td><td>5.0 (4.0-7.0)</td></tr>
+        <tr><td>임상노쇠척도(CFS, 중앙값)</td><td>5.0 (3.0-7.0)</td></tr>
+        <tr><td>가장 흔한 기저질환</td><td>고형암(32.0%), 당뇨병(30.4%), 만성신경계질환(29.0%)</td></tr>
+        <tr><td>입원 목적</td><td>내과적 질환 치료(55.0%)가 가장 많음</td></tr>
+        <tr><td>입원 장소(진단 시)</td><td>병동 74.1%, 중환자실 25.9%</td></tr>
+        <tr><td>90일 이내 주사용 항생제 사용력</td><td>72.2%</td></tr>
+        <tr><td>흔한 흡인 위험인자</td><td>연하장애(45.5%), 위 내용물 폐내 유입증가(39.5%), 의식장애(35.4%)</td></tr>
+        <tr><td>패혈증 / 패혈성쇼크 동반</td><td>55.9% / 10.9%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 항생제 치료 현황</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>항목</th><th>결과</th></tr>
+        <tr><td>가장 많이 처방된 초기 경험적 항생제</td><td>Extended-spectrum penicillin/β-lactamase inhibitor 60.7%, Respiratory fluoroquinolone 34.0%</td></tr>
+        <tr><td>두 가지 이상 항생제 병합 치료</td><td>52.3%</td></tr>
+        <tr><td>스테로이드 보조 치료</td><td>17.3% (prednisolone 환산 중앙값 40.0mg, 치료기간 중앙값 11.0일)</td></tr>
+        <tr><td>미생물학적으로 확인된 감염</td><td>517명(43.2%) — 이 중 39.5%(204명)에서 초기 항생제가 부적절하게 투여됨</td></tr>
+        <tr><td>항생제 치료 기간(중앙값)</td><td>13.0일 (8.0-24.0)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🧫</span> 주요 원인균 분포</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div style="margin-bottom:6px">원인균이 확인된 517명 중 그람음성균 78.3%, 그람양성균 21.7%. 481명 자료 기준 다제내성균은 69.0%에서 확인됨.</div>
+      <table class="tbl">
+        <tr><th>순위</th><th>원인균</th><th>비율</th></tr>
+        <tr><td>1</td><td>Acinetobacter baumannii</td><td>28.8%</td></tr>
+        <tr><td>2</td><td>Pseudomonas aeruginosa</td><td>16.2%</td></tr>
+        <tr><td>3</td><td>Klebsiella pneumoniae</td><td>15.5%</td></tr>
+        <tr><td>4</td><td>Staphylococcus aureus</td><td>12.8%</td></tr>
+        <tr><td>5</td><td>Escherichia coli</td><td>6.4%</td></tr>
+        <tr><td>6</td><td>Stenotrophomonas maltophilia</td><td>4.3%</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>다제내성균 분포(481명 기준): <em>Acinetobacter</em> spp. 29.5%, Enterobacteriaceae 15.2%, <em>P. aeruginosa</em> 13.7%, <em>S. aureus</em> 12.3%.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🏥</span> 임상 결과 및 병원 종별 비교</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>항목</th><th>결과</th></tr>
+        <tr><td>임상적 완치 / 치료 실패 / 재발</td><td>67.5% / 30.0% / 2.5%</td></tr>
+        <tr><td>미생물학적 박멸 / 치료 실패 / 집락화</td><td>64.7% / 23.1% / 10.6%</td></tr>
+        <tr><td>병원 사망</td><td>28.7%</td></tr>
+        <tr><td>퇴원 유형</td><td>자택 38.3%, 하부 의료기관 전원 29.7%, 상부 의료기관 전원 3.3%</td></tr>
+        <tr><td>연명의료 제한 결정</td><td>31.0%</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>상급종합병원(n=839)과 종합병원(n=357) 간 원인균 분포, 다제내성균 비율(67.8% vs 71.2%), 임상 결과(사망률 27.2% vs 32.2%) 모두 <strong>통계적으로 유의한 차이는 없었다</strong>.</div></div>
+    </div>
+  </div>
+
+</div><!-- /epi -->
+
+
+<!-- ══════════ TAB 6: 약어·근거등급 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> 근거수준·권고등급 요약</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>근거수준</th><th>정의</th></tr>
+        <tr><td><span class="stage ev-high">높음</span></td><td>다른 연구가 효과 추정에 대한 신뢰를 바꾸는 경우가 거의 없다</td></tr>
+        <tr><td><span class="stage ev-mod">중등도</span></td><td>추정값이 변할 수 있으나 중요한 신뢰 변화 가능</td></tr>
+        <tr><td><span class="stage ev-low">낮음</span></td><td>다른 연구가 신뢰에 매우 중요한 영향을 미칠 수 있다</td></tr>
+        <tr><td><span class="stage ev-vlow">매우 낮음</span></td><td>효과의 추정값에 대한 확신이 거의 없다</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고등급</th><th>정의</th></tr>
+        <tr><td><span class="stage rec-strongfor">강력 권고</span></td><td>대부분의 임상 상황에서 강하게 권고</td></tr>
+        <tr><td><span class="stage rec-condfor">조건부 권고</span></td><td>선택적으로 사용하거나 조건부로 권고</td></tr>
+        <tr><td><span class="stage rec-condagainst">조건부 반대</span></td><td>일부 상황·조건에서 시행을 권고하지 않음</td></tr>
+        <tr><td><span class="stage rec-strongagainst">강력 반대</span></td><td>대부분의 임상 상황에서 시행을 권고하지 않음</td></tr>
+        <tr><td><span class="stage rec-inconclusive">권고 보류</span></td><td>근거수준이 낮거나 변이가 커서 시행 여부를 결정하지 않음</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 주요 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> 항생제·병원체 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-drug-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처 및 위원회</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>질병관리청·대한결핵 및 호흡기학회 호흡기감염병연구회. 「2023 성인 병원획득 폐렴 진료 및 항생제 사용 지침」. 자문: 대한중환자의학회, 대한감염학회, 대한항균요법학회. 지침개발위원회 위원장: 전경만(성균관대학교 의과대학).</div></div>
+      <div class="acc" style="margin-top:8px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>지침개발위원회 명단</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>위원장: 전경만 (성균관대학교 의과대학)</li>
+            <li>위원: 민경훈, 이영석, 오지연 (고려대학교 의과대학)</li>
+            <li>위원: 최하영 (한림대학교 의과대학)</li>
+            <li>위원: 장유진 (인제대학교 의과대학)</li>
+            <li>위원: 이보영, 백애린 (순천향대학교 의과대학)</li>
+            <li>위원: 이종민 (가톨릭대학교 의과대학)</li>
+            <li>위원: 임선희 (대한결핵 및 호흡기학회)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"HAP", def:"Hospital Acquired Pneumonia — 병원획득폐렴 (입원 48시간 이후 발생)" },
+  { term:"VAP", def:"Ventilator Associated Pneumonia — 인공호흡기 관련 폐렴 (기도삽관 48시간 이후 발생)" },
+  { term:"AMR", def:"Antimicrobial Resistance — 항생제 내성" },
+  { term:"PCT", def:"Procalcitonin — 프로칼시토닌, 세균감염 표지자" },
+  { term:"BAL", def:"Bronchoalveolar Lavage — 기관지폐포세척" },
+  { term:"PSB", def:"Protected Specimen Brush — 보호솔검체채취" },
+  { term:"TTA", def:"Transtracheal Aspirate — 경기관흡인액" },
+  { term:"GNB", def:"Gram-Negative Bacilli — 그람음성막대균" },
+  { term:"MDR", def:"Multi-Drug Resistant — 다제내성" },
+  { term:"MRSA", def:"Methicillin-Resistant Staphylococcus aureus — 메티실린내성 황색포도알균" },
+  { term:"CRE", def:"Carbapenem-Resistant Enterobacteriaceae — 카바페넴내성 장내세균" },
+  { term:"ARDS", def:"Acute Respiratory Distress Syndrome — 급성호흡곤란증후군" },
+  { term:"SOFA", def:"Sequential Organ Failure Assessment — 순차적 장기부전 평가 점수" },
+  { term:"CCI", def:"Charlson Comorbidity Index — Charlson 동반질환지수" },
+  { term:"CFS", def:"Clinical Frailty Scale — 임상노쇠척도" },
+  { term:"GRADE", def:"Grading of Recommendations Assessment, Development and Evaluation — 근거·권고등급 평가체계" },
+  { term:"CORE", def:"COnvergence of Recommendations and Evidence — 권고문·근거 의견수렴 방식" },
+  { term:"IDSA/ATS", def:"미국감염학회/미국흉부학회" },
+];
+const DRUG_ABBR = [
+  { term:"Pip/Tazo", def:"Piperacillin/Tazobactam (피페라실린/타조박탐)" },
+  { term:"Cefepime", def:"세페핌 — 4세대 세팔로스포린" },
+  { term:"Colistin", def:"콜리스틴 — 다제내성 그람음성균 치료 폴리믹신계 약물" },
+  { term:"Fluoroquinolone", def:"플루오로퀴놀론계 (levofloxacin, moxifloxacin 등)" },
+  { term:"Carbapenem", def:"카바페넴계 (meropenem, imipenem 등)" },
+  { term:"Ceftolozane/Tazobactam", def:"세프톨로잔/타조박탐 — 다제내성 녹농균 치료 신약" },
+  { term:"A. baumannii", def:"Acinetobacter baumannii — 아시네토박터 바우마니균" },
+  { term:"P. aeruginosa", def:"Pseudomonas aeruginosa — 녹농균" },
+  { term:"K. pneumoniae", def:"Klebsiella pneumoniae — 폐렴막대균" },
+  { term:"S. maltophilia", def:"Stenotrophomonas maltophilia" },
+  { term:"S. aureus", def:"Staphylococcus aureus — 황색포도알균" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+renderGrid('abbr-drug-grid',DRUG_ABBR);
+const ALL_ABBR = ABBR_DATA.concat(DRUG_ABBR);
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

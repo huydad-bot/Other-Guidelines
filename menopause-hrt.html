@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>폐경 호르몬요법(MHT) 진료지침 (대한폐경학회, 2025)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --vms:      #b45309;  /* 혈관운동증상 — 앰버 */
+    --gsm:      #be185d;  /* 비뇨생식기·성기능 — 로즈 */
+    --cardio:   #b91c1c;  /* 심혈관·뇌혈관·혈전 — 레드 */
+    --cancer:   #7c2d92;  /* 암 위험 — 퍼플 */
+    --brain:    #0e7490;  /* 인지·정신·골격근육 — 시안 */
+    --tx:       #4338ca;  /* 치료지침 — 인디고 */
+    --tibolone: #92400e;  /* 티볼론·TSEC — 브라운 */
+    --tools:    #4b5563;  /* 약어 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--gsm);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--tibolone);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--brain);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:18px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 8px; font-size: calc(11px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;cursor:pointer;transition:background .15s;}
+  .stat-box:hover{background:#e5e9ef;}
+  .stat-box.open{background:#eaeef3;}
+  .stat-hint{font-size:calc(9px * var(--fscale,1));color:var(--text2);margin-top:4px;opacity:.7;}
+  .stat-detail{display:none;}
+  .stat-val{font-size:calc(17px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .stat-modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:900;align-items:center;justify-content:center;padding:24px;}
+  .stat-modal-overlay.open{display:flex;}
+  .stat-modal{background:var(--surface);border-radius:12px;max-width:640px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:24px 26px;position:relative;}
+  .stat-modal-close{position:absolute;top:12px;right:14px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;font-size:16px;line-height:1;cursor:pointer;color:var(--text2);display:flex;align-items:center;justify-content:center;}
+  .stat-modal-close:hover{background:var(--border);}
+  .stat-modal-val{font-size:calc(26px * var(--fscale,1));font-weight:800;margin-bottom:4px;}
+  .stat-modal-lbl{font-size:calc(14px * var(--fscale,1));color:var(--text2);margin-bottom:16px;line-height:1.4;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .stat-modal-body{font-size:calc(14.5px * var(--fscale,1));line-height:1.85;color:var(--text);}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-vms{background:#fef3c7;border-left:3px solid var(--vms);color:#92400e;}
+  .alert-gsm{background:#fce7f3;border-left:3px solid var(--gsm);color:#9d174d;}
+  .alert-cardio{background:#fee2e2;border-left:3px solid var(--cardio);color:#991b1b;}
+  .alert-cancer{background:#f3e8ff;border-left:3px solid var(--cancer);color:#7c2d92;}
+  .alert-brain{background:#cffafe;border-left:3px solid var(--brain);color:#155e75;}
+  .alert-tx{background:#e0e7ff;border-left:3px solid var(--tx);color:#3730a3;}
+  .alert-tibolone{background:#fef3c7;border-left:3px solid var(--tibolone);color:#78350f;}
+  .alert-tools{background:#f1f5f9;border-left:3px solid var(--tools);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .kp{border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin:8px 0;background:var(--surface2);}
+  .kp-title{font-size:calc(11px * var(--fscale,1));font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;}
+  .kp ol{padding-left:18px;} .kp li{margin-bottom:3px;line-height:1.55;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0;}
+  .flow-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:calc(11.5px * var(--fscale,1));text-align:center;flex:1;min-width:120px;}
+  .flow-arrow{color:var(--text2);font-weight:700;}
+  .tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .tag-up{background:#fee2e2;color:#991b1b;} .tag-down{background:#dcfce7;color:#15803d;} .tag-neutral{background:#f1f5f9;color:#475569;}
+</style>
+</head>
+<body>
+
+<div id="stat-modal-overlay" class="stat-modal-overlay" onclick="if(event.target===this)closeStatModal()">
+  <div class="stat-modal">
+    <div class="stat-modal-close" onclick="closeStatModal()">✕</div>
+    <div id="stat-modal-val" class="stat-modal-val"></div>
+    <div id="stat-modal-lbl" class="stat-modal-lbl"></div>
+    <div id="stat-modal-body" class="stat-modal-body"></div>
+  </div>
+</div>
+
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>M</span><span>H</span><span>T</span></div>
+      <h1>폐경 호르몬요법(MHT) 진료지침 (대한폐경학회, 2025)</h1>
+    </div>
+    <div class="meta-line">
+      The 2025 Menopausal Hormone Therapy Guidelines · J Menopausal Med 2025;31:53-84 · 2020년판 이후 첫 개정
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 원문 요약·재구성본으로, 학회의 공식 승인을 받지 않음</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('vms')">🔥 혈관운동증상</div>
+    <div class="tab" onclick="showTab('gsm')">🌸 비뇨생식기·성기능</div>
+    <div class="tab" onclick="showTab('cardio')">❤️ 심혈관·뇌혈관·혈전</div>
+    <div class="tab" onclick="showTab('cancer')">🎗️ 암 위험</div>
+    <div class="tab" onclick="showTab('brain')">🧠 인지·정신·골격근육</div>
+    <div class="tab" onclick="showTab('tx')">💊 치료지침·기타위험</div>
+    <div class="tab" onclick="showTab('tibolone')">🧪 티볼론·TSEC</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box" onclick="toggleStat(this)">
+      <div class="stat-val" style="color:var(--overview)">2025</div><div class="stat-lbl">2020년판 이후<br>첫 개정</div>
+      <div class="stat-hint">클릭하여 자세히 보기 ▾</div>
+      <div class="stat-detail">MHT는 혈관운동증상(VMS)·비뇨생식기증후군(GSM)의 근간이 되는 치료이며, 젊은 폐경후 여성의 골다공증 예방·관리에도 적응증이 있다. 축적된 근거와 진료현장의 변화를 반영해 대한폐경학회는 <strong>2020년 이후 처음으로</strong> MHT 지침을 개정했다. 이번 개정의 목적은 임상의와 환자에게 정확하고 최신화된 정보와 MHT의 적절한 사용에 대한 실용적 지침을 제공하는 것이다.</div>
+    </div>
+    <div class="stat-box" onclick="toggleStat(this)">
+      <div class="stat-val" style="color:var(--vms)">~75%</div><div class="stat-lbl">45-55세 여성의<br>혈관운동증상 경험률</div>
+      <div class="stat-hint">클릭하여 자세히 보기 ▾</div>
+      <div class="stat-detail">안면홍조로 대표되는 VMS는 갑작스런 열감과 함께 심계항진·발한·수면장애를 동반한다. <strong>45-55세 여성의 약 75%가 이 증상을 경험</strong>하며 기분·자존감·수면의 질·전반적 활력에 상당한 영향을 준다. 전세계 유병률은 지역차가 있어 아시아(22-63%)가 서구(36-74%)보다 낮게 보고된다. 흡연·불안·우울·비만이 위험인자로 확인되며, 증상은 대개 마지막 월경 후 1-2년 내 최고조에 이르나 일부 여성에서는 10년 이상 지속될 수 있다. VMS는 심혈관질환 위험 증가, 골밀도 저하, 인지기능 저하와도 연관된 것으로 보고된다.</div>
+    </div>
+    <div class="stat-box" onclick="toggleStat(this)">
+      <div class="stat-val" style="color:var(--gsm)">40-54%</div><div class="stat-lbl">폐경후 여성의<br>비뇨생식기증후군 유병률</div>
+      <div class="stat-hint">클릭하여 자세히 보기 ▾</div>
+      <div class="stat-detail">폐경후 여성의 <strong>40-54%가 곤란한 GSM 증상</strong>을 보고하며, 폐경전 여성에서도 약 15%가 유사한 호소(시상하부성무월경·고프로락틴혈증·피임제 사용·항에스트로겐제제로 인한 일과성 저에스트로겐 상태와 연관)를 경험한다. 아로마타제억제제로 치료 중인 유방암 환자에서는 GSM이 특히 흔하고 중증이다. GSM 관련 호소 중 <strong>질건조가 가장 흔하고 고통스러운 증상</strong>으로 85-93%의 여성에서 나타나며 성욕감소·통증성교 등 성기능장애로 이어질 수 있다. 배뇨곤란·절박뇨는 각각 GSM 여성의 29%·28%에서 보고된다.</div>
+    </div>
+    <div class="stat-box" onclick="toggleStat(this)">
+      <div class="stat-val" style="color:var(--cardio)">&lt;60세/10년</div><div class="stat-lbl">MHT 이득이 최대화되는<br>'기회의 창' 기준</div>
+      <div class="stat-hint">클릭하여 자세히 보기 ▾</div>
+      <div class="stat-detail"><strong>폐경 10년 이내 또는 60세 이전</strong>에 MHT를 시작한 건강한 초기 폐경후 여성에서는 관상동맥질환(CAD) 예방효과를 기대할 수 있다는 것이 '기회의 창(window of opportunity)' 또는 '시기가설(timing hypothesis)'의 핵심이다. 23개 임상시험 메타분석에서 이 기준을 충족하는 시작은 CAD위험을 32% 감소시켰으나 고령여성에서는 보호효과가 없었다. 같은 기준의 여성은 뇌졸중 위험도 유의하게 증가하지 않으며(60세 이상·폐경10년 초과 여성은 허혈성뇌졸중 위험 증가), 골밀도·골절 예방효과도 이 시기에 시작할 때 가장 크다. ELITE 연구는 폐경 6년 이내 시작시 경동맥내막중막두께가 유의하게 감소했으나 10년 초과 시작시에는 이득이 없어 이 개념을 뒷받침했다. 다만 <strong>MHT는 CAD의 1차·2차 예방만을 목적으로는 현재 권고되지 않는다.</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 지침 개관</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>폐경 호르몬요법(MHT)은 <strong>혈관운동증상(VMS)과 비뇨생식기증후군(GSM)의 근간이 되는 치료</strong>이며, 젊은 폐경후 여성의 골다공증 예방·관리에도 적응증이 있다. 대한폐경학회는 축적된 근거와 진료현장의 변화를 반영해 2020년 이후 처음으로 지침을 개정했다.</div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🎯</span><div>MHT 시작·적응증·금기를 판단하려면 <strong>철저한 사전평가</strong>(병력·신체진찰·검사)가 필수다. 폐경 증상의 이질성을 고려해 환자 개인의 위험프로파일에 맞춰 개별화하고, 연령에 맞는 정기 건강검진과 통합해야 한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩺</span> MHT 시작 전 필수 검사</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>영역</th><th>항목</th></tr>
+        <tr><td>병력청취</td><td>생활습관(흡연·음주), 정신건강(우울 등), 개인·가족력(알츠하이머병·골다공증·당뇨병·자궁내막암·유방암·갑상선질환·심혈관질환·정맥혈전색전증)</td></tr>
+        <tr><td>신체진찰</td><td>신장·체중·혈압, 골반·유방·갑상선 진찰</td></tr>
+        <tr><td>혈액검사</td><td>간·신장기능, 혈색소, 공복혈당, 지질검사</td></tr>
+        <tr><td>영상·선별검사(필수)</td><td>유방촬영술, 골밀도(BMD), 자궁경부세포검사. 국내 비용효과성을 고려해 <strong>골반초음파도 기본검사로 권고</strong></td></tr>
+        <tr><td>선택검사(위험요인별)</td><td>갑상선기능검사, 유방초음파, 자궁내막생검</td></tr>
+      </table>
+      <div class="alert alert-vms" style="margin-top:8px"><span>🔄</span><div>기본·선택 검사 모두 환자의 임상상태에 따라 <strong>1-2년마다 반복</strong>해야 한다.</div></div>
+      <div>MHT는 VMS·비뇨생식기위축·폐경후 골손실 등 에스트로겐 결핍 증상의 완화에 적응증이 있다. <strong>조기난소부전 여성</strong>은 증상 유무와 무관하게 자연폐경 평균연령까지 MHT가 권고된다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>금기</th><th>비고</th></tr>
+        <tr><td>원인불명 질출혈</td><td>선행 평가 필요</td></tr>
+        <tr><td>에스트로겐의존성 악성종양(예: 유방암)</td><td>-</td></tr>
+        <tr><td>활동성 혈전색전질환</td><td>-</td></tr>
+        <tr><td>간기능장애, 담낭질환</td><td>-</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔄</span> 폐경이행기 여성의 MHT</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>폐경이행기는 <strong>월경불순의 시작부터 마지막 월경까지</strong>를 말하며, 과다·불규칙출혈과 안면홍조 등 VMS가 흔히 동반된다. 증상은 폐경 1-3년 전 시작해 폐경 전후 최고조에 이르고 수년간, 드물게 폐경 후 10년까지 지속될 수 있다. 45-55세 여성의 약 75%가 이 증상을 경험하며 기분·자존감·수면·활력에 상당한 영향을 준다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🧪</span><div>혈청 항뮬러관호르몬·난포자극호르몬·에스트라디올·동난포수 등 <strong>난소예비력 검사는 폐경시기 예측에 제한적</strong>이라 일반 인구에서 일상적 호르몬검사는 권고되지 않는다. 다만 터너모자이시즘 등 특정 상황에서는 매년 호르몬평가가 권고된다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>치료옵션</th><th>특징</th></tr>
+        <tr><td>비약물적 중재</td><td>스트레스 감소, 체중관리, 수면개선 인지행동치료(CBT) — 효과 입증. 대두이소플라본·블랙코호시·비타민E·오메가3 등 일부 건강보조식품은 위약과 유사한 효과에 그침</td></tr>
+        <tr><td>에스트로겐-프로게스토겐요법(EPT)</td><td>이행기·폐경후 모두에서 효과 입증된 치료. 표준 가임기 요법보다 저용량이라 돌파출혈이 더 흔할 수 있음</td></tr>
+        <tr><td>저용량 복합경구피임제(COC)</td><td>피임이 필요한 여성에 적합, VMS와 월경불순을 동시에 관리. E2/디에노게스트 COC(Qlaira®) 등 연속투여·휴약기간이 짧은 요법이 휴약기 증상 악화를 줄일 수 있음. 비만·흡연·심혈관질환 등 주요 위험인자가 없다면 40-55세 여성에서 대체로 안전</td></tr>
+        <tr><td>경구/경피 에스트로겐+LNG-IUS</td><td>증상완화와 자궁내막증식 예방을 동시에 달성하는 효과적 전략</td></tr>
+        <tr><td>에스트로겐단독요법(ET)</td><td>자궁적출 여성에 적합하나 이행기에는 폐경후보다 적응증이 적음</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>이행기 에스트로겐 시작이 장기적 심혈관·유방암 위험에 미치는 영향은 아직 완전히 규명되지 않아, 치료결정은 증상부담과 환자별 위험인자에 따라 개별화해야 한다. 관상동맥질환·뇌졸중·정맥혈전색전증 등 심혈관질환, 에스트로겐의존성 악성종양, 활동성 간·담낭질환, 원인불명 질출혈, 임신의심 상태에서는 호르몬요법을 피해야 한다.</div></div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 혈관운동증상 ══════════ -->
+<div id="tab-vms" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔥</span> 혈관운동증상(VMS)과 삶의 질</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>VMS는 중추신경계 에스트로겐 농도 저하로 발생한다.</li>
+          <li>VMS는 MHT의 1차 적응증이다.</li>
+          <li>MHT는 60세 이하 또는 폐경 10년 이내의 건강한 폐경후 여성에서 VMS에 가장 효과적인 치료다.</li>
+          <li>MHT 중단 후 증상 재발이 흔하다.</li>
+        </ol>
+      </div>
+      <div>안면홍조는 VMS의 대표증상으로 갑작스런 열감·심계항진·발한·수면장애를 동반한다. 전세계 유병률은 지역차가 있어 아시아(22-63%)가 서구(36-74%)보다 낮다. 흡연·불안·우울·비만이 위험인자로 확인되며, 증상은 대개 마지막 월경 후 1-2년 내 최고조에 이르나 일부 여성에서는 10년 이상 지속될 수 있다. VMS는 심혈관질환 위험 증가, 골밀도 저하, 인지기능 저하와도 연관된다.</div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>치료</th><th>효과</th></tr>
+        <tr><td>표준용량 MHT</td><td>약 75% 증상감소 — VMS에 가장 효과적</td></tr>
+        <tr><td>저용량 MHT</td><td>약 65% 증상감소</td></tr>
+        <tr><td>초저용량 경피 MHT</td><td>고령층에서 효과가 낮을 수 있음</td></tr>
+        <tr><td>비호르몬 대안(SSRI·SNRI·가바펜틴)</td><td>중등도의 증상완화</td></tr>
+        <tr><td>뉴로키닌 수용체 길항제(페졸리네탄트·엘린자네탄트)</td><td>중등도-중증 VMS에 유망한 신규 비호르몬 옵션. 페졸리네탄트(선택적 뉴로키닌3 수용체 길항제)는 임상시험에서 안면홍조 빈도·중증도를 유의하게 감소시킴</td></tr>
+      </table>
+      <div class="alert alert-vms" style="margin-top:8px"><span>🔁</span><div>MHT 중단 후에는 감량방법과 무관하게 <strong>최대 87%에서 증상이 재발</strong>한다. MHT는 VMS 외에도 수면개선·복부지방 감소·제2형당뇨 및 관절치환수술 위험 저하를 통해 전반적 삶의 질을 향상시킨다. <strong>티볼론은 성기능 개선에, 저용량 E2/노르에티스테론아세테이트(NETA)는 VMS 완화에</strong> 특히 효과적이다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 국내 연구 상세를 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🇰🇷 한국 여성 VMS 관련 연구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">2010년 40-60세 한국 여성 연구에서 VMS 유병률은 폐경이행기 41.6%, 초기폐경후 53.1%, 후기폐경후 36.5%였다. 45세 미만 여성의 50%는 안면홍조만 경험한 반면, 45-60세 여성의 70%는 안면홍조와 발한을 함께 경험했다. 2001년 갤럽코리아 조사에서는 MHT를 받은 50-59세 폐경후 여성의 62.7%가 증상완화를 보고했다. 저용량 E2헤미하이드레이트/드로스피레논요법은 VMS를 84.4% 감소시켜 위약군(48.1%)보다 우수했다. 경피에스트로겐요법은 3개월 이내 안면홍조·야간발한·불면을 유의하게 개선시켰다. 국내 연구들은 여성건강설문(WHQ) 점수와 전반적 삶의 질(신체·우울증상 관리, 수면개선, 자기매력인식 향상 포함)의 유의한 개선도 보고했다. SF-36 평가에서도 HT 사용군이 비사용군보다 삶의 질 점수가 높았다.</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /vms -->
+
+
+<!-- ══════════ TAB 3: 비뇨생식기·성기능 ══════════ -->
+<div id="tab-gsm" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🌸</span> 폐경 비뇨생식기증후군(GSM)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>GSM은 에스트로겐 감소로 인한 생식기·질·요도·방광의 위축변화로 발생하는 모든 증상(외음질위축 VVA 포함)을 포괄한다.</li>
+          <li>저용량 질 에스트로겐요법은 전신흡수가 최소화되어 효과적이고 안전하며, GSM 치료에 전신 HT보다 우선 권고된다.</li>
+          <li>저용량 질 에스트로겐요법은 재발성 요로감염을 예방하고 과민성방광·요절박 등 배뇨증상을 개선시킨다. 그러나 전신 MHT는 요실금 증상을 개선하지 못하며 오히려 요실금 위험을 높일 수 있다.</li>
+        </ol>
+      </div>
+      <div>GSM(구 외음질위축)은 외음부·질·요도·방광을 포함한 하부요로에 미치는 에스트로겐결핍 증상·징후의 총체다. 폐경후 여성의 <strong>40-54%가 곤란한 GSM 증상</strong>을 보고하며 폐경전 여성의 약 15%도 유사한 증상을 겪는다. 아로마타제억제제 치료중인 유방암 환자에서 특히 흔하고 중증이다.</div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>증상영역</th><th>세부증상</th></tr>
+        <tr><td>생식기증상</td><td>외음·질건조, 소양감, 작열감, 자극감, 비정상 질분비물</td></tr>
+        <tr><td>비뇨기증상</td><td>배뇨곤란, 빈뇨·절박뇨, 야간뇨, 재발성 요로감염</td></tr>
+        <tr><td>성적증상</td><td>질윤활·성반응 저하, 삽입통(성교통), 오르가즘 감소·지연, 성교후 출혈</td></tr>
+      </table>
+      <div>질건조는 GSM 관련 호소 중 <strong>가장 흔하고 고통스러운 증상</strong>으로 85-93%의 여성에서 나타나며 성욕감소·통증성교 등 성기능장애로 이어질 수 있다. 배뇨곤란·절박뇨는 각각 GSM 여성의 29%·28%에서 보고된다.</div>
+
+      <div class="alert alert-gsm" style="margin-top:8px"><span>🔬</span><div>GSM에는 객관적 진단기준이 없어 <strong>의사가 환자가 증상을 호소하기 전에 능동적으로 문의</strong>해야 한다. 진단·치료 시작은 통상 곤란한 증상, 질 pH&gt;5.0, 또는 부기저세포&gt;65%를 보이는 질성숙지수에 근거하며(감염·활동성 질출혈이 없는 경우), 검사실검사는 필요하지 않다.</div></div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>치료</th><th>특징</th></tr>
+        <tr><td>질윤활제·보습제</td><td>질건조 개선에 효과적이나 국소에스트로겐보다 효과가 낮음. 호르몬 회피를 원하는 여성에게 권장</td></tr>
+        <tr><td>국소에스트로겐요법</td><td><strong>가장 효과적</strong> — 질 pH회복, 유산균증식 촉진, 감염감수성 저하, 질상피 비후·성숙도 개선, 질분비물 증가. 요로감염 재발 감소, 절박뇨·배뇨곤란·야간뇨·과민성방광·복압성요실금 증상도 개선. 임상적 개선은 4-6주 내 나타나며 증상해소 이후에도 유지요법 지속 가능. 6.2년 추적연구에서 뇌졸중·침습유방암·자궁내막암·대장암·혈전색전증 발생 증가가 확인되지 않아, 고위험요인이나 초치료용량 초과가 아니면 일상적 자궁내막 모니터링(경질초음파·생검)은 불필요</td></tr>
+        <tr><td>질 DHEA(국내 미승인)</td><td>2016년 생식기위축 관련 성교통 치료로 승인(미국). 세포 내에서 아로마타제를 통해 안드로겐·에스트로겐으로 전환. 12주 연구에서 DHEA·DHEA-S·테스토스테론·E2 혈청농도가 정상 폐경후 범위 내 유지, 자궁내막 영향 미미</td></tr>
+        <tr><td>경구 오스페미펜(60mg, 국내 미승인)</td><td>선택적에스트로겐수용체조절제(SERM). 52주 임상시험에서 자궁내막·유방에 악영향 없이 질조직에 에스트로겐 유사 활성. 국소요법을 원하지 않는 여성에 적합하나 유방암 생존자 안전성은 불확실. 부작용: 안면홍조(~7%), 경미한 혈전위험 상승</td></tr>
+        <tr><td>레이저·고주파 에너지 치료</td><td>조절된 상피손상을 통한 조직재생을 목표로 하나 FDA 미승인이며 2018년 FDA가 안전성 경고 발행. ACOG·미국비뇨부인과학회·NAMS 등 주요 학회는 장기 안전성·유효성 근거 부족으로 일상적 사용에 반대</td></tr>
+        <tr><td>골반저 물리치료·질확장기</td><td>바이오피드백 등 기법이 통증유발점 파악·완화에 도움. 성교통 병력이 있으면 이차성 질경련이 동반될 수 있어 가장 작은 직경부터 점진적으로 기계적 확장을 시행</td></tr>
+      </table>
+
+      <div class="alert alert-warn" style="margin-top:8px"><span>🎗️</span><div><strong>유방암 병력 여성</strong>은 비호르몬적 접근이 일반적으로 우선 권고된다. 증상이 심하거나 비호르몬요법에 반응하지 않으면 종양전문의와의 충분한 위험-이득 상담 후 저용량 질 에스트로겐을 고려할 수 있다. 2016년 ACOG 지침에 따르면 저용량 질 에스트로겐 사용이 유방암 재발위험을 높이지 않는다. 미국임상종양학회는 유방암 생존자의 GSM 1차치료로 비호르몬제를, 증상 지속 시 저용량 질 에스트로겐을 2차옵션으로 권고하되(아로마타제억제제 사용자는 예외), 이 경우 안전성 자료가 부족한 질 DHEA가 대안으로 제시된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💞</span> 성기능장애</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>연령증가와 에스트로겐 감소는 성기능에 부정적 영향을 미쳐 질건조·성교통·성욕저하·성반응 감소를 유발한다.</li>
+          <li>성호르몬 수치 측정은 성기능장애 진단·치료에 유용성이 낮으며, 건강한 여성의 안드로겐결핍 평가에 안드로겐검사는 권고되지 않는다.</li>
+          <li>성기능장애 평가시 GSM의 역할을 항상 고려해야 한다.</li>
+          <li>질에스트로겐요법은 GSM 여성의 성기능을 효과적으로 개선한다.</li>
+          <li>전신 HT와 저용량 질에스트로겐 모두 질윤활·혈류·감각기능을 향상시켜 성기능(특히 성교통 완화)을 개선한다.</li>
+          <li>성욕감소 여성에는 경구보다 경피에스트로겐 전신HT가 선호되며, 티볼론은 성욕·흥분 증진을 통해 여성성기능장애를 효과적으로 개선한다.</li>
+        </ol>
+      </div>
+      <div>수술적 폐경을 경험한 여성은 급격한 호르몬변화로 인해 <strong>성욕감소장애 발생률이 현저히 높아지는</strong> 등 성기능 저하가 더 뚜렷하다. 성기능 다인성 특성으로 인해 HT의 효과는 복잡하고 다소 일관되지 않으나, ET·EPT는 성교통 등 질불편감 완화를 통해 폐경증상이 있거나 조기폐경 여성의 성기능을 개선시킨다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>치료</th><th>효과</th></tr>
+        <tr><td>티볼론</td><td>EPT 대비 성욕·흥분·성행위빈도·질윤활 개선에서 우월 — 성기능장애 여성에 유리한 옵션</td></tr>
+        <tr><td>경피에스트로겐(전신HT 필요+성욕감소 호소시)</td><td>경구제제는 성호르몬결합글로불린(SHBG)을 증가시켜 유리테스토스테론을 감소시키므로 경피제제가 선호됨</td></tr>
+        <tr><td>테스토스테론요법(국내 미승인)</td><td>자연·수술폐경 모두에서 성욕·만족도·흥분·오르가즘반응 향상 — 에스트로겐 병용 여부와 무관하게 효과, 항우울제로 인한 성욕저하에도 효과. 적절한 용량·여성용 제형에서는 남성화 부작용 위험이 낮음</td></tr>
+        <tr><td>질내 테스토스테론(국내 미승인)</td><td>질에스트로겐과 병용(주3회) 시 위약 대비 성교통·성욕·윤활·전반적 성만족을 유의하게 개선</td></tr>
+        <tr><td>바제독시펜(BZA)+CEE 병용</td><td>폐경여성의 비뇨생식기증상·성교통 완화와 함께 성기능 특정영역 개선 가능성</td></tr>
+      </table>
+    </div>
+  </div>
+</div><!-- /gsm -->
+
+
+<!-- ══════════ TAB 4: 심혈관·뇌혈관·혈전 ══════════ -->
+<div id="tab-cardio" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>❤️</span> 관상동맥질환(CAD)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>폐경 10년 이내 및/또는 60세 이전 건강한 초기 폐경후 여성에서 MHT 시작은 관상동맥질환 예방효과를 기대할 수 있다.</li>
+          <li>MHT의 CAD 효과는 시작시점, 프로게스토겐 병용 여부·종류에 따라 달라질 수 있다.</li>
+          <li>MHT는 현재 CAD의 1차·2차 예방만을 목적으로는 권고되지 않는다.</li>
+        </ol>
+      </div>
+      <div>관찰연구 메타분석은 MHT 현재사용자에서 CAD 위험 28% 감소, 전체사망률 38% 감소를 보고했으나, 무작위대조시험(RCT)은 상반된 결과를 보였다. 이런 불일치는 주로 <strong>연구대상군의 차이</strong>에서 비롯된다 — WHI 등 임상시험은 평균연령 63.2세의 고령 폐경후 여성(무증상 죽상경화증 보유 가능성 높음)을 등록한 반면, 관찰코호트는 폐경 초기의 더 건강한 여성을 포함하는 경향이 있었다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구</th><th>결과</th></tr>
+        <tr><td>HERS(2차예방, CEE/MPA)</td><td>보호효과 없음, 치료 첫해 위험 50% 증가(이후 감소)</td></tr>
+        <tr><td>WHI(1차예방, CEE/MPA)</td><td>이득 없음, 첫해 CAD위험 80% 증가(이후 감소)</td></tr>
+        <tr><td>WHI(CEE 단독)</td><td>초기위험 증가도 유의한 예방효과도 없음</td></tr>
+        <tr><td>WHI 하위분석(시기별)</td><td>폐경 10년 이내 시작군은 CAD위험 감소 경향, 폐경 20년 이후 시작군은 위험 유의하게 증가</td></tr>
+        <tr><td>23개 임상시험 메타분석</td><td>60세 이전 또는 폐경 10년 이내 시작시 CAD위험 32% 감소, 고령군은 보호효과 없음</td></tr>
+        <tr><td>19개 RCT 메타분석</td><td>조기시작시 전체사망률 30%·심혈관사망률 48% 감소</td></tr>
+        <tr><td>덴마크 골다공증예방연구</td><td>평균연령 50세 여성 약 1,000명, 10년 MHT로 사망·심부전·심근경색 복합종점 52% 감소</td></tr>
+        <tr><td>KEEPS(평균 52세, 폐경 3년 이내)</td><td>4년간 경동맥내막중막두께 변화 없음, 다만 관상동맥석회화 진행은 치료군에서 더 느림</td></tr>
+        <tr><td>ELITE(조기 vs 후기 개입)</td><td>폐경 6년 이내 시작군은 경동맥내막중막두께 유의 감소, 폐경 10년 초과군은 이득 없음 — '시기가설' 뒷받침</td></tr>
+      </table>
+      <div class="alert alert-cardio" style="margin-top:8px"><span>📊</span><div>강력한 근거는 <strong>폐경 10년 이내·60세 미만 여성에서 표준용량 에스트로겐 단독요법 시작이 CAD 발생률·사망률을 낮춘다</strong>는 것을 시사하며, 병합프로게스틴요법도 유사한 경향을 보인다. 그러나 기존 CAD가 있는 여성에서는 HT의 유의한 이득이 없어, <strong>MHT는 CAD의 1차·2차 예방만을 목적으로는 권고되지 않는다.</strong></div></div>
+      <div><small>한국에서 심장질환은 2022년 여성 사망원인 2위였다. 허혈성심장질환 사망률은 인구 10만명당 24.3명이며, 1990-2015년 심근경색 발생률이 43% 증가했다. 2018-2022년 허혈성심장질환 치료환자는 91만명에서 103만명 이상으로 12.9% 증가, 관련 의료비는 25.7% 증가(9,883억원→1조2,425억원)했다.</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧠</span> 뇌졸중</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>WHI 자료를 포함한 여러 메타분석에서 MHT는 60세 미만 또는 폐경 10년 이내 여성의 뇌졸중 위험을 높이지 않는다.</li>
+          <li>뇌졸중 위험은 연령에 따라 다르며, MHT는 60세 이상 여성의 허혈성뇌졸중 위험을 높인다.</li>
+          <li>MHT는 기존 심혈관질환이 있는 폐경후 여성에서 뇌졸중 위험을 특별히 높이지 않는다.</li>
+          <li>저용량 경구HT 또는 경피HT는 뇌졸중 위험을 더 낮출 수 있다.</li>
+        </ol>
+      </div>
+      <table class="tbl">
+        <tr><th>연령군</th><th>EPT</th><th>ET</th></tr>
+        <tr><td>50-59세(폐경10년 이내)</td><td>뇌졸중 발생률 드묾(&lt;1/1,000인년), 통계적 유의차 없음</td><td>경미한 위험감소(1/10,000인년); 폐경10년 이내군은 비유의적 증가(13/10,000인년)</td></tr>
+        <tr><td>60세 이상/폐경10년 초과</td><td>허혈성뇌졸중 HR 1.45</td><td>허혈성뇌졸중 HR 1.55(출혈성뇌졸중 영향 없음)</td></tr>
+      </table>
+      <div>WHI 13년 장기추적자료는 연령과 무관하게 MHT군과 위약군 간 뇌졸중 위험 차이가 없었다. 메타분석은 기존 심혈관질환이 있는 폐경후 여성에서도 MHT가 뇌졸중 위험을 높이지 않음을 시사한다. 관찰연구는 <strong>저용량 경구 MHT·경피에스트로겐제형이 고용량 경구제제보다 뇌졸중 위험이 낮을 수 있음</strong>을 제안한다.</div>
+      <div><small>2024년 한국뇌졸중등록사업에 따르면 2012-2022년 허혈성뇌졸중이 전체 뇌졸중의 89.4%를 차지했다. 여성환자의 40.7%가 허혈성뇌졸중이었고 평균발병연령 72.5세였다. 55세 미만 여성 허혈성뇌졸중 비율은 2022년 8.8%로 지난 10년간 지속적으로 감소했다. 같은 해 허혈성뇌졸중 원내사망률은 2.6%였고, 퇴원시 44.1%가 기능적으로 독립적, 38.8%가 도움이 필요했다.</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩸</span> 정맥혈전색전증(VTE)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>MHT는 VTE 위험을 높이며, 특히 고령여성·폐경 10년 초과 여성에서 두드러진다.</li>
+          <li>VTE 위험은 MHT 시작 첫해에 가장 높고 이후 감소한다.</li>
+          <li>ET는 EPT보다 VTE 위험이 낮으며, 초기 폐경후 여성에서는 위험을 높이지 않는다.</li>
+          <li>VTE 병력·고위험군에는 경구에스트로겐이 금기다. 고위험 여성에서는 경피에스트로겐이 더 안전한 대안이 될 수 있으며, 병합요법시 경피에스트로겐+미분화프로게스테론 또는 디드로게스테론이 나은 선택일 수 있다.</li>
+          <li>아시아 여성에서 VTE 발생률은 매우 낮으며, 한국에서는 factor V Leiden 변이 보고 사례가 없다.</li>
+        </ol>
+      </div>
+      <div>서구인구의 VTE 발생률은 연간 10,000명당 약 5.4건이며, 고령·비만·혈전과거력·기저혈전성향증이 위험인자다. MHT 사용은 특히 <strong>시작 첫해에 VTE 위험을 약 2배</strong> 높이며, 고령·폐경 10년 이후 시작 여성에서 더 증가한다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>요인</th><th>VTE 위험에 대한 영향</th></tr>
+        <tr><td>경구 vs 경피 에스트로겐</td><td>경구는 간초회통과대사로 트롬빈생성 증가·플라스민 감소를 통해 혈전형성 위험이 더 큼. 경피는 간대사를 회피해 더 안전</td></tr>
+        <tr><td>CEE vs E2</td><td>경구 CEE가 E2보다 혈전위험이 더 높음</td></tr>
+        <tr><td>프로게스토겐 종류</td><td>MPA가 미분화프로게스테론·디드로게스테론 등 프레그난 유도체보다 VTE 위험을 더 높이는 것으로 평가됨</td></tr>
+        <tr><td>EPT vs ET</td><td>병합요법이 ET 단독보다 VTE 위험이 높으며, factor V Leiden변이 또는 BMI≥25kg/m² 여성에서 특히 위험이 높음</td></tr>
+      </table>
+      <div class="alert alert-cardio" style="margin-top:8px"><span>🌏</span><div>동아시아 인구의 VTE 발생률은 서구보다 현저히 낮다. 한국에서는 <strong>factor V Leiden 변이가 보고된 바 없으며</strong>, MHT 관련 VTE로 문헌에 기록된 사례는 단 1건뿐으로 이 역시 해당 변이와는 무관했다.</div></div>
+    </div>
+  </div>
+</div><!-- /cardio -->
+
+
+<!-- ══════════ TAB 5: 암 위험 ══════════ -->
+<div id="tab-cancer" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🎗️</span> 유방암</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>MHT 관련 유방암 위험은 호르몬 종류(특히 프로게스토겐), 투여경로, 시작시기, 사용기간, 과거사용력, 개인특성에 따라 달라진다.</li>
+          <li>WHI 연구에 따르면 EPT군은 연간 1,000명당 1례 미만의 추가 유방암이 발생한 반면, ET군은 7.2년 치료기간 동안 연간 10,000명당 7례 감소했고 이 효과는 20년간 지속되었다.</li>
+          <li>MHT는 유방암 가족력이 있거나 난소절제술을 받은 BRCA1/2 변이 보유자에서 유방암 상대위험(RR)을 높이지 않는다.</li>
+          <li>전신 MHT는 유방암 병력이 있는 여성에게 권고되지 않는다.</li>
+          <li>한국 여성은 서구 인구와 유방암 발생률·연령분포·임상특성이 달라, 서구 연구결과를 국내에 직접 적용하는 데 본질적 한계가 있다.</li>
+        </ol>
+      </div>
+      <table class="tbl">
+        <tr><th>요법</th><th>WHI 결과</th></tr>
+        <tr><td>CEE+MPA(EPT)</td><td>20년간 10,000인년당 9례 증가(HR 1.28, 95%CI 1.13-1.45) — 비만·낮은 신체활동 등 생활습관요인과 비견되는 수준</td></tr>
+        <tr><td>CEE 단독(ET)</td><td>7.2년 치료기간 10,000인년당 7례 감소(HR 0.78, 95%CI 0.65-0.93), 20년간 지속</td></tr>
+      </table>
+      <div>E3N 코호트연구는 <strong>미분화프로게스테론·디드로게스테론 함유 EPT는 유방암 위험 증가와 연관되지 않았으나, 합성프로게스토겐 함유요법은 위험이 더 높았다</strong>고 보고했다. 핀란드 대규모연구(221,551명)도 5년 미만 디드로게스테론 함유 EPT에서 유의한 위험증가가 없었다(RR 1.22, 95%CI 0.83-1.72, RCT 추가확인 필요). 투여경로(경구/경피)는 유방암 위험에 유의한 영향을 주지 않았고, 질에스트로겐은 위험증가와 무관했다.</div>
+      <div class="alert alert-cancer" style="margin-top:8px"><span>🧬</span><div>BRCA1/2 변이보유자나 예방적 난소절제술을 받은 유방암 가족력 여성에서 HT로 인한 추가위험은 확인되지 않았다. 재발 우려로 인해 <strong>유방암 병력 여성에서 전신 MHT는 일반적으로 금기</strong>다. WHI 연구 중 유방암이 발생한 환자군에서는 CEE단독군의 사망률이 대조군보다 유의하게 낮았으나(HR 0.60) CEE-MPA군은 차이가 없었다(HR 1.35).</div></div>
+      <div><small>2020년 전세계 유방암은 226만 건의 신규진단으로 여성암 중 가장 흔했다(24.5%). 한국의 2019년 발생률은 인구 10만명당 115.6명, 중앙진단연령 52.3세로, 서구와 달리 <strong>50대 초반에 발생이 정점을 이루고 40세 미만 폐경전 증례가 10.5%로 더 높은 비중</strong>을 차지한다. 사망률은 상대적으로 낮으나(2020년 10만명당 6.4명), 젊은 진단연령과 호르몬수용체양성 질환의 높은 유병률이라는 뚜렷한 역학적 특성을 보인다.</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔬</span> 난소암·자궁내막암·대장암·폐암</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="acc" style="margin-top:0">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span>🥚 난소암</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">WHI 자료는 ET·EPT 사용과 난소암 위험 증가 간 유의한 연관성을 보이지 않았으나, 일부 관찰연구는 특히 장액성 조직형에서 현재·최근 MHT 사용자의 경미한 위험증가를 시사했다 — 이 위험은 중단 후 5년 이내 기저치로 회복되는 경향이 있다. 상피성난소암 환자에서 MHT는 재발률·전체생존에 영향을 주지 않는 것으로 보여 폐경증상 완화 목적으로 사용될 수 있으나, 과립막세포종양·저등급장액성암종 등 <strong>에스트로겐민감성 난소악성종양에는 금기</strong>다. BRCA1/2 변이보유자가 젊은 나이에 예방적 양측난관난소절제술을 받은 경우, 단기 MHT는 대체로 안전한 것으로 간주되어 폐경증상 관리를 위해 사용될 수 있다. 국내 2023년 신규 난소암 3,221건(전체암 1.2%, 여성암 2.4%, 발생률 10만명당 12.5명).</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔺 자궁내막암</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">1999-2019년 한국 자궁내막암 조발생률은 10만명당 3.1명에서 12.8명으로 <strong>4배 급증</strong>해 현재 여성암 7위(상위 10대 암)에 해당한다. 자궁이 있는 여성에서 ET는 용량·기간에 비례해 자궁내막암 위험을 높이므로, 프로게스토겐(매월 10-14일 주기적 또는 지속적)을 병용하면 이 위험이 상당히 감소한다 — 이에 따라 자궁보존 폐경후 여성에는 EPT가 권고된다. WHI 13년 추적분석은 EPT군의 자궁내막암 발생률이 위약군보다 낮았음을 확인했다. 저용량 질에스트로겐은 자궁내막암 위험을 높이지 않아 GSM 치료 시 프로게스토겐 추가가 권고되지 않으나, 대부분의 임상시험 자궁내막생검 결과가 1년 추적에 그쳐 고위험군에서는 주의가 필요하다. 메타분석에 따르면 자궁적출+양측난관난소절제를 받은 <strong>1기 저등급 자궁내막암</strong> 환자에서 MHT는 재발·생존에 부정적 영향을 주지 않아 중등도-중증 폐경증상 관리에 고려할 수 있으나, 고등급·진행병기 종양 및 자궁내막기질육종·평활근육종에는 안전성 근거 부족으로 일반적으로 권고되지 않는다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔵 대장암</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">세계보건기구 국제암연구소에 따르면 한국은 전세계에서 대장암 발생률이 가장 높다(10만명당 45건). 관찰연구는 MHT가 대장암 위험을 20-40% 낮출 수 있음을 시사하나 이 이득은 치료중단 후 감소하는 경향이 있다. WHI 연구에서 EPT군은 위약군보다 대장암 발생률이 낮았으나(HR 0.62, 95%CI 0.43-0.89), <strong>EPT군에서 진단된 암은 림프절전이 빈도가 더 높아 더 진행된 병기였다.</strong></div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🫁 폐암</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">한국에서 폐암은 2010년 4위에서 현재 2위로 부상했으며, 65세 이상에서는 인구 10만명당 1,480건으로 이 연령대 1위 암이다(고령화가 주 요인). 폐암조직에서 에스트로겐수용체·아로마타제가 확인되어 생물학적 연관성 가능성이 제기되나 메타분석 결과는 일관되지 않는다. 흡연상태가 유의한 수정요인으로 작용하는 것으로 보이며, WHI 연구에서는 60세 이상 과거/현재흡연자 중 EPT 사용자에서 폐암사망률 증가가 관찰되었으나 ET·EPT 모두 폐암발생률 증가와는 연관되지 않았다. MHT가 폐암생존에 미치는 영향은 아직 불명확하다.</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /cancer -->
+
+
+<!-- ══════════ TAB 6: 인지·정신·골격근육 ══════════ -->
+<div id="tab-brain" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧠</span> 인지기능과 치매</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>65세 이상 여성에서 MHT(특히 EPT) 시작은 치매 위험을 높인다.</li>
+          <li>더 젊은 폐경여성 또는 양측난소절제로 조기폐경한 여성에서 MHT 시작은 인지저하 예방에 도움이 될 수 있으나 RCT의 확고한 근거는 부족하다.</li>
+          <li>MHT가 향후 인지기능에 미치는 영향은 치료시작 시점의 기저 인지건강상태에 좌우될 수 있다.</li>
+          <li>인지기능 개선·인지저하 예방만을 목적으로 MHT는 현재 권고되지 않는다.</li>
+        </ol>
+      </div>
+      <table class="tbl">
+        <tr><th>연구</th><th>결과</th></tr>
+        <tr><td>WHIMS(65세 이상, EPT)</td><td>추정치매 위험 2.05배 증가(10,000인년당 23례 추가) — ET는 유의한 변화 없음</td></tr>
+        <tr><td>WHI 인지노화연구</td><td>EPT는 비언어적 일화기억 경미개선·언어적 일화기억 저하; ET는 유의한 차이 없음</td></tr>
+        <tr><td>WHIMS-MRI</td><td>MHT군에서 전두엽·해마 등 뇌영역 용적 감소</td></tr>
+        <tr><td>MIRAGE·Cache County(관찰연구)</td><td>HT사용자에서 알츠하이머병 발생률 낮음(Cache County HR 0.41)</td></tr>
+        <tr><td>KEEPS(젊은 폐경후 여성)</td><td>인지·기분에 유의한 영향 없음 — '중요시기가설' 뒷받침</td></tr>
+        <tr><td>SWAN 연구</td><td>마지막월경 이전 MHT 시작은 언어기억 개선과 연관, 지연시작은 인지저하와 연관</td></tr>
+        <tr><td>WHIMSY(50-55세)</td><td>프로게스토겐 병용 여부와 무관하게 CEE의 인지적 이득 확인되지 않음</td></tr>
+      </table>
+      <div class="alert alert-brain" style="margin-top:8px"><span>⏰</span><div><strong>'시기가설(timing hypothesis)'</strong>은 관찰연구 참가자가 대체로 폐경에 가까운 젊은 연령에 MHT를 시작한 반면, WHIMS는 65세 이상만 등록해 기저치매위험이 높고 등록시점 무증상 알츠하이머병을 이미 보유했을 가능성이 있는 상반된 연구설계에서 비롯된 불일치를 설명한다 — MHT는 폐경에 가까운 시점에 시작하면 도움이 될 수 있으나 너무 늦게 시작하면 해로울 수 있다는 것이다. 이를 보완하는 <strong>'건강세포편향가설'</strong>은 에스트로겐 효과가 연령보다 신경조직의 기저건강상태에 더 좌우된다고 본다 — 인지기능이 온전하고 신경세포가 건강한 여성은 연령과 무관하게 이득을 볼 수 있다는 것이다. 두 가설 모두 대규모 RCT를 통한 확고한 검증은 아직 부족하다.</div></div>
+      <div>난소절제로 인한 조기연령의 수술적 폐경은 인지저하·알츠하이머병 위험 증가와 연관되며, 소규모 시험은 난소절제 직후의 신속한 에스트로겐요법이 단기적으로 언어기억을 개선시킬 수 있음을 보였다. 기존 치매치료 관련해서는, 2000년 이중맹검 RCT(자궁적출 알츠하이머병 여성 120명)에서 1년간 ET가 인지적 이득을 보이지 못했다. 장기(5년 초과) EPT 사용은 알츠하이머 위험의 경미한 상승과 연관될 수 있다는 관찰연구도 있다.</div>
+      <div><small>국내 65세 이상 여성의 약 4.2%가 알츠하이머병을 앓고 있다. 국내 연구는 알츠하이머병 한국 여성에서 1년간 MHT가 간이정신상태검사(MMSE) 점수 저하를 유발하지 않았고 일상생활수행능력 면에서 타크린과 유사한 이득을 보였다고 보고했다.</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>😔</span> 우울증</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>ET는 폐경이행기 여성의 우울증상을 개선시킬 수 있으나 근거는 제한적이다.</li>
+          <li>MHT로 우울증상이 개선된 여성은 중단 시 증상악화를 겪을 수 있다.</li>
+          <li>폐경여성의 우울장애 개선에서 EPT의 유효성 근거는 불충분하다.</li>
+          <li>근거 부족으로 MHT는 현재 우울증 치료만을 목적으로는 권고되지 않는다.</li>
+        </ol>
+      </div>
+      <div>국내 50세 이상 여성의 주요우울장애 유병률은 4.0-5.4%로 동일연령 남성(1.3-2.4%)의 약 3배다. 우울증상 빈도 자체는 폐경 전후로 유의한 차이가 없으나 <strong>폐경이행기·초기폐경후에 주요우울장애 발병 가능성이 높아지며</strong>, 우울증 과거력이 있는 여성은 이 시기 재발에 특히 취약해 사전 위험평가가 중요하다.</div>
+      <div>현행 지침상 폐경기 재발성 주요우울장애는 항우울제 또는 인지행동치료(CBT)·대인관계치료 등 근거기반 심리치료로 우선 관리해야 하며, VMS 등 폐경증상이 우울과 동반된 경우 MHT를 보조치료로 고려할 수 있다. 에스트로겐의 기분개선 효과는 VMS의 직접적 완화보다 <strong>수면의 질 개선에서 비롯</strong>되는 것으로 추정되어, 불면 관리가 폐경관련 우울 치료의 핵심 요소가 된다. 에스트로겐은 폐경이행기 우울여성에서 항우울제의 치료효과를 증강시킬 수 있다.</div>
+      <div class="alert alert-brain" style="margin-top:8px"><span>🪟</span><div>ET의 항우울 효과는 <strong>폐경이행기에 가장 뚜렷하며</strong> 폐경에서 더 멀어진 여성에서는 이득이 미미해 '기회의 창' 가설을 뒷받침한다. ET에 반응한 여성은 중단 시 증상재발을 겪을 수 있다. 대부분의 연구가 ET에 집중되어 있어 폐경단계 전반에 걸친 EPT 효능 연구는 제한적이다. 한 연구는 경피E2+간헐적 미분화프로게스테론이 정상기분의 폐경이행기·초기폐경후 여성에서 임상적으로 유의한 우울증상 발생을 예방하는 데 도움이 되었다고 보고했다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🦴</span> 골다공증</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>MHT는 폐경관련 골손실을 효과적으로 예방하고 골절위험을 낮춰, 60세 미만 또는 폐경 10년 이내 초기 폐경후 여성의 골다공증 예방·치료에 적절한 선택지다.</li>
+          <li>MHT 중단 시 골보호효과는 빠르게 소실된다.</li>
+          <li>표준용량 MHT는 골다공증이 없는 여성에서도 대퇴골·척추·기타 비척추 부위 골절을 감소시키나, 저용량요법의 이득은 아직 불확실하다.</li>
+          <li>MHT는 조기난소부전 또는 골감소증 여성의 골손실 예방에 특히 필수적이다.</li>
+        </ol>
+      </div>
+      <div>2008-2011년 국민건강영양조사(KNHANES)는 50세 이상 여성의 골다공증 유병률(37.3%)이 남성(7.5%)보다 현저히 높음을 보였다. 이 연령대 인구의 약 절반이 골감소증을 보인다. 2022년 국내 골다공증 진단자는 약 118만명, 이 중 94.4%가 여성이었다. 2012-2022년 여성 골다공증골절 발생률은 32.8% 증가했다.</div>
+      <div class="flow" style="margin-top:8px">
+        <div class="flow-box">60대까지<br>손목골절 최다</div><span class="flow-arrow">→</span>
+        <div class="flow-box">70대<br>척추골절 우세</div><span class="flow-arrow">→</span>
+        <div class="flow-box">80대<br>고관절골절 급증</div>
+      </div>
+      <div>고관절골절은 여성에서 남성보다 2.3배 흔하며, 2021년 고관절골절 후 1년 사망률은 15.7%였다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>영역</th><th>근거</th></tr>
+        <tr><td>골밀도(BMD) 효과</td><td>WHI 연구: 표준용량 EPT로 위약대비 요추(4.5%)·대퇴경부(3.7%) BMD 유의증가. 메타분석: 2년 치료로 요추 6.8%·대퇴 4.1% 증가. 저용량 에스트로겐도 고령 폐경후 여성 포함 BMD 개선에 효과적. 조기난소부전 여성에서도 골량 보존·조기골다공증 예방에 효능 입증</td></tr>
+        <tr><td>골절위험 효과</td><td>National Osteoporosis Risk Assessment(NORA) 연구: 골절경험 폐경후 여성의 82%가 골감소증 보유. WHI·NORA 모두 ET·EPT 현재사용이 척추·고관절골절 등 골절위험을 유의하게 낮춤을 입증했으나, <strong>보호효과는 중단 후 5년 이내 감소</strong>. TMS 지침은 60세 미만/폐경10년 이내 여성의 골손실예방 전략으로 적절하나, 60세 초과 여성의 골절예방만을 목적으로는 권고하지 않음</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>💪</span> 근감소증</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>근감소증은 폐경후 여성의 기능장애·신체손상·삶의질 저하·의료비 증가의 주요 원인으로, 예방·조기진단·장기관리가 필요하다.</li>
+          <li>노화관련 호르몬변화, 특히 폐경 후 급격한 에스트로겐 감소가 근감소증 진행에 중요한 역할을 한다.</li>
+          <li>MHT는 운동과 병용시 근육량 보존·근력 개선·신체기능 향상에 도움이 될 수 있으나, 근감소증 예방·치료만을 목적으로 한 MHT의 근거는 부족해 추가연구가 필요하다.</li>
+          <li>인종에 따라 골격근량이 다르고 근육구성의 연령관련 변화도 한국여성에서 다를 수 있어, 한국 폐경후 여성 특성에 맞춘 HT 연구가 제한적이다.</li>
+        </ol>
+      </div>
+      <div>근감소증은 근육량·근력·신체기능 소실을 특징으로 하는 진행성 노화관련 질환으로 낙상·골절·장애·시설입소 위험을 높인다. 2016년 ICD-10-CM, 2021년 한국 KCD-8에 질병으로 등재되며 노인증후군이자 노화관련 질환으로 인정받았다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>국제기구(진단기준)</th><th>근육량 감소</th><th>근력 감소</th><th>신체기능 저하</th></tr>
+        <tr><td>EWGSOP-2</td><td>ASM/신장² &lt;5.5kg/m²(여)</td><td>악력 &lt;16kg(여)</td><td>SPPB≤8, 보행속도≤0.8m/s</td></tr>
+        <tr><td>AWGS-2</td><td>SM/신장² &lt;5.4kg/m²(여)</td><td>악력 &lt;18kg(여)</td><td>보행속도&lt;1.0m/s, 5회의자일어서기≥12초</td></tr>
+        <tr><td>FNIH</td><td>ALM/BMI &lt;0.512(여)</td><td>악력 &lt;16kg(여)</td><td>보행속도≤0.8m/s</td></tr>
+      </table>
+      <div>여성은 폐경이행기를 전후해 <strong>더 급격한 근감소 진행</strong>을 보이며, 이는 주로 호르몬변화에 기인한다. 폐경은 연령·신장과 무관하게 특히 체간부의 제지방량 감소와 연관되며, 악력·손가락집기력 같은 근력은 55세 이후 급격히 저하된다. MHT는 운동과 병용시 근력 보존·개선에 부가적 이득을 보이나 근육량에 대한 효과는 연령·치료기간에 따라 결과가 일관되지 않는다. 대체호르몬요법(식물호르몬·DHEA·성장호르몬)은 이득이 제한적이며, 테스토스테론은 근육량 증가에 효과적이나 남성화·심혈관사건 위험을 동반한다.</div>
+      <div><small>한국노인노쇠코호트연구에 따르면 65세 이상 근감소증 유병률은 여성 13.4%·남성 35.3%다. AWGS 기준 KNHANES 자료는 50대 19.5%, 60대 16.6%, 70대 23.7%, 80세 이상 30.8%의 유병률을 보인다. 한국여성은 서구보다 이른 30-40대에 최대근육량에 도달한다. 근감소증은 골다공증과 밀접히 연관되어 골절위험을 1.5-3배 높인다.</small></div>
+    </div>
+  </div>
+</div><!-- /brain -->
+
+
+<!-- ══════════ TAB 7: 치료지침·기타위험 ══════════ -->
+<div id="tab-tx" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🫙</span> 담낭질환 및 편두통</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>담낭질환 위험은 EPT·ET 모두에서 증가한다.</li>
+          <li>관찰연구는 경피 MHT가 경구 MHT보다 담낭질환 위험이 낮음을 시사한다.</li>
+          <li>MHT는 특정 위험인자를 가진 여성에서 편두통을 악화시킬 수 있다. MHT 중 편두통이 잘 조절되지 않으면 중단 및 비호르몬 대안 고려가 권고된다.</li>
+        </ol>
+      </div>
+      <div>경구 MHT는 <strong>경구에스트로겐의 간초회통과대사</strong>로 인해 담즙 내 콜레스테롤 포화도 증가·담낭운동성 저하·콜레스테롤결정 형성 촉진을 통해 담석·담낭염·담낭절제술 필요성 증가와 연관된다. MHT와 담낭암의 연관성 근거는 없다.</div>
+      <div>WHI 연구는 EPT(CEE+MPA) 사용자에서 10,000인년당 47건, ET(CEE) 사용자에서 58건의 담낭질환 발생을 보고했다. EPT군은 치료중단 후 위험이 감소했으나 위약군보다는 여전히 높았고, ET군은 중단 후 위약군 수준으로 회복되었다. <strong>경피에스트로겐은 간대사를 회피해 담낭질환 위험이 경구제제보다 낮으며</strong>, 담낭염 치료 이력이 있는 여성에는 수술적/보존적 관리 여부와 무관하게 경피 MHT가 일반적으로 선호된다.</div>
+      <div><small>미국에서 담석질환은 인구의 10-15%에 영향을 미치며 소화기질환 입원의 주요 원인이다. 국내에서는 2015년 담낭절제술이 건강보험심사평가원 보고 7번째로 많이 시행된 수술로, 2010년 대비 27% 증가했다(선별검사 확대, 서구화된 식단, 비만 유병률 증가에 기인). 여성이 남성보다 담낭질환 발생 위험이 약 20% 높다.</small></div>
+      <div class="alert alert-tx" style="margin-top:8px"><span>💥</span><div>월경편두통, 초경 시작 편두통, 월경전증후군 병력, 수술적 폐경 등 <strong>위험인자가 있는 여성</strong>에서 MHT가 편두통을 악화시킬 수 있다. 편두통은 HT의 절대적 금기는 아니나 치료 중 세심한 모니터링이 권고된다. 증상 악화 시 에스트로겐 용량 감소 또는 경피제형 전환(더 일정한 혈중농도 유지)이 도움이 될 수 있으며, 이런 조정에도 불응하면 MHT 중단 및 비호르몬 치료옵션 탐색이 권고된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> MHT 치료적 고려사항</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="acc" style="margin-top:0">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span>🔒 프로게스토겐 병용 적응증</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">자궁이 있는 여성은 자궁내막증식·암 예방을 위해 에스트로겐에 프로게스토겐 추가가 필수다. 자궁적출 여성은 자궁내막증 과거진단이 없는 한 일반적으로 프로게스토겐이 불필요하다. EPT 시작 6개월 이후 예기치 않은 질출혈이 발생하면 추가 진단평가가 필요하다. LNG-IUS는 전신 프로게스토겐 부작용을 최소화하면서 국소적 자궁내막 보호를 제공한다. 국소 질에스트로겐 또는 골보호 목적의 초저용량 경피에스트로겐만 사용하는 경우 프로게스토겐 병용이 필요하지 않을 수 있으나 장기안전성 자료는 아직 제한적이다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💉 투여경로</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">경피·질 등 비경구 HT는 간초회통과대사를 회피해 중성지방·C반응단백·혈압에 미치는 영향이 최소화된다. <strong>경피에스트로겐은 VTE·대사증후군·고혈압 위험이 높은 여성, 흡연자에게 일반적으로 선호</strong>된다. 질에스트로겐은 질건조·위축 등 국소 비뇨생식기증상 치료에 효과적이다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⏰ 치료 시작 시기</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">MHT는 <strong>폐경이행기 또는 폐경 후 첫 10년 이내, 가급적 60세 이전</strong>에 시작할 때 가장 큰 이득을 제공한다. 조기난소부전(40세 이전 폐경) 또는 조기폐경(45세 이전) 여성에서는 장기적 건강위험 감소를 위해 증상 유무와 무관하게 MHT가 권고된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📅 치료 기간</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">현재 <strong>MHT의 보편적으로 권고되는 치료기간은 없다</strong>. 최소유효용량을 사용하고, 환자가 잠재적 위험·이득을 충분히 이해하며, 정기적 임상추적이 유지된다면 임의적 기간제한을 둘 필요는 없다. 60세 이전 또는 폐경 10년 이내 시작한 건강한 여성 중 심혈관·유방암 위험이 낮고 VMS가 지속되며 적합한 대안이 없는 경우 장기치료가 적절할 수 있다. <strong>60세 또는 65세에 일률적으로 MHT를 중단할 필요는 없다.</strong> 65세 이후에도 MHT를 지속하는 여성은 주기적인 감량·중단 시도와 동반질환 재평가가 권고된다. 조기난소부전·조기폐경 여성은 골다공증·CAD 예방을 위해 최소 자연폐경 평균연령까지는 MHT를 지속해야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔚 중단 방법</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">점진적 감량과 급작스런 중단은 증상재발률에 유의한 차이가 없어, 중단방법은 환자 개인의 선호에 따라 결정할 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧪 생체동등호르몬요법</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">정부승인 생체동등호르몬은 안전한 것으로 간주되나, <strong>조제(compounded) 생체동등호르몬요법은 유효성·안전성 근거가 불충분해 권고되지 않는다.</strong></div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🌿 보완요법 및 생활습관 교정</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">CBT와 최면요법은 VMS 완화에 도움이 될 수 있으나 대부분의 보완요법은 강력한 과학적 근거가 부족하다. 체중감량은 증상을 줄일 수 있으나, 운동·요가의 VMS 관리효과를 확증할 근거는 현재 불충분하다.</div>
+      </div>
+
+      <div style="margin-top:8px"><strong>에스트로겐 용량표</strong></div>
+      <table class="tbl" style="margin-top:4px">
+        <tr><th>제제</th><th>표준용량(mg/일)</th><th>저용량(mg/일)</th><th>고용량(mg/일)</th></tr>
+        <tr><td>경구 CEE</td><td>0.625</td><td>0.3, 0.45</td><td>0.9, 1.25</td></tr>
+        <tr><td>경구 E2 발러레이트</td><td>2.0</td><td>1.0</td><td>-</td></tr>
+        <tr><td>경구 E2 아세테이트</td><td>0.9</td><td>0.45</td><td>1.8</td></tr>
+        <tr><td>경피 17β-E2 패치</td><td>0.0375, 0.05</td><td>0.025</td><td>0.06, 0.075, 0.1</td></tr>
+      </table>
+      <div style="margin-top:6px"><small>이 외 흔히 사용되는 요법: 경구 CEE 0.3-0.625mg/일, 경구E2 1-2mg/일, 경피E2 25-50μg/일에 프로게스토겐(MPA 2.5-10mg/일 또는 미분화프로게스테론 100-200mg/일)을 필요시 병용. 티볼론 1.25-2.5mg/일도 치료옵션이다.</small></div>
+    </div>
+  </div>
+</div><!-- /tx -->
+
+
+<!-- ══════════ TAB 8: 티볼론·TSEC ══════════ -->
+<div id="tab-tibolone" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧪</span> 티볼론(Tibolone)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>VMS를 포함한 폐경증상 완화에 효과적이다.</li>
+          <li>EPT 대비 유방압통·유방촬영술상 치밀유방 증가·질출혈 발생률이 낮다.</li>
+          <li>EPT보다 성기능장애 개선에 더 효과적일 수 있다.</li>
+          <li>기분장애·수면장애·집중력저하·피로 등 VMS 외 증상완화에서 EPT보다 효과적이다.</li>
+          <li>골밀도를 증가시키고 척추·비척추 골절을 감소시킨다.</li>
+          <li>유방암 환자에서 사용시 재발위험을 높인다.</li>
+          <li>60세 미만 여성에서는 뇌졸중위험 증가와 무관하나 60세 이상에서는 위험이 높아질 수 있다.</li>
+          <li>정맥혈전색전증·관상동맥질환 위험에는 영향을 주지 않는다.</li>
+          <li>근육량 증대 효과가 있다.</li>
+        </ol>
+      </div>
+      <div>티볼론은 19-노르테스토스테론 유래 합성스테로이드로, 간·장에서 대사되어 2개의 에스트로겐성 화합물(3α-·3β-하이드록시티볼론)과 프로게스토겐·안드로겐 활성을 지닌 Δ4-티볼론으로 전환된다. 조직별 국소효소활성 조절을 통해 유방·자궁내막을 자극하지 않으면서 증상완화·골밀도 유지가 가능해 <strong>조직선택적에스트로겐활성조절제(STEAR)</strong>로 분류된다.</div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>영역</th><th>근거</th></tr>
+        <tr><td>혈관운동증상</td><td>1일 2.5mg이 최적용량, 4주 내 뚜렷한 개선·12주 최대효과. 1.25mg 이상 12주 투여시 참가자 약 86%에서 안면홍조 완화. TOTAL연구(평균55세): 티볼론2.5mg과 저용량 E2/NETA(1/0.5mg) 모두 VMS·질위축 개선에서 유사했으나, 초기3개월간 티볼론군의 질출혈·유방압통이 유의하게 적었음</td></tr>
+        <tr><td>삶의 질</td><td>수술적폐경 여성 대상 RCT(티볼론 vs 17β-E2 2mg vs 위약): 티볼론이 VMS뿐 아니라 기분장애·수면·집중력·피로·편두통 개선에서 E2보다 우수 — 국제/아시아태평양티볼론합의그룹이 기분관련증상 여성의 치료옵션으로 인정. WHQ 측정 삶의질에서 티볼론·저용량병합HT(E2/NETA) 모두 개선되나 티볼론은 성기능, E2/NETA는 VMS에 더 효과적. 근육량 증가·허리엉덩이비율 개선과도 연관, 12개월 투여시 위약대비 악력(근기능지표) 향상</td></tr>
+        <tr><td>비뇨생식기위축</td><td>랄록시펜 대비 질위축 개선이 유의하게 우수</td></tr>
+        <tr><td>성기능</td><td>Δ4이성질체 대사산물의 안드로겐활성과 SHBG저하를 통한 유리테스토스테론 증가로 성욕 강화. 성욕·질건조·성교통·오르가즘기능·전반적 성만족 개선 보고</td></tr>
+        <tr><td>골밀도</td><td>STEP연구(60-79세 골감소증, 티볼론1.25mg vs 랄록시펜60mg, 2년): 티볼론이 요추·대퇴 BMD 개선에서 유의하게 우수. LIFT연구: 동일용량으로 척추골절위험 45%·비척추골절 26% 감소</td></tr>
+        <tr><td>심혈관질환</td><td>HDL콜레스테롤 약20% 감소, 총콜레스테롤 약10%·중성지방 약20% 감소, LDL콜레스테롤도 감소. LDL산화·고밀도LDL입자·죽종형성도 감소시켜 잠재적 심혈관이득 시사. 그러나 LIFT연구(60세이상 골다공증위험군)에서 뇌졸중위험 증가 확인(CAD·VTE는 유의차 없음) — IMS도 고령여성 뇌졸중위험 증가를 인정하나 VTE증가는 없음. LIBERATE연구(유방암병력자)는 위약대비 뇌졸중·관상동맥사건·VTE 증가 없음을 보임. 심혈관사건을 1차종점으로 한 대규모 전향연구는 아직 없음</td></tr>
+      </table>
+
+      <div class="alert alert-tibolone" style="margin-top:8px"><span>🎗️</span><div>티볼론은 유방촬영밀도를 증가시키지 않고 기존 EPT보다 유방압통이 적으며 1.25mg 매일 투여시 침습유방암 위험감소와 연관되었다. 그러나 <strong>LIBERATE 연구에서 유방암병력 여성의 재발위험을 유의하게 높였다</strong>(티볼론군 15.2% vs 위약군 10.7%, 1.4배 증가) — 이에 따라 <strong>티볼론은 유방암 병력 여성에서 금기</strong>다. 국내 국민건강보험자료 기반 연구는 다른 HT 사용자 대비 티볼론 사용자에서 유방암 발생 통계적 유의증가를 보이지 않았다.</div></div>
+      <div>티볼론은 자궁내막증식을 억제하는 조직선택적 작용으로 인해 추가 프로게스토겐 투여가 불필요하며, THEBES 연구는 자궁내막증식·자궁내막암 위험 증가가 없음을 확인했다. LIFT연구는 대장암 위험 69% 감소도 보고했다. 국내 연구는 티볼론이 기존HT보다 중성지방을 더 효과적으로 낮추나 HDL콜레스테롤도 함께 감소시킴을 확인했으며, 1년 치료시 요추BMD 증가효과는 에스트로겐기반HT와 비슷했다. 후향연구에서 상피성난소암·자궁내막암 수술 후 티볼론 사용은 대조군 대비 무진행/전체생존에 악영향을 주지 않았다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 조직선택적에스트로겐복합체(TSEC, CE/BZA)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="kp">
+        <div class="kp-title">핵심 요점</div>
+        <ol>
+          <li>CE/BZA는 폐경증상, 특히 안면홍조를 효과적으로 치료한다.</li>
+          <li>요추·대퇴 골밀도를 높여 골다공증을 예방한다.</li>
+          <li>EPT보다 내약성이 우수해 유방압통·질출혈·유방촬영술상 치밀유방 빈도가 낮다.</li>
+          <li>위약 대비 유방밀도·유방통·질출혈을 증가시키지 않는다.</li>
+          <li>현재까지 유방암·골절·심혈관질환을 1차종점으로 한 CE/BZA의 RCT는 없다.</li>
+          <li>자궁이 있는 폐경후 여성의 VMS 완화·골다공증 예방에 유망한 옵션이다.</li>
+        </ol>
+      </div>
+      <div>조직선택적에스트로겐복합체(TSEC)는 <strong>결합에스트로겐(CE)과 SERM 바제독시펜(BZA)을 결합한 신규 제형</strong>이다. BZA는 골조직에서는 에스트로겐효능제, 자궁·유방에서는 길항제로 작용해 <strong>추가 프로게스토겐 없이도 자궁내막을 보호</strong>한다. 이 조합은 전통적 에스트로겐-프로게스토겐요법에서 흔한 질출혈·유방압통 발생을 줄여 내약성을 개선시킨다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>영역</th><th>근거</th></tr>
+        <tr><td>혈관운동증상</td><td>임상시험에서 CE/BZA는 12주 치료 후 안면홍조 빈도를 74% 감소시켜 위약군(51% 감소)보다 우수</td></tr>
+        <tr><td>외음질위축·삶의질</td><td>부기저세포 비율 감소를 통한 질상피성숙 촉진, 수면잠복기 단축 등 수면장애 완화를 통한 전반적 삶의 질 향상</td></tr>
+        <tr><td>골밀도</td><td>요추·대퇴 BMD 증가 및 골전환표지자 개선. 1년 연구에서 CE/BZA는 위약·CE/MPA 대비 유의하게 큰 BMD 증가</td></tr>
+        <tr><td>유방 안전성</td><td>위약 대비 유방밀도·압통 증가 없음. 유방밀도를 유의하게 높이는 CE/MPA와 달리 유방조직에 미치는 영향이 최소화됨. 관찰연구는 EPT 대비 낮은 유방암위험 가능성을 시사하나 확고한 임상근거는 제한적</td></tr>
+        <tr><td>질출혈·자궁내막증식</td><td>CE/MPA 대비 질출혈 발생률이 유의하게 낮음. BZA 최소용량 20mg 병용시 자궁내막증식 발생률 1% 미만</td></tr>
+        <tr><td>지질·응고</td><td>LDL콜레스테롤 감소·HDL콜레스테롤 증가로 지질프로파일 개선, 응고균형에 부정적 영향 없이 지혈지표에 우호적 효과</td></tr>
+      </table>
+
+      <div style="margin-top:10px"><strong>해외 학회 권고</strong></div>
+      <table class="tbl" style="margin-top:4px">
+        <tr><th>학회</th><th>권고 내용</th></tr>
+        <tr><td>The Menopause Society(TMS)</td><td>자궁이 있는 여성의 VMS 관리·골다공증 예방에 CE/BZA 권고 — 우수한 자궁내막 안전성 프로파일과 프로게스토겐 불필요라는 장점 강조</td></tr>
+        <tr><td>미국내분비학회(Endocrine Society)</td><td>VMS 치료·골손실예방·프로게스토겐 관련 부작용 최소화에서 CE/BZA의 효능 강조</td></tr>
+        <tr><td>미국임상내분비학회(AACE)</td><td>중등도-중증 VMS·골다공증 예방에 CE/BZA 사용 지지하나 장기 유방암위험은 아직 불명확함을 강조</td></tr>
+      </table>
+    </div>
+  </div>
+</div><!-- /tibolone -->
+
+
+<!-- ══════════ TAB 9: 약어 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-info"><span>🔗</span><div>Kim Y, Cho MK, Chung YJ, et al. The 2025 Menopausal Hormone Therapy Guidelines - Korean Society of Menopause. J Menopausal Med. 2025;31:53-84. https://doi.org/10.6118/jmm.25103 (Open Access, CC BY-NC 4.0). 전문은 www.e-jmm.org 에서 확인 가능.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"MHT / HT", def:"Menopausal Hormone Therapy / Hormone Therapy — 폐경 호르몬요법" },
+  { term:"ET / EPT", def:"Estrogen-only Therapy / Estrogen-Progestogen Therapy — 에스트로겐단독요법 / 에스트로겐-프로게스토겐병합요법" },
+  { term:"VMS", def:"Vasomotor Symptoms — 혈관운동증상(안면홍조 등)" },
+  { term:"GSM / VVA", def:"Genitourinary Syndrome of Menopause / Vulvovaginal Atrophy — 폐경비뇨생식기증후군 / 외음질위축(구용어)" },
+  { term:"CEE / E2", def:"Conjugated Equine Estrogen / Estradiol — 결합마에스트로겐 / 에스트라디올" },
+  { term:"MPA / NETA", def:"Medroxyprogesterone Acetate / Norethindrone(Norethisterone) Acetate — 대표적 프로게스토겐 제제" },
+  { term:"COC", def:"Combined Oral Contraceptive — 복합경구피임제" },
+  { term:"LNG-IUS", def:"Levonorgestrel-releasing Intrauterine System — 레보노르게스트렐 방출 자궁내시스템" },
+  { term:"CAD", def:"Coronary Artery Disease — 관상동맥질환" },
+  { term:"VTE", def:"Venous Thromboembolism — 정맥혈전색전증" },
+  { term:"WHI", def:"Women's Health Initiative — 여성건강주도연구(미국 대규모 HT 임상시험)" },
+  { term:"WHIMS", def:"Women's Health Initiative Memory Study — WHI 인지기능 하위연구" },
+  { term:"KEEPS", def:"Kronos Early Estrogen Prevention Study — 조기에스트로겐예방연구" },
+  { term:"ELITE", def:"Early versus Late Intervention Trial with Estradiol — 조기·후기 에스트라디올개입 비교연구" },
+  { term:"LIFT", def:"Long-term Intervention on Fractures with Tibolone — 티볼론 장기골절중재연구" },
+  { term:"LIBERATE", def:"Livial Intervention Following Breast Cancer: Efficacy, Recurrence, and Tolerability — 유방암 후 티볼론 재발안전성 연구" },
+  { term:"TSEC", def:"Tissue-Selective Estrogen Complex — 조직선택적에스트로겐복합체(CE+BZA)" },
+  { term:"BZA", def:"Bazedoxifene — 바제독시펜(SERM)" },
+  { term:"SERM", def:"Selective Estrogen Receptor Modulator — 선택적에스트로겐수용체조절제" },
+  { term:"STEAR", def:"Selective Tissue Estrogenic Activity Regulator — 조직선택적에스트로겐활성조절제(티볼론)" },
+  { term:"DHEA", def:"Dehydroepiandrosterone — 디하이드로에피안드로스테론" },
+  { term:"SHBG", def:"Sex Hormone-Binding Globulin — 성호르몬결합글로불린" },
+  { term:"BMD", def:"Bone Mineral Density — 골밀도" },
+  { term:"BMI", def:"Body Mass Index — 체질량지수" },
+  { term:"SSRI / SNRI", def:"Selective Serotonin Reuptake Inhibitor / Serotonin-Norepinephrine Reuptake Inhibitor — 선택적세로토닌재흡수억제제 / 세로토닌노르에피네프린재흡수억제제" },
+  { term:"CBT", def:"Cognitive Behavioral Therapy — 인지행동치료" },
+  { term:"POI", def:"Primary Ovarian Insufficiency — 원발난소부전(조기난소부전)" },
+  { term:"NAMS/TMS", def:"North American Menopause Society(현 The Menopause Society) — 북미폐경학회" },
+  { term:"IMS", def:"International Menopause Society — 국제폐경학회" },
+  { term:"ACOG", def:"American College of Obstetricians and Gynecologists — 미국산부인과학회" },
+  { term:"FDA / EMA", def:"미국 식품의약국 / 유럽의약품청" },
+  { term:"AWGS / EWGSOP", def:"Asian/European Working Group on Sarcopenia — 아시아·유럽 근감소증연구그룹" },
+  { term:"ASM / ALM / SM", def:"Appendicular Skeletal(/Lean) Muscle Mass — 사지골격근(제지방)량" },
+  { term:"SPPB", def:"Short Physical Performance Battery — 단축형신체수행능력검사" },
+  { term:"DEXA / BIA", def:"Dual-energy X-ray Absorptiometry / Bioimpedance Analysis — 이중에너지X선흡수계측 / 생체전기저항분석" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+const ALL_ABBR = ABBR_DATA;
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleStat(box){
+  const val=box.querySelector('.stat-val').innerHTML;
+  const lbl=box.querySelector('.stat-lbl').innerHTML.replace(/<br>/gi,' ');
+  const detail=box.querySelector('.stat-detail').innerHTML;
+  document.getElementById('stat-modal-val').innerHTML=val;
+  document.getElementById('stat-modal-val').style.color=box.querySelector('.stat-val').style.color;
+  document.getElementById('stat-modal-lbl').innerHTML=lbl;
+  document.getElementById('stat-modal-body').innerHTML=detail;
+  document.getElementById('stat-modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeStatModal(){
+  document.getElementById('stat-modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeStatModal();});
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

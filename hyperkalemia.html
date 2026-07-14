@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UKKA 2023 고칼륨혈증(Hyperkalaemia) 진료지침</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --overview: #1d4ed8;   /* 개요 — 인디고블루 */
+    --diag:     #0f766e;   /* 지역사회 — 틸 */
+    --adult:    #b45309;   /* 병원 5단계 — 앰버 */
+    --child:    #0369a1;   /* 투석·소생술 — 스카이블루 */
+    --tests:    #7c3aed;   /* 예방·평가도구 — 바이올렛 */
+    --specific: #be185d;
+    --unexp:    #15803d;
+    --accent: #1d4ed8;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-mdd { display: flex; align-items: center; gap: 0; font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px; }
+  .logo-mdd span:nth-child(1) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-mdd span:nth-child(2) { background: var(--adult); color:#fff; padding:3px 6px; }
+  .logo-mdd span:nth-child(3) { background: var(--unexp); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 19px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn { display: flex; align-items: center; gap: 3px; flex-shrink: 0; margin: 4px 4px 4px 6px; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700; cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s; }
+  .font-zoom-btn:hover { background: var(--border); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 11px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--overview); border-bottom-color: var(--overview); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(18px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-overview{ background: #dbeafe; border-left: 3px solid var(--overview); color: #1d4ed8; }
+  .alert-diag    { background: #d9f2ef; border-left: 3px solid var(--diag);   color: #0f766e; }
+  .alert-adult   { background: #fef0d9; border-left: 3px solid var(--adult);  color: #92400e; }
+  .alert-child   { background: #e0f2fe; border-left: 3px solid var(--child);  color: #0369a1; }
+  .alert-tests   { background: #ede9fe; border-left: 3px solid var(--tests);  color: #5b21b6; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+
+  .lv1 { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+  .lv2 { background: #dbeafe; color: #1d4ed8; font-weight: 700; text-align: center; }
+  .lv3 { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .lv4 { background: #ffe4d6; color: #92400e; font-weight: 700; text-align: center; }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-overview { background: #dbeafe; color: var(--overview); border: 1px solid var(--overview); }
+  .t-diag     { background: #d9f2ef; color: var(--diag);     border: 1px solid var(--diag); }
+  .t-adult    { background: #fef0d9; color: var(--adult);    border: 1px solid var(--adult); }
+  .t-child    { background: #e0f2fe; color: var(--child);    border: 1px solid var(--child); }
+  .t-tests    { background: #ede9fe; color: var(--tests);    border: 1px solid var(--tests); }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box { flex: 1; min-width: 130px; padding: 10px 10px 12px; border-right: 2px solid var(--bg); text-align: center; position: relative; }
+  .stage-box:last-child { border-right: none; }
+  .stage-box .st-num { font-size: calc(14px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-overview { background: #e6eefb; }
+  .st-diag     { background: #d9f2ef; }
+  .st-adult    { background: #fef0d9; }
+  .st-child    { background: #e0f2fe; }
+  .st-tests    { background: #f3e8ff; }
+
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-adult   { background: #fef0d9; border: 1.5px solid var(--adult);  color: #92400e; }
+  .gear-child   { background: #e0f2fe; border: 1.5px solid var(--child);  color: #0369a1; }
+  .gear-tests   { background: #f3e8ff; border: 1.5px solid var(--tests);  color: #5b21b6; }
+  .gear-diag    { background: #d9f2ef; border: 1.5px solid var(--diag);   color: #0f766e; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  .algo-flow { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .algo-step { border-radius: 6px; padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); border-left: 4px solid var(--border); background: var(--surface2); }
+
+  /* 권고문 박스 (GRADE 1/2 등급 A-D) */
+  .rec { border: 1px solid var(--border); border-radius: 8px; margin: 8px 0; overflow: hidden; }
+  .rec-q { background: var(--surface2); padding: 7px 12px; font-weight: 700; font-size: calc(12px * var(--fscale, 1)); border-bottom: 1px solid var(--border); }
+  .rec-body { padding: 9px 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .rec-text { flex: 3; min-width: 220px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.55; }
+  .rec-sym { flex: 0 0 46px; min-width: 46px; height: 34px; border-radius: 6px; font-weight: 800; font-size: calc(13px * var(--fscale, 1)); color: #fff; display: flex; align-items: center; justify-content: center; }
+  .rec-1 { background: #15803d; }         /* Grade 1 = 강한 권고 */
+  .rec-2 { background: #b45309; }         /* Grade 2 = 약한 제안 */
+  .rec-meta { flex: 1 1 150px; font-size: calc(10.5px * var(--fscale, 1)); color: var(--text2); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mdd"><span>HK</span><span>2023</span><span>UKKA</span></div>
+      <h1>UKKA 2023 고칼륨혈증(Hyperkalaemia) 진료지침</h1>
+    </div>
+    <div class="meta-line">
+      UK Kidney Association — Clinical Practice Guideline: Management of Hyperkalaemia in Adults (Final version October 2023, Review date October 2026)
+      <br><span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🏘️ 지역사회</div>
+    <div class="tab" onclick="showTab('adult')">🏥 병원 5단계</div>
+    <div class="tab" onclick="showTab('child')">💉 투석·소생술</div>
+    <div class="tab" onclick="showTab('tests')">🛡️ 예방·평가도구</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·출처</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:110px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">1.1-10%</div><div class="stat-lbl">병원 내<br>고칼륨혈증 발생률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">4.2%</div><div class="stat-lbl">CKD 환자<br>지역사회 유병률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--adult)">18.1%</div><div class="stat-lbl">고칼륨혈증 동반<br>입원사망률(정상K군 3.9%)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--child)">&gt;30%</div><div class="stat-lbl">중증고칼륨혈증<br>(K⁺&gt;6.5) 입원사망률</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📖</span> 정의 및 중증도 분류</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>ERC(European Resuscitation Council) 정의를 채택하여 혈청 K⁺ ≥ 5.5 mmol/l를 고칼륨혈증으로 정의한다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>중증도</th><th>혈청 K⁺</th></tr>
+        <tr><td><span class="stage lv1">경증(Mild)</span></td><td>5.5 - 5.9 mmol/l</td></tr>
+        <tr><td><span class="stage lv3">중등증(Moderate)</span></td><td>6.0 - 6.4 mmol/l</td></tr>
+        <tr><td><span class="stage lv4">중증(Severe)</span></td><td>≥ 6.5 mmol/l</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>📉</span><div>혈청 K⁺과 사망률은 U자형 관계를 보이며(저칼륨혈증·고칼륨혈증 모두 위험 증가), CKD 및 장기 혈액투석 환자에서도 동일하게 관찰된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 권고 등급체계(GRADE)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>등급</th><th>의미</th></tr>
+        <tr><td><span class="rec-sym rec-1" style="display:inline-flex">1</span></td><td>강한 권고("We recommend…") — 대부분 상황에서 정책 채택 가능</td></tr>
+        <tr><td><span class="rec-sym rec-2" style="display:inline-flex">2</span></td><td>약한 제안("We suggest…") — 상황에 따라 개별화 필요</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>근거수준</th><th>의미</th></tr>
+        <tr><td><span class="stage lv1">A</span></td><td>높음</td></tr>
+        <tr><td><span class="stage lv2">B</span></td><td>중등도</td></tr>
+        <tr><td><span class="stage lv3">C</span></td><td>낮음</td></tr>
+        <tr><td><span class="stage lv4">D</span></td><td>매우 낮음</td></tr>
+      </table>
+      <small>각 지침문은 "권고(Grade 1)" 또는 "제안(Grade 2)"으로 시작하며 근거수준(A-D)을 함께 표기한다(예: 1B, 2C).</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💓</span> 고칼륨혈증의 심전도(ECG) 변화</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>심방심근이 심실심근보다, 동방결절·His속 등 특수전도조직은 가장 둔감하다. K⁺ 상승은 심근세포 간 전도 억제 → PR간격·QRS 연장으로 나타나며, 초기에는 P파 진폭 감소·T파 진폭 증가가 동반된다. 변화는 진행성일 수 있으나 반드시 순차적이지 않고 여러 변화가 동시에 나타날 수 있다.</div>
+      <div class="stage-timeline" style="margin-top:8px">
+        <div class="stage-box st-overview"><div class="st-num" style="color:var(--overview)">①</div><div class="st-lbl">첨형 T파<br>(peaked T, 가장 흔함, 30-36%)</div></div>
+        <div class="stage-box st-diag"><div class="st-num" style="color:var(--diag)">②</div><div class="st-lbl">P파 편평화·<br>PR간격 연장</div></div>
+        <div class="stage-box st-adult"><div class="st-num" style="color:var(--adult)">③</div><div class="st-lbl">QRS 확장</div></div>
+        <div class="stage-box st-child"><div class="st-num" style="color:var(--child)">④</div><div class="st-lbl">사인파(sine wave)·<br>부정맥</div></div>
+        <div class="stage-box st-tests"><div class="st-num" style="color:var(--tests)">⑤</div><div class="st-lbl">심정지</div></div>
+      </div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>⚠️</span><div>단독 첨형 T파만으로는 생명을 위협하는 소견으로 보기 어려운 경우가 많으나, 여러 변화가 동반되면 위험도가 급격히 상승한다. 정상 ECG에서는 정맥 칼슘투여가 권고되지 않는다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🪜</span> 병원 치료의 5단계 프레임워크</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="algo-flow">
+        <div class="algo-step" style="border-color:var(--overview)"><strong>STEP 1 — 심장 보호</strong>: 정맥 칼슘염</div>
+        <div class="algo-step" style="border-color:var(--diag)"><strong>STEP 2 — K⁺을 세포 내로 이동</strong>: 인슐린-포도당, 살부타몰, (중탄산나트륨)</div>
+        <div class="algo-step" style="border-color:var(--adult)"><strong>STEP 3 — 체외로 K⁺ 제거</strong>: 칼륨결합제(SZC/파티로머), 투석</div>
+        <div class="algo-step" style="border-color:var(--child)"><strong>STEP 4 — K⁺·혈당 모니터링</strong></div>
+        <div class="algo-step" style="border-color:var(--tests)"><strong>STEP 5 — 재발 방지</strong>: 원인약물 재검토, 지역사회 연계</div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>"Never walk away without completing all of these steps" — 5단계를 모두 완료하기 전에는 환자 곁을 떠나지 않는다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🆕</span> 2023년 개정 주요 변경사항</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>항목</th><th>변경 내용</th></tr>
+        <tr><td>정맥 칼슘글루코네이트</td><td>30ml 10% 용액 투여시간을 5분 → <strong>10분</strong>으로 연장(MHRA 안전성 경고 반영), 칼슘클로라이드는 소생술 상황, 그 외는 칼슘글루코네이트 사용</td></tr>
+        <tr><td>SZC(소듐지르코늄시클로실리케이트)</td><td>중증(K⁺≥6.5)에 최대 72시간 사용 + <strong>중등증(K⁺6.0-6.4)도 고려대상으로 확대</strong></td></tr>
+        <tr><td>파티로머</td><td>중증뿐 아니라 <strong>중등증(K⁺&gt;6.0)에도 고려</strong>(스코틀랜드는 적용 제외)</td></tr>
+        <tr><td>칼슘레조늄</td><td>급성기 치료에서 <strong>더 이상 상용 권고되지 않음</strong></td></tr>
+        <tr><td>혈당 모니터링</td><td>치료 후 12시간 → <strong>6시간</strong>으로 단축(2014년 프로토콜로 회귀)</td></tr>
+        <tr><td>인슐린-포도당 2단계 프로토콜</td><td>알고리즘 명확화(2022.8 개정판 반영) — 치료 전 혈당 &lt;7mmol/l이면 이후 5시간 10%포도당 주입(50ml/hr) 추가</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 지역사회 ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩺</span> 위험군 모니터링 및 재검 간격</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>상황</th><th>재검 시점</th></tr>
+        <tr><td>경증(5.5-5.9) 우연 발견</td><td>3일 이내(또는 가능한 빨리)</td></tr>
+        <tr><td>중등증(6.0-6.4) 발견</td><td>1일 이내</td></tr>
+        <tr><td>중증(≥6.5) 발견</td><td>즉시 병원 입원·평가</td></tr>
+      </table>
+      <small>CKD·심부전·당뇨 등 고위험군은 신기능·단백뇨 정도에 따라 연 2-4회 정기 혈액검사(지침 1.1, 1.2.1-1.2.3)</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> RAASi(ACE-I/ARB/MRA) 처방·모니터링 원칙</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-diag">
+          <div class="gear-title">ACE-I / ARB</div>
+          시작 전 요소·전해질 확인, K⁺&gt;5.0이면 신중 투여(2.1). 시작 1-2주 후 및 용량조절마다 재검(2.3)
+        </div>
+        <div class="gear-box gear-adult">
+          <div class="gear-title">MRA(스피로놀락톤 등)</div>
+          기저 K⁺&gt;5.0 또는 eGFR&lt;30이면 시작 회피(2.2). 시작/증량 1주 후, 이후 3개월간 매월, 1년까지 3개월마다, 이후 4개월마다 재검(2.4)
+        </div>
+      </div>
+      <div class="sec-sep"></div>
+      <div>K⁺ 5.5-5.9 구간에서는 모니터링 빈도 증가 및 RAASi 감량 고려(2.5). 급성 병발질환(패혈증·저혈량·AKI) 시 중증도 무관하게 RAASi 보류(2.6). K⁺≥6이면서 파티로머/SZC 적응증 미해당 시 RAASi 중단(2.7).</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">지역사회에서 칼륨강하 개입을 시작할 역치는?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-1">1</div>
+      <div class="rec-text">혈청 K⁺ ≥ 5.5 mmol/l인 환자에서 칼륨강하 개입을 시작할 것을 권고한다.</div>
+      <div class="rec-meta">1B</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">지역사회 발견 고칼륨혈증의 입원 기준은?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-1">1</div>
+      <div class="rec-text">중증(K⁺≥6.5)은 <strong>모든 환자 즉시 입원평가</strong>를 권고(1A). 경증·중등증은 급성 신손상 동반 등 임상적으로 불안정한 경우 입원평가를 제안(1B).</div>
+      <div class="rec-meta">1A / 1B</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🥗</span> 식이·기타 지역사회 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>식이 조절</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">변비·산증·혈당조절불량 등 비식이 원인 교정 후에도 K⁺&gt;5.5 지속되는 CKD 환자에서 시행(5.1), 신장전문영양사의 평가·지도 권고(5.2)</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>중탄산나트륨</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">CKD 환자에서 혈청 중탄산 &lt;22mmol/l이면 고칼륨혈증 동반 여부와 무관하게 사용 권고(6.1)</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>루프이뇨제</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">핍뇨가 없고 체액량이 정상인 만성고칼륨혈증 환자에서 보조요법으로 고려 가능(2C)</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>칼슘레조늄(지역사회)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">파티로머·SZC 적응증에 해당하지 않는 비입원 환자의 단기 대안으로만 고려(2C)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 경구 칼륨결합제 — 지역사회 만성 사용</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-tests">
+          <div class="gear-title">파티로머(Patiromer)</div>
+          CKD 3b-5기(비투석) 또는 심부전으로 RAASi를 저용량/미투여 중인 성인의 지속적 K⁺≥6.0mmol/l 관리 옵션(1A, 9.1). RAASi 중단 시 함께 중단(1A, 9.2). <strong>2차진료(전문클리닉)에서만 개시</strong>(1A, 9.3)
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">SZC(Sodium Zirconium Cyclosilicate)</div>
+          CKD 3b-5기(비투석) 또는 심부전으로 RAASi 저용량 투여 중인 성인의 지속적 K⁺≥6.0mmol/l 관리 옵션(1A, 10.1). RAASi 중단 시 함께 중단(1A, 10.2). <strong>전문의가 개시 후 1차진료에서 계속</strong>(1A, 10.3)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🛡️</span> 예방 — 모니터링·처방·Sick Day Rules</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>CKD·심부전·당뇨 및 RAASi 복용 환자는 신기능을 정기 모니터링(11.1, 1A). 신기능저하 또는 RAASi 병용 환자에서 트리메토프림 처방 시 주의(11.2, 1A) — 신원위세뇨관 상피나트륨채널 경쟁적 억제로 K⁺ 0.36-1.21mmol/l 이상 상승 가능(3-10일 내). 급성질환 시 AKI·고칼륨혈증 위험과 회피조치("sick day rules")를 환자에게 교육(11.3, 1B).</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💊</span><div>Sick Day Rules 대상 약물: RAASi, NSAID, 이뇨제, 메트포르민 — 급성질환 시 일시 중단.</div></div>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════════════ TAB 3: 병원 5단계 ══════════════════ -->
+<div id="tab-adult" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔍</span> 초기평가 — 병력·ECG·검사</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>모든 환자에서 원인 파악을 위한 포괄적 병력·투약력·진찰 시행(13.1, 1B), NEWS 등 조기경보점수로 중증도 평가(13.2, 1C). K⁺≥6.0인 모든 입원환자는 응급 12유도 ECG 시행·판독(14.1, 1B). K⁺≥6.5, ECG상 고칼륨혈증 소견, 또는 급격한 상승이 예상되는 K⁺6.0-6.4 불안정 환자는 최소 3유도 연속 ECG 모니터링(가능하면 고강도 병상)(14.2, 1C).</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🧪</span><div>신속 결과가 필요할 때는 리튬헤파린 항응고 검체 선호(15.1, 1B). 응급 시 동맥/정맥혈가스분석기로 즉시 K⁺ 측정 후 정규검사 대기(15.2, 1B). 가성고칼륨혈증 의심 시 큰 정맥에서 부드러운 지혈대로 리튬헤파린·응고혈청 쌍검체 채취 후 신속 분석(15.3, 1A).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🫀</span> STEP 1 — 심장 보호: 정맥 칼슘염</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>제제</th><th>용량·속도</th><th>사용 상황</th></tr>
+        <tr><td>10% 칼슘글루코네이트</td><td>30ml, <strong>10분</strong>에 걸쳐 정주</td><td>소생술 이외 모든 환자(ECG 변화 동반 시)</td></tr>
+        <tr><td>10% 칼슘클로라이드</td><td>10ml, 5분에 걸쳐 정주</td><td>소생술(심정지·심정지전) 상황</td></tr>
+      </table>
+      <small>두 제제 모두 동등 용량(칼슘 6.8mmol)에 해당.</small>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">ECG 변화 동반 고칼륨혈증에서 정맥 칼슘 투여는?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-1">1</div>
+      <div class="rec-text">임상상황에 맞추어 30ml 10%칼슘글루코네이트(10분) 또는 10ml 10%칼슘클로라이드(5분)로 동등용량(6.8mmol)의 정맥 칼슘을 투여할 것을 권고. 소생술 상황은 칼슘클로라이드, 그 외는 칼슘글루코네이트 선호.</div>
+      <div class="rec-meta">1C (16.2a/16.2b)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔄</span> STEP 2 — K⁺을 세포 내로: 인슐린-포도당 / 살부타몰</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-adult"><span>💉</span><div><strong>UKKA 표준 프로토콜</strong>: 가용성 인슐린 10단위 + 포도당 25g을 정맥주입. 중증(K⁺≥6.5)에는 권고(1B), 중등증(K⁺6.0-6.4)에는 제안(2C).</div></div>
+      <div class="alert alert-warn"><span>⚠️</span><div><strong>저혈당 예방(2단계 프로토콜)</strong>: 치료 전 혈당 &lt;7.0mmol/l인 환자는 인슐린-포도당 투여 직후 10%포도당을 <strong>50ml/hr 속도로 5시간(25g)</strong> 추가 주입(2B).</div></div>
+      <div class="sec-sep"></div>
+      <div><strong>네뷸라이저 살부타몰 10-20mg</strong>: 중증에 보조요법으로 권고(1B), 중등증엔 제안(2C). <strong>단독요법으로는 사용하지 않음</strong>(1A) — 반드시 인슐린-포도당 등과 병용.</div>
+      <div class="sec-sep"></div>
+      <div>정맥 중탄산나트륨은 급성 치료에 <strong>상용하지 않을 것을 제안</strong>(2C).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧲</span> STEP 3 — 체외로 K⁺ 제거: 칼륨결합제</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>약제</th><th>급성기 적응증·용량</th><th>등급</th></tr>
+        <tr><td>SZC(소듐지르코늄시클로실리케이트)</td><td>중증(K⁺≥6.5): 10g, 1일3회, 최대 72시간</td><td>1B</td></tr>
+        <tr><td>SZC</td><td>중등증(K⁺6.0-6.4)에서도 고려</td><td>1B</td></tr>
+        <tr><td>파티로머(Patiromer)</td><td>급성 K⁺≥6.0 응급관리 옵션으로 8.4g 1일1회</td><td>1C</td></tr>
+        <tr><td>칼슘레조늄</td><td><strong>더 이상 상용 권고되지 않음</strong></td><td>2B</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📈</span> STEP 4 — 혈액 모니터링</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>모든 환자에서 치료효과 확인 및 반동성 고칼륨혈증 감시를 위해 K⁺을 면밀히 추적(17.1.1, 1B). 중등증·중증 확인·치료 후 <strong>1, 2, 4, 6, 24시간</strong> 시점에 K⁺ 재검을 제안(17.1.2, 2C). 인슐린-포도당 주입 후에는 <strong>0, 30, 60, 90, 120, 180, 240, 300, 360분</strong>마다 혈당을 정기적으로 모니터링(17.2, 1C) — <strong>2023년 개정: 치료 후 혈당감시기간이 12시간 → 6시간으로 단축</strong>.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚨</span> 전문과 의뢰·전동·치료장소</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-adult">
+          <div class="gear-title">전문과 의뢰</div>
+          중증(K⁺≥6.5)은 임상경과·초기치료 반응에 따라 신장내과 또는 중환자팀에 응급 의뢰 제안(19.1, 2C). 신장서비스 미보유 기관은 우선 중환자팀에 의뢰(19.2, 1C). 대응 확대 필요 또는 초기치료 무반응 시 상급의료진이 중환자팀에 의뢰(19.3, 1B). 기도·호흡·순환·의식 문제 동반 시 우선 중환자팀 의뢰(19.4, 1C)
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">치료장소·RRT</div>
+          안정적 중증환자는 지속적 심장모니터링이 가능한 병동(급성의료병동·신장병동·관상동맥병동·고강도병상·중환자실 등)에 입원(19.5, 1C). 생명을 위협하는 고칼륨혈증에서 신대체요법(RRT) 시작 시점·적합성·방식은 신장내과 또는 중환자전문의가 응급 결정(19.6, 1C)
+        </div>
+      </div>
+      <div class="sec-sep"></div>
+      <div>내과적 조치로 K⁺&lt;6.5로 조절되지 않는 안정 환자(특히 진행성/핍뇨성 신부전)는 신장서비스로 전원을 제안(20.1, 2C). 병원 간/병원 내 전동은 상급의사가 조율하고 국가지침을 따를 것을 제안(20.2, 2B).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🛡️</span> 입원환자 재발 방지</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>현재 질환·신기능을 고려하여 원인약물의 처방필요성을 입원 중/입원 시점에 재검토(21.1, 1B). 비식이 원인(변비·산증·혈당조절불량) 교정 후 중등증·중증 입원환자에 식이전략 적용(21.2, 1C). 퇴원 시 모든 환자에서 지역사회 혈액 모니터링 일정을 마련(21.3, 1B). 원인이 되었을 수 있는 약물 재개 전 재발위험을 고려(21.4, 1B). 병원 내 고칼륨혈증은 치료알고리즘(약물요법·RRT 필요성 안내 포함)에 따라 관리(22.1, 1B).</div>
+    </div>
+  </div>
+
+</div><!-- /adult -->
+
+
+<!-- ══════════════════ TAB 4: 투석·소생술 ══════════════════ -->
+<div id="tab-child" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💉</span> 혈액투석 환자의 고칼륨혈증</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-flow">
+        <div class="algo-step" style="border-color:var(--overview)">중증(K⁺≥6.5) 혈액투석환자는 <strong>응급 투석</strong>을 권고(18.1, 1A)</div>
+        <div class="algo-step" style="border-color:var(--diag)">중증 + 독성 ECG변화 동반 시, 투석이 <strong>즉시 가능하더라도</strong> 부정맥 위험감소 위해 정맥 칼슘염 투여(18.2, 1C)</div>
+        <div class="algo-step" style="border-color:var(--adult)">투석이 즉시 불가능하면 표준 내과적 요법으로 K⁺ 강하(18.3, 1B)</div>
+        <div class="algo-step" style="border-color:var(--child)">투석간기(inter-dialytic) 고칼륨혈증 위험 감소 위해 칼륨결합제 사용을 고려 가능(18.4, 1B)</div>
+      </div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>⚠️</span><div>혈액투석 관련 고칼륨혈증 사망의 3-5%를 차지하며, 장기간 금식·변비·혈당조절불량·투석 부적절성 등이 위험인자로 작용한다.</div></div>
+    </div>
+  </div>
+
+  <div class="sec-sep"></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>❤️‍🩹</span> 소생술(Section III) — 심정지 상황의 고칼륨혈증</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>모든 심정지 환자에서 4H·4T 접근법의 가역적 원인으로 고칼륨혈증을 고려(23.1, 1A). 투석이 필요한 환자에서도 표준 ALS(전문소생술) 시행 원칙은 동일(24.1, 1A). 제세동기 방수형이 아니면 제세동 전 투석기기와 분리(24.2, 1C).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 심정지 시 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>치료</th><th>내용</th><th>등급</th></tr>
+        <tr><td>정맥 칼슘클로라이드</td><td>고칼륨혈증이 원인으로 확인/의심되면 투여</td><td>1C</td></tr>
+        <tr><td>인슐린-포도당</td><td>가용성인슐린 10단위 + 포도당 25g 투여</td><td>1B</td></tr>
+        <tr><td>10% 포도당 주입</td><td>심정지 당시 혈당 &lt;7.0mmol/l이면 시작</td><td>2C</td></tr>
+        <tr><td>중탄산나트륨</td><td>고칼륨혈증이 원인으로 확인/의심되면 투여 고려</td><td>2C</td></tr>
+        <tr><td>CPR 중 투석(RRT) 개시</td><td>내과치료 저항성이고 인력·시설이 갖춰진 경우 고려</td><td>2C</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">심정지 예방 — 언제 얼마나 적극적으로 치료해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-1">1</div>
+      <div class="rec-text">중증(K⁺≥6.5) 또는 ECG상 중증 고칼륨혈증 시사 소견이 있으면 응급 치료(1C)하고, 적절한 병상에서 지속적 심장모니터링을 시행(1C). 소생술 관련 고칼륨혈증 심정지는 치료알고리즘(약물요법 + CPR 중 RRT 필요성 포함)에 따라 관리(1C).</div>
+      <div class="rec-meta">26.1, 26.2</div>
+    </div>
+  </div>
+
+</div><!-- /child -->
+
+
+<!-- ══════════════════ TAB 5: 예방·평가도구 ══════════════════ -->
+<div id="tab-tests" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🛡️</span> 1차·2차 예방</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-diag">
+          <div class="gear-title">1차 예방(비투석 환자)</div>
+          위험군(CKD·심부전·당뇨·RAASi/MRA 복용) 정기 모니터링, 고칼륨혈증 상승작용 병용조합 회피(예 ACE-I+트리메토프림), 산증 교정, 변비 예방, 혈당 최적화, CKD 4-5기는 전문영양사 상담, 급성질환 시 sick day rules 적용
+        </div>
+        <div class="gear-box gear-adult">
+          <div class="gear-title">1차 예방(투석 환자)</div>
+          정기 모니터링, 장기금식 회피(5%포도당 주입), 변비 예방, 혈당 최적화, 전문영양사 지도 식이조절, 투석 접근로 관리·투석충분도 최적화·재순환 최소화, 투석지연 시 칼륨결합제로 가교(bridge) 역할 고려
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>📊</span><div>정상칼륨혈증으로 퇴원 후 RAASi를 처방받은 환자의 12.3%가 조기에 고칼륨혈증을 발생 — 신기능저하, 상승작용 약물조합, 높은 기저 K⁺에서 위험 증가. 퇴원 전 환자교육·지역사회 모니터링 연계가 중요.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 고칼륨혈증 유발·악화 약물(대표 예시)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="abbr-grid">
+        <div class="abbr-item"><div class="abbr-term">RAASi</div><div class="abbr-def">ACE-I, ARB, MRA(스피로놀락톤 등) — K⁺ 배설 억제</div></div>
+        <div class="abbr-item"><div class="abbr-term">NSAID</div><div class="abbr-def">신혈류·레닌분비 억제로 K⁺ 배설 저하</div></div>
+        <div class="abbr-item"><div class="abbr-term">트리메토프림</div><div class="abbr-def">원위세뇨관 상피나트륨채널 경쟁적 억제</div></div>
+        <div class="abbr-item"><div class="abbr-term">칼륨보존이뇨제</div><div class="abbr-def">아밀로라이드 등</div></div>
+        <div class="abbr-item"><div class="abbr-term">베타차단제</div><div class="abbr-def">세포내 K⁺ 이동 억제</div></div>
+        <div class="abbr-item"><div class="abbr-term">디곡신</div><div class="abbr-def">Na-K ATPase 억제(중독 시 특히 위험)</div></div>
+        <div class="abbr-item"><div class="abbr-term">칼시뉴린억제제</div><div class="abbr-def">사이클로스포린·타크로리무스</div></div>
+        <div class="abbr-item"><div class="abbr-term">헤파린</div><div class="abbr-def">알도스테론 합성 억제</div></div>
+      </div>
+      <small>NICE CKD지침(2021): RAASi 병용요법 회피, 기저 K⁺≥5.0에서 상용 시작 지양, K⁺≥6.0에서 중단, eGFR 저하 &lt;25% 또는 크레아티닌 상승 &lt;30%면 지속 가능.</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 주요 감사지표(Audit Measures, 발췌)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul style="padding-left:18px;line-height:1.85">
+        <li>지역사회에서 중증고칼륨혈증(K⁺&gt;6.5)으로 입원한 빈도</li>
+        <li>RAASi 복용 지역사회 환자의 혈액검사 모니터링 빈도</li>
+        <li>중등증 고칼륨혈증에 식이상담을 받은 비율(신장외래)</li>
+        <li>파티로머/SZC 치료 후 1주(외래) 또는 48시간 내 K⁺≤5.0 도달 비율, 최대용량 RAASi 도달 비율</li>
+        <li>중증고칼륨혈증 입원환자 중 sick day rules 안내를 받은 비율</li>
+        <li>K⁺≥6.0 환자의 치료 전후 12유도 ECG 시행 비율</li>
+        <li>중증환자 인슐린-포도당 주입 비율, 저혈당 발생빈도</li>
+        <li>치료 2시간 이내 K⁺ 최소 1회 재검 비율(감사기준 100%)</li>
+        <li>인슐린-포도당 주입 종료 1시간 이내 혈당 검사 시행 비율(감사기준 100%)</li>
+        <li>중증고칼륨혈증으로 응급투석이 필요했던 빈도</li>
+        <li>입원 24시간 이후 새로 발생한 고칼륨혈증 빈도</li>
+        <li>고칼륨혈증심정지 환자의 정맥칼슘·중탄산나트륨 치료 비율, CPR 중 투석 시작 사례의 수·결과</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 향후 연구 필요 영역</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="padding-left:18px;line-height:1.85">
+        <li>의인성 저혈당 없이 효능을 유지하는 최적 인슐린·포도당 용량(전향적 연구)</li>
+        <li>입원환자 중증고칼륨혈증에서 칼륨결합제(파티로머·SZC)와 인슐린-포도당 병용요법의 효능</li>
+        <li>AKI 동반 중증고칼륨혈증에서 중탄산나트륨의 효능</li>
+        <li>고칼륨혈증심정지의 발생률 및 예후</li>
+      </ul>
+      <div class="alert alert-info" style="margin-top:8px"><span>🧪</span><div>향후 개발: 10%(250ml)·20%(125ml) 포도당액 기성 제제 개발로 조제 오류 위험 감소 기대.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tests -->
+
+
+<!-- ══════════════════ TAB 6: 약어·출처 ══════════════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔠</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 원문 출처</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Alfonzo A, Harrison A, Baines R, Chu A, Mann S, MacRury M. UK Kidney Association Clinical Practice Guideline: Treatment of Acute Hyperkalaemia in Adults. Final version October 2023 (review date October 2026). UKKA(UK Kidney Association) 웹사이트에서 원문·방법론 확인 가능. NICE가 UKKA의 진료지침 개발 프로세스를 인증(2017년 1월부터 7년 유효).</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"HK", def:"Hyperkalaemia — 고칼륨혈증" },
+  { term:"AKI", def:"Acute Kidney Injury — 급성신손상" },
+  { term:"CKD", def:"Chronic Kidney Disease — 만성신장병" },
+  { term:"ESRD", def:"End-Stage Renal Disease — 말기신부전" },
+  { term:"eGFR / GFR", def:"(estimated) Glomerular Filtration Rate — (추정)사구체여과율" },
+  { term:"RAASi", def:"Renin-Angiotensin-Aldosterone-System inhibitor — 레닌안지오텐신알도스테론계 억제제" },
+  { term:"ACE-i", def:"Angiotensin Converting Enzyme inhibitor" },
+  { term:"ARB", def:"Angiotensin II Receptor Blocker" },
+  { term:"MRA", def:"Mineralocorticoid Receptor Antagonist" },
+  { term:"SZC", def:"Sodium Zirconium Cyclosilicate — 소듐지르코늄시클로실리케이트" },
+  { term:"SPS / CPS", def:"Sodium/Calcium Polystyrene Sulphonate — 칼륨결합수지(칼슘레조늄 등)" },
+  { term:"ECG", def:"Electrocardiogram — 심전도" },
+  { term:"NEWS", def:"National Early Warning Score — 조기경보점수" },
+  { term:"BGA", def:"Blood Gas Analyser — 혈액가스분석기" },
+  { term:"POCT", def:"Point Of Care Testing — 현장검사" },
+  { term:"BM", def:"Blood glucose — 혈당" },
+  { term:"RRT", def:"Renal Replacement Therapy — 신대체요법" },
+  { term:"HD", def:"Haemodialysis — 혈액투석" },
+  { term:"HDF", def:"Haemodiafiltration — 혈액투석여과" },
+  { term:"CVVH / CVVHDF", def:"Continuous veno-venous Haemofiltration / Haemodiafiltration" },
+  { term:"IHD", def:"Intermittent Haemodialysis — 간헐적혈액투석" },
+  { term:"HDU / ICU", def:"High Dependency Unit / Intensive Care Unit" },
+  { term:"ALS", def:"Advanced Life Support — 전문소생술" },
+  { term:"CPR", def:"Cardiopulmonary Resuscitation — 심폐소생술" },
+  { term:"ROSC", def:"Return Of Spontaneous Circulation — 자발순환회복" },
+  { term:"IHCA / OHCA", def:"In-Hospital / Out-of-Hospital Cardiac Arrest" },
+  { term:"PEA", def:"Pulseless Electrical Activity — 무맥성전기활동" },
+  { term:"VF / VT", def:"Ventricular Fibrillation / Tachycardia — 심실세동/빈맥" },
+  { term:"AED", def:"Automated External Defibrillator — 자동제세동기" },
+  { term:"DNACPR", def:"Do Not Attempt CPR" },
+  { term:"NSAIDS", def:"Non-Steroidal Anti-Inflammatory Drugs — 비스테로이드소염제" },
+  { term:"MHRA", def:"Medicines and Healthcare products Regulatory Agency(영국 의약품규제기관)" },
+  { term:"NICE", def:"National Institute for Health and Care Excellence" },
+  { term:"UKKA", def:"United Kingdom Kidney Association" },
+  { term:"ERC", def:"European Resuscitation Council" },
+  { term:"K⁺ / Na⁺ / Ca²⁺ / Mg⁺", def:"칼륨/나트륨/칼슘/마그네슘 이온" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

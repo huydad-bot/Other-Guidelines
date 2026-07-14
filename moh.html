@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>약물과용두통(MOH) EAN 가이드라인</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    /* 섹션별 색 */
+    --overview: #0550ae;  /* 개요 — 청 */
+    --prevent:  #1a7f6e;  /* 예방(PICO1·2) — 청록 */
+    --treat:    #7c3aed;  /* 치료(PICO3·4) — 보라 */
+    --withdraw: #c47d00;  /* 약물중단(PICO5) — 황금 */
+    --symptom:  #9b1c2e;  /* 금단관리(PICO6) — 진홍 */
+    --relapse:  #0f5549;  /* 재발방지(PICO7) — 딥그린 */
+    --accent: #0550ae;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-moh {
+    display: flex; align-items: center; gap: 0;
+    font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px;
+  }
+  .logo-moh span:nth-child(1) { background: var(--prevent); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-moh span:nth-child(2) { background: var(--treat); color:#fff; padding:3px 6px; }
+  .logo-moh span:nth-child(3) { background: var(--withdraw); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 19px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+  .source-link { color: var(--accent); font-size: calc(11px * var(--fscale, 1)); text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex; justify-content: center;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn {
+    display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    margin: 4px 4px 4px 6px; padding: 5px 10px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700;
+    cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s;
+  }
+  .font-zoom-btn:hover { background: var(--border); }
+  .font-zoom-btn .fz-icon { font-size: calc(12px * var(--fscale, 1)); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab {
+    padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: color .15s, border-color .15s; user-select: none;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--overview); border-bottom-color: var(--overview); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  /* ── MAIN ── */
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── GRID ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  /* ── CARD ── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header {
+    background: var(--surface2); padding: 8px 12px;
+    font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; user-select: none;
+  }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  /* ── STAT ── */
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(19px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  /* ── ALERT ── */
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-overview{ background: #ddf4ff; border-left: 3px solid var(--overview); color: #0550ae; }
+  .alert-prevent { background: #e0f4f1; border-left: 3px solid var(--prevent); color: #0f5549; }
+  .alert-treat   { background: #ede9fe; border-left: 3px solid var(--treat);   color: #5b21b6; }
+  .alert-withdraw{ background: #fff3cd; border-left: 3px solid var(--withdraw);color: #7d4e00; }
+  .alert-symptom { background: #fce8eb; border-left: 3px solid var(--symptom); color: var(--symptom); }
+  .alert-relapse { background: #e0f4f1; border-left: 3px solid var(--relapse); color: var(--relapse); }
+
+  /* ── TABLE ── */
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+
+  /* ── 근거수준 뱃지 ── */
+  .ev-high { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+  .ev-mod  { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .ev-low  { background: #ffd8a8; color: #7d3b00; font-weight: 700; text-align: center; }
+
+  /* ── ACCORDION ── */
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  /* ── BADGE ── */
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-overview { background: #ddf4ff; color: var(--overview); border: 1px solid var(--overview); }
+  .t-prevent  { background: #e0f4f1; color: var(--prevent);  border: 1px solid var(--prevent); }
+  .t-treat    { background: #ede9fe; color: var(--treat);    border: 1px solid var(--treat); }
+  .t-withdraw { background: #fff3cd; color: #7d4e00;         border: 1px solid var(--withdraw); }
+  .t-symptom  { background: #fce8eb; color: var(--symptom);  border: 1px solid var(--symptom); }
+  .t-relapse  { background: #e0f4f1; color: var(--relapse);  border: 1px solid var(--relapse); }
+
+  /* ── PICO PILL ── */
+  .pico { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; margin-right: 6px; color:#fff; }
+
+  /* ── ABBR ── */
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  /* ── TIMELINE / COMPARISON ROW ── */
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box {
+    flex: 1; min-width: 130px; padding: 10px 10px 12px;
+    border-right: 2px solid var(--bg); text-align: center;
+    position: relative; cursor: pointer; transition: opacity .15s;
+  }
+  .stage-box:last-child { border-right: none; }
+  .stage-box:hover { opacity: .88; }
+  .stage-box .st-num { font-size: calc(14px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-overview { background: #e6f0fb; }
+  .st-prevent  { background: #e0f4f1; }
+  .st-treat    { background: #f3e8ff; }
+  .st-withdraw { background: #fff8e1; }
+  .st-symptom  { background: #fde8eb; }
+  .st-relapse  { background: #e0f4f1; }
+
+  /* ── 3-GEAR style box (근거 요약 박스) ── */
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-prevent { background: #e0f4f1; border: 1.5px solid var(--prevent); color: #0f5549; }
+  .gear-treat   { background: #f3e8ff; border: 1.5px solid var(--treat);   color: #5b21b6; }
+  .gear-withdraw{ background: #fff8e1; border: 1.5px solid var(--withdraw);color: #7d4e00; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  /* ── 진행 막대 (% 반응률 시각화) ── */
+  .pct-bar-row { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+  .pct-bar-label { width: 170px; font-size: calc(11px * var(--fscale, 1)); flex-shrink: 0; }
+  .pct-bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 14px; overflow: hidden; position: relative; }
+  .pct-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 4px; }
+  .pct-bar-val { font-size: calc(10px * var(--fscale, 1)); font-weight: 700; color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-moh">
+        <span>M</span><span>O</span><span>H</span>
+      </div>
+      <h1>약물과용두통(MOH) 관리 가이드라인</h1>
+    </div>
+    <div class="meta-line">
+      <a href="https://doi.org/10.1111/ene.14268" class="source-link" target="_blank">European Journal of Neurology · EAN Guideline on the Management of Medication-Overuse Headache ↗</a>
+      <span style="color:var(--text2)"> · Diener HC, Antonaci F, Braschinsky M, et al. · 2020</span><br>
+      <span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 European Academy of Neurology의 공식 승인을 받지 않았으며, 원문 요약·재구성본입니다 (This tool is not officially endorsed by EAN)</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('prevent')">🛡️ 예방</div>
+    <div class="tab" onclick="showTab('treat')">💊 치료</div>
+    <div class="tab" onclick="showTab('withdraw')">🔻 약물중단</div>
+    <div class="tab" onclick="showTab('symptom')">🩹 금단관리</div>
+    <div class="tab" onclick="showTab('relapse')">🔄 재발방지</div>
+    <div class="tab" onclick="showTab('summary')">📋 요약·약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:120px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">1–2%</div><div class="stat-lbl">일반 인구 유병률<br>(유럽 기준)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--prevent)">최대 70%</div><div class="stat-lbl">만성 편두통 환자 중<br>MOH 동반 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--treat)">93%</div><div class="stat-lbl">여성 환자 비율<br>(연구에 따라 상이)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--withdraw)">80%</div><div class="stat-lbl">기저 원발두통이<br>편두통인 비율</div></div>
+  </div>
+
+  <!-- 정의 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> MOH 정의 및 배경</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-overview">
+        <span>🧠</span>
+        <div><strong>약물과용두통(Medication-Overuse Headache, MOH)</strong> = 편두통 등 원발두통 환자가 급성기 치료약물을 빈번·규칙적으로 복용할 때 두통 빈도가 오히려 증가하여 만성두통으로 진행하는 상태.</div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div>MOH 환자의 대다수는 과용 약물을 중단하면 호전되나, 이 질환에 특화된 위약대조 이중맹검 연구는 매우 드물다. 두통클리닉·3차 진료기관에서는 MOH 환자군이 가장 큰 환자군 중 하나이며, 사회·개인적 의료비 부담이 큰 두통질환에 속한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ICHD-3 진단기준 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📐</span> ICHD-3 진단기준 (Box 1)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>기준</th><th>내용</th></tr>
+        <tr><td><strong>A</strong></td><td>기존 원발두통이 있는 환자에서 두통이 <strong>월 15일 이상</strong> 발생</td></tr>
+        <tr><td><strong>B</strong></td><td>두통의 급성기·증상 치료를 위한 1종 이상의 약물을 <strong>3개월 이상 규칙적으로 과용</strong></td></tr>
+        <tr><td><strong>C</strong></td><td>다른 ICHD-3 진단으로 더 잘 설명되지 않음</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- MOH 하위유형 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗂️</span> MOH 하위유형 (Box 2)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2">
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>에르고타민 과용두통 <small style="color:var(--text2)">(ICHD-3 8.2.1)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>진단기준</strong>: 에르고타민을 <strong>월 10일 이상</strong>, 3개월 넘게 규칙적으로 복용<br>
+            <strong>특이사항</strong>: 에르고트 제제는 생체이용률 개인차가 매우 커서 최소 복용량을 특정하기 어려움. 과용 중단 후 대개(항상은 아님) 호전됨.<br>
+            <span class="stage t-withdraw">ICHD-3 코드: 8.2.1</span>
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>트립탄 과용두통 <small style="color:var(--text2)">(ICHD-3 8.2.2)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>진단기준</strong>: 제형과 무관하게 1종 이상의 트립탄을 <strong>월 10일 이상</strong>, 3개월 넘게 규칙적으로 복용<br>
+            <strong>임상적 특징</strong>: 편두통 환자(무조짐/조짐 편두통 모두)에서 흔히 발생하며, 다른 하위유형과 달리 <strong>편두통 고유의 임상양상을 유지한 채</strong> 두통일수만 증가하는 경향(triptan-overuse subtype의 특징적 표현형).<br>
+            <span class="stage t-withdraw">ICHD-3 코드: 8.2.2</span>
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>오피오이드 과용두통 <small style="color:var(--text2)">(ICHD-3 8.2.4)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>진단기준</strong>: 1종 이상의 오피오이드를 <strong>월 10일 이상</strong>, 3개월 넘게 규칙적으로 복용<br>
+            <strong>임상적 중요성</strong>: 전향적 연구에서 <strong>오피오이드 과용 환자가 약물중단 후 재발률이 가장 높은 군</strong>으로 확인됨. 장기 과용 시 급격한 중단보다 입원 하 점진적 감량이 권장됨(본 가이드 PICO5 참고).<br>
+            <span class="stage t-symptom">ICHD-3 코드: 8.2.4 · 재발위험 높음</span>
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>비[非]오피오이드 진통제 과용두통 <small style="color:var(--text2)">(ICHD-3 8.2.3)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>진단기준</strong>: 파라세타몰(아세트아미노펜), NSAIDs(아스피린 포함) 등 비오피오이드 진통제를 <strong>월 15일 이상</strong>, 3개월 넘게 규칙적으로 복용<br>
+            <strong>세부 분류</strong>: 8.2.3.1 파라세타몰 과용두통, 8.2.3.2 NSAID 과용두통(8.2.3.2.1 아스피린 과용두통 포함), 8.2.3.3 기타 비오피오이드 진통제 과용두통<br>
+            <strong>참고</strong>: ICHD-3에서는 모든 비오피오이드 진통제를 <strong>단일 계열로 취급</strong>하므로, 파라세타몰+NSAID를 함께 복용하며 개별 약물은 과용 기준 미달이어도 합산 시 월 15일 이상이면 이 진단이 적용됨(8.2.6이 아님).<br>
+            <span class="stage t-treat">ICHD-3 코드: 8.2.3 · 임계값 월 15일</span>
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>병합진통제 과용두통 <small style="color:var(--text2)">(ICHD-3 8.2.5)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>진단기준</strong>: 1종 이상의 병합진통제(combination-analgesic)를 <strong>월 10일 이상</strong>, 3개월 넘게 규칙적으로 복용<br>
+            <strong>정의</strong>: '병합진통제'란 서로 다른 계열의 진통 성분 2가지 이상(예: 파라세타몰+코데인) 또는 보조제(예: 카페인)를 포함한 복합제제를 지칭함. 단, 아스피린+파라세타몰처럼 <strong>비오피오이드 진통제 2종만 결합</strong>한 제제는 병합진통제로 분류되지 않음(둘 다 같은 계열이므로 8.2.3 적용).<br>
+            <strong>주요 과용 성분</strong>: 비오피오이드 진통제+오피오이드, 부탈비탈(butalbital), 그리고/또는 카페인 조합이 가장 흔히 과용됨.<br>
+            <span class="stage t-withdraw">ICHD-3 코드: 8.2.5</span>
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>다계열 약물 과용, 개별 미과용 <small style="color:var(--text2)">(ICHD-3 8.2.6)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>진단기준</strong>: 에르고타민·트립탄·비오피오이드 진통제·오피오이드를 조합하여 <strong>총 월 10일 이상</strong> 복용하되, <strong>개별 약물 또는 계열 단독으로는</strong> 각각의 과용 기준을 충족하지 않는 경우<br>
+            <strong>예시</strong>: 트립탄을 월 5일, NSAID를 월 6일 복용하여 개별로는 기준 미달이나 합산 시 규칙적 다계열 사용 패턴을 보이는 경우<br>
+            <span class="stage t-prevent">ICHD-3 코드: 8.2.6</span>
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>다계열 약물 과용, 미상/미확인 <small style="color:var(--text2)">(ICHD-3 8.2.7)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>적용 상황</strong>: 여러 약물을 명백히 과용하고 있으나 환자가 정확한 <strong>약물명 또는 복용량을 제대로 설명하지 못하는 경우</strong>에 잠정적으로 부여하는 진단<br>
+            <strong>실무 지침</strong>: 거의 모든 경우 더 정확한 정보를 얻기 위해 <strong>두통일기(diary) 추적관찰</strong>이 필요하며, 정확한 복용 패턴이 확인되면 해당 세부진단(8.2.1~8.2.6)으로 재분류함.<br>
+            <span class="stage t-symptom">ICHD-3 코드: 8.2.7 · 잠정 진단</span>
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>기타 약물에 의한 MOH <small style="color:var(--text2)">(ICHD-3 8.2.8)</small></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            <strong>진단기준</strong>: 위에 명시되지 않은 약물(들)을 급성기·증상 완화 목적으로 <strong>월 10일 이상</strong>, 3개월 넘게 규칙적으로 과용하는 경우<br>
+            <strong>기재 방식</strong>: 진단명 옆 괄호 안에 구체적인 약물명을 명시해야 함.<br>
+            <span class="stage t-relapse">ICHD-3 코드: 8.2.8</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info" style="margin-top:10px">
+        <span>📌</span>
+        <div>진단 임계값은 약물 계열에 따라 <strong>월 10일</strong>(에르고타민·트립탄·오피오이드·병합진통제) 또는 <strong>월 15일</strong>(단일 계열 비오피오이드 진통제)로 다르며, 이 기준은 공식 근거보다는 <strong>전문가 합의</strong>에 기반한다. 한 환자가 트립탄 과용두통과 비오피오이드 진통제 과용두통 기준을 동시에 충족하면 <strong>두 진단을 모두 부여</strong>하되, 병합진통제를 과용하는 경우는 예외적으로 8.2.5 단일 진단으로만 코딩한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 역학 및 위험인자 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚠️</span> 위험인자 및 임상적 특징</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="pct-bar-row">
+        <div class="pct-bar-label">기저 편두통</div>
+        <div class="pct-bar-track"><div class="pct-bar-fill" style="width:80%;background:var(--overview)"><span class="pct-bar-val">80%</span></div></div>
+      </div>
+      <div class="pct-bar-row">
+        <div class="pct-bar-label">여성 비율</div>
+        <div class="pct-bar-track"><div class="pct-bar-fill" style="width:90%;background:var(--treat)"><span class="pct-bar-val">최대 93%</span></div></div>
+      </div>
+      <div class="pct-bar-row">
+        <div class="pct-bar-label">만성 편두통 內 MOH 동반</div>
+        <div class="pct-bar-track"><div class="pct-bar-fill" style="width:70%;background:var(--withdraw)"><span class="pct-bar-val">최대 70%</span></div></div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:10px">
+        <span>⚠️</span>
+        <div><strong>위험인자</strong>: 여성, 잦은 두통빈도, 진통제 잦은 사용, 부적절한 급성기 치료, 신경안정제 사용, 흡연, 신체활동 저하, 비만, 의존행동 성향, 정신과적 동반질환, 다른 만성통증 동반, 낮은 사회경제적 수준.</div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div>MOH의 가장 흔한 동반질환은 <strong>불안·우울</strong>이며, 일부 환자는 <strong>의존행동 양상</strong>을 보일 수 있다. 단, 관절염 등 두통과 무관한 통증으로 진통제를 과용하는 환자는 만성두통이 새로 발생하지 않는 경우가 많아, <strong>약물과용과 MOH는 서로 다른 개념</strong>이다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 문헌검색 방법론 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 가이드라인 개발 방법론</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>2000년 1월~2019년 5월 기간 PubMed/MEDLINE, Cochrane Library를 대상으로 체계적 문헌고찰을 시행하였다 (검색어: chronic headache, medication overuse, treatment, withdrawal, follow-up, relapse). 총 644편이 식별되어 119편이 최종 분석에 포함되었으며, <strong>GRADE 방법론</strong>으로 근거수준과 권고강도를 평가하였다. 7개의 PICO 질문에 대해 각 저자가 근거표를 작성하고 전체 집필진이 투표하는 방식으로 권고안을 도출하였다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>PICO 영역</th><th>검색된 문헌</th><th>최종 선정</th></tr>
+        <tr><td>PICO 1+2 (예방)</td><td>167</td><td>14</td></tr>
+        <tr><td>PICO 3 (교육상담)</td><td>51</td><td>2</td></tr>
+        <tr><td>PICO 4 (예방약물치료)</td><td>128</td><td>16</td></tr>
+        <tr><td>PICO 5 (약물중단)</td><td>151</td><td>40</td></tr>
+        <tr><td>PICO 6 (금단증상관리)</td><td>108</td><td>26</td></tr>
+        <tr><td>PICO 7 (재발방지)</td><td>39</td><td>21</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 예방 (PICO 1·2) ══════════════════ -->
+<div id="tab-prevent" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--prevent)">PICO 1</span> 교육·정보제공이 MOH 예방에 효과적인가?</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-prevent">
+        <span>🛡️</span>
+        <div>MOH는 원칙적으로 <strong>예방 가능한 질환</strong>이다. 다만 위험군을 대상으로 한 예방 전략 연구는 많지 않다.</div>
+      </div>
+      <div>덴마크의 전국적 인식개선 캠페인(미디어·SNS·리플렛·학술리뷰, 일반인·1차진료의·약사 대상)은 MOH에 대한 일반인 인지도를 <strong>31%→38%</strong>로 높였으나, 실제 MOH 유병률 감소 효과는 확인되지 않았다. 독일 다기관 연구(n=182, 편두통 환자)에서는 정보 브로슈어만 제공한 군과 브로슈어+행동요법 병행군 모두에서 MOH가 <strong>전혀 발생하지 않았으며</strong>, 두 군간 유의한 차이는 없었다.</div>
+      <div class="alert alert-success" style="margin-top:8px">
+        <span>✅</span>
+        <div><strong>Good practice statement</strong>: 잦은 급성기 약물 사용과 두통 만성화 가능성에 대한 일반인·의료진의 인식 제고는 MOH 예방에 도움이 될 수 있다. 위험군 환자는 이상적으로 <strong>3~6개월 간격</strong>으로 추적관찰한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--prevent)">PICO 2</span> 약물 예방치료가 MOH 예방에 효과적인가?</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>삽화성 편두통에서 적절한 예방약물이 MOH를 예방하는지는 RCT로 공식 검증된 바 없다. 다만 3건의 topiramate 대 위약 RCT의 사후 통합분석(n=756, 6개월)에서 topiramate군은 위약군 대비 두통일수·진통제 복용일수가 유의하게 감소했고, <strong>만성두통 및 MOH로 진행한 환자 수도 더 적었다.</strong></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>근거수준</th></tr>
+        <tr><td>삽화성 편두통에서 예방약물이 만성화·MOH 이행을 예방한다는 근거는 아직 불충분함 — 이 주제에 특화된 RCT가 필요함</td><td><span class="stage ev-low">낮음</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /prevent -->
+
+
+<!-- ══════════════════ TAB 3: 치료 (PICO 3·4) ══════════════════ -->
+<div id="tab-treat" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--treat)">PICO 3</span> 교육·상담이 MOH 치료에 효과적인가?</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>노르웨이 1차 진료 이중맹검 군집무작위 연구에서 일반의의 <strong>간단한 개입(Brief Intervention, BI)</strong>은 대조군 대비 두통일수·급성기약물 복용일수를 각각 7.3일, 7.9일 유의하게 감소시켰다(P&lt;0.001). BI군의 <strong>50%</strong>, 대조군의 <strong>6%</strong>에서 두통이 삽화성 양상으로 회복되었다.</div>
+      <div style="margin-top:8px">이탈리아 3차 두통센터 연구(n=120, 저의료필요군)에서는 <strong>조언만 제공(advice alone)</strong>한 군이 구조화된 해독 프로그램(스테로이드+예방치료 병행)과 동등한 효과(2개월 성공률 &gt;70%)를 보였다.</div>
+      <div class="alert alert-treat" style="margin-top:8px">
+        <span>💡</span>
+        <div><strong>권고</strong>: 트립탄·단순진통제를 과용하며 주요 정신과적 동반질환이 없는 환자에서는 <strong>조언만으로도 적절한 초기 치료</strong>가 될 수 있으며, 훈련된 두통전문간호사·1차진료의·개원신경과 의사가 시행할 수 있다.<br>
+        오피오이드·신경안정제·바르비투르산염 과용 환자, 이전 재발 경험자, 조언만으로 중단에 실패한 환자는 두통전문의·전문센터로 의뢰해야 한다.</div>
+      </div>
+      <table class="tbl" style="margin-top:6px">
+        <tr><th>근거수준</th><th>권고강도</th></tr>
+        <tr><td><span class="stage ev-low">낮음</span></td><td>중등도</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--treat)">PICO 4</span> 예방적 약물·비약물 치료가 MOH에 효과적인가?</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="gear-row">
+        <div class="gear-box gear-treat">
+          <div class="gear-title">Topiramate</div>
+          유럽 RCT(n=59): MOH 동반 만성편두통에서 위약 대비 월평균 편두통일수 <strong>3.5일 추가 감소</strong>. 가임기 여성에는 사용 주의(기형발생 위험).
+        </div>
+        <div class="gear-box gear-treat">
+          <div class="gear-title">OnabotulinumtoxinA</div>
+          PREEMPT 1·2 통합분석 대상자의 약 65%가 MOH 동반. 24주 시점 두통일수(1차 평가변수) 위약 대비 유의한 개선(8.2 vs 6.2일, P&lt;0.001). MOH 동반 하위군에서도 효과 유지.
+        </div>
+        <div class="gear-box gear-treat">
+          <div class="gear-title">CGRP 표적 단클론항체</div>
+          Fremanezumab: 급성기약물 과용 및 복용일수 유의 감소. Erenumab: 만성편두통+MOH 동반 환자(n=274)에서 월간 편두통일수 위약 대비 <strong>6.6일 추가 감소</strong>, ≥50% 반응률 위약 18% 대비 35~36%.
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div>Sodium valproate(SAMOHA 연구, 800mg/day, 6일 외래 해독 후 3개월): 50% 반응률이 위약(23.8%) 대비 valproate군(45.0%)에서 유의하게 높았음(약 20%p 차이, P=0.0431).</div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px">
+        <span>⚠️</span>
+        <div>베타차단제, 플루나리진, 아미트립틸린 등은 MOH 환자에서의 효과가 위약대조 RCT로 입증되지는 않았으나 임상적으로 사용될 수 있다.</div>
+      </div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>근거수준</th><th>권고강도</th></tr>
+        <tr><td>Topiramate, onabotulinumtoxinA, CGRP(수용체) 표적 단클론항체는 만성편두통+약물과용 환자에서 효과적임. Topiramate는 가임기 여성에서 사용하지 않아야 함</td>
+            <td>Topiramate: <span class="stage ev-low">낮음</span> / Onabot·Erenumab: <span class="stage ev-mod">중등도</span></td><td>약함</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /treat -->
+
+
+<!-- ══════════════════ TAB 4: 약물중단 (PICO 5) ══════════════════ -->
+<div id="tab-withdraw" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--withdraw)">PICO 5</span> 과용 약물 중단이 MOH에 효과적인가?</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-withdraw">
+        <span>🔻</span>
+        <div>수십 년간 <strong>과용 약물의 중단(withdrawal)</strong>이 MOH 치료의 첫 단계로 권고되어 왔으나, 위약대조 무작위 연구는 부족하며 대부분 관찰연구·소규모 연구이다.</div>
+      </div>
+
+      <div class="stage-timeline" style="margin-top:8px">
+        <div class="stage-box st-withdraw">
+          <div class="st-num" style="color:var(--withdraw)">급격한 중단</div>
+          <div class="st-lbl">단순진통제·에르고트·트립탄 과용 시 권장 — 두통일수 감소에 가장 효과적(42% vs 22% 감소, P&lt;0.005)</div>
+        </div>
+        <div class="stage-box st-symptom">
+          <div class="st-num" style="color:var(--symptom)">점진적 감량</div>
+          <div class="st-lbl">오피오이드·바르비투르산염·신경안정제 장기 과용 시 권장 — 입원 하에 서서히 감량</div>
+        </div>
+      </div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>세팅</th><th>적용 대상</th></tr>
+        <tr><td>외래(outpatient)</td><td>단순진통제 ± 트립탄 과용, 동반질환 적은 경우 — 대부분의 연구가 이 세팅에서 시행됨</td></tr>
+        <tr><td>주간치료(daycare)</td><td>중등도 복잡성 사례</td></tr>
+        <tr><td>입원(inpatient)</td><td>외상후두통, 오피오이드·바르비투르산염·벤조디아제핀 과용, 중증 동반질환, 이전 외래 실패 사례 — 복잡한 사례에서도 우수한 결과 보고(14주 시점 73% 두통빈도 감소, 38% 반응률)</td></tr>
+      </table>
+
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📊</span>
+        <div><strong>COMOESTAS 연구</strong>(7개국, n=694): 예방약물을 중단과 동시에 시작한 코호트에서 1개월 내 두통빈도 44% 감소, 6개월 시점 59.9% 감소. 프로토콜 완료자의 68%가 삽화성 두통으로 회복되었으며, 동반 우울·불안·기능장애·삶의 질도 뚜렷이 개선됨.</div>
+      </div>
+
+      <div class="alert alert-success" style="margin-top:8px">
+        <span>✅</span>
+        <div><strong>권고</strong>: 과용 약물 중단은 다수 환자에서 장기간 삽화성 양상 회복에 효과적이며, 의료비·삶의 질·동반 불안우울 개선과 연관된다. 예방약물을 조기에 병행할지 지연할지는 아직 불확실하다.</div>
+      </div>
+      <table class="tbl" style="margin-top:6px">
+        <tr><th>근거수준</th><th>권고강도</th></tr>
+        <tr><td><span class="stage ev-mod">중등도</span></td><td><strong>강함</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /withdraw -->
+
+
+<!-- ══════════════════ TAB 5: 금단관리 (PICO 6) ══════════════════ -->
+<div id="tab-symptom" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--symptom)">PICO 6</span> 약물중단 중 발생하는 금단증상을 치료할 수 있는가?</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-symptom">
+        <span>🩹</span>
+        <div>금단증상: 금단두통, 오심·구토, 저혈압, 빈맥, 수면장애, 식욕부진, 초조, 불안. 발작·환각은 카페인·바르비투르산염 함유 편두통약 과용자에서 드물게 보고됨. <strong>평균 지속기간 3.5일(2~10일)</strong> — 트립탄 단독과용(~4일) &lt; 에르고타민(~7일) &lt; 진통제(~10일) 순으로 짧음.</div>
+      </div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>브릿지(가교) 치료 옵션</th><th>비고</th></tr>
+        <tr><td>디펜히드라민, 디하이드로에르고타민(정맥)</td><td>정맥 투여가 경구보다 효과적일 수 있음</td></tr>
+        <tr><td>항도파민제(클로르프로마진, 프로클로르페라진, 메토클로프라미드, 도페리돈)</td><td>메토클로프라미드 10mg 근주/경구 1일 3회 등</td></tr>
+        <tr><td>발프로산(정맥)</td><td></td></tr>
+        <tr><td>케토롤락, 마그네슘</td><td></td></tr>
+        <tr><td>아세트아미노펜 1000mg (경구/직장/정맥), 나프록센 500mg</td><td>첫 주 최대 3일 이내로 제한</td></tr>
+      </table>
+
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div><strong>스테로이드의 역할은 근거가 엇갈림</strong>: 경구 프레드니손(60~100mg/day, 5일)은 두 편의 위약대조 RCT(노르웨이·독일)에서 위약 대비 우월하지 않았으나, 프레드니손군에서 구제약물 요청 빈도는 더 낮았다. 메틸프레드니솔론 500mg 정맥 + 파라세타몰 4g/day 정맥 병합도 위약 대비 우월하지 않았으나, 해독 2일째 반동두통 강도 감소에는 도움이 될 수 있었다.</div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px">
+        <span>⚠️</span>
+        <div>Celecoxib(400mg/day에서 5일마다 100mg씩 감량) 대 prednisone(75mg/day에서 5일마다 감량) 비교 연구(n=97)에서 두통강도는 celecoxib군이 다소 낮았으나, 1차 평가변수인 두통빈도·구제약물 사용은 두 군간 차이가 없었다.</div>
+      </div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>근거수준</th><th>권고강도</th></tr>
+        <tr><td>여러 종류의 증상완화 약물을 금단증상 경감 목적으로 사용할 수 있음</td><td><span class="stage ev-low">낮음</span></td><td>약함</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /symptom -->
+
+
+<!-- ══════════════════ TAB 6: 재발방지 (PICO 7) ══════════════════ -->
+<div id="tab-relapse" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--relapse)">PICO 7</span> 치료 성공 후 재발을 예방할 수 있는가?</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="pct-bar-row">
+        <div class="pct-bar-label">6개월 재발률</div>
+        <div class="pct-bar-track"><div class="pct-bar-fill" style="width:41%;background:var(--relapse)"><span class="pct-bar-val">0~41%</span></div></div>
+      </div>
+      <div class="pct-bar-row">
+        <div class="pct-bar-label">12개월 재발률</div>
+        <div class="pct-bar-track"><div class="pct-bar-fill" style="width:41%;background:var(--withdraw)"><span class="pct-bar-val">13~41%</span></div></div>
+      </div>
+      <div class="pct-bar-row">
+        <div class="pct-bar-label">6년 재발률</div>
+        <div class="pct-bar-track"><div class="pct-bar-fill" style="width:45%;background:var(--symptom)"><span class="pct-bar-val">21~45%</span></div></div>
+      </div>
+      <div class="pct-bar-row">
+        <div class="pct-bar-label">9년 재발률(최장 추적)</div>
+        <div class="pct-bar-track"><div class="pct-bar-fill" style="width:32%;background:var(--treat)"><span class="pct-bar-val">32%</span></div></div>
+      </div>
+
+      <div class="alert alert-info" style="margin-top:10px">
+        <span>📌</span>
+        <div><strong>대부분의 재발은 중단 후 첫 1년 이내</strong>에 발생한다. 관찰기간이 짧든 길든 재발률 자체는 유의한 차이를 보이지 않았다.</div>
+      </div>
+
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>재발 예측인자</th></tr>
+        <tr><td>편두통+긴장형두통 혼재 양상 (편두통 단독보다 재발 잦음)</td></tr>
+        <tr><td>진통제 과용 (트립탄 과용보다 재발 잦음)</td></tr>
+        <tr><td>중단 전후 잦은 편두통/두통 빈도</td></tr>
+        <tr><td>과거 예방치료 시도 횟수가 많을수록</td></tr>
+        <tr><td>최근 3년 내 중단 병력, 응급실 방문 이력, 높은 Beck 우울척도 점수, 흡연·음주</td></tr>
+      </table>
+
+      <div class="grid2" style="margin-top:10px;gap:8px">
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>1️⃣ 상담·간단한 개입(BI)의 효과</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">조기 BI 시행군의 재발률: 6개월 4%, 16개월 8.3%. 6개월 시점 지연 BI군은 재발 <strong>0%</strong>로 보고됨.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>2️⃣ 심리치료의 효과</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">단기 정신역동적 심리치료+약물예방 병행군이 약물예방 단독군보다 6개월·12개월 재발률이 유의하게 낮음(P=0.016, P=0.047). 반면 마음챙김(mindfulness) 훈련은 유의한 차이를 보이지 않음.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>3️⃣ OnabotulinumtoxinA 지속치료</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">단독 또는 경구 예방치료와 병행한 지속적 보툴리눔독소A 치료는 2년 추적 관찰에서 재발이 관찰되지 않은 연구가 있음.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>4️⃣ 복약일기 모니터링</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">종이/전자 두통일기와 2개월 간격 전화 추적관찰을 병행하여 매우 낮은 재발률(6.5%)을 달성한 연구가 있음(COMOESTAS 관련 연구).</div>
+        </div>
+      </div>
+
+      <div class="alert alert-relapse" style="margin-top:10px">
+        <span>💬</span>
+        <div><strong>Good practice statement</strong>: 최초 치료 성공 후에도 재발률이 비교적 높으므로, 위험인자를 파악하고 정기적으로 추적관찰해야 한다. 복약일기 모니터링, 단기 정신역동적 심리치료, 보툴리눔독소A 지속치료는 재발위험이 있는 환자에서 사용을 고려할 수 있다. 다만 각 방법의 근거는 아직 충분하지 않다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /relapse -->
+
+
+<!-- ══════════════════ TAB 7: 요약·약어 ══════════════════ -->
+<div id="tab-summary" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> MOH 관리 총괄 요약 (Box 3)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="acc" style="margin-bottom:6px">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span>① 환자 교육의 중요성</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">환자 교육은 MOH 관리의 핵심 요소이다.</div>
+      </div>
+      <div class="acc" style="margin-bottom:6px">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span>② 진료 단계별 관리 주체</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">단순한 MOH는 1차 진료(general practice)에서 성공적으로 관리 가능. 복잡한 MOH는 신경과 전문의 또는 통증전문의와 행동심리사로 구성된 다학제팀이 관리해야 함.</div>
+      </div>
+      <div class="acc" style="margin-bottom:6px">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span>③ 교육이 효과 없을 때</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">임상 상황과 과용 약물 종류에 가장 적합한 프로그램으로 약물을 중단시키고, 입증된 효과가 있는 예방약물을 투여해야 함.</div>
+      </div>
+      <div class="acc" style="margin-bottom:6px">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span>④ 예방치료 무반응 시</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">약물 중단을 시행해야 함. 단순진통제·에르고트·트립탄 과용 시 급격한 중단 또는 제한, 오피오이드·바르비투르산염·신경안정제의 장기 과용 시에는 서서히 감량.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span>⑤ 중단 세팅의 선택</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">외래·주간치료·입원 모든 세팅이 각기 다른 복잡도의 환자에 적합하며 유사한 성공률을 보임. 두통력이 세팅 결정에 참고가 됨.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 주요 참고문헌 (선별)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>번호</th><th>문헌</th></tr>
+        <tr><td>1</td><td>Headache Classification Committee of the IHS. ICHD-3. <em>Cephalalgia</em> 2018;38:1–211.</td></tr>
+        <tr><td>2</td><td>Diener HC, et al. Medication-overuse headache: risk factors, pathophysiology and management. <em>Nat Rev Neurol</em> 2016;12:575–583.</td></tr>
+        <tr><td>20</td><td>Diener HC, Dodick D, Evers S, et al. Pathophysiology, prevention, and treatment of medication overuse headache. <em>Lancet Neurol</em> 2019;18:891–902.</td></tr>
+        <tr><td>52</td><td>Sarchielli P, et al. Sodium valproate in migraine without aura and MOH: RCT (SAMOHA). <em>Eur Neuropsychopharmacol</em> 2014;24:1289–1297.</td></tr>
+        <tr><td>56</td><td>Silberstein SD, et al. OnabotulinumtoxinA — PREEMPT subgroup analysis of MOH at baseline. <em>J Neurol Sci</em> 2013;331:48–56.</td></tr>
+        <tr><td>61</td><td>Tepper SJ, Diener HC, Ashina M, et al. Erenumab in chronic migraine with medication overuse. <em>Neurology</em> 2019;92:e2309–e2320.</td></tr>
+        <tr><td>65</td><td>Evers S, Jensen R. Treatment of medication overuse headache — guideline of the EFNS headache panel. <em>Eur J Neurol</em> 2011;18:1115–1121.</td></tr>
+        <tr><td>79</td><td>Carlsen LN, Munksgaard SB, Jensen RH, Bendtsen L. Complete detoxification is the most effective treatment of MOH: RCT. <em>Cephalalgia</em> 2018;38:225–236.</td></tr>
+        <tr><td>83</td><td>Jellestad PL, et al. Economic benefits of treating MOH — COMOESTAS project. <em>Cephalalgia</em> 2018;39:274–285.</td></tr>
+        <tr><td>106</td><td>Taghdiri F, et al. Celecoxib vs prednisone for withdrawal headache. <em>Headache</em> 2015;55:128–135.</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>🔗</span>
+        <div>원문: <a href="https://doi.org/10.1111/ene.14268" target="_blank" class="source-link">Diener HC, et al. European Journal of Neurology 2020;0:1–15. doi:10.1111/ene.14268</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 약어 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔠</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+</div><!-- /summary -->
+
+</div><!-- /main -->
+
+<!-- ════ 데이터 및 스크립트 ════ -->
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"MOH",   def:"Medication-Overuse Headache — 약물과용두통" },
+  { term:"ICHD-3",def:"International Classification of Headache Disorders, 3rd edition — 국제두통질환분류 3판" },
+  { term:"IHS",   def:"International Headache Society — 국제두통학회" },
+  { term:"EAN",   def:"European Academy of Neurology — 유럽신경학회" },
+  { term:"EFNS",  def:"European Federation of Neurological Societies — 유럽신경학회연맹(EAN의 전신 중 하나)" },
+  { term:"GRADE", def:"Grading of Recommendations Assessment, Development and Evaluation — 근거수준·권고강도 평가체계" },
+  { term:"PICO",  def:"Population, Intervention, Comparison, Outcome — 임상질문 구성요소" },
+  { term:"RCT",   def:"Randomized Controlled Trial — 무작위대조시험" },
+  { term:"CGRP",  def:"Calcitonin Gene-Related Peptide — 칼시토닌유전자관련펩타이드" },
+  { term:"CM",    def:"Chronic Migraine — 만성 편두통 (월 15일 이상 두통, 그중 8일 이상 편두통 양상)" },
+  { term:"BI",    def:"Brief Intervention — 간단한 개입(1차 진료의의 교육·상담 중심 접근)" },
+  { term:"COMOESTAS", def:"MOH 관리에 관한 다국가·다기관 컨소시엄 연구 프로젝트명" },
+  { term:"SAMOHA", def:"Sodium valproate 대 위약을 비교한 MOH 임상연구명" },
+  { term:"PREEMPT", def:"Phase 3 REsearch Evaluating Migraine Prophylaxis Therapy — onabotulinumtoxinA 만성편두통 임상시험 프로그램" },
+  { term:"NDPH",  def:"New Daily Persistent Headache — 신생지속두통" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 국제 두드러기(Urticaria) 진료지침</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --overview: #1d4ed8;   /* 개요 — 인디고블루 */
+    --diag:     #0f766e;   /* 진단 — 틸 */
+    --adult:    #b45309;   /* 치료알고리즘 — 앰버 */
+    --child:    #0369a1;   /* 약물상세 — 스카이블루 */
+    --tests:    #7c3aed;   /* 특수집단·평가도구 — 바이올렛 */
+    --specific: #be185d;   /* 로즈(보조) */
+    --unexp:    #15803d;   /* 그린(보조) */
+    --accent: #1d4ed8;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-mdd { display: flex; align-items: center; gap: 0; font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px; }
+  .logo-mdd span:nth-child(1) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-mdd span:nth-child(2) { background: var(--adult); color:#fff; padding:3px 6px; }
+  .logo-mdd span:nth-child(3) { background: var(--unexp); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 19px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn { display: flex; align-items: center; gap: 3px; flex-shrink: 0; margin: 4px 4px 4px 6px; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700; cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s; }
+  .font-zoom-btn:hover { background: var(--border); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 11px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--overview); border-bottom-color: var(--overview); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(18px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-overview{ background: #dbeafe; border-left: 3px solid var(--overview); color: #1d4ed8; }
+  .alert-diag    { background: #d9f2ef; border-left: 3px solid var(--diag);   color: #0f766e; }
+  .alert-adult   { background: #fef0d9; border-left: 3px solid var(--adult);  color: #92400e; }
+  .alert-child   { background: #e0f2fe; border-left: 3px solid var(--child);  color: #0369a1; }
+  .alert-tests   { background: #ede9fe; border-left: 3px solid var(--tests);  color: #5b21b6; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+
+  .lv1 { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+  .lv2 { background: #dbeafe; color: #1d4ed8; font-weight: 700; text-align: center; }
+  .lv3 { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .lv4 { background: #ffe4d6; color: #92400e; font-weight: 700; text-align: center; }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-overview { background: #dbeafe; color: var(--overview); border: 1px solid var(--overview); }
+  .t-diag     { background: #d9f2ef; color: var(--diag);     border: 1px solid var(--diag); }
+  .t-adult    { background: #fef0d9; color: var(--adult);    border: 1px solid var(--adult); }
+  .t-child    { background: #e0f2fe; color: var(--child);    border: 1px solid var(--child); }
+  .t-tests    { background: #ede9fe; color: var(--tests);    border: 1px solid var(--tests); }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box { flex: 1; min-width: 130px; padding: 10px 10px 12px; border-right: 2px solid var(--bg); text-align: center; position: relative; }
+  .stage-box:last-child { border-right: none; }
+  .stage-box .st-num { font-size: calc(14px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-overview { background: #e6eefb; }
+  .st-diag     { background: #d9f2ef; }
+  .st-adult    { background: #fef0d9; }
+  .st-child    { background: #e0f2fe; }
+  .st-tests    { background: #f3e8ff; }
+
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-adult   { background: #fef0d9; border: 1.5px solid var(--adult);  color: #92400e; }
+  .gear-child   { background: #e0f2fe; border: 1.5px solid var(--child);  color: #0369a1; }
+  .gear-tests   { background: #f3e8ff; border: 1.5px solid var(--tests);  color: #5b21b6; }
+  .gear-diag    { background: #d9f2ef; border: 1.5px solid var(--diag);   color: #0f766e; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  .algo-flow { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .algo-step { border-radius: 6px; padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); border-left: 4px solid var(--border); background: var(--surface2); }
+
+  /* 권고문 박스 (GRADE 강도표기) */
+  .rec { border: 1px solid var(--border); border-radius: 8px; margin: 8px 0; overflow: hidden; }
+  .rec-q { background: var(--surface2); padding: 7px 12px; font-weight: 700; font-size: calc(12px * var(--fscale, 1)); border-bottom: 1px solid var(--border); }
+  .rec-body { padding: 9px 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .rec-text { flex: 3; min-width: 220px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.55; }
+  .rec-sym { flex: 0 0 46px; min-width: 46px; height: 34px; border-radius: 6px; font-weight: 800; font-size: calc(15px * var(--fscale, 1)); color: #fff; display: flex; align-items: center; justify-content: center; }
+  .rec-strong-for { background: #15803d; }
+  .rec-weak-for { background: #86efac; color: #14532d; }
+  .rec-none { background: #eab308; color: #3f2d00; }
+  .rec-weak-against { background: #fca5a5; color: #7f1d1d; }
+  .rec-strong-against { background: #dc2626; }
+  .rec-meta { flex: 1 1 150px; font-size: calc(10.5px * var(--fscale, 1)); color: var(--text2); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mdd"><span>URT</span><span>2026</span><span>EAACI·GA²LEN</span></div>
+      <h1>2026 국제 두드러기(Urticaria) 진료지침</h1>
+    </div>
+    <div class="meta-line">
+      The International Guideline for the Definition, Classification, Diagnosis and Management of Urticaria — Zuberbier T, et al. <em>Allergy.</em> 2026;0:1-51. DOI: 10.1111/all.70210 (EAACI/GA²LEN/EuroGuiDerm/APAAACI, 2024 컨센서스 컨퍼런스 기반 개정판)
+      <br><span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">📝 진단</div>
+    <div class="tab" onclick="showTab('adult')">🧭 치료알고리즘</div>
+    <div class="tab" onclick="showTab('child')">💊 약물상세</div>
+    <div class="tab" onclick="showTab('tests')">👶 특수집단·평가도구</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·출처</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:110px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">~20%</div><div class="stat-lbl">급성두드러기<br>평생 유병률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">&gt;50%</div><div class="stat-lbl">CU 환자 중<br>혈관부종 동반</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--adult)">&gt;50%</div><div class="stat-lbl">CSU 중<br>자가면역기전(TypeⅠ/Ⅱb)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--child)">RA·당뇨</div><div class="stat-lbl">CSU 건강상태 점수<br>수준(류마티스관절염·인슐린당뇨 유사)</div></div>
+  </div>
+
+  <div class="alert alert-warn"><span>⚠️</span><div>CSU는 사망률(특히 자살) 증가와 연관된다는 최근 연구가 있으며, 이는 동반질환(불안·우울·수면장애·성기능장애)과 관련이 있을 가능성이 높다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📖</span> 정의</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-adult">
+          <div class="gear-title">팽진(Wheal)</div>
+          ① 경계가 명확한 표재성 중심부 부종(반사홍반 동반) ② 소양감 또는 작열감 ③ 일과성(보통 30분~24시간 내 정상화)
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">혈관부종(Angioedema)</div>
+          ① 진피 하부·피하 또는 점막의 급성 홍반성/피부색 심부 부종 ② 소양감보다 저림·작열감·긴장감·통증 ③ 팽진보다 느린 소실(최대 72시간)
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>두드러기는 아나필락시스, 자가염증증후군, 두드러기혈관염, 브라디키닌매개 혈관부종(유전성혈관부종 HAE 포함) 등과 감별이 필요하다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗂️</span> 분류 — 지속기간 × 유발인자</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>구분</th><th>정의</th></tr>
+        <tr><td>급성두드러기</td><td>팽진·혈관부종이 6주 이하 지속</td></tr>
+        <tr><td>만성두드러기(CU)</td><td>6주 초과 지속, 매일/거의매일 또는 간헐적 경과</td></tr>
+        <tr><td>만성자발두드러기(CSU)</td><td>특정 유발인자 없이 자발적 경과(원인 불명 또는 기지既知)</td></tr>
+        <tr><td>만성유발두드러기(CIndU)</td><td>일정한 역치 이상 특정 유발인자 노출 시 항상 발생, 부재 시 발생하지 않음</td></tr>
+      </table>
+      <div class="sec-sep"></div>
+      <table class="tbl">
+        <tr><th>CIndU 아형</th><th>비고</th></tr>
+        <tr><td>피부묘기증(Symptomatic dermographism)</td><td>구 urticaria factitia</td></tr>
+        <tr><td>한랭두드러기</td><td>구 acquired cold urticaria</td></tr>
+        <tr><td>지연압박두드러기(DPU)</td><td>구 pressure urticaria</td></tr>
+        <tr><td>일광두드러기 / 열두드러기</td><td>—</td></tr>
+        <tr><td>진동혈관부종</td><td>—</td></tr>
+        <tr><td>콜린성두드러기 / 접촉두드러기 / 수인성두드러기</td><td>—</td></tr>
+      </table>
+      <small>두 가지 이상의 CU 아형(예: CSU+CIndU)이 한 환자에서 동시에 존재할 수 있으며 각각 치료반응이 다를 수 있다.</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⛔</span> 두드러기 감별진단 목록</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>발진성비만세포증(구 urticaria pigmentosa)·전신비만세포증, 비만세포활성화증후군(MCAS), 두드러기혈관염, 브라디키닌매개혈관부종(HAE 포함), 운동유발아나필락시스, 크리오파이린연관주기열증후군(CAPS: FCAS·MWS·NOMID), Schnitzler증후군, Gleich증후군, Well증후군, 수포성유천포창(전수포기), 성인스틸병, 혈액암동반호산구성피부질환(EDHM), 호산구증가증후군(HES) — 팽진·혈관부종을 보일 수 있어 두드러기로 오진되기 쉬우나 병태생리가 명확히 다른 별개 질환군</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 권고 강도 표기 및 합의수준 기준</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>기호</th><th>표현</th><th>의미</th></tr>
+        <tr><td><span class="rec-sym rec-strong-for" style="display:inline-flex">↑↑</span></td><td>강한 찬성</td><td>"권고한다" — 정책으로 채택 가능한 수준</td></tr>
+        <tr><td><span class="rec-sym rec-weak-for" style="display:inline-flex">↑</span></td><td>약한 찬성</td><td>"제안한다" — 공유의사결정 필요</td></tr>
+        <tr><td><span class="rec-sym rec-none" style="display:inline-flex">0</span></td><td>권고 없음</td><td>근거 불충분/균형적 이익-위해</td></tr>
+        <tr><td><span class="rec-sym rec-weak-against" style="display:inline-flex">↓</span></td><td>약한 반대</td><td>"제안하지 않는다"</td></tr>
+        <tr><td><span class="rec-sym rec-strong-against" style="display:inline-flex">↓↓</span></td><td>강한 반대</td><td>"권고하지 않는다"</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>합의수준</th><th>기준</th></tr>
+        <tr><td><span class="stage lv1">강한 합의</span></td><td>참여자 &gt;95% 동의</td></tr>
+        <tr><td><span class="stage lv2">합의</span></td><td>참여자 &gt;75-95% 동의</td></tr>
+        <tr><td><span class="stage lv3">다수 동의</span></td><td>참여자 &gt;50-75% 동의</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>2024년 12월 6일 베를린 하이브리드 컨센서스 컨퍼런스, 213명 전문가패널(59개국·107개 학회), 최소 96명 이상 투표·75% 이상 동의로 각 권고 통과.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> CSU 관리 6요소(6C)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="stage-timeline">
+        <div class="stage-box st-overview"><div class="st-num" style="color:var(--overview)">Confirm</div><div class="st-lbl">진단확인·<br>감별진단 배제</div></div>
+        <div class="stage-box st-diag"><div class="st-num" style="color:var(--diag)">Cause</div><div class="st-lbl">CSUaiTI/aiTIIb<br>지표 탐색</div></div>
+        <div class="stage-box st-adult"><div class="st-num" style="color:var(--adult)">Cofactors</div><div class="st-lbl">악화인자·유발인자<br>파악</div></div>
+        <div class="stage-box st-child"><div class="st-num" style="color:var(--child)">Comorbid.</div><div class="st-lbl">CIndU 동반·<br>정신건강 등 확인</div></div>
+        <div class="stage-box st-tests"><div class="st-num" style="color:var(--tests)">Consequen.</div><div class="st-lbl">수면·직업·<br>성기능 영향 평가</div></div>
+      </div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🎯</span><div>+Components(치료반응 예측 바이오마커) · +Course(UAS7/UCT로 지속 모니터링) — 총 7가지 진단 목표(Table 9).</div></div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 진단 ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩺</span> 진단 3단계 원칙</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-flow">
+        <div class="algo-step" style="border-color:var(--overview)"><strong>① 병력청취</strong> — 동반질환·병용질환 포함, 팽진/혈관부종 사진(환자촬영분 포함) 검토</div>
+        <div class="algo-step" style="border-color:var(--diag)"><strong>② 신체진찰</strong> — 일과성 병변 특성상 내원 시 부재 가능, 사진기록 중요</div>
+        <div class="algo-step" style="border-color:var(--adult)"><strong>③ 기본 진단검사</strong> — CU 아형별 권장검사(하단 표), 이후 병력에 근거한 확장검사</div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚖️</span><div>CU는 대부분 자가면역성 질환이며, IgE매개식품알레르기 양성이 두드러기와 인과관계가 있다는 뜻이 아니라 단순 동반질환일 수 있음을 환자에게 설명해야 한다.</div></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">급성두드러기에서 상용 진단검사를 시행해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-against">↓↓</div>
+      <div class="rec-text">급성자발두드러기에서 <strong>상용 진단검사 시행에 반대</strong>를 권고한다(병력상 식품/약물알레르기 강력 의심 시는 예외).</div>
+      <div class="rec-meta">합의: &gt;75%<br>전문가 합의</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 아형별 권장 진단검사(Table 8)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>아형</th><th>기본검사(전원 시행)</th><th>확장 프로그램(병력 기반)</th></tr>
+        <tr><td>급성자발두드러기</td><td>없음</td><td>병력상 강력 의심 시에만</td></tr>
+        <tr><td>CSU</td><td>일반혈구검사·ESR/CRP, (전문클리닉) IgG 항TPO·총IgE</td><td>H.pylori 등 감염, 기능적자가항체(ASST/APST, 호염기구활성화검사), 갑상선기능, 알레르기검사, 동반 CIndU, C4/C1INH(혈관부종 단독형)</td></tr>
+        <tr><td>한랭두드러기</td><td>한랭유발·역치검사</td><td>일반혈구·ESR/CRP, 감염 배제</td></tr>
+        <tr><td>지연압박두드러기</td><td>압박·역치검사</td><td>없음</td></tr>
+        <tr><td>열두드러기</td><td>열유발·역치검사</td><td>없음</td></tr>
+        <tr><td>일광두드러기</td><td>파장별 UV/가시광 유발·역치검사</td><td>기타 광선피부병 배제</td></tr>
+        <tr><td>피부묘기증</td><td>유발 및 역치검사</td><td>일반혈구·ESR/CRP</td></tr>
+        <tr><td>진동혈관부종</td><td>진동(vortex mixer)검사</td><td>없음</td></tr>
+        <tr><td>수인성/콜린성/접촉두드러기</td><td>유발검사(콜린성은 역치 포함)</td><td>없음</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">CSU에서 상용 진단검사는?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-weak-for">↑</div>
+      <div class="rec-text">제한적 검사(일반혈구·CRP/ESR, 전문클리닉 총IgE·IgG항TPO 등)를 권고하며, 장기·조절불량 환자는 병력·진찰에 근거한 추가검사를 시행한다. IgG-anti-TPO 낮고 총IgE 낮으면 CSUaiTIIb(오말리주맙 반응 저하 경향) 시사.</div>
+      <div class="rec-meta">합의: &gt;70%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">CIndU 진단검사는?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">유발검사로 CIndU를 진단할 것을, 역치측정과 UCT로 질병활성도·조절수준을 평가할 것을 강한 권고.</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> 팽진 vs 혈관부종 감별진단 흐름(Figure 1 요약)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="gear-row">
+        <div class="gear-box gear-diag">
+          <div class="gear-title">팽진 위주</div>
+          원인불명 발열·관절통·전신쇠약 반복 → (+) 자가염증질환 의심 → 유전자검사 등<br>
+          팽진 24시간 초과 지속 → (+) 조직검사로 혈관염 소견 확인 → 두드러기혈관염<br>
+          모두 (-) → 유발가능 여부 확인 → 유발(+) CIndU / 유발(-) CSU
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">혈관부종 위주</div>
+          ACE억제제 복용력 (+) → ACEI유발혈관부종(중단 후 수일~최대 6개월 내 호전)<br>
+          (-) → C4/C1INH 검사 → 이상 시 HAE/후천성C1INH결핍 감별, 정상이면 매개체는 히스타민계로 판단하여 CSU/CIndU 범주로 접근
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">CSU 환자에서 감별진단을 고려해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">지침 알고리즘에 근거하여 CU 시사 징후·증상이 있는 모든 환자에서 감별진단을 고려할 것을 강한 권고.</div>
+      <div class="rec-meta">합의: 100%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> CSU 병태생리 핵심</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>비만세포 활성화가 중심이며 히스타민수용체 외 MRGPRX2 등 다른 수용체도 관여. T세포(OX40/OX40L), B세포(자가항체), 호산구, 호중구, 호염기구, 대식세포, 감각신경(신경펩타이드) 등이 관여한다. CSU 환자의 50% 이상에서 Type Ⅰ(자가알레르기, IgE 자가항체) 및/또는 Type Ⅱb(비만세포 활성화 IgG 자가항체) 자가면역기전이 확인되며 일부는 두 유형 모두를 갖는다. 원인불명(CSUuc)도 상당수 존재. 장내미생물총 변화의 역할이 최근 주목받고 있으나 인과관계는 불명확하다.</div>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════════════ TAB 3: 치료알고리즘 ══════════════════ -->
+<div id="tab-adult" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🎯</span> 치료 기본원칙</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>목표는 질환이 소실될 때까지 가능한 한 효율적·안전하게 치료하여 <strong>지속적 완전조절(UAS=0/UCT=16)</strong>과 삶의 질 정상화를 이루는 것이다. 치료전략: (a) 원인 규명·제거(가능하면 완치) (b) 유발인자 회피(활성도 감소) (c) 일부 CIndU에서 내성유도 (d) 비만세포 매개체 방출·작용 차단 약물요법. "필요한 만큼, 최소한으로"의 원칙으로 assess → act & adjust → reassess의 반복 사이클을 따른다(3~6개월마다 재평가).</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">완전 증상조절을 목표로 해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">환자 개개인의 안전성·삶의 질을 최대한 고려하며 완전 증상조절을 목표로 할 것을 강한 권고.</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🪜</span> 단계별 치료 알고리즘(Figure 4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-flow">
+        <div class="algo-step" style="border-color:var(--overview)"><strong>1단계</strong> — 표준용량 2세대 H1항히스타민제 시작, 필요시 최대 4배까지 증량</div>
+        <div class="algo-step" style="border-color:var(--diag)"><strong>2단계(만성두드러기만 해당)</strong> — 고용량 항히스타민 2~4주(불내약 시 더 조기) 조절불량 시 아래 3제 중 1개를 부가: <strong>오말리주맙</strong>(다수 국가 CSU 허가, 300mg/4주 → 필요시 최대 600mg/2주) / <strong>두필루맙</strong>(허가국 한정, off-label 가능) / <strong>레미브루티닙</strong>(BTK억제제, 2025.9 FDA 승인, 25mg 1일 2회)</div>
+        <div class="algo-step" style="border-color:var(--adult)"><strong>3단계</strong> — 조절불량 시 사이클로스포린A(최대 5mg/kg, 단독 또는 저용량 오말리주맙과 병용 고려)를 항히스타민에 부가</div>
+        <div class="algo-step" style="border-color:var(--child)"><strong>4단계</strong> — 여전히 조절불량 시 기타요법(Table 12, 근거수준 낮음) 고려, 전문센터 관리 권고</div>
+      </div>
+      <div class="alert alert-adult" style="margin-top:8px"><span>➕</span><div>급성악화 시 모든 단계에서 단기 전신 글루코코르티코이드 병용 고려 가능.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📉</span> UCT 기반 단계조정(Figure 3)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>UCT 점수</th><th>조절수준</th><th>조치</th></tr>
+        <tr><td><span class="stage lv4">&lt;12</span></td><td>조절안됨</td><td>단계상향(2세대 AH 1~4배 &gt;7-28일 유지 또는 오말리주맙 &gt;3개월 후에도 미조절 시)</td></tr>
+        <tr><td><span class="stage lv3">12-15</span></td><td>잘 조절됨</td><td>현 치료 유지·최적화 시도</td></tr>
+        <tr><td><span class="stage lv1">16</span></td><td>완전조절</td><td>3-6개월 증상 없으면 용량감량 또는 투여간격 연장으로 단계하향 고려</td></tr>
+      </table>
+      <small>CIndU는 계절적 노출(예: 겨울철 한랭두드러기) 등 개별 트리거 노출 정도를 고려하여 개별화 결정.</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧯</span> 원인·유발인자 관리</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>약물(특히 NSAID)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">CSU 악화의 최대 4분의1을 NSAID가 유발; 파라세타몰·COX-2억제제는 상대적으로 안전. 저용량 아스피린이 항혈전 목적 필수라면 무조건 중단할 필요는 없음 — 4주간 타 항혈전제로 전환 후 인과성 평가 가능. 병력상 명확한 반응이면 상용 NSAID 유발검사는 불필요.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>감염·염증성 질환</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">H.pylori는 위암 연관성 때문에 근절 권고(단, 근절 자체보다 동반된 위염·식도염 치료가 CSU 개선의 핵심). 장내기생충(드묾), 만성 부비동/담낭염증 등도 고려 대상이나 근거는 제한적.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>스트레스</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">CSU 환자의 최대 1/3이 스트레스를 악화인자로 인지 — 환자중심 접근에서 스트레스 논의·완화중재를 포함한다.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>식이</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">IgE매개식품알레르기가 CSU 원인인 경우는 극히 드묾. 위僞알레르겐/저히스타민 식이는 일부 환자에서 도움될 수 있으나 이중맹검 검증은 어려움(모니터링에 2-3주 필요), 치료 지연을 초래해서는 안 됨. "히스타민불내증" 과잉진단은 불필요한 식이제한을 야기하므로 주의.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">질환을 악화시키는 것으로 의심되는 약물을 중단해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">CSU 악화가 의심되는 약물(예 NSAID)의 중단을 권고한다.</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">전신 코르티코스테로이드를 부가요법으로 사용해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-against">↓↓</div>
+      <div class="rec-text">CU에서 전신 글루코코르티코이드·데포제제의 <strong>장기 사용에는 강한 반대</strong>. 다만 급성악화 시 짧은 구조요법(최대 10일)은 제안(↑)한다.</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+</div><!-- /adult -->
+
+
+<!-- ══════════════════ TAB 4: 약물상세 ══════════════════ -->
+<div id="tab-child" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> H1-항히스타민제</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger"><span>⛔</span><div>1세대 H1항히스타민제(항콜린성·진정효과, 치명적 과다복용 보고)는 성인·소아 모두 1차치료로 사용하지 않을 것을 <strong>강한 권고(↓↓)</strong>. Astemizole·terfenadine은 CYP3A4억제제 병용 시 심장독성으로 대부분 국가에서 퇴출, 사용하지 않음.</div></div>
+      <div>근거가 확립된 2세대 성분: bilastine, cetirizine, desloratadine, ebastine, fexofenadine, levocetirizine, loratadine, mizolastine, rupatadine.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">2세대 H1항히스타민제를 1차치료로 사용해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">모든 두드러기 아형에서 2세대 H1항히스타민제를 1차치료로 권고(성분 간 우열비교 근거는 부족).</div>
+      <div class="rec-meta">합의: 100%<br>근거+합의 기반</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">표준용량 무반응 시 최대 4배까지 증량해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">표준용량 2세대 H1항히스타민제에 무반응인 CU 환자에서 타 치료 고려 전에 <strong>최대 4배 증량</strong>을 2차치료로 권고(off-label).</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">4배 초과 고용량이 필요한가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-against">↓↓</div>
+      <div class="rec-text">CU에서 <strong>4배 초과 표준용량 사용에는 강한 반대</strong>(검증되지 않음).</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">서로 다른 2세대 항히스타민제를 동시 병용해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-weak-against">↓</div>
+      <div class="rec-text">서로 다른 H1항히스타민제 동시 병용에는 <strong>반대를 제안</strong>(단일 성분 증량이 우선, 국가별 법적 제한이 없는 한).</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="alert alert-warn"><span>📊</span><div><strong>안전성 신호(2024)</strong>: 대만 코호트에서 1·2세대 항히스타민 누적용량과 치매위험 연관성 보고되었으나 방법론적 한계(비사용군 비율 낮음)로 이후 TriNetX 재분석(미발표)에서 재현되지 않음. 최신 지침은 이를 "추가 모니터링이 필요한 안전성 신호"로만 인정하며 현행 2세대 항히스타민 사용 권고를 변경하지 않는다.</div></div>
+
+  <div class="sec-sep"></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧫</span> 생물학적제제 · 표적치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-adult">
+          <div class="gear-title">오말리주맙(항IgE)</div>
+          거의 전세계 CSU 유일 공식허가 2차치료. 300mg/4주 시작(체중·총IgE 무관), 무반응 시 최대 600mg/2주까지 증량 가능(off-label). CIndU 다수 아형(콜린성·한랭·일광·열·피부묘기증·지연압박)에서도 효과 보고. 발현이 느릴 수 있음, 완전조절 3개월 후 투여간격 연장 고려 가능(내성현상 없음). 임신 중 안전성 데이터 양호.
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">두필루맙(항IL-4Rα)</div>
+          미국·UAE·브라질·일본 등에서 CSU 허가(2025년 기준, 타국 확대 예정), 그 외 off-label 가능성. 오말리주맙 대비 효과는 다소 낮을 수 있으나 낮은 IgE에서도 효과 유지가 차별점. 천식·비용종동반부비동염·아토피피부염 동반 시 시너지 기대.
+        </div>
+        <div class="gear-box gear-tests">
+          <div class="gear-title">레미브루티닙(경구 BTK억제제)</div>
+          2025년 9월 FDA 승인(항히스타민 무반응 CSU 성인, 주사·검사모니터링 불필요), 25mg 1일 2회. 오말리주맙 무반응자에서도 고려 가능.
+        </div>
+        <div class="gear-box gear-diag">
+          <div class="gear-title">사이클로스포린A</div>
+          3-5mg/kg/day, off-label, 면역억제 및 비만세포매개체 방출 직접 억제. 장기사용 시 부작용(신독성·고혈압 등) 발생률이 높아 타 허가치료에 반응 없는 중증환자에 한해 사용. 낮은 총IgE·자가면역표지 동반 CSUaiTIIb 환자에서 특히 효과적일 수 있음.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">고용량 항히스타민 무반응 시 오말리주맙 부가가 유용한가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">고용량 2세대 H1항히스타민에 무반응인 CU(현재 CSU 한정 허가) 환자에 오말리주맙 부가를 강한 권고.</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">두필루맙 부가는 유용한가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-weak-for">↑</div>
+      <div class="rec-text">고용량 항히스타민 무반응 CSU에서 두필루맙 부가를 제안(off-label 가능성 있음).</div>
+      <div class="rec-meta">합의: &gt;75%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">레미브루티닙 부가는 유용한가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-weak-for">↑</div>
+      <div class="rec-text">고용량 항히스타민 무반응 CSU에서 레미브루티닙 부가를 제안.</div>
+      <div class="rec-meta">합의: &gt;75%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">사이클로스포린 부가는 유용한가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-weak-for">↑</div>
+      <div class="rec-text">허가치료 무반응이거나 이용불가한 경우 사이클로스포린 사용을 제안(CU 자체는 미허가).</div>
+      <div class="rec-meta">합의: &gt;75%</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">H2-항히스타민제를 부가해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-none">0</div>
+      <div class="rec-text">H1+H2 병용에 대해 찬반 권고를 내릴 수 없음(근거 불충분).</div>
+      <div class="rec-meta">합의: &gt;75%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗃️</span> 기타 대체치료 옵션(Table 12, 근거수준 낮음·상황별 고려)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>사용빈도</th><th>약물(계열)</th><th>가능한 적응증</th></tr>
+        <tr><td rowspan="6">흔함</td><td>독세핀(삼환계, H1+H2 활성)</td><td>CSU, 특발한랭두드러기</td></tr>
+        <tr><td>위알레르겐저감식이</td><td>CSU</td></tr>
+        <tr><td>H2항히스타민(라니티딘 등)</td><td>CSU</td></tr>
+        <tr><td>메토트렉세이트/마이코페놀레이트모페틸</td><td>CSU±DPU / 자가면역CSU</td></tr>
+        <tr><td>몬테루카스트(류코트리엔수용체길항제)</td><td>CSU, DPU</td></tr>
+        <tr><td>답손·설파살라진</td><td>CSU±DPU</td></tr>
+        <tr><td rowspan="6">드묾</td><td>다나졸</td><td>콜린성두드러기</td></tr>
+        <tr><td>와파린</td><td>CSU</td></tr>
+        <tr><td>트라넥삼산</td><td>혈관부종동반 CSU</td></tr>
+        <tr><td>IVIG / 혈장교환</td><td>자가면역CSU</td></tr>
+        <tr><td>자가혈액/혈청, 하이드록시클로로퀸</td><td>CSU</td></tr>
+        <tr><td>협대역UVB</td><td>피부묘기증</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>몬테루카스트는 드물지만 확인된 신경정신학적 부작용(FDA 블랙박스 경고)이 있어 투여 초기 각별한 설명이 필요.</div></div>
+      <small>류코트리엔길항제 근거는 낮은 수준이나 몬테루카스트가 가장 많이 연구됨; 위 표는 사용빈도순 나열이며 효능순이 아님.</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔗</span> 동반질환에 따른 약물 선택(Table 10)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>동반질환</th><th>동반질환에도 효과 있는 두드러기 치료제</th></tr>
+        <tr><td>천식</td><td>오말리주맙, 두필루맙</td></tr>
+        <tr><td>알레르기비염</td><td>H1항히스타민, 오말리주맙</td></tr>
+        <tr><td>아토피피부염</td><td>두필루맙</td></tr>
+        <tr><td>부비동염/비용종</td><td>오말리주맙, 두필루맙</td></tr>
+        <tr><td>식품알레르기</td><td>오말리주맙</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /child -->
+
+
+<!-- ══════════════════ TAB 5: 특수집단·평가도구 ══════════════════ -->
+<div id="tab-tests" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📏</span> 질병활성도·조절·삶의질 평가도구</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>도구</th><th>대상</th><th>산출</th></tr>
+        <tr><td><strong>UAS7</strong>(Urticaria Activity Score)</td><td>팽진동반 CU</td><td>일일 팽진(0-3)+소양감(0-3) 합을 7일 합산 → 0-42, 매일기록 권장</td></tr>
+        <tr><td><strong>AAS</strong>(Angioedema Activity Score)</td><td>혈관부종동반 CU</td><td>일일 5문항(시간대·불편감·활동제한·외견영향·전반중증도) 0-15 → 주간합 AAS7(0-105) → 4주합 AAS28(0-420)</td></tr>
+        <tr><td><strong>UCT</strong>(Urticaria Control Test)</td><td>팽진±혈관부종 CU 전체</td><td>4문항, 4주 회상, 0-16점, <strong>컷오프 12점</strong>(≥12 조절양호), UCT7(7일 회상판)도 있음</td></tr>
+        <tr><td><strong>AECT</strong>(Angioedema Control Test)</td><td>혈관부종 단독 CU 등</td><td>4문항, 4주 또는 3개월 회상, 0-16점, <strong>컷오프 10점</strong></td></tr>
+        <tr><td>CU-Q2oL / AE-QoL</td><td>팽진 / 혈관부종 삶의질</td><td>질환특이 삶의질 설문</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>📱</span><div>UAS를 종이 또는 디지털앱(예: CRUSE)으로 1개월간 매일 기록하면 UCT가 "잘조절됨(12-15)"으로 나와도 놓칠 수 있는 단기 악화(예: NSAID복용 관련)를 포착할 수 있다.</div></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">모든 CU 환자를 매 방문 시 활성도·영향·조절도로 평가해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong-for">↑↑</div>
+      <div class="rec-text">모든 방문에서 질병활성도·영향·조절도 평가를 강한 권고. 팽진→UAS7, 혈관부종→AAS, 둘다→병용. 조절도는 팽진 UCT / 혈관부종단독 AECT / 둘다 병용.</div>
+      <div class="rec-meta">합의: 100%, &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="sec-sep"></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>👶</span> 소아 두드러기</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>소아에서도 CIndU·CSU 유병률과 임상특성·원인·치료반응이 성인과 유사하다. 감별진단에서는 특히 소아기에 발현되는 크리오파이린연관주기열증후군(CAPS)을 배제해야 한다. UAS7·UCT는 소아에서 검증되었으나 그 외 소아전용 검증도구는 아직 부족.</div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>⛔</span><div>1세대 항히스타민제는 학습·수행능력에 부정적 영향이 입증되어 있어 소아 1차치료로 사용하지 않는다.</div></div>
+      <div>연령·근거에 따라 사용 가능한 2세대 항히스타민: bilastine, cetirizine, desloratadine, fexofenadine, levocetirizine, loratadine, rupatadine (제형·최저허가연령은 국가마다 다름). 오말리주맙은 <strong>12세 이상</strong> 항히스타민저항성 CSU에 허가(현재 유일). 두필루맙은 아토피피부염(생후 6개월+) 허가 경험 있으며 소아 CSU(≥2세) 임상시험 진행 중(LIBERTY-CSU CUPIDKids). 단기 코르티코스테로이드는 극히 제한적으로만 사용.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">소아에서 성인과 같은 치료알고리즘을 적용해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-weak-for">↑</div>
+      <div class="rec-text">허가상태·소아사용경험·체중/연령별 용량조정을 고려하여 신중하게 동일 알고리즘 적용을 제안.</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🤰</span> 임신·수유</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>원칙적으로 전신치료는 임신 중, 특히 1삼분기에는 피해야 하나 임신부도 최선의 치료를 받을 권리가 있다. 임신 중 두드러기 급성악화로 인한 응급내원이 조산과 연관된다는 보고(PREG-CU 연구)가 있어 무치료가 안전한 대안은 아니다. 2세대 항히스타민 중 <strong>로라타딘</strong>(및 대사체 데스로라타딘으로 확장추정) 또는 <strong>세티리진</strong>(레보세티리진으로 확장추정)이 상대적으로 선호되며, 1세대 항히스타민은 회피한다. 오말리주맙은 임신 중 사용 데이터에서 기형유발 신호가 보고되지 않았다. 사이클로스포린은 기형유발성은 없으나 배아독성·조산·저체중출산과 연관되어 위험-이익을 개별평가해야 한다.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">임신·수유부에도 같은 알고리즘을 적용해야 하는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-weak-for">↑</div>
+      <div class="rec-text">위험-이익평가 후 신중하게 동일 알고리즘 적용을 제안하되, 임신 중 금기·부적합 약물은 사용하지 않는다.</div>
+      <div class="rec-meta">합의: &gt;95%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> GRADE 근거수준 등급(Table 3)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>등급</th><th>정의</th></tr>
+        <tr><td><span class="stage lv1">높음(++++)</span></td><td>실제 효과가 추정치에 가깝다고 매우 확신</td></tr>
+        <tr><td><span class="stage lv2">중등도(+++)</span></td><td>추정치에 가까울 가능성 높으나 실질적으로 다를 가능성 존재</td></tr>
+        <tr><td><span class="stage lv3">낮음(++)</span></td><td>추정치와 실제효과가 상당히 다를 수 있음</td></tr>
+        <tr><td><span class="stage lv4">매우낮음(+)</span></td><td>추정치에 대한 확신이 거의 없음</td></tr>
+      </table>
+      <small>RCT는 초기 "높음"에서 시작하며 비뚤림위험·비일관성·간접성·비정밀성·출판비뚤림에 따라 하향, 큰 효과크기·용량반응·잔여교란요인 통제 시 상향 가능(GRADE 방법론).</small>
+    </div>
+  </div>
+
+</div><!-- /tests -->
+
+
+<!-- ══════════════════ TAB 6: 약어·출처 ══════════════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 향후 연구 필요 영역(Table 13, 발췌)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul style="padding-left:18px;line-height:1.8">
+        <li>전세계 역학(성인·소아), 개발도상국 사회경제적 부담</li>
+        <li>비만세포/호염기구 활성 인자, 새로운 조직학·혈청 바이오마커 규명</li>
+        <li>항히스타민저항성 두드러기·혈관부종의 병태기전</li>
+        <li>완전조절·관해·재발·질병조절치료 개념의 합의 정립</li>
+        <li>항히스타민·오말리주맙·사이클로스포린 및 향후 CU 약제의 반응예측 바이오마커 검증</li>
+        <li>난치 endotype에 대한 질병조절치료 개발</li>
+        <li>생후 6개월 미만 소아 대상 2세대 H1항히스타민제 임상시험·허가</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔠</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 원문 출처</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Zuberbier T, Abdul Hameed Ansari Z, Abdul Latiff AH, et al. The International Guideline for the Definition, Classification, Diagnosis and Management of Urticaria. <em>Allergy.</em> 2026;0:1-51. DOI: 10.1111/all.70210. 전체 근거표(Evidence Report)·방법론보고서(Methods Report)는 EDF 웹사이트(https://www.guidelines.edf.one/)에서 확인 가능하다. GA²LEN-UCARE-Network: www.ga2len-ucare.com</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"CU", def:"Chronic Urticaria — 만성두드러기" },
+  { term:"CSU", def:"Chronic Spontaneous Urticaria — 만성자발두드러기" },
+  { term:"CIndU", def:"Chronic Inducible Urticaria — 만성유발두드러기" },
+  { term:"CSUuc", def:"CSU of unknown cause — 원인불명 CSU" },
+  { term:"CSUaiTI / aiTIIb", def:"CSU autoimmunity Type Ⅰ(자가알레르기,IgE) / Type Ⅱb(IgG자가항체)" },
+  { term:"DPU", def:"Delayed Pressure Urticaria — 지연압박두드러기" },
+  { term:"HAE", def:"Hereditary Angioedema — 유전성혈관부종" },
+  { term:"AAE-C1INH", def:"Acquired Angioedema due to C1-inhibitor deficiency — 후천성C1억제인자결핍혈관부종" },
+  { term:"AE-ACEI", def:"ACE Inhibitor-induced Angioedema" },
+  { term:"CAPS", def:"Cryopyrin-Associated Periodic Syndromes — 크리오파이린연관주기열증후군" },
+  { term:"MCAS", def:"Mast Cell Activation Syndrome — 비만세포활성화증후군" },
+  { term:"MRGPRX2", def:"Mas-Related G-Protein Coupled Receptor Member X2 — 비만세포 표면 수용체" },
+  { term:"UAS / UAS7", def:"Urticaria Activity Score / 7일 누적판" },
+  { term:"AAS / AAS7 / AAS28", def:"Angioedema Activity Score(일/7일/28일 누적)" },
+  { term:"UCT / UCT7", def:"Urticaria Control Test(4주/7일 회상판)" },
+  { term:"AECT", def:"Angioedema Control Test" },
+  { term:"CU-Q2oL", def:"Chronic Urticaria Quality of Life Questionnaire" },
+  { term:"AE-QoL", def:"Angioedema Quality of Life Questionnaire" },
+  { term:"CholUAS", def:"Cholinergic Urticaria Activity Score" },
+  { term:"PROM", def:"Patient-Reported Outcome Measure — 환자보고결과지표" },
+  { term:"ASST / APST", def:"Autologous Serum / Plasma Skin Test — 자가혈청/혈장피부검사" },
+  { term:"TPO", def:"Thyroid Peroxidase — 갑상선과산화효소" },
+  { term:"GRADE", def:"Grading of Recommendations Assessment, Development and Evaluation" },
+  { term:"UCARE / ACARE", def:"GA²LEN Urticaria / Angioedema Centers of Reference and Excellence" },
+  { term:"GA²LEN", def:"Global Allergy and Asthma Excellence Network" },
+  { term:"EAACI", def:"European Academy of Allergology and Clinical Immunology" },
+  { term:"EDF", def:"European Dermatology Forum" },
+  { term:"BTK", def:"Bruton's Tyrosine Kinase — 브루톤티로신인산화효소" },
+  { term:"IL-4Rα", def:"Interleukin-4 Receptor alpha — 두필루맙의 표적 수용체" },
+  { term:"IVIG", def:"Intravenous Immunoglobulin — 정맥면역글로불린" },
+  { term:"NSAID", def:"Nonsteroidal Anti-Inflammatory Drug — 비스테로이드소염제" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANMAT 2023 주요우울장애(MDD) 진료지침</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --overview: #1d4ed8;   /* 개요 — 인디고블루 */
+    --summary:  #475569;   /* 슬레이트 */
+    --diag:     #0f766e;   /* 평가진단 — 틸 */
+    --adult:    #b45309;   /* 치료선택 — 앰버 */
+    --child:    #0369a1;   /* 항우울제 — 스카이블루 */
+    --tests:    #7c3aed;   /* 디지털치료 — 바이올렛 */
+    --specific: #be185d;   /* 모니터링유지 — 로즈 */
+    --unexp:    #15803d;   /* 난치성신경조절 — 그린 */
+    --accent: #1d4ed8;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-mdd { display: flex; align-items: center; gap: 0; font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px; }
+  .logo-mdd span:nth-child(1) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-mdd span:nth-child(2) { background: var(--adult); color:#fff; padding:3px 6px; }
+  .logo-mdd span:nth-child(3) { background: var(--unexp); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 19px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn { display: flex; align-items: center; gap: 3px; flex-shrink: 0; margin: 4px 4px 4px 6px; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700; cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s; }
+  .font-zoom-btn:hover { background: var(--border); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 11px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--overview); border-bottom-color: var(--overview); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(18px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-overview{ background: #dbeafe; border-left: 3px solid var(--overview); color: #1d4ed8; }
+  .alert-diag    { background: #d9f2ef; border-left: 3px solid var(--diag);   color: #0f766e; }
+  .alert-adult   { background: #fef0d9; border-left: 3px solid var(--adult);  color: #92400e; }
+  .alert-child   { background: #e0f2fe; border-left: 3px solid var(--child);  color: #0369a1; }
+  .alert-tests   { background: #ede9fe; border-left: 3px solid var(--tests);  color: #5b21b6; }
+  .alert-specific{ background: #fce7f3; border-left: 3px solid var(--specific);color: #9d174d; }
+  .alert-unexp   { background: #dcfce7; border-left: 3px solid var(--unexp);  color: #15803d; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+
+  .lv1 { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+  .lv2 { background: #dbeafe; color: #1d4ed8; font-weight: 700; text-align: center; }
+  .lv3 { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .lv4 { background: #ffe4d6; color: #92400e; font-weight: 700; text-align: center; }
+  .ln-1 { background:#d4edda;color:#155724;font-weight:700;text-align:center; }
+  .ln-2 { background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center; }
+  .ln-3 { background:#fff3cd;color:#856404;font-weight:700;text-align:center; }
+  .ln-ins { background:#eee;color:#555;font-weight:700;text-align:center; }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-overview { background: #dbeafe; color: var(--overview); border: 1px solid var(--overview); }
+  .t-diag     { background: #d9f2ef; color: var(--diag);     border: 1px solid var(--diag); }
+  .t-adult    { background: #fef0d9; color: var(--adult);    border: 1px solid var(--adult); }
+  .t-child    { background: #e0f2fe; color: var(--child);    border: 1px solid var(--child); }
+  .t-tests    { background: #ede9fe; color: var(--tests);    border: 1px solid var(--tests); }
+  .t-specific { background: #fce7f3; color: var(--specific); border: 1px solid var(--specific); }
+  .t-unexp    { background: #dcfce7; color: var(--unexp);    border: 1px solid var(--unexp); }
+
+  .pico { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; margin-right: 6px; color:#fff; white-space:nowrap; }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box { flex: 1; min-width: 130px; padding: 10px 10px 12px; border-right: 2px solid var(--bg); text-align: center; position: relative; cursor: pointer; transition: opacity .15s; }
+  .stage-box:last-child { border-right: none; }
+  .stage-box:hover { opacity: .88; }
+  .stage-box .st-num { font-size: calc(14px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-overview { background: #e6eefb; }
+  .st-diag     { background: #d9f2ef; }
+  .st-adult    { background: #fef0d9; }
+  .st-child    { background: #e0f2fe; }
+  .st-tests    { background: #f3e8ff; }
+  .st-unexp    { background: #dcfce7; }
+
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-adult   { background: #fef0d9; border: 1.5px solid var(--adult);  color: #92400e; }
+  .gear-child   { background: #e0f2fe; border: 1.5px solid var(--child);  color: #0369a1; }
+  .gear-tests   { background: #f3e8ff; border: 1.5px solid var(--tests);  color: #5b21b6; }
+  .gear-unexp   { background: #dcfce7; border: 1.5px solid var(--unexp);  color: #15803d; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  .algo-flow { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .algo-step { border-radius: 6px; padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); border-left: 4px solid var(--border); background: var(--surface2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mdd"><span>MDD</span><span>2023</span><span>CANMAT</span></div>
+      <h1>CANMAT 2023 주요우울장애(MDD) 진료지침</h1>
+    </div>
+    <div class="meta-line">
+      Canadian Network for Mood and Anxiety Treatments — 2023 Update on Clinical Guidelines for Management of MDD in Adults (Can J Psychiatry 2024;69(9):641-687)
+      <br><span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">📝 평가·진단</div>
+    <div class="tab" onclick="showTab('adult')">🧭 치료선택</div>
+    <div class="tab" onclick="showTab('child')">💊 항우울제</div>
+    <div class="tab" onclick="showTab('tests')">📱 디지털치료</div>
+    <div class="tab" onclick="showTab('specific')">📈 모니터링·유지</div>
+    <div class="tab" onclick="showTab('unexp')">🧠 난치성·신경조절</div>
+    <div class="tab" onclick="showTab('tools')">📏 평가·약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:110px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">3억명+</div><div class="stat-lbl">전세계 MDD 유병<br>(WHO 2020)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">12%</div><div class="stat-lbl">캐나다인<br>평생 MDD 경험률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--adult)">20%</div><div class="stat-lbl">MDD 환자 중<br>적절한 치료를 받는 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--unexp)">5배</div><div class="stat-lbl">일반인구 대비<br>자살시도 위험</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 근거등급(Level) · 치료순위(Line) 분류기준</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>Level</th><th>기준</th></tr>
+        <tr><td><span class="stage lv1">Level 1</span></td><td>좁은 신뢰구간의 고품질 메타분석 및/또는 충분한 표본크기(≥30명/군)의 RCT 2편 이상, 위약대조 선호</td></tr>
+        <tr><td><span class="stage lv2">Level 2</span></td><td>넓은 신뢰구간의 저품질 메타분석 및/또는 충분한 표본크기 RCT 1편 이상</td></tr>
+        <tr><td><span class="stage lv3">Level 3</span></td><td>소규모(&lt;30명/군) RCT, 비무작위 대조 전향연구, 또는 고품질 후향연구</td></tr>
+        <tr><td><span class="stage lv4">Level 4</span></td><td>전문가 의견/합의</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>치료순위(Line)</th><th>기준</th></tr>
+        <tr><td><span class="stage ln-1">1차</span></td><td>Level 1-2 근거 + 임상적 지지(안전성·내약성·실행가능성에 대한 전문가 합의)</td></tr>
+        <tr><td><span class="stage ln-2">2차</span></td><td>Level 3 이상 근거 + 임상적 지지</td></tr>
+        <tr><td><span class="stage ln-3">3차</span></td><td>Level 4 이상 근거 + 임상적 지지</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>근거수준이 높아도(Level 1) 부작용·안전성 문제로 <strong>낮은 순위로 강등</strong>될 수 있다(예: 몬테루카스트 유사 사례처럼, 항우울제에서는 TCA·MAOI가 이에 해당). 원칙에 관한 권고(Q1,2,5 등)는 대개 Level 3-4 근거에 기반한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📖</span> 용어 정의(Conventions)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>병용(combination) vs 부가(adjunctive)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">combination = 두 치료를 동시 시작; adjunctive = 기존 치료에 두 번째 치료를 추가(augmentation 대체 용어)</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>경증/중등증/중증 삽화</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">증상중증도와 기능장애 정도 중 더 높은 쪽을 기준으로 판단, 검증된 평정척도 사용 권장</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>재발(relapse) vs 재현(recurrence)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">경험적 구분 근거 부족으로 본 지침에서는 두 용어를 혼용</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>신경과학기반 명명법(NbN)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">적응증 대신 기전 중심 명칭 사용 권장(예: 비정형 항정신병제 → 세로토닌-도파민 활성 조절제); 임상 관행상 기존 용어도 병용</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> 임상관리 전체 흐름</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="stage-timeline">
+        <div class="stage-box st-overview"><div class="st-num" style="color:var(--overview)">①</div><div class="st-lbl">포괄적 평가<br>(생물·심리·사회)</div></div>
+        <div class="stage-box st-diag"><div class="st-num" style="color:var(--diag)">②</div><div class="st-lbl">진단·감별진단<br>+협력정보 확보</div></div>
+        <div class="stage-box st-adult"><div class="st-num" style="color:var(--adult)">③</div><div class="st-lbl">교육·자기관리<br>지지, 치료동맹 확립</div></div>
+        <div class="stage-box st-child"><div class="st-num" style="color:var(--child)">④</div><div class="st-lbl">근거기반 치료 시행<br>(심리·약물·병용)</div></div>
+        <div class="stage-box st-unexp"><div class="st-num" style="color:var(--unexp)">⑤</div><div class="st-lbl">측정기반치료(MBC)로<br>결과 모니터링·조정</div></div>
+      </div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🎯</span><div>급성기(8-16주): 안전 확보 + 증상관해 목표. 유지기(관해 후 6-24개월 이상): 관해 공고화, 기능·삶의 질 회복, 재발 방지.</div></div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 평가·진단 ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚠️</span> 위험요인</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-tests">
+          <div class="gear-title">고정적·비가역적 요인</div>
+          여성, 기분장애 가족력, 아동기 부정적 경험/학대(정서적 학대·괴롭힘·신체방임·부모상실 특히), 배우자 사망
+        </div>
+        <div class="gear-box gear-adult">
+          <div class="gear-title">동적·가변적 요인</div>
+          만성 통증·심혈관질환·암·염증성장질환·당뇨·수면장애·비만·여드름 등 비정신과적 질환(양방향 관계), 호르몬 변화기(사춘기·주산기·폐경주변기), 알코올/물질사용장애, 스트레스성 생활사건, 사별, 좌식생활/스크린시간 증가, 교대근무
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 선별검사(Screening)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-diag"><span>✅</span><div>1차·2차 의료에서 <strong>위험요인이 있는 환자</strong>에게 검증된 척도(PHQ-2 → 양성시 PHQ-9)로 선별검사를 시행하되, 양성인 경우 후속 진단평가·치료로 이어질 자원이 있어야 함을 전제로 한다.</div></div>
+      <div>PHQ-2(우울/무쾌감 2문항, 0-3점) 양성(≥2점) 후 PHQ-9 양성(≥10점)이면 PHQ-9 단독보다 나은 특이도를 보인다. 선별도구는 <strong>진단 목적이 아니며</strong> 양성 시 반드시 전체 진단평가로 이어져야 한다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚖️</span><div>평균위험군 성인 일률 선별검사는 지침마다 결론이 다르다(미국 USPSTF는 중등도 순이익 인정, 캐나다 태스크포스는 반대 권고). 낙인·오탐에 따른 불필요한 치료 등 위험도 존재하나 엄밀히 평가되지 않았다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩺</span> 진단평가 및 감별진단</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>포괄적 평가는 정서·인지·신체 증상, 생애주기에 걸친 취약성·회복탄력성 요인을 다루며, 가능하면 협력정보(collateral information)로 보완하고 문화적 다양성을 고려해야 한다. 아동기 학대·트라우마 병력은 자발적으로 언급되지 않는 경우가 많아 민감하게 탐색해야 한다.</div>
+      <div class="alert alert-diag" style="margin-top:8px"><span>🔬</span><div><strong>권장 기본검사</strong>: 전체혈구계산(CBC), 갑상선자극호르몬(TSH) — 저비용으로 빈혈·갑상선기능이상을 배제. 심전도(ECG)는 QTc 연장 위험약물 사용 시, 신경영상은 신경학적 징후·급성 인지변화·노년기 신규발병 우울에서만 고려. <strong>일률적 ECG/EEG/신경영상은 근거 없음.</strong></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗂️</span> DSM-5-TR 명시자 및 증상차원</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>삽화명시자(멜랑콜리아·비전형·정신병적·긴장증)와 경과명시자(계절성·주산기발병)가 있으며, 대개 치료선택에 미치는 영향은 제한적(정신병적 양상·계절성 패턴 제외). 우울삽화의 20-30%가 2년 이상 만성 경과(지속성우울장애 PDD)를 보이며, 삽화성 우울에 비해 표준치료 반응률·관해율이 낮다 — <strong>난치성우울증(DTD) 프레임워크</strong>로 접근하여 증상관해보다 기능·삶의 질 개선에 초점을 둔다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>DSM-5-TR 명시자/차원</th><th>치료 관련성</th></tr>
+        <tr><td>불안증 동반</td><td>표준치료 반응 불량 예측인자이나 특정 약물의 우월성 근거 없음 — 1차 항우울제 모두 사용가능</td></tr>
+        <tr><td>혼합양상</td><td>양극성장애와의 감별을 위해 정신과 자문 권고; 루라시돈이 2차 옵션(위약대비 RCT)</td></tr>
+        <tr><td>정신병적 양상</td><td>항우울제+비정형항정신병제 병용, 또는 ECT</td></tr>
+        <tr><td>긴장증 양상</td><td>벤조디아제핀+항우울제, 또는 ECT</td></tr>
+        <tr><td>인지기능장애</td><td>보티옥세틴, 부프로피온, SNRI가 SSRI보다 우수한 경향</td></tr>
+        <tr><td>수면장애</td><td>아고멜라틴(캐나다 미출시), 미르타자핀, 쿠에티아핀-XR, 트라조돈</td></tr>
+        <tr><td>신체증상(통증·피로)</td><td>둘록세틴(통증), 부프로피온(피로) 등 SNRI가 유리</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌍</span> 형평성 취약집단 접근성 개선</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>인종화된 집단, 원주민, 성소수자, 특정 종교집단에서 MDD 유병률이 높으나 서비스 접근성은 낮다. 비용, 문화적 신념, 낙인, 언어장벽, 서비스 지역편중이 주요 장벽이다. <strong>문화적으로 유능한 진료, 트라우마 정보기반 접근(특히 원주민), 협력진료 모델, 맞춤형 디지털치료</strong>가 격차 해소에 도움이 된다.</div>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════════════ TAB 3: 치료선택 ══════════════════ -->
+<div id="tab-adult" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> 중증도별 초기치료 선택</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>중증도</th><th>권고 요약</th></tr>
+        <tr><td>경증 + 낮은 안전위험</td><td>심리치료·약물치료 효과 유사 → <strong>접근 가능하면 심리치료 선호</strong>(위험 적음). 운동·일부 CAM·안내형 디지털치료도 단독요법으로 고려 가능</td></tr>
+        <tr><td>중등증 + 저·중등도 안전위험</td><td>약물치료와 심리치료(특히 CBT) 중 선택 — 약물이 급성기 우울감·죄책감·자살사고·불안·신체증상 경감에 약간 더 효과적, 구조화된 심리치료는 6-12개월 추적에서 더 효과적. <strong>병용요법 고려 가능</strong></td></tr>
+        <tr><td>중증 + 중등도-고위험(정신병적 양상 없음)</td><td>약물+심리치료 병용(동시 또는 순차적 계획된 병용)</td></tr>
+        <tr><td>중증 + 정신병적 양상</td><td>항우울제+비정형항정신병제 병용; 정신병 증상 호전 전까지 구조화된 심리치료는 보류</td></tr>
+        <tr><td>매우 중증/생명위협 상황</td><td>전기경련요법(ECT)을 1차 선택으로 고려</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💬</span> 1차 심리치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>치료순위</th><th>심리치료</th></tr>
+        <tr><td><span class="stage ln-1">1차</span></td><td>인지행동치료(CBT), 대인관계치료(IPT), 행동활성화(BA)</td></tr>
+        <tr><td><span class="stage ln-2">2차</span></td><td>CBASP, 마음챙김기반인지치료(MBCT), 문제해결치료(PST), 단기정신역동치료(STPP), 범진단적("통합") 정서장애 심리치료*</td></tr>
+        <tr><td><span class="stage ln-3">3차</span></td><td>수용전념치료(ACT), 장기정신역동치료, 메타인지치료(MCT)*, 동기강화면담(MI)</td></tr>
+      </table>
+      <div class="alert alert-adult" style="margin-top:8px"><span>📅</span><div>최적 용량은 대부분 환자에서 <strong>12-16회기</strong>이며, 주 2회 시행이 주 1회보다 더 나은 결과를 보인다(주 1회 미만은 효과 근거 부족). 성별·연령·교육수준·문화·인종에 따른 효과 차이는 없어 이들 요인은 초기 심리치료 선택에 유용하지 않다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔗</span> 약물+심리치료 병용 및 순차치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>병용치료는 급성기 치료에서 단독요법보다 효과적이며 재발위험도 낮춘다. 가장 강력한 근거는 <strong>항우울제 안정화 후 대면 CBT(MBCT 포함)를 순차적으로 추가</strong>하는 방식이다. 항우울제 지속 여부와 무관하게 심리치료 추가가 효과적이나, <strong>항우울제를 유지하며 심리치료를 추가할 때 지속관해 가능성이 가장 높다.</strong></div>
+      <div class="alert alert-adult" style="margin-top:8px"><span>🔁</span><div>재발위험이 높은 재발성·중증 우울증에서는 계획된 순차치료(급성기 약물반응 후 심리치료 추가)가 특히 유용하며, 이 경우 심리치료 중에도 약물치료를 지속해야 한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌿</span> 보완대체의학(CAM) 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>치료순위</th><th>CAM 치료</th></tr>
+        <tr><td><span class="stage ln-1">1차</span></td><td>경증 삽화에 세인트존스워트(St. John's Wort)</td></tr>
+        <tr><td><span class="stage ln-2">2차</span></td><td>경증 삽화에 침술; 중등증 삽화에 세인트존스워트, 부가 침술, 부가 L-메틸엽산</td></tr>
+        <tr><td><span class="stage ln-3">3차</span></td><td>부가 SAM-e(하향조정), DHEA, 오메가-3(하향조정), 사프란/라벤더/로제루트</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>세인트존스워트는 <strong>세로토닌계 약물과 병용 시 세로토닌증후군 위험</strong> 및 CYP3A4 강력 유도로 인한 약물상호작용 주의. SAM-e·오메가-3는 최근 연구에서 근거가 약화되어 2016년 대비 <strong>3차로 하향조정</strong>되었다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌱</span> 생활습관 중재</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>치료순위</th><th>중재</th></tr>
+        <tr><td><span class="stage ln-1">1차</span></td><td>지도감독 운동(경증-중등도 강도, 30-40분, 주3-4회, 최소 9주) — 경증 우울에 단독요법; 광치료(10,000럭스 백색광 30분/일) — 계절성(겨울) 우울</td></tr>
+        <tr><td><span class="stage ln-2">2차</span></td><td>비계절성 경증 우울에 광치료; 중등증 우울에 부가 운동·부가 광치료; 부가 수면위생·불면증 CBT(CBT-I)</td></tr>
+        <tr><td><span class="stage ln-3">3차</span></td><td>부가 건강식이, 지중해식 식이, 수면박탈(각성요법)</td></tr>
+        <tr><td>근거 불충분</td><td>프로바이오틱스</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /adult -->
+
+
+<!-- ══════════════════ TAB 4: 항우울제 ══════════════════ -->
+<div id="tab-child" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 1차 항우울제 (17종)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>약물</th><th>1일 용량</th><th>기전</th></tr>
+        <tr><td>Citalopram</td><td>20-40 mg</td><td>SSRI</td></tr>
+        <tr><td>Escitalopram</td><td>10-20 mg</td><td>SSRI</td></tr>
+        <tr><td>Fluoxetine</td><td>20-60 mg</td><td>SSRI</td></tr>
+        <tr><td>Fluvoxamine</td><td>100-300 mg</td><td>SSRI</td></tr>
+        <tr><td>Paroxetine</td><td>20-50 mg</td><td>SSRI</td></tr>
+        <tr><td>Sertraline</td><td>50-200 mg</td><td>SSRI</td></tr>
+        <tr><td>Desvenlafaxine</td><td>50-100 mg</td><td>SNRI</td></tr>
+        <tr><td>Duloxetine</td><td>60-120 mg</td><td>SNRI</td></tr>
+        <tr><td>Levomilnacipran*</td><td>40-120 mg</td><td>SNRI</td></tr>
+        <tr><td>Venlafaxine-XR</td><td>75-225 mg</td><td>SNRI</td></tr>
+        <tr><td>Bupropion</td><td>150-450 mg</td><td>NDRI</td></tr>
+        <tr><td>Mirtazapine</td><td>30-60 mg</td><td>α2 길항 / 5-HT2 길항</td></tr>
+        <tr><td>Vilazodone*</td><td>20-40 mg</td><td>SRI / 5-HT1A 효현</td></tr>
+        <tr><td>Vortioxetine</td><td>10-20 mg</td><td>SRI, 다중수용체 조절</td></tr>
+      </table>
+      <div class="alert alert-child" style="margin-top:8px"><span>🏆</span><div>네트워크 메타분석(Cipriani 2018)에서 <strong>아고멜라틴, 에시탈로프람, 보티옥세틴</strong>이 효능·수용성 모두에서 상대적 우위를 보였으나 차이는 작다. 효능 우위 근거가 있는 약물(5-10%p 차이): 부프로피온, 에시탈로프람, 미르타자핀, 파록세틴, 설트랄린, 벤라팍신-XR, 보티옥세틴, 아고멜라틴.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚖️</span> 비교 선호도(효능·수용성·부작용)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>고려사항</th><th>핵심 포인트</th></tr>
+        <tr><td>약물상호작용</td><td>플루옥세틴·파록세틴(CYP2D6 강력억제), 플루복사민(CYP1A2/2C19/3A4 강력억제)이 상호작용 위험 높음</td></tr>
+        <tr><td>QTc 연장</td><td>시탈로프람은 위험 표기되나 임상적 위험은 낮음(대규모 심혈관 동반질환 연구에서 안전 사용); 에시탈로프람은 임상적으로 유의한 QTc 위험 없음</td></tr>
+        <tr><td>간효소 상승</td><td>아고멜라틴(간기능검사 정기모니터링 필요), 부프로피온, 둘록세틴, 네파조돈에서 위험 높음; 시탈로프람·에시탈로프람은 낮음</td></tr>
+        <tr><td>성기능장애 적음</td><td>데스벤라팍신, 부프로피온, 미르타자핀, 빌라조돈, 보티옥세틴, 아고멜라틴</td></tr>
+        <tr><td>저나트륨혈증</td><td>SSRI가 이뇨제와 병용 시 위험 증가(특히 고령); 미안세린·아고멜라틴만 연관 없음</td></tr>
+        <tr><td>연령별 고려</td><td>65세 이상: SSRI 효과 다소 감소, SNRI(둘록세틴 등)가 더 효과적일 수 있음; 25세 이하: 플루옥세틴·아고멜라틴이 유리(부작용·중단증상 위험 고려)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚨</span> 자살위험과 항우울제</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>전반적으로 항우울제는 자살사고·행동을 감소시키나(자살시도·사망 예방보다 자살사고 감소효과가 더 큼), <strong>25세 미만 청년층에서는 급성기 치료 시 자살행동 위험이 증가</strong>하고, 65세 이상에서는 오히려 위험이 감소한다(25-65세는 영향 없음). 자살행동 위험은 <strong>항우울제 시작 전 한 달간 가장 높고</strong>, 시작 후에도 한 달간 높게 유지되다 감소하며, <strong>중단 후 한 달도 위험이 높다.</strong></div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>⚠️</span><div>새 항우울제 처방 후 <strong>첫 4주간 자살위험을 강화 모니터링</strong>하고, 중단 시에도 동일하게 주의한다. 청소년·청년 환자에게는 시작 전 위험 증가 가능성을 반드시 교육한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚗️</span> 안전성·약물상호작용 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>약물군</th><th>주의사항</th></tr>
+        <tr><td>SSRI/SNRI</td><td>골절·낙상 위험 증가(고령), NSAID 병용 시 위장관출혈 위험(PPI로 완화), 이뇨제 병용 시 저나트륨혈증</td></tr>
+        <tr><td>TCA</td><td>과량복용 시 생명위협적 심장독성·경련 위험 — 과량복용 위험 높은 환자는 SSRI 우선 고려</td></tr>
+        <tr><td>MAOI</td><td>덱스트로메토르판·세로토닌재흡수억제제·세인트존스워트·티라민 함유 식품(숙성치즈·염장육·미소·김치 등)과 병용 시 세로토닌증후군/고혈압위기 — 3차 옵션, 상세 식이·약물 교육 필수</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 약물유전자검사·생체표지자</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>약물유전자검사는 일상치료 대비 반응률·관해율 개선을 보이나 <strong>효과크기가 작고(절대위험감소 4.6-7.2%p) 검사결과 대기로 인한 치료지연 문제</strong>가 있어 일상적 사용은 권장하지 않는다. 다만 저용량에서 심각한/이례적 부작용, 치료용량에서 반응 불량 시 고려할 수 있다. 염증표지자(IL-8, CRP), EEG 지표(청각유발전위 강도의존성) 등도 <strong>효과크기가 작아 일상적 사용은 권장하지 않는다.</strong></div>
+    </div>
+  </div>
+
+</div><!-- /child -->
+
+
+<!-- ══════════════════ TAB 5: 디지털치료(DHI) ══════════════════ -->
+<div id="tab-tests" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📱</span> 안내형(Guided) vs 비안내형(Unguided) DHI</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-tests">
+          <div class="gear-title">안내형(Guided)</div>
+          치료자·동료지지자·코치가 실시간 또는 비실시간으로 지원. 일반적으로 <strong>비안내형보다 효과적</strong>. 대표: internet CBT(iCBT, 예 Good Days Ahead, Deprexis), internet BA(iBA)
+        </div>
+        <div class="gear-box gear-tests">
+          <div class="gear-title">비안내형(Unguided/자가주도)</div>
+          사용자 독립적 진행. 대표: MoodGYM, Headspace 등. 근거는 제한적이며 <strong>MDD 진단 환자 대상 RCT에서는 유의한 효과 없음</strong>
+        </div>
+      </div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>치료순위</th><th>DHI</th></tr>
+        <tr><td><span class="stage ln-1">1차</span></td><td>경증 삽화에 안내형 iCBT; 경증-중등증에 부가 안내형 iCBT</td></tr>
+        <tr><td><span class="stage ln-2">2차</span></td><td>임상의 지원 하 부가 비안내형 DHI(경증-중등증); 부가 안내형 iBA(경증-중등증)</td></tr>
+        <tr><td><span class="stage ln-3">3차</span></td><td>다른 치료 이용 불가 시 비안내형 DHI(경증)</td></tr>
+        <tr><td>근거 불충분</td><td>챗봇·대화형 에이전트(AI)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>✅</span> DHI 평가 체크리스트</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>영역</th><th>확인 질문</th></tr>
+        <tr><td>효능</td><td>근거기반 기법을 사용하는가? 동일 환자군 임상시험이 있는가? 신뢰할 수 있는 리뷰가 있는가?</td></tr>
+        <tr><td>개인정보·보안</td><td>명확한 개인정보정책이 있는가? 비밀번호 보호가 있는가? 제3자에 정보를 판매하는가? 삭제 요청이 가능한가?</td></tr>
+        <tr><td>위험</td><td>부적절하거나 일관성 없는 조언을 주는가? 위기상황 발생 시 절차가 있는가? 미완료 시 악화감을 유발하는가?</td></tr>
+        <tr><td>접근성</td><td>선불/지속 비용이 있는가? 디지털격차 문제가 있는가? 언어·시각·타이핑 장벽이 있는가?</td></tr>
+      </table>
+      <div class="alert alert-tests" style="margin-top:8px"><span>📉</span><div>사용자 참여도는 시간이 지나며 급격히 감소한다 — 우울증 환자의 <strong>1/3 미만이 6주 후에도 DHI를 계속 사용</strong>한다. 임상의가 주기적으로 사용 여부와 학습 내용을 확인하는 것이 참여 유지에 도움이 된다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tests -->
+
+
+<!-- ══════════════════ TAB 6: 모니터링·유지치료 ══════════════════ -->
+<div id="tab-specific" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📈</span> 측정기반치료(MBC)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>MBC는 (a)정기적 검증척도 사용, (b)환자와 점수 공유, (c)임상평가와 결합한 협력적 의사결정의 3요소로 구성된다. <strong>약물치료 순응도·결과를 개선</strong>하며, 무반응자 조기 발견에 유용하다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>영역</th><th>대표 척도</th></tr>
+        <tr><td>증상/중증도(임상의평가)</td><td>HAM-D, MADRS, IDS, C-SSRS</td></tr>
+        <tr><td>증상/중증도(환자평가)</td><td>PHQ-9, BDI-II, QIDS-SR</td></tr>
+        <tr><td>기능</td><td>SOFAS, WHO-DAS, Sheehan장애척도, WSAS</td></tr>
+        <tr><td>삶의 질</td><td>QOLI, EQ-5D, QLESQ</td></tr>
+        <tr><td>부작용</td><td>UKU 부작용척도, FIBSER</td></tr>
+      </table>
+      <div class="alert alert-specific" style="margin-top:8px"><span>🎯</span><div><strong>조기호전</strong>(2-4주 내 20%이상 감소), <strong>반응</strong>(50%이상 감소), <strong>관해</strong>(HAM-D≤7, MADRS≤10, PHQ-9≤4) 기준으로 조작적 정의. 4주내 조기호전 없으면 용량증량/전환 고려 트리거가 된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🛡️</span> 유지치료 및 재발방지</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고 내용</th><th>근거</th></tr>
+        <tr><td>모든 환자: 관해 후 최소 <strong>6-12개월</strong> 항우울제 유지 (2016년 6-9개월에서 상향조정)</td><td><span class="stage lv1">Level 1</span></td></tr>
+        <tr><td>재발위험요인 보유 환자: <strong>2년 이상</strong> 유지</td><td><span class="stage lv3">Level 3</span></td></tr>
+        <tr><td>재발성·중증 삽화: 안정화 후 순차적 심리치료 추가</td><td><span class="stage lv1">Level 1</span></td></tr>
+        <tr><td>중단 결정 시 수주-수개월에 걸쳐 점진적 감량, 감량 후반부일수록 간격을 늘림</td><td><span class="stage lv3">Level 3</span></td></tr>
+        <tr><td>4주 미만 복용한 경우 2주 이내 신속 중단 가능</td><td><span class="stage lv3">Level 3</span></td></tr>
+      </table>
+      <div class="alert alert-specific" style="margin-top:8px"><span>📋</span><div><strong>재발 위험요인</strong>(강한 근거: 잔류증상, 아동기 학대력; 약한 근거: 중증도, 만성 경과, 동반질환, 삽화 횟수, 사회적지지 부족, 지속적 스트레스)이 있으면 장기 유지치료를 고려한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌀</span> 중단증상(Discontinuation Syndrome)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>최대 50%가 중단증상(FINISH: 독감양 증상, 불면, 오심, 불균형, 감각이상, 과각성)을 경험하며 특히 <strong>반감기가 짧은 파록세틴·벤라팍신</strong>에서 빈도·중증도가 높다. 재현(recurrence) 증상과의 감별이 중요 — 중단증상은 발현이 더 빠르고(수일 내), 신체증상 위주이며, 이전 용량 복원 시 빠르게 호전된다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⏳</span><div>수주-수개월 지속되는 <strong>지연성 중단증상</strong>이 보고되나 대부분 증례보고·사용자포럼 수준의 근거다. "쌍곡선적(hyperbolic) 감량" 방식이 제안되었으나 RCT 근거가 부족해 권장하지 않는다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /specific -->
+
+
+<!-- ══════════════════ TAB 7: 난치성·신경조절 ══════════════════ -->
+<div id="tab-unexp" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔀</span> TRD vs DTD 개념</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>치료저항성우울증(TRD)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">가장 흔히 사용되는 정의: 충분한 용량·기간의 항우울제 2회 이상 시도에 반응 실패. 심리·신경조절 치료를 간과하고 "저항"이라는 부정적 어감이 단점으로 지적됨.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>난치성우울증(DTD)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">치료 여정을 더 협력적·희망적으로 표현하는 확장된 개념. 초점을 증상관해에서 기능·삶의질 개선으로 전환.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> 초기 항우울제 무반응 시 순차치료 알고리즘</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-flow">
+        <div class="algo-step"><strong>1단계</strong>: 진단 재평가(양극성장애 등), 순응도·동반질환 확인, 용량 최적화(플루옥세틴 50mg 상당까지 증량 시 효과↑ 내약성↓)</div>
+        <div class="algo-step"><strong>2단계</strong>: 전환 vs 부가 결정 — <strong>무반응+내약성 문제</strong>면 전환 우선, <strong>부분반응+내약성 양호</strong>면 부가 우선</div>
+        <div class="algo-step">전환: 효능우위 근거있는 1차 항우울제 선택 → 2·3차 항우울제 고려</div>
+        <div class="algo-step">부가: 아리피프라졸·브렉스피프라졸(1차) → 부프로피온·에스케타민·리튬 등(2차)</div>
+        <div class="algo-step"><strong>3단계</strong>: 신경조절치료 고려 — 중증MDE엔 ECT, TRD엔 rTMS(1차)</div>
+      </div>
+      <div class="alert alert-unexp" style="margin-top:8px"><span>💡</span><div>메타분석상 <strong>전환보다 부가전략이 우수한 결과</strong>를 보여, 첫/두번째 항우울제에 제한적 반응이 있으면 부가전략을 더 이른 단계에서 고려할 것을 권고한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>➕</span> 부가치료(Adjunctive) 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>치료순위</th><th>부가제</th><th>목표용량</th></tr>
+        <tr><td><span class="stage ln-1">1차</span></td><td>아리피프라졸 / 브렉스피프라졸*</td><td>2-10 mg / 0.5-2 mg</td></tr>
+        <tr><td><span class="stage ln-2">2차</span></td><td>부프로피온, 비강내에스케타민*, IV라세믹케타민*, 올란자핀, 쿠에티아핀-XR*, 리스페리돈*, 리튬, 카리프라진*, 미르타자핀/미안세린, 모다피닐, 트리요오드타이로닌</td><td>제제별 상이</td></tr>
+        <tr><td><span class="stage ln-3">3차</span></td><td>기타 항우울제(TCA 포함), 각성제, 라모트리진*, 비-IV 라세믹케타민*, 프라미펙솔*, 지프라시돈</td><td>제제별 상이</td></tr>
+        <tr><td>연구단계</td><td>사일로시빈 등 향정신성물질 보조 심리치료*</td><td>-</td></tr>
+        <tr><td>권장하지 않음</td><td>대마초(효능근거 불충분, 위해위험)</td><td>-</td></tr>
+      </table>
+      <div class="alert alert-unexp" style="margin-top:8px"><span>⚡</span><div><strong>케타민/에스케타민</strong>: 기분과 무관하게 빠른 자살사고 감소 효과(단회 IV 후 최대 1주 지속), 재발방지 유지요법 근거 증가 중이나 혈압·해리성 부작용 모니터링 필요성으로 2차로 분류.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚡</span> 신경조절치료 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>치료순위</th><th>신경조절치료</th></tr>
+        <tr><td><span class="stage ln-1">1차</span></td><td>중증 MDE(정신병적/긴장증 양상, 심한 자살사고, 신체상태 악화)에 <strong>ECT</strong>; TRD에 <strong>rTMS</strong></td></tr>
+        <tr><td><span class="stage ln-2">2차</span></td><td>DTD에 ECT</td></tr>
+        <tr><td><span class="stage ln-3">3차</span></td><td>경증-중등증 MDE에 부가 경두개직류자극(tDCS); DTD에 미주신경자극술(VNS)</td></tr>
+        <tr><td>연구단계</td><td>DTD에 뇌심부자극술(DBS), 자기경련요법(MST)</td></tr>
+      </table>
+      <div class="grid2" style="margin-top:8px">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>ECT 프로토콜</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">1차: 양전두엽 Brief Pulse(역치 1.5배), 우측편측 Brief/Ultrabrief Pulse(역치 6배). 반응률 65-75%. 6-12회기, 인지부작용은 우측편측·ultrabrief에서 적으나 양측두엽이 효능은 다소 우수.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>rTMS 프로토콜</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">1차: 좌측 DLPFC 고빈도 또는 간헐적 세타버스트(iTBS), 우측 DLPFC 저빈도. 반응률 40-50%. 마취 불필요, 인지부작용 없음. iTBS는 고빈도 rTMS와 비열등하며 회기시간이 짧음.</div></div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>🧠</span><div>ECT 후 6개월 내 재발률 60-80%로 <strong>유지 ECT 또는 유지 약물치료(리튬+노르트립틸린/벤라팍신-XR 병용이 재발방지에 우수)</strong>가 필요하다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /unexp -->
+
+
+<!-- ══════════════════ TAB 8: 평가·약어 ══════════════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 지침 개발 방법론</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>학술 임상의 43명과 환자파트너 1인으로 구성된 편집위원회가 2016년 지침 이후(2015.1.1-2023.5.31) 발간된 <strong>체계적문헌고찰·메타분석</strong>을 중심으로 검토했으며, 이용 불가 시 개별 RCT를 검토했다. 수정된 GRADE 기준으로 각 연구의 비뚤림위험(낮음/중간/높음)을 평가했다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💰</span><div>지침 개발·출판은 <strong>CANMAT 내부기금만으로 진행</strong>되었으며 외부지원(제약회사 포함)은 받지 않았다. 저자 전원 이해상충을 공개했으며, 이견이 있었으나 소수의견은 제출되지 않았다. <strong>2030년 재개정 예정.</strong></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔠</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 원문 출처</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Lam RW, Kennedy SH, Adams C, et al. Canadian Network for Mood and Anxiety Treatments (CANMAT) 2023 Update on Clinical Guidelines for Management of Major Depressive Disorder in Adults. <em>Can J Psychiatry</em>. 2024;69(9):641-687. DOI: 10.1177/07067437241245384. 전체 참고문헌·근거표는 https://osf.io/8tfkp/ 에서 확인 가능하다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"MDD", def:"Major Depressive Disorder — 주요우울장애" },
+  { term:"MDE", def:"Major Depressive Episode — 주요우울삽화" },
+  { term:"PDD", def:"Persistent Depressive Disorder — 지속성우울장애" },
+  { term:"TRD", def:"Treatment-Resistant Depression — 치료저항성우울증" },
+  { term:"DTD", def:"Difficult-to-Treat Depression — 난치성우울증" },
+  { term:"SDM", def:"Shared Decision-Making — 공유의사결정" },
+  { term:"MBC", def:"Measurement-Based Care — 측정기반치료" },
+  { term:"CBT", def:"Cognitive-Behavioural Therapy — 인지행동치료" },
+  { term:"IPT", def:"Interpersonal Therapy — 대인관계치료" },
+  { term:"BA", def:"Behavioural Activation — 행동활성화" },
+  { term:"MBCT", def:"Mindfulness-Based Cognitive Therapy — 마음챙김기반인지치료" },
+  { term:"CBASP", def:"Cognitive Behavioural Analysis System of Psychotherapy" },
+  { term:"STPP", def:"Short-Term Psychodynamic Psychotherapy — 단기정신역동치료" },
+  { term:"ACT", def:"Acceptance and Commitment Therapy — 수용전념치료" },
+  { term:"MCT", def:"Metacognitive Therapy — 메타인지치료" },
+  { term:"SSRI / SNRI", def:"Selective Serotonin / Serotonin-Norepinephrine Reuptake Inhibitor" },
+  { term:"NDRI", def:"Norepinephrine-Dopamine Reuptake Inhibitor" },
+  { term:"TCA", def:"Tricyclic Antidepressant — 삼환계항우울제" },
+  { term:"MAOI", def:"Monoamine Oxidase Inhibitor — 모노아민산화효소 억제제" },
+  { term:"CAM", def:"Complementary and Alternative Medicine — 보완대체의학" },
+  { term:"DHI", def:"Digital Health Intervention — 디지털건강중재" },
+  { term:"iCBT / iBA", def:"Internet-delivered CBT / Behavioural Activation" },
+  { term:"ECT", def:"Electroconvulsive Therapy — 전기경련요법" },
+  { term:"rTMS", def:"Repetitive Transcranial Magnetic Stimulation — 반복경두개자기자극" },
+  { term:"TBS", def:"Theta Burst Stimulation — 세타버스트자극" },
+  { term:"tDCS", def:"Transcranial Direct Current Stimulation — 경두개직류자극" },
+  { term:"VNS / DBS", def:"Vagus Nerve Stimulation / Deep Brain Stimulation" },
+  { term:"MST", def:"Magnetic Seizure Therapy — 자기경련요법" },
+  { term:"DLPFC", def:"Dorsolateral Prefrontal Cortex — 배외측전전두피질" },
+  { term:"PHQ", def:"Patient Health Questionnaire — 환자건강설문지" },
+  { term:"HAM-D / MADRS", def:"Hamilton Depression Rating Scale / Montgomery-Åsberg Depression Rating Scale" },
+  { term:"GRADE", def:"Grading of Recommendations Assessment, Development, and Evaluation" },
+  { term:"CANMAT", def:"Canadian Network for Mood and Anxiety Treatments" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COPD 진료지침 (2024 개정)</title>
+<style>
+  :root {
+    --bg:#f6f8fa; --surface:#fff; --surface2:#f0f2f5; --border:#d0d7de; --text:#1f2328; --text2:#57606a;
+    --overview:#0c4a6e; --diag:#0e7490; --drug:#166534; --nondrug:#a16207;
+    --exac:#b91c1c; --comorbid:#7c2d92; --tools:#4b5563;
+    --accent:#0c4a6e; --green:#1a7f37; --red:#cf222e; --yellow:#9a6700; --fscale:1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Pretendard','Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:calc(13px * var(--fscale,1));line-height:1.5;min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;position:sticky;top:0;z-index:100;}
+  .header-inner{width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .logo-row{display:flex;align-items:center;gap:10px;justify-content:center;}
+  .logo-copd{display:flex;font-size:calc(11px * var(--fscale,1));font-weight:800;letter-spacing:1px;}
+  .logo-copd span:nth-child(1){background:var(--exac);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-copd span:nth-child(2){background:var(--drug);color:#fff;padding:3px 6px;}
+  .logo-copd span:nth-child(3){background:var(--overview);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1{font-size:19px;font-weight:700;}
+  .meta-line{color:var(--text2);font-size:calc(11px * var(--fscale,1));text-align:center;line-height:1.6;}
+  .tab-bar{display:flex;justify-content:center;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn{display:flex;align-items:center;gap:3px;flex-shrink:0;margin:4px 4px 4px 6px;padding:5px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1));font-weight:700;cursor:pointer;user-select:none;white-space:nowrap;}
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner{width:100%;max-width:980px;display:flex;align-items:center;justify-content:center;gap:1px;}
+  .tab{padding:8px 10px;font-size:calc(12px * var(--fscale,1));color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;user-select:none;}
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap{display:flex;align-items:center;padding:4px 6px;margin-left:4px;flex-shrink:0;position:relative;}
+  .main{padding:12px 16px;max-width:980px;margin:0 auto;}
+  .panel{display:none;} .panel.active{display:block;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+  @media (max-width:680px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;}
+  .card-header{background:var(--surface2);padding:8px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;}
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(18px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#e0f2fe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-diag{background:#cffafe;border-left:3px solid var(--diag);color:#155e75;}
+  .alert-drug{background:#dcfce7;border-left:3px solid var(--drug);color:#166534;}
+  .alert-nondrug{background:#fef3c7;border-left:3px solid var(--nondrug);color:#a16207;}
+  .alert-exac{background:#fee2e2;border-left:3px solid var(--exac);color:#b91c1c;}
+  .alert-comorbid{background:#f3e8ff;border-left:3px solid var(--comorbid);color:#7c2d92;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .ev-h{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .ev-m{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .ev-l{background:#ffd8a8;color:#7d3b00;font-weight:700;text-align:center;}
+  .rec-s{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .rec-w{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .pico{display:inline-block;padding:2px 8px;border-radius:12px;font-size:calc(10px * var(--fscale,1));font-weight:700;margin-right:6px;color:#fff;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .stage-timeline{display:flex;align-items:stretch;gap:0;margin:10px 0;overflow-x:auto;}
+  .stage-box{flex:1;min-width:120px;padding:10px 10px 12px;border-right:2px solid var(--bg);text-align:center;cursor:pointer;}
+  .stage-box:last-child{border-right:none;}
+  .stage-box .st-num{font-size:calc(14px * var(--fscale,1));font-weight:800;margin-bottom:4px;}
+  .stage-box .st-lbl{font-size:calc(10px * var(--fscale,1));line-height:1.4;}
+  .gear-row{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;}
+  .gear-box{flex:1;min-width:140px;border-radius:6px;padding:10px 12px;font-size:calc(12px * var(--fscale,1));}
+  .gear-title{font-weight:700;font-size:calc(13px * var(--fscale,1));margin-bottom:4px;}
+  .pct-bar-row{display:flex;align-items:center;gap:8px;margin:4px 0;}
+  .pct-bar-label{width:170px;font-size:calc(11px * var(--fscale,1));flex-shrink:0;}
+  .pct-bar-track{flex:1;background:var(--surface2);border-radius:4px;height:14px;overflow:hidden;}
+  .pct-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;}
+  .pct-bar-val{font-size:calc(10px * var(--fscale,1));font-weight:700;color:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-copd"><span>C</span><span>O</span><span>PD</span></div>
+      <h1>COPD 진료지침 (2024 개정)</h1>
+    </div>
+    <div class="meta-line">
+      대한결핵 및 호흡기학회 COPD 진료지침 개정위원회 · 2024
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🔍 진단·평가</div>
+    <div class="tab" onclick="showTab('drug')">💊 약물치료</div>
+    <div class="tab" onclick="showTab('nondrug')">🏃 비약물치료</div>
+    <div class="tab" onclick="showTab('exac')">🚨 급성악화</div>
+    <div class="tab" onclick="showTab('comorbid')">🫀 동반질환</div>
+    <div class="tab" onclick="showTab('tools')">📏 평가도구·약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">13.4%</div><div class="stat-lbl">국내 40세 이상<br>COPD 유병률(2008)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--drug)">GOLD 1-4</div><div class="stat-lbl">FEV1 기준<br>기류제한 등급</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--exac)">2회 이상</div><div class="stat-lbl">고위험군 기준<br>(연간 악화 빈도)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--comorbid)">300/μL</div><div class="stat-lbl">ICS 추가 고려<br>혈중호산구 기준</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🫁</span> COPD 정의와 표현형</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-overview"><span>📖</span><div>만성폐쇄성폐질환(COPD)은 <strong>기도와 폐포의 이상</strong>으로 인해 지속적인 호흡기 증상(호흡곤란, 기침, 객담)과 기류제한을 특징으로 하는 질환이다. 표현형은 만성기관지염형, 폐기종형 등으로 나뉘며, 병인형에 따라 흡연 관련(COPD-C), 유전적(COPD-G), 폐 발달이상(COPD-D), 감염(COPD-I), 기도과민(COPD-A/천식중복) 등으로 세분된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>⚠️</span> 위험인자</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>범주</th><th>주요 인자</th></tr>
+        <tr><td>유전</td><td>알파-1 항트립신 결핍 등</td></tr>
+        <tr><td>나이·성별</td><td>노화에 따른 폐탄성 저하, 성별 간 감수성 차이</td></tr>
+        <tr><td>폐 성장·발달</td><td>소아기 호흡기감염, 저체중출생 등으로 최대폐기능 도달 실패</td></tr>
+        <tr><td>환경</td><td>흡연(1차·간접), 직업성 분진·화학물질·가스 노출, 실내외 대기오염(특히 조리용 고체연료)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 병태생리 핵심</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>만성염증에 의한 소기도질환(폐쇄성 세기관지염)과 폐실질 파괴(폐기종)가 함께 작용해 비가역적 기류제한을 유발한다. 동적 과팽창은 <strong>GOLD 1(경증)</strong>부터 관찰되며, GOLD 1 환자는 정상인 대비 GOLD 2로 진행할 위험이 <strong>5배</strong> 높다.</div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 진단·평가 ══════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 증상 및 폐활량측정법</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>주요 증상은 호흡곤란, 만성기침, 객담이며, 진단은 <strong>기관지확장제 흡입 후 FEV1/FVC &lt; 0.7</strong>로 확정한다(폐쇄성 환기장애 확인). 속효성기관지확장제(살부타몰 400μg) 흡입 후 측정한 FEV1을 기준으로 중증도를 분류한다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>GOLD 등급</th><th>FEV1 (예측치 대비, 기관지확장제 후)</th></tr>
+        <tr><td>GOLD 1 (경증)</td><td>≥80%</td></tr>
+        <tr><td>GOLD 2 (중등증)</td><td>50% ≤ FEV1 &lt; 80%</td></tr>
+        <tr><td>GOLD 3 (중증)</td><td>30% ≤ FEV1 &lt; 50%</td></tr>
+        <tr><td>GOLD 4 (매우 중증)</td><td>&lt;30%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📏</span> mMRC / CAT 평가도구</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>mMRC</th><th>내용</th></tr>
+        <tr><td>0</td><td>힘든 운동을 할 때만 숨이 차다</td></tr>
+        <tr><td>1</td><td>평지를 빨리 걷거나 약간 오르막을 걸을 때 숨이 차다</td></tr>
+        <tr><td>2</td><td>평지에서 동년배보다 천천히 걷거나, 자신의 속도로 걸어도 쉬어야 한다</td></tr>
+        <tr><td>3</td><td>평지 약 100m 또는 몇 분 걸으면 쉬어야 한다</td></tr>
+        <tr><td>4</td><td>숨이 너무 차서 외출 불가, 옷을 입고 벗을 때도 숨이 차다</td></tr>
+      </table>
+      <div class="alert alert-diag" style="margin-top:8px"><span>📝</span><div><strong>CAT(COPD Assessment Test)</strong>: 호흡기증상 4항목+삶의 질 4항목, 총 8항목(각 0-5점) 합산 0-40점. 국내 한국어판 타당성 검증됨. <strong>CAT1(기침)≥3 & CAT2(객담)≥3</strong>이면 만성기관지염으로 간편 평가 가능.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🎯</span> 종합평가 — 저위험군 vs 고위험군</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box" style="background:#dcfce7;border:1.5px solid var(--drug);color:#166534"><div class="gear-title">저위험군</div>지난 해 악화 <strong>0-1회</strong>이면서 입원을 요할 정도의 심한 악화가 <strong>없었던</strong> 경우</div>
+        <div class="gear-box" style="background:#fee2e2;border:1.5px solid var(--exac);color:#b91c1c"><div class="gear-title">고위험군</div>지난 해 악화 <strong>2회 이상</strong> 또는 입원 요할 정도의 심한 악화가 <strong>1회 이상</strong> 있었던 경우</div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💡</span><div>악화(급성악화)는 항생제/전신스테로이드 추가가 필요할 정도로 호흡기증상이 나빠진 급성상태를 의미한다. 이전 급성악화 병력이 향후 악화 빈도를 예측하는 가장 좋은 지표다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩸</span> 혈액 호산구 수치의 역할</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="pct-bar-row"><div class="pct-bar-label">&lt;100/μL</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:20%;background:var(--text2)"><span class="pct-bar-val">ICS 효과 거의 없음</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">100-299/μL</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:55%;background:var(--nondrug)"><span class="pct-bar-val">ICS 효과 점증</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">≥300/μL</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:90%;background:var(--drug)"><span class="pct-bar-val">ICS 효과 최대</span></div></div></div>
+      <div class="alert alert-drug" style="margin-top:8px"><span>🔬</span><div>국내 연구에서 40세 이전 천식력, 기관지확장제 반응 양성, IgE&gt;100 IU는 모두 ICS 효과와 무관했으며, <strong>오직 혈중호산구 ≥300/μL만이</strong> ICS의 악화감소 효과와 유의하게 연관되었다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🧭</span> Pre-COPD / GOLD 0 / PRISm / Young COPD / ACO</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>개념</th><th>정의</th></tr>
+        <tr><td>Pre-COPD</td><td>호흡기 증상/구조 이상(영상)이 있으나 아직 기류제한 기준(FEV1/FVC&lt;0.7)을 충족하지 않는 상태 — 조기중재 대상</td></tr>
+        <tr><td>GOLD stage 0 (at risk)</td><td>과거 개념으로 위험인자 노출은 있으나 폐활량은 정상인 상태</td></tr>
+        <tr><td>PRISm</td><td>Preserved Ratio Impaired Spirometry — FEV1/FVC는 정상이나 FEV1 또는 FVC가 예측치보다 낮은 상태</td></tr>
+        <tr><td>Young COPD</td><td>젊은 연령에서 발생하는 COPD — 폐 성장·발달 이상과 관련 가능성</td></tr>
+        <tr><td>ACO(천식-COPD 중복증후군)</td><td>가역적 기류제한(천식 특징)과 비가역적 기류제한(COPD 특징)을 모두 가지는 경우</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════ TAB 3: 약물치료 ══════════ -->
+<div id="tab-drug" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗺️</span> 안정 시 초기 약물치료 알고리즘</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="gear-row">
+        <div class="gear-box" style="background:#dcfce7;border:1.5px solid var(--drug);color:#166534">
+          <div class="gear-title">저위험군 (악화 0-1회/년)</div>
+          <strong>LABA+LAMA 복합제</strong>를 일차치료로 권장. 단독요법 대비 FEV1 증가·호흡곤란 감소·삶의 질 향상, 악화도 유의하게 감소. 부작용 증가 없음.
+        </div>
+        <div class="gear-box" style="background:#fee2e2;border:1.5px solid var(--exac);color:#b91c1c">
+          <div class="gear-title">고위험군 (악화 ≥2회/년 또는 입원 악화)</div>
+          <strong>LABA+LAMA 복합제</strong>를 일차치료로 권장 — ICS/LABA 대비 폐기능·악화감소 우월, 폐렴 위험은 낮음.<br>
+          <strong>혈중호산구 ≥300/μL</strong>이면 <strong>LABA+LAMA+ICS(삼제요법)</strong>를 일차치료로 권장.
+        </div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>단순히 천식 병력이 있다는 이유만으로 ICS 포함 약제를 권고하지 않는다 — 호산구 수치만이 유의한 예측인자다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📊</span> 핵심질문(KQ) 권고안 — 삼제요법(Triple Therapy)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>KQ</th><th>내용</th><th>근거수준</th><th>권고수준</th></tr>
+        <tr><td>KQ1</td><td>저위험군에서 악화 방지 목적 기관지확장제 사용</td><td><span class="stage ev-l">Low</span></td><td>보류 <span class="stage rec-w">Weak</span></td></tr>
+        <tr><td>KQ2</td><td>저위험군에서 증상호전 목적 기관지확장제 사용</td><td><span class="stage ev-l">Low</span></td><td>보류 <span class="stage rec-w">Weak</span></td></tr>
+        <tr><td>KQ3</td><td>고위험군: 악화감소 — Triple vs ICS+LABA</td><td><span class="stage ev-m">Moderate</span></td><td>Triple 권고 <span class="stage rec-s">Strong</span></td></tr>
+        <tr><td>KQ4</td><td>고위험군: 악화감소 — Triple vs LAMA 단독</td><td><span class="stage ev-m">Moderate</span></td><td>Triple 권고 <span class="stage rec-s">Strong</span></td></tr>
+        <tr><td>KQ5</td><td>고위험군+호산구&gt;300: 악화감소 — Triple vs LAMA+LABA</td><td><span class="stage ev-m">Moderate</span></td><td>Triple 권고 <span class="stage rec-s">Strong</span></td></tr>
+        <tr><td>KQ6</td><td>고위험군: 사망감소 — Triple vs ICS+LABA</td><td><span class="stage ev-m">Moderate</span></td><td>Triple 권고 <span class="stage rec-w">Weak</span></td></tr>
+        <tr><td>KQ7</td><td>고위험군: 사망감소 — Triple vs LAMA</td><td><span class="stage ev-l">Weak</span></td><td>Triple 권고 <span class="stage rec-s">Strong</span></td></tr>
+        <tr><td>KQ8</td><td>고위험군: 사망감소 — Triple vs LABA</td><td><span class="stage ev-l">Weak</span></td><td>Triple 권고 <span class="stage rec-s">Strong</span></td></tr>
+        <tr><td>KQ9</td><td>고위험군: 사망감소 — Triple vs LAMA+LABA</td><td><span class="stage ev-m">Moderate</span></td><td>Triple 권고 <span class="stage rec-s">Strong</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>💨</span> 흡입기관지확장제·ICS</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div><strong>베타-2작용제(LABA/SABA)</strong>와 <strong>항콜린제(LAMA/SAMA)</strong>가 핵심 흡입기관지확장제이며, 병합요법이 단일제제보다 효과적이고 부작용 증가는 없다. <strong>ICS</strong>는 단독사용은 권장되지 않으며, 반드시 기관지확장제와 병용하고 고위험군+호산구 상승 환자에서 가장 큰 이득을 보인다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 경구제 및 기타 약물치료</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>약제</th><th>적응증/비고</th></tr>
+        <tr><td>PDE4 억제제</td><td>FEV1&lt;50% + 만성기관지염 + 악화병력 환자에서 1차 선택약제에 <strong>추가</strong> 사용 가능</td></tr>
+        <tr><td>경구 스테로이드</td><td>안정기 장기 사용은 비권장(부작용 위험)</td></tr>
+        <tr><td>테오필린</td><td>부작용 프로파일로 다른 치료 반응 불충분 시 제한적 사용</td></tr>
+        <tr><td>점액용해제/항산화제</td><td>만성기관지염·잦은 악화 환자 일부에서 고려</td></tr>
+        <tr><td>생물학적제제</td><td>중증 호산구성 염증 동반 COPD 등 특정 표현형에서 연구 진행 중</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /drug -->
+
+
+<!-- ══════════ TAB 4: 비약물치료 ══════════ -->
+<div id="tab-nondrug" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🚭</span> 금연 — 5A 전략</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>단계</th><th>내용</th></tr>
+        <tr><td><strong>① ASK</strong></td><td>모든 환자에게 매 방문 시 흡연 상태를 묻고 기록</td></tr>
+        <tr><td><strong>② ADVISE</strong></td><td>모든 흡연자에게 명료하고 강하게 금연 권고</td></tr>
+        <tr><td><strong>③ ASSESS</strong></td><td>금연 의지 확인, 금연 시점 상의</td></tr>
+        <tr><td><strong>④ ASSIST</strong></td><td>상담·행동요법·약물요법으로 금연 지원</td></tr>
+        <tr><td><strong>⑤ ARRANGE</strong></td><td>추적관찰을 위한 지속적 예약 스케줄</td></tr>
+      </table>
+      <div class="alert alert-nondrug" style="margin-top:8px"><span>💊</span><div>약물치료 전 <strong>니코틴 패치 선행 사용</strong> 시 금연 성공률이 1.5배 높았다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🏃</span> 호흡재활치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>증상이 심하거나 악화위험이 높은 환자가 대상이며, 운동프로그램으로 운동능력 향상·호흡곤란/피로 완화 효과가 있다. <strong>불안정한 심혈관질환(협심증, 급성심근경색, 중증 대동맥판협착) 또는 미치료 중증 폐동맥고혈압</strong>은 안정화 후 고려한다.</div>
+      <div class="alert alert-nondrug" style="margin-top:8px"><span>📋</span><div><strong>사전평가</strong>: 병력·신체진찰, 폐기능검사, 심전도, 흉부X선, CBC, 산소포화도, 증상평가(mMRC/CAT), 피로도(수정 Borg), 운동능력(6분보행/셔틀보행/CPET), 삶의 질(SGRQ, SF-36).</div></div>
+      <div style="margin-top:8px">병원기반 프로그램의 효과가 가장 좋으나, 원격재활·재택기반 방법도 긍정적 근거가 축적되고 있어 의료접근성을 고려해 선택할 수 있다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> 예방접종</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>백신</th><th>권고</th></tr>
+        <tr><td>인플루엔자</td><td><strong>모든 COPD 환자</strong>에게 매년 접종 권장 — 악화 건수 유의하게 감소</td></tr>
+        <tr><td>폐렴구균</td><td><strong>65세 이상 모든 COPD 환자</strong>에게 접종 권장(23가 다당질백신, 단백결합백신 PCV13 등) — 지역사회획득폐렴·COPD악화 발생률 유의하게 감소</td></tr>
+        <tr><td>대상포진</td><td>50세 이상 성인 권고에 따라 COPD 환자도 접종 권고</td></tr>
+        <tr><td>백일해</td><td>모든 COPD 환자 접종 권고는 추가 논의 필요</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🫧</span> 재택산소치료(장기산소요법, LTOT)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-nondrug"><span>✅</span><div>안정상태에서 하루 <strong>15시간 이상</strong> 산소투여 시 생존율 향상.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>적용 기준</th><th>세부조건</th></tr>
+        <tr><td>①</td><td>PaO2 ≤55mmHg 또는 SaO2 ≤88% (고탄산혈증 여부 무관)</td></tr>
+        <tr><td>②</td><td>PaO2 55-60mmHg 또는 SaO2 89% + 폐고혈압/말초부종(심부전 시사)/적혈구증가증(Hct&gt;55%) 동반</td></tr>
+      </table>
+      <div style="margin-top:8px">안정상태에서 <strong>3주 간격 2회 반복측정</strong>으로 결정하며, 시작 2-3개월 후 재평가 필요. 중등도 저산소혈증(89-93%)이나 운동시에만 저산소혈증이 있는 경우 LTOT는 사망률·입원률 감소 효과를 보이지 못했다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔪</span> 수술·내시경 치료</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>중증 폐기종 환자에서 폐용적축소술(수술적 또는 기관지내시경적 밸브/코일 시술), 폐이식 등을 특정 적응증에 한해 고려한다. 수술 전 평가는 폐기능·심혈관 위험도 등을 종합적으로 고려해야 한다.</div>
+    </div>
+  </div>
+
+</div><!-- /nondrug -->
+
+
+<!-- ══════════ TAB 5: 급성악화 ══════════ -->
+<div id="tab-exac" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧭</span> 정의와 분류</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-exac"><span>📖</span><div><strong>GOLD 2023 로마제안(ROME proposal)</strong>: 기도감염·대기오염 등에 의한 국소/전신 염증반응으로 호흡곤란·기침·객담이 <strong>14일 이내</strong> 악화된 상태(빈호흡·빈맥 동반 가능).</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>중증도</th><th>정의</th></tr>
+        <tr><td>경증</td><td>속효성기관지확장제 치료만 필요</td></tr>
+        <tr><td>중등증</td><td>속효성기관지확장제 + 항생제 또는 경구스테로이드 필요</td></tr>
+        <tr><td>중증</td><td>응급실 방문 또는 입원 필요(급성호흡부전 동반 가능)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 약물치료 3대 요소</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="gear-row">
+        <div class="gear-box" style="background:#dcfce7;border:1.5px solid var(--drug);color:#166534">
+          <div class="gear-title">기관지확장제</div>
+          속효성베타작용제 단독 또는 속효성항콜린제 병용이 1차. 중증 시 네뷸라이저가 전달에 유리. 메틸잔틴계 정맥투여는 부작용으로 비권고.
+        </div>
+        <div class="gear-box" style="background:#fef3c7;border:1.5px solid var(--nondrug);color:#78350f">
+          <div class="gear-title">전신스테로이드</div>
+          <strong>프레드니솔론 40mg/day, 5일</strong> 권고. 회복기간·재원기간 단축, 재악화 감소. 경구=주사 동등 효과. 장기투여는 폐렴·사망률 증가시켜 <strong>사용은 명확한 악화에 국한</strong>. 호산구 낮은 환자는 효과가 작을 수 있음.
+        </div>
+        <div class="gear-box" style="background:#fee2e2;border:1.5px solid var(--exac);color:#7f1d1d">
+          <div class="gear-title">항생제</div>
+          호흡곤란악화·객담량증가·화농성객담증가 <strong>3증상 중 3가지 충족</strong> 또는 <strong>화농성객담 포함 2가지 충족</strong> 또는 <strong>기계환기 필요 시</strong> 처방. 기간 <strong>5-7일</strong>(외래 5일 이내).
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💊</span><div><strong>항생제 선택</strong>: 초기 경험적 치료는 aminopenicillin-clavulanic acid 또는 3세대 cephalosporin. <strong>65세 이상·FEV1&lt;50%·잦은 악화·심장질환 동반</strong> 등 위험인자가 있으면 fluoroquinolone(levofloxacin, moxifloxacin) 고려. Pseudomonas 위험인자 있으면 anti-Pseudomonal 항생제 고려.</div></div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>🔬</span><div>화농성 객담은 세균 부담 예측에 민감도 94.4%, 특이도 52%. CRP/procalcitonin 기반 항생제 사용 전략은 현재 근거 불충분(중환자실 환자에서는 오히려 사망률 상승과 연관).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🫧</span> 호흡보조요법</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>산소요법(목표 SpO2 88-92% 권장, 과도한 산소는 고탄산혈증 위험), 비침습적 기계환기(NIV)는 급성호흡부전 동반 시 우선 고려, 실패 시 침습적 기계환기로 전환한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔄</span> 퇴원·추적관찰 및 재발 예방</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>재입원 예측인자: 동반질환, 이전 악화·입원 병력, 입원 중 긴 재원기간. 사망 예측인자: 연령, 호흡부전 정도 등. 퇴원 후 재악화 예방을 위해 <strong>호흡재활치료, 금연, 예방접종, 규칙적 약제투약</strong>이 권장된다.</div>
+    </div>
+  </div>
+
+</div><!-- /exac -->
+
+
+<!-- ══════════ TAB 6: 동반질환 ══════════ -->
+<div id="tab-comorbid" class="panel">
+
+  <table class="tbl">
+    <tr><th>동반질환</th><th>핵심 포인트</th></tr>
+    <tr><td>심혈관질환 (심부전·허혈성심질환·부정맥·말초동맥질환·고혈압)</td><td>COPD 환자에서 매우 흔하며 사망률·입원율에 큰 영향. 동반질환이 있어도 COPD 표준치료 원칙은 동일하게 적용</td></tr>
+    <tr><td>골다공증</td><td>흡연·활동저하·전신염증과 연관, 스테로이드 반복사용 시 위험 증가 — 적극적 스크리닝 필요</td></tr>
+    <tr><td>불안·우울증</td><td>호흡곤란·삶의 질 저하와 밀접히 연관, 호흡재활이 정신건강에도 도움될 수 있음</td></tr>
+    <tr><td>폐암</td><td>COPD 자체가 폐암 위험을 독립적으로 증가시킴(만성염증·조직손상 기전) — <strong>흡연력 있는 COPD 환자는 매년 저선량 흉부CT 권장</strong></td></tr>
+    <tr><td>대사증후군·당뇨병</td><td>전신염증 연관 동반질환으로 흔히 동반</td></tr>
+    <tr><td>위식도역류질환(GERD)</td><td>COPD 악화 빈도 증가와 연관 가능성</td></tr>
+    <tr><td>기관지확장증</td><td>COPD와 중복 시 악화빈도·균집락 위험 증가</td></tr>
+    <tr><td>결핵성파괴폐</td><td>국내 특이적으로 중요한 감별/동반질환 — 과거 결핵력 확인 필요</td></tr>
+    <tr><td>인지장애</td><td>저산소혈증·전신염증과 연관, 고령 COPD 환자에서 스크리닝 고려</td></tr>
+    <tr><td>폐쇄수면무호흡(OSA)-COPD 중복증후군</td><td>야간 저산소혈증 악화, 폐고혈압·심혈관 합병증 위험 증가</td></tr>
+    <tr><td>노쇠(Frailty)</td><td>근감소증 동반 시 예후 악화 — 호흡재활을 통한 근력강화가 중요</td></tr>
+  </table>
+
+  <div class="alert alert-comorbid" style="margin-top:10px"><span>💡</span><div>COPD는 흡연·고령과 관련된 전신질환을 폭넓게 동반하므로, 진료 시 <strong>동반질환을 항상 확인하고 COPD 유무와 무관하게 표준적으로 치료</strong>해야 한다. 근육기능 저하는 운동능력 저하의 교정 가능한 원인이다.</div></div>
+
+</div><!-- /comorbid -->
+
+
+<!-- ══════════ TAB 7: 평가도구·약어 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> 근거수준·권고수준 (GRADE 방식)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>근거수준</th><th>정의</th></tr>
+        <tr><td><span class="stage ev-h">High</span></td><td>추가 연구가 효과 추정치의 신뢰를 바꿀 가능성이 매우 낮음</td></tr>
+        <tr><td><span class="stage ev-m">Moderate</span></td><td>추가 연구가 추정치에 영향을 줄 수 있음</td></tr>
+        <tr><td><span class="stage ev-l">Low / Very low</span></td><td>추정치에 대한 확신이 제한적이거나 매우 낮음</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고수준</th><th>정의</th></tr>
+        <tr><td><span class="stage rec-s">Strong</span></td><td>대부분 혹은 모든 개인은 권고사항에 의한 서비스를 제공받는 것이 최선</td></tr>
+        <tr><td><span class="stage rec-w">Weak</span></td><td>모든 개인에게 해당 서비스 제공이 최선이 아닐 수 있음 — 개별화 필요</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 약어 모음</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>대한결핵 및 호흡기학회, 「COPD 진료지침」 2024 개정판. GOLD(Global Initiative for Obstructive Lung Disease) 국제지침과 국내 연구결과를 반영해 개정되었다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"COPD", def:"Chronic Obstructive Pulmonary Disease — 만성폐쇄성폐질환" },
+  { term:"GOLD", def:"Global Initiative for Obstructive Lung Disease — COPD 국제 가이드라인 기구" },
+  { term:"FEV1", def:"Forced Expiratory Volume in 1 second — 1초간 노력성 호기량" },
+  { term:"FVC", def:"Forced Vital Capacity — 노력성 폐활량" },
+  { term:"mMRC", def:"modified Medical Research Council Dyspnea Scale — 호흡곤란 평가척도" },
+  { term:"CAT", def:"COPD Assessment Test — COPD 평가검사(삶의 질)" },
+  { term:"LABA", def:"Long-Acting Beta2-Agonist — 흡입지속성베타2작용제" },
+  { term:"LAMA", def:"Long-Acting Muscarinic Antagonist — 흡입지속성항콜린제" },
+  { term:"ICS", def:"Inhaled Corticosteroid — 흡입스테로이드" },
+  { term:"SABA/SAMA", def:"Short-Acting Beta agonist/Muscarinic antagonist — 속효성 기관지확장제" },
+  { term:"PDE4", def:"Phosphodiesterase-4 억제제 — 경구 항염증제(로플루밀라스트 등)" },
+  { term:"LTOT", def:"Long-Term Oxygen Therapy — 장기산소요법(재택산소치료)" },
+  { term:"NIV", def:"Non-Invasive Ventilation — 비침습적 기계환기" },
+  { term:"PRISm", def:"Preserved Ratio Impaired Spirometry — FEV1/FVC 정상이나 폐활량 저하" },
+  { term:"ACO", def:"Asthma-COPD Overlap — 천식·COPD 중복증후군" },
+  { term:"CPET", def:"Cardiopulmonary Exercise Test — 심폐운동부하검사" },
+  { term:"SGRQ", def:"St. George's Respiratory Questionnaire — 삶의 질 평가 설문" },
+  { term:"CRQ", def:"Chronic Respiratory Questionnaire — 만성호흡기질환 삶의 질 설문" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ABBR_DATA.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

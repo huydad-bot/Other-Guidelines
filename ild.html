@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>간질성폐질환(ILD) 진료지침 (2023 1차 개정)</title>
+<style>
+  :root {
+    --bg:#f6f8fa; --surface:#fff; --surface2:#f0f2f5; --border:#d0d7de; --text:#1f2328; --text2:#57606a;
+    --overview:#1e3a5f; --ipf:#9a3412; --ctd:#7c2d92; --nsip:#0e7490;
+    --other:#4d7c0f; --hp:#a16207; --sarc:#1d4ed8; --appendix:#4b5563;
+    --accent:#1e3a5f; --green:#1a7f37; --red:#cf222e; --yellow:#9a6700; --fscale:1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Pretendard','Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:calc(13px * var(--fscale,1));line-height:1.5;min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;position:sticky;top:0;z-index:100;}
+  .header-inner{width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .logo-row{display:flex;align-items:center;gap:10px;justify-content:center;}
+  .logo-ild{display:flex;font-size:calc(11px * var(--fscale,1));font-weight:800;letter-spacing:1px;}
+  .logo-ild span:nth-child(1){background:var(--ipf);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-ild span:nth-child(2){background:var(--hp);color:#fff;padding:3px 6px;}
+  .logo-ild span:nth-child(3){background:var(--overview);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1{font-size:19px;font-weight:700;}
+  .meta-line{color:var(--text2);font-size:calc(11px * var(--fscale,1));text-align:center;line-height:1.6;}
+  .tab-bar{display:flex;justify-content:center;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn{display:flex;align-items:center;gap:3px;flex-shrink:0;margin:4px 4px 4px 6px;padding:5px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1));font-weight:700;cursor:pointer;user-select:none;white-space:nowrap;}
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner{width:100%;max-width:980px;display:flex;align-items:center;justify-content:center;gap:1px;}
+  .tab{padding:8px 9px;font-size:calc(11.5px * var(--fscale,1));color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;user-select:none;}
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap{display:flex;align-items:center;padding:4px 6px;margin-left:4px;flex-shrink:0;position:relative;}
+  .main{padding:12px 16px;max-width:980px;margin:0 auto;}
+  .panel{display:none;} .panel.active{display:block;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+  @media (max-width:680px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;}
+  .card-header{background:var(--surface2);padding:8px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;}
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(18px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#e2e8f0;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-ipf{background:#ffedd5;border-left:3px solid var(--ipf);color:#9a3412;}
+  .alert-ctd{background:#f3e8ff;border-left:3px solid var(--ctd);color:#7c2d92;}
+  .alert-nsip{background:#cffafe;border-left:3px solid var(--nsip);color:#155e75;}
+  .alert-other{background:#ecfccb;border-left:3px solid var(--other);color:#3f6212;}
+  .alert-hp{background:#fef3c7;border-left:3px solid var(--hp);color:#a16207;}
+  .alert-sarc{background:#dbeafe;border-left:3px solid var(--sarc);color:#1d4ed8;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .ev-h{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .ev-m{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .ev-l{background:#ffd8a8;color:#7d3b00;font-weight:700;text-align:center;}
+  .ev-e{background:#e5e7eb;color:#374151;font-weight:700;text-align:center;}
+  .rec-s{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .rec-w{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .rec-hold{background:#e5e7eb;color:#374151;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .pico{display:inline-block;padding:2px 8px;border-radius:12px;font-size:calc(10px * var(--fscale,1));font-weight:700;margin-right:6px;color:#fff;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .gear-row{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;}
+  .gear-box{flex:1;min-width:140px;border-radius:6px;padding:10px 12px;font-size:calc(12px * var(--fscale,1));}
+  .gear-title{font-weight:700;font-size:calc(13px * var(--fscale,1));margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-ild"><span>I</span><span>L</span><span>D</span></div>
+      <h1>간질성폐질환(ILD) 임상진료지침 (2023 1차 개정)</h1>
+    </div>
+    <div class="meta-line">
+      대한결핵 및 호흡기학회 ILD연구회 · 간질성폐질환 임상진료지침 개정위원회
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 총론</div>
+    <div class="tab" onclick="showTab('ipf')">🫁 IPF</div>
+    <div class="tab" onclick="showTab('ctd')">🦴 CTD-ILD</div>
+    <div class="tab" onclick="showTab('nsip')">🔬 iNSIP·COP</div>
+    <div class="tab" onclick="showTab('other')">📋 기타ILD</div>
+    <div class="tab" onclick="showTab('hp')">🌾 과민성폐렴</div>
+    <div class="tab" onclick="showTab('sarc')">🔵 유육종증</div>
+    <div class="tab" onclick="showTab('appendix')">📎 부록·약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 총론 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">40/10만</div><div class="stat-lbl">국내 ILD 유병률<br>(정의에 따라 상이)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--ipf)">35-39/10만</div><div class="stat-lbl">국내 IPF 유병률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--nsip)">≥5%</div><div class="stat-lbl">ILA 진단 기준<br>(비중력성 이상소견 비율)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--other)">2가지</div><div class="stat-lbl">PPF 진단에 필요한<br>기준 항목 수(3개 중)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 간질성폐질환(ILD)이란</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-overview"><span>🫁</span><div>ILD는 <strong>폐포와 폐간질을 침범하는 염증세포 침윤 및 때로 섬유화</strong>가 동반되어 비정상적 콜라겐 침착을 보이는 질환의 총칭이다. 진단에는 <strong>흉부 HRCT, 폐 조직검사, 임상소견을 종합한 다학제적 접근</strong>이 필수적이다.</div></div>
+      <div style="margin-top:8px">원인이 불분명한 경우 <strong>특발성간질성폐렴(IIP)</strong>으로 정의하며, 조직학적 구분에 따라 특발성폐섬유증(IPF), 특발성비특이간질성폐렴(iNSIP), 호흡세기관지염-간질성폐질환(RB-ILD), 박리간질성폐렴(DIP), 급성간질성폐렴(AIP) 등으로 세분한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📈</span> 진행성 폐섬유증 (PPF)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-other"><span>✅</span><div>표준치료 실패한 PPF 환자에서 <strong>nintedanib</strong> 사용을 권고한다 (근거수준: 전문가합의, 권고등급: <span class="stage rec-s">강하게 권고</span>).</div></div>
+      <div style="margin-top:8px"><strong>정의</strong>: IPF가 아닌 ILD 중 적절한 치료에도 급속히 섬유화가 진행되는 질환군. 아래 3항목 중 설명되지 않는 <strong>최소 2가지</strong> 충족 시 진단:</div>
+      <table class="tbl" style="margin-top:6px">
+        <tr><th>항목</th><th>세부 기준</th></tr>
+        <tr><td>① 증상</td><td>호흡기 증상의 악화</td></tr>
+        <tr><td>② 생리학적 진행</td><td>1년 FVC 절대값 ≥5% 감소, 또는 1년 DLCO(Hb보정) ≥10% 감소</td></tr>
+        <tr><td>③ 영상학적 진행</td><td>견인성 기관지확장증 동반 기관지확장증, GGO 동반 견인성기관지확장증, 새 미세망상음영, 망상음영의 거친 형태 변화, 새로운/증가된 벌집모양 및 폐엽용적 감소</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>💊</span><div>Pirfenidone의 PPF 사용에 대해서는 추가 연구가 더 필요하다.</div></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🫀</span> 복합폐섬유폐기종(CPFE)</div><span class="toggle">▾</span></div>
+      <div class="card-body collapsed">상엽 우세 폐기종+폐 아래쪽 폐섬유화가 동반된 임상증후군. ILD 종류와 무관하게 <strong>폐동맥고혈압·폐암 등 동반질환 빈도가 높다.</strong> 정의·분류기준·치료에 대한 추가 연구 필요.</div>
+    </div>
+    <div class="card">
+      <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔍</span> 간질폐이상(ILA)</div><span class="toggle">▾</span></div>
+      <div class="card-body collapsed">이전 ILD 진단·의심 이력이 없는 대상자의 흉부CT에서 <strong>우연히 발견</strong>되는 비중력성 이상소견이 폐의 어느 부위든 <strong>5% 이상</strong>을 차지하는 경우. 흡연자뿐 아니라 일반인구에서도 유의한 유병률을 보이며 사망률·불량한 예후와 연관 — 추가 연구 필요.</div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: IPF ══════════ -->
+<div id="tab-ipf" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📊</span> 역학·정의·위험인자</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>국내 유병률 <strong>35.2-38.9/10만명</strong>, 연간발생률 <strong>13.0/10만명</strong>. 진단 시 평균연령 <strong>68.8세</strong>, <strong>76%가 남성</strong>. 폐암·COPD·GERD·수면무호흡 등과 흔히 연관.</div>
+      <div class="alert alert-ipf" style="margin-top:8px"><span>🧬</span><div>병태생리 핵심은 <strong>상피세포의 반복 손상과 부적절한 복구과정</strong>(기존의 염증중심 이론에서 전환). 유전자(TERT, TERC, MUC5B, DSP, SFTPC 등), 노화(미토콘드리아 기능장애, 텔로미어 단축), 환경요인(흡연, 유기분진·금속·목재분진·규석·석면 노출, 미세흡인)이 복합적으로 작용한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔍</span> 임상양상과 진단</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>원인불명의 만성 호흡곤란·기침·<strong>흡기 수포음(velcro crackle)</strong>을 특징으로 하는 진행성 비가역적 섬유화 질환. 50세 이후, 남성, 흡연력에서 호발.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>HRCT 분류</th><th>주요 소견</th></tr>
+        <tr><td>UIP</td><td>폐하부·변연부 우세 벌집모양(honeycombing) — 가장 중요한 특징</td></tr>
+        <tr><td>Probable UIP</td><td>UIP 소견에 근접하나 벌집모양 미확인</td></tr>
+        <tr><td>Indeterminate for UIP</td><td>UIP 여부 불명확</td></tr>
+        <tr><td>Alternative diagnosis</td><td>다른 질환 시사 소견</td></tr>
+      </table>
+      <div class="alert alert-ipf" style="margin-top:8px"><span>🏥</span><div>경험있는 호흡기내과·흉부영상의학과·병리과의 <strong>다학제 접근</strong>이 핵심. 유발원인 미확인 + 특징적 UIP/probable UIP 소견이면 <strong>조직검사 없이 진단 가능</strong>. 그 외에는 조직검사 후 HRCT+조직형 조합으로 진단.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 치료 — 항섬유화제</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>근거수준</th><th>권고등급</th><th>투표</th></tr>
+        <tr><td>Pirfenidone — FVC 감소속도 지연</td><td><span class="stage ev-m">중등도</span></td><td><span class="stage rec-s">강하게 권고</span></td><td>7/8 강함, 1/8 조건부</td></tr>
+        <tr><td>Pirfenidone — 사망률 감소</td><td><span class="stage ev-m">중등도</span></td><td><span class="stage rec-s">강하게 권고</span></td><td>8/8 강함</td></tr>
+        <tr><td>Nintedanib — FVC 감소속도 지연</td><td><span class="stage ev-m">중등도</span></td><td><span class="stage rec-s">강하게 권고</span></td><td>7/8 강함, 1/8 조건부</td></tr>
+        <tr><td>Nintedanib — 사망률 감소</td><td><span class="stage ev-m">중등도</span></td><td><span class="stage rec-s">강하게 권고</span></td><td>5/8 강함, 3/8 조건부</td></tr>
+        <tr><td>항섬유제(Pirfenidone/Nintedanib) — <strong>급성악화 예방</strong></td><td><span class="stage ev-m">중등도</span></td><td><span class="stage rec-w">조건부 권고</span></td><td>8/8 조건부</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>항섬유화제의 주요 부작용은 <strong>소화기증상, 광과민성</strong> — 사전 주의 필요.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🏃</span> 비약물치료 및 동반질환</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>호흡재활(운동능력·삶의질 개선), 산소치료(안정시 저산소증 또는 운동시 SpO2 85-89%로 저하 시), 완화요법(경과상담·말기관리).</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>동반질환</th><th>핵심 포인트</th></tr>
+        <tr><td>폐암</td><td>일반인 대비 발생 8배↑, 사망 5배↑</td></tr>
+        <tr><td>폐고혈압</td><td>14-50% 동반, 사망률 3배↑ — 폐기능 대비 심한 호흡곤란/저산소증, 영상상 폐동맥확장/우심실비대 시 평가 필요</td></tr>
+        <tr><td>CPFE</td><td>폐암·폐고혈압 병발 빈도가 IPF 단독보다 높음</td></tr>
+        <tr><td>수면무호흡증</td><td>절반 이상 동반, 간헐적 저산소증이 섬유화 악화 — CPAP이 효과적</td></tr>
+        <tr><td>GERD</td><td>약물·수술 치료가 IPF 진행/사망률 개선 못함 — 호흡기증상 호전 목적 치료는 <strong>비권장(조건부)</strong></td></tr>
+        <tr><td>불안·우울</td><td>30-50% 동반 — 적극적 진단·관리 필요</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>⏳</span> 예후 및 급성악화</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-ipf"><span>⚠️</span><div>진단 후 평균생존 약 <strong>3년</strong>. 예측인자: GAP score(성별·연령·FVC·DLCO), 국내개발 <strong>GAP-6</strong>(6분보행 저산소증 포함), KL-6·CCL18 등 생물학적 지표.</div></div>
+      <div style="margin-top:8px"><strong>급성악화 정의</strong>: 최근 1개월 내 새로 발생/악화된 호흡곤란 + HRCT상 UIP 배경에 새로운 양측 GGO/경화 + 심부전·수액과다로 설명 안됨. 환자의 약 1/4에서 경험, 예후 불량, 효과 입증된 치료 없음(보존적 치료+고용량 스테로이드 시행).</div>
+    </div>
+  </div>
+
+</div><!-- /ipf -->
+
+
+<!-- ══════════ TAB 3: CTD-ILD ══════════ -->
+<div id="tab-ctd" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 정의 및 분류</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>결체조직질환(CTD)의 자가면역 반응이 폐를 침범해 섬유화를 유발한 경우를 CTD-ILD라 한다. 대표 CTD: 류마티스관절염(RA), 전신경화증(SSc), 쇼그렌증후군, 혼합결합조직병(MCTD), 특발성염증근육병증(IIM), 전신홍반루푸스(SLE) — 이 중 <strong>SSc에서 ILD 동반이 가장 흔하다.</strong></div>
+      <div class="alert alert-ctd" style="margin-top:8px"><span>🏥</span><div>ILD가 먼저 진단된 경우에도 CTD 합병 여부를 철저히 조사해야 하며, 반대로 ILD 진단 이후 CTD가 뒤늦게 발견되는 경우도 있어 주의가 필요하다. <strong>다학제 진단이 권고</strong>된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 치료 권고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>대상</th><th>약제</th><th>근거수준</th><th>권고등급</th></tr>
+        <tr><td>류마티스관절염 연관 ILD</td><td>항섬유화제 사용 가능</td><td><span class="stage ev-l">낮음</span></td><td><span class="stage rec-w">조건부 권고</span></td></tr>
+        <tr><td>전신경화증(SSc) 연관 ILD</td><td>Mycophenolate mofetil (MMF)</td><td><span class="stage ev-l">낮음</span></td><td><span class="stage rec-s">강하게 권고</span></td></tr>
+        <tr><td>초기 SSc-ILD</td><td>Tocilizumab (초치료)</td><td><span class="stage ev-m">중등도</span></td><td><span class="stage rec-w">조건부 권고</span></td></tr>
+        <tr><td>중등도-중증 SSc-ILD</td><td>Rituximab</td><td><span class="stage ev-l">낮음</span></td><td><span class="stage rec-w">조건부 권고</span></td></tr>
+      </table>
+      <div class="alert alert-ctd" style="margin-top:8px"><span>💡</span><div>CTD-ILD는 유병률이 낮고 SSc 관련 일부 연구를 제외하면 대규모 RCT가 부족해 치료가 잘 정립되어 있지 않다. <strong>급성 발현·진행 시</strong>에는 통상적으로 스테로이드+면역억제제 치료를 고려한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /ctd -->
+
+
+<!-- ══════════ TAB 4: iNSIP·COP ══════════ -->
+<div id="tab-nsip" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--nsip)">iNSIP</span> 특발성비특이간질성폐렴</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-nsip"><span>✅</span><div>일차치료로 <strong>스테로이드 단독</strong> 사용 가능(전문가합의, <span class="stage rec-w">조건부</span>, 6/6). 효과 미흡/의존성 시 <strong>스테로이드+면역억제제 병합</strong> 가능(조건부, 6/6). <strong>PPF로 진행 시 항섬유화제 사용을 권고</strong>(<span class="stage rec-s">강하게 권고</span>, 6/6).</div></div>
+      <div style="margin-top:8px">조직학적 NSIP 양상 확인+이차 원인 배제로 진단. <strong>50-60세 여성, 비흡연자</strong> 호발. HRCT: 폐하부 양측성 망상음영, 견인성기관지확장증, 폐엽용적감소, GGO — 기관혈관주변 분포, <strong>흉막하 보존(subpleural sparing)</strong>이 특이적 소견.</div>
+      <div class="alert alert-success" style="margin-top:8px"><span>📈</span><div>IPF보다 예후 양호 — <strong>5년 생존율 70% 이상</strong>. 일부는 서서히 PPF로 진행 가능.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--nsip)">COP</span> 특발성기질화폐렴</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-nsip"><span>✅</span><div><strong>스테로이드 사용을 권고</strong>(전문가합의, <span class="stage rec-s">강하게 권고</span>, 5/6). 진행/재발 시 <strong>면역억제제 추가 가능</strong>(<span class="stage rec-w">조건부</span>, 6/6).</div></div>
+      <div style="margin-top:8px">특발성간질성폐렴의 5-10% 차지. 평균 50-60세, 마른기침·호흡곤란 + 발열·피로·체중감소 동반 가능. HRCT: <strong>말초 다발국소성 폐경화(consolidation)</strong>, 흉막하/폐하부 호발. 조직검사 없이 치료 가능하나 진단 불명확 시 필요.</div>
+      <div class="alert alert-success" style="margin-top:8px"><span>📈</span><div>스테로이드 반응 좋고 임상호전 빠름 — 예후 양호하나 <strong>재발이 흔함</strong>.</div></div>
+    </div>
+  </div>
+
+</div><!-- /nsip -->
+
+
+<!-- ══════════ TAB 5: 기타ILD ══════════ -->
+<div id="tab-other" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--other)">RB-ILD</span> 호흡세기관지염-간질성폐질환</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-other"><span>✅</span><div><strong>금연을 우선 권고</strong>(<span class="stage rec-s">강하게 권고</span>, 6/6). 기능적 저하 동반 시 <strong>스테로이드 사용 가능</strong>(<span class="stage rec-w">조건부</span>, 5/6).</div></div>
+      <div style="margin-top:8px">주로 흡연자. 30-60대 발병. 진단: 흉부CT+폐기능검사+BAL(림프구증가 없는 색소침착 대식세포 증가). 대부분 예후 양호.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--other)">DIP</span> 박리간질성폐렴</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-other"><span>✅</span><div><strong>금연을 우선 권고</strong>(<span class="stage rec-s">강하게 권고</span>, 6/6). <strong>스테로이드 사용을 권고</strong>(<span class="stage rec-s">강하게 권고</span>, 5/6).</div></div>
+      <div style="margin-top:8px">40-50대 흡연자 호발. 운동 시 호흡곤란·마른기침. HRCT: 폐하부·주변부의 미만성/반점모양 GGO(낭종 동반 가능). 조직: 폐포 내 대식세포 축적+경미한 간질 섬유화. 치료반응 좋으나 <strong>일부 재발/폐기능저하 위험</strong> — 장기 관찰 필요.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--other)">LIP</span> 림프구간질성폐렴</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-other"><span>✅</span><div>증상/폐기능손상 동반 시 <strong>스테로이드 사용을 권고</strong>(<span class="stage rec-s">강하게 권고</span>, 4/6).</div></div>
+      <div style="margin-top:8px">희귀질환, 40-70대 여성 호발. 특발성이거나 쇼그렌증후군·SLE·약물·HIV와 연관 가능. HRCT: GGO, 중심소엽소결절, 기관지혈관속비후, 기관지혈관주위낭종. 경미 시 관찰, 증상/폐기능저하 시 스테로이드+면역억제제. <strong>5년 사망률 33-55%</strong>로 높고 림프종 발병 가능성 있어 주의 필요.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--other)">AIP</span> 급성간질성폐렴</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-other"><span>✅</span><div><strong>스테로이드 사용을 권고</strong>(전문가합의, <span class="stage rec-s">강하게 권고</span>, 4/6).</div></div>
+      <div style="margin-top:8px">40세 이상, 근육통·관절통·발열·기침·호흡곤란. HRCT: 양측 대칭적 광범위 GGO. 조직: 미만성 폐포손상(DAD). 기계환기 등 보존적 치료 필요, 스테로이드/면역억제제 효과 불확실. <strong>사망률 50% 이상</strong>, 대부분 발병 6개월 내 사망.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--other)">iPPFE</span> 특발성흉막실질탄력섬유증</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-other"><span>⏸️</span><div>전문가 합의에 따라 스테로이드·항섬유화제 치료를 <strong>권하거나 반대하지 않는다</strong>(<span class="stage rec-hold">권고 보류</span>, 4/6).</div></div>
+      <div style="margin-top:8px">일본 연구에서 IIP 중 5.9-10.4% 차지. 흡연과 무관. 증상: 호흡곤란·기침·흉부불편감·흉막통·체중감소. HRCT: <strong>폐첨부 흉막비후+인접 흉막하 실질 섬유화·경화</strong>, 상엽 용적감소. 생존연장 입증된 약물 없음. 진행 시 폐이식 고려. FVC/BMI 감소가 불량 예후인자.</div>
+    </div>
+  </div>
+
+</div><!-- /other -->
+
+
+<!-- ══════════ TAB 6: 과민성폐렴 ══════════ -->
+<div id="tab-hp" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 정의 및 분류</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>흡입 항원 노출에 의해 촉발된 면역반응으로 세기관지·폐포에 염증과 섬유화가 발생하는 질환. 영상·병리학적 섬유화 여부에 따라 <strong>비섬유성(nonfibrotic)</strong>과 <strong>섬유성(fibrotic)</strong> HP로 분류한다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>구분</th><th>HRCT 소견</th><th>병리 소견</th></tr>
+        <tr><td>비섬유성 HP</td><td>광범위 GGO·모자이크음영, 소기도폐쇄(공기가둠)</td><td>세포침윤성 간질성폐렴/세기관지염, 비괴사성 육아종</td></tr>
+        <tr><td>섬유성 HP</td><td>무작위 분포 폐섬유화(망상음영, 견인성기관지확장, 벌집모양), 중심소엽결절, three-density pattern</td><td>만성섬유화 간질성폐렴, 기도중심 섬유화+비괴사성 육아종</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔬</span> 진단 검사 권고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>검사</th><th>대상</th><th>권고등급</th></tr>
+        <tr><td>BAL 림프구수 분석</td><td>비섬유성 HP 의심</td><td><span class="stage rec-s">강하게 권고</span> (7/7)</td></tr>
+        <tr><td>경기관지폐생검(TBLB)</td><td>비섬유성 HP 의심</td><td><span class="stage rec-w">조건부 권고</span> (6/7)</td></tr>
+        <tr><td>경기관지냉동폐생검(TBLC)</td><td>비섬유성 HP 의심</td><td><span class="stage rec-hold">권고 보류</span> (5/7)</td></tr>
+        <tr><td>BAL 림프구수 분석</td><td>섬유성 HP 의심</td><td><span class="stage rec-w">조건부 권고</span> (7/7)</td></tr>
+        <tr><td>경기관지폐생검(TBLB)</td><td>섬유성 HP 의심</td><td><span class="stage rec-hold">권고 보류</span> (5/7)</td></tr>
+        <tr><td>경기관지냉동폐생검(TBLC)</td><td>섬유성 HP 의심 — 숙련기관</td><td><span class="stage rec-w">조건부 권고</span> (5/7)</td></tr>
+      </table>
+      <div class="alert alert-hp" style="margin-top:8px"><span>🏥</span><div>진단은 원인항원 노출 확인+HRCT 소견 기반, 필요 시 BAL·병리 소견을 추가한 <strong>다학제 진단</strong> 원칙.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 치료 권고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>권고등급</th></tr>
+        <tr><td><strong>원인 항원 회피</strong> (모든 HP 환자)</td><td><span class="stage rec-s">강하게 권고</span> (7/7)</td></tr>
+        <tr><td>비섬유성 HP — 증상/영상 중증도에 따라 스테로이드</td><td><span class="stage rec-s">강하게 권고</span> (4/7)</td></tr>
+        <tr><td>섬유성 HP — 증상/폐기능/영상 악화에 따라 스테로이드</td><td><span class="stage rec-w">조건부 권고</span> (6/7)</td></tr>
+        <tr><td>섬유성 HP — 스테로이드 무반응 시 면역억제제/항섬유화제 병합</td><td><span class="stage rec-w">조건부 권고</span> (6/7)</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /hp -->
+
+
+<!-- ══════════ TAB 7: 유육종증 ══════════ -->
+<div id="tab-sarc" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 정의 및 임상양상</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>원인불명의 육아종성 염증질환으로 전신을 침범할 수 있으며 <strong>호흡기 침범이 가장 흔하다</strong>. 기침·호흡곤란·흉통 또는 단순 영상이상만으로 발현 가능. 영상: <strong>양측성 폐문·종격동 림프절비대</strong>가 가장 흔하며, 폐실질 침범 시 미세결절·GGO·망상음영·섬유화.</div>
+      <div class="alert alert-sarc" style="margin-top:8px"><span>🔬</span><div>진단은 림프절/폐 생검(주로 EBUS-TBNA)으로 <strong>비건락성 비괴사성 육아종</strong> 확인. 국내에서는 특히 <strong>결핵과의 감별이 중요</strong>하다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 치료 권고</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-sarc"><span>✅</span><div>임상적으로 중요한 병증이 있는 신규진단 폐유육종증 환자에서 <strong>경구 스테로이드 치료를 권고</strong>(근거수준: 중등도, <span class="stage rec-s">강하게 권고</span>, 7/7).</div></div>
+      <div style="margin-top:8px">치료 결정의 핵심은 <strong>사망·장기부전 위험, 삶의 질 손실 여부</strong>다. 스테로이드가 주된 치료이며, 진행하거나 감량 불가/사용 불가 시 <strong>methotrexate, azathioprine</strong> 등 면역억제제 고려.</div>
+      <div class="alert alert-success" style="margin-top:8px"><span>📈</span><div>자연경과가 매우 다양 — <strong>약 2/3는 자연관해</strong>, 10-30%만 만성/진행형. 스테로이드 반응 좋아 대부분 안정화/호전되며 <strong>사망률 3-5%</strong>로 낮다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /sarc -->
+
+
+<!-- ══════════ TAB 8: 부록·약어 ══════════ -->
+<div id="tab-appendix" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📎</span> 부록 항목</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>항목</th><th>내용</th></tr>
+        <tr><td>기관지폐포세척검사(BAL)</td><td>ILD 감별진단(특히 HP, 감염, 출혈)에서 세포분획 분석 — 림프구 우세 소견이 HP 시사</td></tr>
+        <tr><td>6분보행검사</td><td>운동능력·운동유발 저산소증 평가, 예후 예측(GAP-6 등)에 활용</td></tr>
+        <tr><td>IPF 치료 약제</td><td>Pirfenidone, Nintedanib의 용법·용량·부작용 관리 상세</td></tr>
+        <tr><td>ILD에서 스테로이드 치료</td><td>질환별 용량·감량 스케줄, 장기사용 부작용 모니터링</td></tr>
+        <tr><td>CTD-ILD 면역억제제·생물학적제제</td><td>MMF, Tocilizumab, Rituximab, Azathioprine 등 세부 프로토콜</td></tr>
+        <tr><td>ILD 동반 폐고혈압 치료</td><td>ILD-PH 평가 및 치료 원칙</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> 근거수준·권고등급</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>근거수준</th><th>정의</th></tr>
+        <tr><td><span class="stage ev-h">높음</span></td><td>추가 연구가 효과 추정치를 바꿀 가능성 낮음</td></tr>
+        <tr><td><span class="stage ev-m">중등도</span></td><td>추가 연구가 추정치에 영향을 줄 수 있음</td></tr>
+        <tr><td><span class="stage ev-l">낮음</span></td><td>추정치에 대한 확신 제한적</td></tr>
+        <tr><td><span class="stage ev-e">전문가 합의</span></td><td>체계적 근거는 부족하나 임상적으로 권고가 필요한 경우 부여</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고등급</th><th>정의</th></tr>
+        <tr><td><span class="stage rec-s">강하게 권고</span></td><td>대부분/모든 환자에게 해당 서비스 제공이 최선</td></tr>
+        <tr><td><span class="stage rec-w">조건부 권고</span></td><td>모든 환자에게 최선이 아닐 수 있어 개별화 필요</td></tr>
+        <tr><td><span class="stage rec-hold">권고 보류</span></td><td>근거 불충분으로 찬반을 권고하지 않음</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>🗳️</span><div>각 권고안은 개발위원 <strong>투표결과</strong>(예: 강하게권고 7/8, 조건부권고 1/8)를 함께 명시해 합의 수준을 투명하게 제시한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 약어 모음</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>대한결핵 및 호흡기학회 ILD연구회. 「간질성폐질환(ILD) 임상진료지침」 2023년 1차 개정판. 2018년 최초 제정 이후 5년만의 전면개정.</div></div>
+    </div>
+  </div>
+
+</div><!-- /appendix -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"ILD", def:"Interstitial Lung Disease — 간질성폐질환" },
+  { term:"IIP", def:"Idiopathic Interstitial Pneumonia — 특발성간질성폐렴" },
+  { term:"IPF", def:"Idiopathic Pulmonary Fibrosis — 특발성폐섬유증" },
+  { term:"UIP", def:"Usual Interstitial Pneumonia — 통상간질성폐렴 (IPF의 특징적 영상/병리 양상)" },
+  { term:"PPF", def:"Progressive Pulmonary Fibrosis — 진행성 폐섬유증" },
+  { term:"CPFE", def:"Combined Pulmonary Fibrosis and Emphysema — 복합폐섬유폐기종" },
+  { term:"ILA", def:"Interstitial Lung Abnormality — 간질폐이상" },
+  { term:"CTD-ILD", def:"Connective Tissue Disease-associated ILD — 결체조직질환 연관 간질성폐질환" },
+  { term:"SSc", def:"Systemic Sclerosis — 전신경화증" },
+  { term:"RA", def:"Rheumatoid Arthritis — 류마티스관절염" },
+  { term:"iNSIP", def:"Idiopathic Nonspecific Interstitial Pneumonia — 특발성비특이간질성폐렴" },
+  { term:"COP", def:"Cryptogenic Organizing Pneumonia — 특발성기질화폐렴" },
+  { term:"RB-ILD", def:"Respiratory Bronchiolitis-associated ILD — 호흡세기관지염-간질성폐질환" },
+  { term:"DIP", def:"Desquamative Interstitial Pneumonia — 박리간질성폐렴" },
+  { term:"LIP", def:"Lymphoid Interstitial Pneumonia — 림프구간질성폐렴" },
+  { term:"AIP", def:"Acute Interstitial Pneumonia — 급성간질성폐렴" },
+  { term:"iPPFE", def:"idiopathic Pleuroparenchymal Fibroelastosis — 특발성흉막실질탄력섬유증" },
+  { term:"HP", def:"Hypersensitivity Pneumonitis — 과민성폐렴" },
+  { term:"BAL", def:"Bronchoalveolar Lavage — 기관지폐포세척검사" },
+  { term:"TBLB", def:"Transbronchial Lung Biopsy — 경기관지폐생검" },
+  { term:"TBLC", def:"Transbronchial Lung Cryobiopsy — 경기관지냉동폐생검" },
+  { term:"HRCT", def:"High-Resolution Computed Tomography — 고해상도 흉부CT" },
+  { term:"GGO", def:"Ground-Glass Opacity — 간유리음영" },
+  { term:"FVC", def:"Forced Vital Capacity — 노력성 폐활량" },
+  { term:"DLCO", def:"Diffusing Capacity for Carbon Monoxide — 폐확산능" },
+  { term:"MMF", def:"Mycophenolate Mofetil" },
+  { term:"6MWT", def:"6-Minute Walk Test — 6분보행검사" },
+  { term:"EBUS-TBNA", def:"Endobronchial Ultrasound-guided Transbronchial Needle Aspiration — 기관지내시경초음파 세침흡인술" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ABBR_DATA.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

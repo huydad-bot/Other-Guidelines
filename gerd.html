@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GERD 진료지침 (ACG 2022)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --diag:     #0e7490;  /* 진단 — 시안 */
+    --med:      #15803d;  /* 약물치료 — 그린 */
+    --extra:    #7c2d92;  /* 식도외증상 — 퍼플 */
+    --refr:     #b91c1c;  /* 난치성GERD — 레드 */
+    --surg:     #a16207;  /* 수술내시경 — 브라운골드 */
+    --ppi:      #be185d;  /* PPI 장기안전성 — 로즈 */
+    --tools:    #4b5563;  /* 약어/근거등급 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--refr);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--ppi);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--med);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:19px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 9px; font-size: calc(11.5px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(18px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-diag{background:#cffafe;border-left:3px solid var(--diag);color:#155e75;}
+  .alert-med{background:#dcfce7;border-left:3px solid var(--med);color:#15803d;}
+  .alert-extra{background:#f3e8ff;border-left:3px solid var(--extra);color:#7c2d92;}
+  .alert-refr{background:#fee2e2;border-left:3px solid var(--refr);color:#b91c1c;}
+  .alert-surg{background:#fef3c7;border-left:3px solid var(--surg);color:#a16207;}
+  .alert-ppi{background:#fce7f3;border-left:3px solid var(--ppi);color:#9d174d;}
+  .alert-tools{background:#f1f5f9;border-left:3px solid var(--tools);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .qh{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .qm{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .ql{background:#ffd8a8;color:#7d3b00;font-weight:700;text-align:center;}
+  .qvl{background:#ffd8d8;color:#82071e;font-weight:700;text-align:center;}
+  .rs{background:#1d4ed8;color:#fff;font-weight:700;text-align:center;}
+  .rc{background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .pico{display:inline-block;padding:2px 8px;border-radius:12px;font-size:calc(10px * var(--fscale,1));font-weight:700;margin-right:6px;color:#fff;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .stage-timeline{display:flex;align-items:stretch;gap:0;margin:10px 0;overflow-x:auto;}
+  .stage-box{flex:1;min-width:120px;padding:10px 10px 12px;border-right:2px solid var(--bg);text-align:center;cursor:pointer;}
+  .stage-box:last-child{border-right:none;}
+  .stage-box .st-num{font-size:calc(14px * var(--fscale,1));font-weight:800;margin-bottom:4px;}
+  .stage-box .st-lbl{font-size:calc(10px * var(--fscale,1));line-height:1.4;}
+  .gear-row{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;}
+  .gear-box{flex:1;min-width:140px;border-radius:6px;padding:10px 12px;font-size:calc(12px * var(--fscale,1));}
+  .gear-title{font-weight:700;font-size:calc(13px * var(--fscale,1));margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>G</span><span>E</span><span>RD</span></div>
+      <h1>GERD 진료지침 (ACG, 2022)</h1>
+    </div>
+    <div class="meta-line">
+      American College of Gastroenterology · Am J Gastroenterol. 2022;117(1):27-56 · GRADE 방식 채택
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 원문 요약·재구성본으로, 학회의 공식 승인을 받지 않음</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🔬 진단</div>
+    <div class="tab" onclick="showTab('med')">💊 약물치료</div>
+    <div class="tab" onclick="showTab('extra')">🗣️ 식도외증상</div>
+    <div class="tab" onclick="showTab('refr')">🔁 난치성GERD</div>
+    <div class="tab" onclick="showTab('surg')">🔪 수술·내시경</div>
+    <div class="tab" onclick="showTab('ppi')">🛡️ PPI 장기안전성</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·근거등급</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">2013→2022</div><div class="stat-lbl">9년 만의<br>전면개정</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">8주</div><div class="stat-lbl">경험적 PPI<br>진단적 치료기간</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--refr)">21%</div><div class="stat-lbl">PPI 불응성 흉통 중<br>실제 역류 관련 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--surg)">96% vs 19%</div><div class="stat-lbl">역류 조절: MSA<br>vs 1일2회 PPI (1년)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 개정 배경 및 특징</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>2013년 ACG 지침 이후 위식도역류질환(GERD)에 대한 이해, 진단검사, 수술·내시경적 치료가 발전했고, 양성자펌프억제제(PPI) 장기사용의 안전성에 대한 우려도 커졌다. 이번 개정판은 <strong>GRADE 방식</strong>으로 근거를 평가했으며, 특히 <strong>식도외증상, 난치성 GERD, 수술·내시경치료</strong> 부분이 2013년판과 크게 달라졌다.</div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🎯</span><div>GERD는 <strong>위산이 식도로 역류하여 증상 및/또는 합병증을 유발하는 상태</strong>로 정의한다. 내시경상 특징적 점막손상 소견 및/또는 역류검사상 비정상적 식도산노출로 객관적으로 정의된다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>구성</th><th>주요 내용</th></tr>
+        <tr><td>GERD의 진단</td><td>증상, 경험적 PPI 치료, 내시경, 역류검사(pH/임피던스), 식도내압검사</td></tr>
+        <tr><td>GERD의 약물치료</td><td>생활습관교정, PPI·H2RA·기타 약제, 유지요법·용량 최적화</td></tr>
+        <tr><td>식도외 GERD 증상</td><td>만성기침·천식·후두인두역류(LPR) 등 — 진단의 어려움과 근거 한계</td></tr>
+        <tr><td>난치성 GERD</td><td>정의, 평가전략, PPI 불응성 흉통 중 실제 역류질환 비율</td></tr>
+        <tr><td>수술·내시경적 치료</td><td>기와봉합술, 자기괄약근보강술(MSA), 위우회술(RYGB), Stretta, TIF</td></tr>
+        <tr><td>PPI 장기이슈</td><td>환자상담 문구, 관찰연구의 편향, Bradford-Hill 기준, 대규모 RCT(Moayyedi 등)</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>본 지침은 <strong>기능성 흉통·기능성 소화불량</strong> 등 기능성 상부위장관질환의 관리는 다루지 않으며, 식도생리검사의 세부사항은 별도 지침을 참고하도록 안내한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗺️</span> GERD 진단 전체 흐름 (Figure 1)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="stage-timeline">
+        <div class="stage-box" style="background:#cffafe"><div class="st-num" style="color:var(--diag)">①</div><div class="st-lbl">경고증상 없는<br>전형적 흉부작열감·역류</div></div>
+        <div class="stage-box" style="background:#dcfce7"><div class="st-num" style="color:var(--med)">②</div><div class="st-lbl">8주 1일1회<br>식전 PPI 경험적 치료</div></div>
+        <div class="stage-box" style="background:#dbeafe"><div class="st-num" style="color:var(--overview)">③-A</div><div class="st-lbl">완전 관해<br>→ PPI 중단 시도</div></div>
+        <div class="stage-box" style="background:#fee2e2"><div class="st-num" style="color:var(--refr)">③-B</div><div class="st-lbl">불완전 관해<br>→ PPI 중단 2-4주 후 EGD</div></div>
+        <div class="stage-box" style="background:#fef3c7"><div class="st-num" style="color:var(--surg)">④</div><div class="st-lbl">LA등급 B/C/D 또는<br>Barrett&gt;3cm → GERD 확진</div></div>
+      </div>
+      <div style="margin-top:8px">EGD 정상 또는 LA등급 A인 경우, 치료 중단 후 증상이 재발하면 <strong>PPI 중단 상태에서 역류검사</strong>를 시행하여 비정상이면 GERD로 확진하고, 정상이면 다른 원인을 고려한다.</div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 진단 ══════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="pico" style="background:var(--diag)">진단</span> 증상과 병태생리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>전형적 증상은 <strong>흉부작열감(heartburn)과 역류(regurgitation)</strong>이며, 흉통이 심장질환 배제 후 유일한 증상으로 나타날 수 있다. 식도외 증상(쉰목소리, 잦은 목청 가다듬기, 만성기침 등)은 GERD 외에도 다양한 원인과 중첩되어 특이도가 낮다.</div>
+      <div class="alert alert-diag" style="margin-top:8px"><span>📊</span><div>흉부작열감·역류의 미란성식도염(EE)에 대한 민감도는 <strong>30-76%</strong>, 특이도는 <strong>62-96%</strong>로 보고된다. 경험적 PPI 치료 반응만으로 진단할 경우 민감도 78%·특이도 54%에 불과하다(내시경·pH검사를 기준으로 할 때).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 진단 권고사항</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>근거·권고수준</th></tr>
+        <tr><td>1</td><td>경고증상 없는 전형적 흉부작열감·역류 환자는 <strong>8주간 1일1회 식전 경험적 PPI 치료</strong>를 시행한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>2</td><td>8주 경험적 PPI에 반응한 환자는 <strong>PPI 중단을 시도</strong>한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>3</td><td>8주 경험적 치료에 반응이 불충분하거나 중단 후 재발 시, 가능하면 <strong>PPI 중단 2-4주 후 진단내시경</strong>을 시행한다</td><td><span class="stage rs">강</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>4</td><td>흉부작열감 없이 흉통만 있고 심장질환 배제가 끝난 경우, 객관적 검사(내시경 및/또는 역류검사)를 권고한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>5</td><td>바륨조영술을 <strong>단독 진단검사로 사용하지 않는다</strong></td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>6</td><td>연하곤란·경고증상(체중감소·출혈) 또는 Barrett식도 다중위험인자 보유 환자는 <strong>내시경을 첫 검사</strong>로 시행한다</td><td><span class="stage rs">강</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>7</td><td>GERD가 의심되나 불명확하고 내시경에서 객관적 소견이 없으면, <strong>치료 중단 상태에서 역류검사</strong>로 진단을 확립한다</td><td><span class="stage rs">강</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>8</td><td>LA등급 C/D 식도염 또는 장분절 Barrett식도가 이미 확인된 환자에서 <strong>단순 확진 목적의 치료중단 역류검사는 권고하지 않는다</strong></td><td><span class="stage rs">강</span> <span class="stage ql">낮음</span></td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>💡</span><div><strong>핵심개념</strong>: 고해상도식도내압검사(HRM)는 <strong>단독 GERD 진단검사로 권고하지 않는다.</strong> HRM은 무연동증(achalasia) 배제, 수술 전 평가 등에 활용된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔬</span> 검사법별 요점</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>검사</th><th>요점</th></tr>
+        <tr><td>내시경(LA분류)</td><td>LA등급 A는 GERD 확진 불충분(정상과 구별 어려움), <strong>LA등급 B는 전형적 증상+PPI반응 동반 시 진단적, LA등급 C는 거의 항상 진단적</strong>. Barrett &gt;3cm+장상피화생은 pH검사 없이 GERD 진단 성립</td></tr>
+        <tr><td>NERD 진단</td><td>비미란성역류질환(NERD) 진단은 <strong>PPI 중단 상태의 내시경</strong>에서만 확정 가능 — PPI 복용 중에는 EE가 가려질 수 있음. 2-4주 중단은 호산구식도염(EoE) 감별에도 도움</td></tr>
+        <tr><td>역류검사(pH/임피던스)</td><td>산노출시간·DeMeester 점수가 가장 신뢰도 높은 지표. 증상지수(SI≥50%)·증상연관확률(SAP&gt;95%)로 증상-역류 연관성 평가. 진단 불명확 시 <strong>치료중단 7일 후</strong> 검사 권고</td></tr>
+        <tr><td>HRM(식도내압검사)</td><td>단독 GERD 진단검사 아님. 무연동증 배제·수술 전 평가·불응성 GERD 평가에 사용. 무수축성(absent contractility)은 대개 항역류수술의 금기</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════ TAB 3: 약물치료 ══════════ -->
+<div id="tab-med" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥗</span> 생활습관 교정</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>교정 항목</th><th>권고 여부</th></tr>
+        <tr><td><strong>체중감량</strong>(과체중·비만)</td><td>권고 — 용량-반응관계로 증상 개선 확인</td></tr>
+        <tr><td>취침 2-3시간 이내 식사 회피</td><td>권고</td></tr>
+        <tr><td>금연</td><td>권고 — 1년 금연 성공 시 증상 44% 개선(계속 흡연군 18%)</td></tr>
+        <tr><td>침대머리 높이기, 우측위 피하고 좌측위 수면</td><td>권고 — 야간 증상·산노출 개선의 RCT 근거 있음</td></tr>
+        <tr><td>유발음식(커피·초콜릿·탄산음료·매운음식·산성음식·고지방식) 회피</td><td>조건부 권고 — 근거는 제한적·가변적</td></tr>
+      </table>
+      <div class="alert alert-med" style="margin-top:8px"><span>💧</span><div>Nurses Health Study 분석에서 커피·차·탄산음료를 <strong>물로 대체</strong>하면 역류증상이 감소했다. 우유·주스는 산성이지만 증상 증가와 연관되지 않았다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> PPI 복용법 원칙</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-med"><span>⏰</span><div>PPI는 <strong>식사 30-60분 전</strong> 복용해야 최대 효과를 낸다(1일1회는 아침식전, 1일2회는 아침·저녁 식전). <strong>취침시 복용은 권고하지 않는다</strong> — 식전 복용보다 산조절 효과가 낮다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>PPI</th><th>오메프라졸 등가(OE)</th></tr>
+        <tr><td>Pantoprazole</td><td>0.23</td></tr>
+        <tr><td>Lansoprazole</td><td>0.90</td></tr>
+        <tr><td>Omeprazole</td><td>1.00 (기준)</td></tr>
+        <tr><td>Esomeprazole</td><td>1.60</td></tr>
+        <tr><td>Rabeprazole</td><td>1.82</td></tr>
+      </table>
+      <div style="margin-top:8px">전체 GERD 증상완화·치유율은 PPI 종류 간 차이가 크지 않으나, 24시간 위내 pH 조절력에는 개인차가 있어 <strong>반응 불충분 시 다른 PPI로 전환</strong>을 고려할 근거가 된다. CYP2C19 대사 의존도가 낮은 <strong>rabeprazole</strong>로의 전환도 고려 가능하다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 치료 권고사항</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>근거·권고수준</th></tr>
+        <tr><td>1</td><td>과체중·비만 GERD 환자는 <strong>체중감량</strong>을 권고한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>2</td><td>취침 2-3시간 이내 식사를 피하도록 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>3</td><td>흡연·담배제품 회피를 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>4</td><td>유발음식 회피를 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>5</td><td>야간 증상에 침대머리 거상을 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>6</td><td>미란성식도염 치유에 <strong>H2RA보다 PPI</strong>를 권고한다</td><td><span class="stage rs">강</span> <span class="stage qh">높음</span></td></tr>
+        <tr><td>7</td><td>미란성식도염 치유 유지에 H2RA보다 PPI를 권고한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>8</td><td>PPI는 <strong>식전 30-60분</strong> 투여를 권고(취침시 투여 대신)한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>9</td><td>미란성식도염·Barrett식도가 없고 PPI로 증상이 소실된 환자는 <strong>PPI 중단 또는 필요시요법(on-demand) 전환</strong>을 시도한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>10</td><td>유지치료가 필요한 환자는 <strong>증상조절·치유유지에 필요한 최소용량</strong>으로 투여한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>11</td><td>PPI 무반응군에서 <strong>다른 약물의 일률적 추가는 권고하지 않는다</strong></td><td><span class="stage rc">조건부</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>12</td><td>LA등급 C/D 식도염 환자는 <strong>평생 PPI 유지치료 또는 항역류수술</strong>을 권고한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>13</td><td>객관적 GERD 근거 없이는 <strong>baclofen을 권고하지 않는다</strong></td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>14</td><td>위마비의 객관적 증거가 없는 한 어떤 <strong>촉진제(prokinetic)도 권고하지 않는다</strong></td><td><span class="stage rs">강</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>15</td><td>임신을 제외하고 <strong>수크랄페이트는 권고하지 않는다</strong></td><td><span class="stage rs">강</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>16</td><td>NERD 환자의 흉부작열감 조절에 <strong>필요시(on-demand)/간헐적 PPI</strong>를 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>💡</span><div><strong>핵심개념</strong>: 한 PPI에 무반응인 경우 다른 PPI로 1회 전환은 개념적 근거가 있으나, <strong>2회 이상 반복 전환은 근거가 부족</strong>하다. 최소유효용량 원칙은 개별화해야 하며, 급격한 PPI 중단 후 반동성 산과다분비가 건강대조군에서 보고되었으나 실제 증상 악화에 대한 강한 근거는 부족하다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔄</span> 필요시(on-demand) 요법과 임신 중 치료</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>NERD 환자 대상 RCT에서 <strong>필요시 오메프라졸 20mg</strong> 투여군의 83%가 6개월째 관해를 유지했다(위약군 56%). NERD에서는 필요시/간헐적 PPI가 지속 PPI와 대등한 증상완화일수를 보였으나, 미란성식도염에서는 지속치료가 더 우수했다.</div>
+      <div class="alert alert-med" style="margin-top:8px"><span>🤰</span><div><strong>임신 중 GERD</strong>: 생활습관교정을 우선하고, 실패 시 제산제·알기네이트·수크랄페이트가 1차 약제이다. 모든 H2RA와 PPI(오메프라졸 제외)는 FDA Category B이다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /med -->
+
+
+<!-- ══════════ TAB 4: 식도외증상 ══════════ -->
+<div id="tab-extra" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗣️</span> 개관</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>만성기침·목청가다듬기·쉰목소리·구인두이물감(globus)·천식·후두염 등이 GERD와 연관된다고 알려져 있으나, 증상이 <strong>비특이적</strong>이고 다른 질환과 중첩되어 인과관계 확립이 어렵다. 후두경 소견은 무증상 지원자의 70-93%에서도 관찰되어 <strong>단독으로 LPR을 진단할 수 없다.</strong></div>
+      <div class="alert alert-extra" style="margin-top:8px"><span>📊</span><div>만성기침의 21-41%가 GERD와 관련된다는 보고가 있으나, 미국흉부내과학회(ACCP) 지침은 <strong>다른 원인을 먼저 배제</strong>할 것을 권고한다. 천식 환자의 59%가 GERD 증상을, 51%가 비정상 pH검사를 보였으나 다수의 RCT에서 PPI 치료는 천식에 효과가 없었다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 권고사항</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>근거·권고수준</th></tr>
+        <tr><td>1</td><td>식도외증상 의심 환자는 <strong>GERD로 단정하기 전 비GERD 원인을 먼저 평가</strong>한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>2</td><td>전형적 증상 없이 식도외증상만 있는 환자는 <strong>PPI 치료 전 역류검사</strong>를 시행한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>3</td><td>식도외증상과 전형적 GERD증상이 동반된 경우, 추가검사 전 <strong>8-12주간 1일2회 PPI 시험치료</strong>를 고려한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>4</td><td>상부내시경을 GERD관련 천식·만성기침·LPR의 <strong>진단 방법으로 사용하지 않는다</strong></td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>5</td><td>후두경 소견만으로 LPR을 <strong>진단하지 않으며</strong> 추가검사를 고려한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>6</td><td>식도외역류질환의 수술·내시경적 항역류시술은 <strong>객관적 역류 증거가 있는 환자에서만</strong> 권고한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>💡</span><div><strong>핵심개념</strong>: 타액 펩신검사는 정상대조군과 후두증상 환자를 구별하지 못해 <strong>권고하지 않는다</strong>. 1일2회 PPI에 반응 없는 식도외증상은 <strong>PPI 중단 2-4주 후 상부내시경</strong>을 권고하며, 정상이면 역류검사를 고려한다. 미란성식도염 확인이 곧 식도외증상의 원인이 GERD임을 의미하지는 않는다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔪</span> 수술적 치료 성적</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>식도외증상에 대한 항역류수술 성적은 전형적 증상보다 열등하며, 개선율 보고범위가 15-95%로 매우 넓다. 한 연구에서는 PPI로 산노출은 정상화되었으나 후두증상이 남은 환자 중, 수술군의 <strong>10%</strong>만 1년째 증상이 개선되어(의학적 치료 유지군 7%), 비GERD·비수술적 치료를 받은 환자의 <strong>2/3가 오히려 개선</strong>되었다 — 후두증상에서 비GERD 원인 규명의 중요성을 보여준다.</div>
+    </div>
+  </div>
+
+</div><!-- /extra -->
+
+
+<!-- ══════════ TAB 5: 난치성GERD ══════════ -->
+<div id="tab-refr" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔁</span> 정의와 두 환자군</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>가장 널리 쓰이는 정의는 <strong>1일2회 PPI 8주 치료에도 지속되는 흉부작열감 및/또는 역류</strong>이다(일부는 12주 기준 사용). PPI 치료 환자의 최대 40%가 지속 증상을 보고한다.</div>
+      <div class="alert alert-refr" style="margin-top:8px"><span>⚖️</span><div>두 군으로 구분: <strong>① 경험적으로만 치료받아 GERD 객관적 진단이 없는 군</strong>, <strong>② 미란성식도염·Barrett식도·비정상 pH검사 등 객관적 GERD 근거가 있으나 PPI에 불완전 반응인 군</strong>. 두 군의 접근은 분리해서 논의해야 한다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>추정 기전</th><th>내용</th></tr>
+        <tr><td>지속적 비정상 산역류</td><td>PPI로도 산역류가 조절되지 않아 증상 지속</td></tr>
+        <tr><td>역류과민성(reflux hypersensitivity)</td><td>산노출은 정상화되었으나 생리적 역류(산성/비산성)에도 증상 유발</td></tr>
+        <tr><td>GERD 외 식도질환</td><td>호산구식도염(EoE), 무연동증(achalasia) 등</td></tr>
+        <tr><td>비식도질환</td><td>위마비, 반추증후군(rumination), 심장질환 등</td></tr>
+        <tr><td>기능성 증상</td><td>조직학적·운동학적·구조적 이상이 확인되지 않는 경우</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 권고사항</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>근거·권고수준</th></tr>
+        <tr><td>1</td><td>난치성 GERD 관리의 첫 단계로 <strong>PPI 치료 최적화</strong>(복약순응도·복용시점 확인)를 권고한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>2</td><td>이전 pH검사·중증식도염(LA C/D)·장분절 Barrett식도로 GERD 진단이 확립되지 않았다면, <strong>PPI 중단 상태의 식도 pH모니터링</strong>을 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>3</td><td>GERD 진단이 이미 확립된 환자가 1일2회 PPI에도 반응이 불충분하면 <strong>PPI 복용 중 임피던스-pH모니터링</strong>을 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>4</td><td>역류가 주증상(regurgitation)이며 객관적 검사로 이상역류가 확인된 PPI 불응 환자는 <strong>항역류수술 또는 TIF</strong> 고려를 제안한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>💡</span><div><strong>핵심개념</strong>: 치료중단 상태 역류검사가 음성이면, 다른 PPI 유지 적응증이 없는 한 <strong>PPI를 중단</strong>해야 한다. 정상 내시경·pH검사 소견의 난치성 GERD에서는 식도내압검사를 고려하고, 그래도 원인이 불명확하면 <strong>고해상도내압검사</strong>를 권고한다. 식도생검은 정상 점막이라도 시행해야 한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🧪</span> 핵심 근거 — Spechler 등 RCT (NEJM 2019)</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>PPI에 불응성인 흉부작열감 환자 366명을 대상으로 정밀평가한 결과, <strong>실제로 PPI 불응성이며 역류와 관련된 경우는 78명(21%)</strong>에 불과했다. 나머지는 복약법 교정만으로 호전(12%), 평가 미완료(19%), 기타 배제(15%), 비GERD 식도질환(EoE·무연동증, 6%), <strong>기능성 흉부작열감(27%)</strong>으로 분류되었다.</div>
+      <div class="alert alert-refr" style="margin-top:8px"><span>🎯</span><div>진성 PPI 불응성 역류질환 78명에서 <strong>복강경 니센 기와봉합술(66.7%)이 활성 약물치료(28.0%)·위약(11.5%)보다 유의하게 우수</strong>했다 — 진성 역류질환을 정확히 선별하는 것이 치료성공의 핵심임을 시사한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /refr -->
+
+
+<!-- ══════════ TAB 6: 수술·내시경 ══════════ -->
+<div id="tab-surg" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 권고사항</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>근거·권고수준</th></tr>
+        <tr><td>1</td><td>객관적 GERD 근거가 있는 환자, 특히 중증식도염(LA C/D)·대형열공허니아·지속적 증상 환자에게 <strong>숙련된 외과의의 항역류수술</strong>을 권고한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>2</td><td>약물치료에 실패한 역류(regurgitation) 환자에서 <strong>자기괄약근보강술(MSA)</strong>을 복강경 기와봉합술의 대안으로 고려한다</td><td><span class="stage rs">강</span> <span class="stage qm">중등도</span></td></tr>
+        <tr><td>3</td><td>비만하며 위험·생활습관변화를 감수할 의향이 있는 환자에서 <strong>루와이 위우회술(RYGB)</strong>을 GERD 치료 옵션으로 고려한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>4</td><td>고주파에너지시술(Stretta)의 효과 근거는 비일관적이어서 <strong>대안요법으로 권고할 수 없다</strong></td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+        <tr><td>5</td><td>항역류수술을 원치 않고 중증식도염(LA C/D)·2cm 초과 열공허니아가 없는, 역류·흉부작열감이 문제되는 환자에서 <strong>경구무절개기와봉합술(TIF)</strong>을 고려한다</td><td><span class="stage rc">조건부</span> <span class="stage ql">낮음</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>⚖️</span> 시술별 비교</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="gear-row">
+        <div class="gear-box" style="background:#dcfce7;border:1.5px solid var(--med);color:#14532d"><div class="gear-title">기와봉합술(Fundoplication)</div>표준 시술. 스웨덴 코호트(n=2,655)에서 5.1년 평균추적 시 <strong>17.7% 역류재발</strong>, 30일 내 합병증 4.1%, 사망 0.1%. 부분기와봉합술(Toupet 등)은 연하곤란·가스팽만은 적으나 재발률은 다소 높을 수 있음</div>
+        <div class="gear-box" style="background:#fee2e2;border:1.5px solid var(--refr);color:#7f1d1d"><div class="gear-title">자기괄약근보강술(MSA/LINX)</div>기와봉합술과 대등한 증상조절·합병증률, 수술시간·입원기간은 더 짧음. 미란 위험 4년째 0.3%. 1.5T 초과 MRI 금기. 최근 RCT에서 역류조절 <strong>MSA 96% vs 1일2회PPI 19%</strong>(1년)</div>
+        <div class="gear-box" style="background:#fef3c7;border:1.5px solid var(--surg);color:#78350f"><div class="gear-title">루와이 위우회술(RYGB)</div>비만 동반 GERD에서 체중감량 효과 겸비. 그러나 스웨덴 코호트에서 2년 내 <strong>48.8% 역류재발</strong> — 항역류수술이라기보다 부가효과가 있는 체중감량수술로 보는 시각이 우세</div>
+        <div class="gear-box" style="background:#f3e8ff;border:1.5px solid var(--extra);color:#581c87"><div class="gear-title">TIF / Stretta</div>TIF는 역류 개선에는 효과 있으나 장기적으로 다수가 PPI 재개. 심각한 이상반응(천공·출혈) 2.4%. Stretta는 메타분석 간 결론이 상충되어 근거 불충분</div>
+      </div>
+      <div class="alert alert-tools" style="margin-top:8px"><span>💡</span><div><strong>핵심개념</strong>: 수술·내시경치료 전에는 <strong>고해상도내압검사로 무연동증·무수축성을 배제</strong>해야 하며, 이상연동성 환자는 다중연속삼킴 등 유발검사로 수축예비능(contractile reserve)을 확인한다. GERD가 실제 원인인지, 시술이 목표증상을 해결할 수 있는지 신중히 평가한 후 시행해야 한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /surg -->
+
+
+<!-- ══════════ TAB 7: PPI 장기안전성 ══════════ -->
+<div id="tab-ppi" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🗣️</span> 환자 상담 문구 (권고 1)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-ppi"><span>💬</span><div>PPI는 GERD의 가장 효과적인 약물치료이다. 일부 연구는 장기사용과 장관감염·폐렴·위암·골다공증성골절·만성신질환·비타민/미네랄 결핍·심근경색·뇌졸중·치매·조기사망 등 여러 이상반응 사이의 <strong>연관성</strong>을 보고했으나, 이런 연구들은 방법론적 한계가 있어 결정적이지 않으며 <strong>인과관계를 입증하지 못한다</strong>. 고품질 연구들에서는 장관감염을 제외하고 PPI가 이러한 질환의 위험을 유의하게 높이지 않았다. 다만 이러한 이상반응의 위험이 소폭 존재할 가능성을 완전히 배제할 수는 없다. GERD 치료에서 PPI의 확립된 이득은 이론적 위험을 상회한다는 것이 소화기내과 전문가들의 일반적 견해이다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 권고사항 2-7</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th></tr>
+        <tr><td>2</td><td>두통·복통·오심·구토·설사·변비·고창 등 경미한 부작용이 있으면 다른 PPI로 전환을 고려할 수 있다</td></tr>
+        <tr><td>3</td><td>골질환 위험인자가 없는 환자는 칼슘·비타민D 섭취 증량이나 정기 골밀도검사를 <strong>권고하지 않는다</strong></td></tr>
+        <tr><td>4</td><td>비타민B12 결핍 위험인자가 없는 환자는 B12 섭취 증량이나 정기 혈중농도검사를 <strong>권고하지 않는다</strong></td></tr>
+        <tr><td>5</td><td>신질환 위험인자가 없는 환자는 정기 크레아티닌 모니터링을 <strong>권고하지 않는다</strong></td></tr>
+        <tr><td>6</td><td>클로피도그렐 복용 중인 LA등급 C/D 식도염 또는 조절 불충분 GERD 환자는 <strong>PPI의 확립된 이득이 심혈관 위험(근거 미약)보다 크다</strong></td></tr>
+        <tr><td>7</td><td>신부전 환자에서도 신기능 밀착 모니터링 또는 신장내과 협진 하에 PPI 사용이 가능하다</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧪</span> 근거 해석의 원칙</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>관찰연구에서의 연관성은 <strong>적응증에 의한 교란(confounding by indication)</strong>과 <strong>원인병리적 편향(protopathic bias)</strong>에 취약하다 — 예: 식도선암과의 강한 연관은 실제로는 PPI 처방사유였던 GERD 자체가 위험요인이었을 가능성이, 지역사회획득폐렴과의 연관은 오인된 조기폐렴 증상 때문에 PPI가 처방되었을 가능성이 있다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>📐</span><div>Bradford-Hill 9개 기준(연관강도·일관성·특이성·시간성·용량반응·개연성·정합성·실험적근거·유사성) 검토 결과, <strong>어떤 PPI 이상반응도 9개 기준을 모두 충족하지 못했고, 대부분 4개 미만만 충족</strong>했다(2017). 관찰연구에서 코호트 상대위험도(RR) 2-3 미만, 환자대조군 교차비(OR) 3-4 미만인 연관성은 신뢰하기 어렵다는 것이 통계학적 관례이다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🏆</span> Moayyedi 등 대규모 RCT (Gastroenterology 2019)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>리바록사반 및/또는 아스피린을 복용 중인 65세 이상 심혈관·말초동맥질환 환자 17,598명을 판토프라졸 40mg(n=8,791) 또는 위약(n=8,807)에 무작위배정하여 3년간 추적했다.</div>
+      <div class="alert alert-ppi" style="margin-top:8px"><span>✅</span><div>폐렴·C.difficile감염·기타장관감염·골절·위축성위염·만성신질환·치매·심혈관질환·암·전체사망 중 <strong>장관감염(1.4% vs 1.0%, OR 1.33)을 제외하고는 PPI군과 위약군 간 유의한 차이가 없었다.</strong> 최대 추적기간이 5년으로 제한적이라 위암 등 장기발생 이상반응 평가에는 한계가 있다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📊</span> 주요 이상반응별 요약(관찰연구 메타분석 기반)</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>이상반응</th><th>Moayyedi RCT 결과</th><th>주요 제안 기전</th></tr>
+        <tr><td>심혈관 사건</td><td>HR 1.04 (0.93-1.15), 유의성 없음</td><td>ADMA 대사 저해 → NO 합성 억제</td></tr>
+        <tr><td>C. difficile 감염</td><td>OR 2.26 (0.70-7.34), 유의성 없음</td><td>위산저하로 장내 생존·증식 증가</td></tr>
+        <tr><td>폐렴</td><td>OR 1.02 (0.87-1.19), 유의성 없음</td><td>위산저하로 흡인성 병원체 생존</td></tr>
+        <tr><td>치매</td><td>OR 1.20 (0.81-1.78), 유의성 없음</td><td>미세아교세포 리소좀 산성화 저해 가설</td></tr>
+        <tr><td>골절</td><td>OR 0.96 (0.79-1.17), 유의성 없음</td><td>칼슘흡수 저하 가설</td></tr>
+        <tr><td>전체사망</td><td>HR 1.03 (0.92-1.15), 유의성 없음</td><td>-</td></tr>
+        <tr><td>저마그네슘혈증</td><td>메타분석 간 결론 상충 — AGA는 정기 모니터링 권고 안 함</td><td>장세포 Mg 수송체 pH의존성 가설</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /ppi -->
+
+
+<!-- ══════════ TAB 8: 약어·근거등급 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> GRADE 근거수준·권고강도</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>근거의 질</th><th>정의</th></tr>
+        <tr><td><span class="stage qh">높음</span></td><td>효과추정치에 대한 확신이 높음</td></tr>
+        <tr><td><span class="stage qm">중등도</span></td><td>효과추정치에 대한 확신이 중등도</td></tr>
+        <tr><td><span class="stage ql">낮음</span></td><td>효과추정치에 대한 확신이 낮음</td></tr>
+        <tr><td><span class="stage qvl">매우낮음</span></td><td>효과추정치에 대한 확신이 매우 낮음</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고 강도</th><th>정의</th></tr>
+        <tr><td><span class="stage rs">강한권고(recommendation)</span></td><td>편익-위해, 비용, 실행가능성을 고려할 때 명확한 방향성</td></tr>
+        <tr><td><span class="stage rc">조건부권고(suggestion)</span></td><td>근거 질·환자상황에 따라 접근을 달리할 수 있음</td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>ℹ️</span><div>근거 질을 그레이딩하기 어려운 <strong>핵심개념(Key Concept)</strong>도 별도로 제공되며, 임상적으로 중요하나 등급화된 권고문 형식을 취하지 않는다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Katz PO, Dunbar KB, Schnoll-Sussman FH, Greer KB, Yadlapati R, Spechler SJ. ACG Clinical Guideline: Guidelines for the Diagnosis and Management of Gastroesophageal Reflux Disease. Am J Gastroenterol. 2022;117(1):27-56. doi:10.14309/ajg.0000000000001538. PMC에서 저자수고본 확인 가능.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"GERD", def:"Gastroesophageal Reflux Disease — 위식도역류질환" },
+  { term:"PPI", def:"Proton Pump Inhibitor — 양성자펌프억제제" },
+  { term:"H2RA", def:"Histamine-2-Receptor Antagonist — 히스타민2수용체길항제" },
+  { term:"EE", def:"Erosive Esophagitis — 미란성식도염" },
+  { term:"NERD", def:"Non-Erosive Reflux Disease — 비미란성역류질환" },
+  { term:"LA classification", def:"Los Angeles Classification — 미란성식도염 내시경 등급분류(A-D)" },
+  { term:"EoE", def:"Eosinophilic Esophagitis — 호산구식도염" },
+  { term:"HRM", def:"High-Resolution Manometry — 고해상도식도내압검사" },
+  { term:"SI / SAP", def:"Symptom Index / Symptom Association Probability — 증상지수 / 증상연관확률" },
+  { term:"DeMeester score", def:"24시간 pH검사 기반 복합 산노출 점수" },
+  { term:"LPR", def:"Laryngopharyngeal Reflux — 후두인두역류" },
+  { term:"RFS", def:"Reflux Finding Score — 후두경 역류소견점수" },
+  { term:"MSA", def:"Magnetic Sphincter Augmentation — 자기괄약근보강술(LINX)" },
+  { term:"TIF", def:"Transoral Incisionless Fundoplication — 경구무절개기와봉합술" },
+  { term:"RYGB", def:"Roux-en-Y Gastric Bypass — 루와이 위우회술" },
+  { term:"LARS", def:"Laparoscopic Antireflux Surgery — 복강경 항역류수술" },
+  { term:"OE", def:"Omeprazole Equivalent — 오메프라졸 등가(PPI 효능 표준화 지표)" },
+  { term:"BMI", def:"Body Mass Index — 체질량지수" },
+  { term:"GRADE", def:"Grading of Recommendations, Assessment, Development and Evaluation — 근거·권고등급 평가체계" },
+  { term:"RCT", def:"Randomized Controlled Trial — 무작위대조시험" },
+  { term:"ADMA", def:"Asymmetric Dimethylarginine — PPI-심혈관 가설기전 관련 대사물질" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+const ALL_ABBR = ABBR_DATA;
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

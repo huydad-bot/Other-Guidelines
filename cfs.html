@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NICE NG206 근육통성뇌척수염/만성피로증후군(ME/CFS) 진료지침</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --overview: #1d4ed8;   /* 개요 — 인디고블루 */
+    --diag:     #0f766e;   /* 진단 — 틸 */
+    --adult:    #b45309;   /* 관리원칙 — 앰버 */
+    --child:    #0369a1;   /* 증상관리 — 스카이블루 */
+    --tests:    #7c3aed;   /* 지원·안전 — 바이올렛 */
+    --specific: #be185d;   /* 중증관리 — 로즈 */
+    --unexp:    #15803d;   /* 그린(보조) */
+    --accent: #1d4ed8;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-mdd { display: flex; align-items: center; gap: 0; font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px; }
+  .logo-mdd span:nth-child(1) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-mdd span:nth-child(2) { background: var(--adult); color:#fff; padding:3px 6px; }
+  .logo-mdd span:nth-child(3) { background: var(--unexp); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 18px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn { display: flex; align-items: center; gap: 3px; flex-shrink: 0; margin: 4px 4px 4px 6px; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700; cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s; }
+  .font-zoom-btn:hover { background: var(--border); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 10px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--overview); border-bottom-color: var(--overview); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(18px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-overview{ background: #dbeafe; border-left: 3px solid var(--overview); color: #1d4ed8; }
+  .alert-diag    { background: #d9f2ef; border-left: 3px solid var(--diag);   color: #0f766e; }
+  .alert-adult   { background: #fef0d9; border-left: 3px solid var(--adult);  color: #92400e; }
+  .alert-child   { background: #e0f2fe; border-left: 3px solid var(--child);  color: #0369a1; }
+  .alert-tests   { background: #ede9fe; border-left: 3px solid var(--tests);  color: #5b21b6; }
+  .alert-specific{ background: #fce7f3; border-left: 3px solid var(--specific); color: #9d174d; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+
+  .lv1 { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+  .lv2 { background: #dbeafe; color: #1d4ed8; font-weight: 700; text-align: center; }
+  .lv3 { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .lv4 { background: #ffe4d6; color: #92400e; font-weight: 700; text-align: center; }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-overview { background: #dbeafe; color: var(--overview); border: 1px solid var(--overview); }
+  .t-diag     { background: #d9f2ef; color: var(--diag);     border: 1px solid var(--diag); }
+  .t-adult    { background: #fef0d9; color: var(--adult);    border: 1px solid var(--adult); }
+  .t-child    { background: #e0f2fe; color: var(--child);    border: 1px solid var(--child); }
+  .t-tests    { background: #ede9fe; color: var(--tests);    border: 1px solid var(--tests); }
+  .t-specific { background: #fce7f3; color: var(--specific); border: 1px solid var(--specific); }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box { flex: 1; min-width: 130px; padding: 10px 10px 12px; border-right: 2px solid var(--bg); text-align: center; position: relative; }
+  .stage-box:last-child { border-right: none; }
+  .stage-box .st-num { font-size: calc(14px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-overview { background: #e6eefb; }
+  .st-diag     { background: #d9f2ef; }
+  .st-adult    { background: #fef0d9; }
+  .st-child    { background: #e0f2fe; }
+  .st-tests    { background: #f3e8ff; }
+  .st-specific { background: #fce7f3; }
+
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-adult   { background: #fef0d9; border: 1.5px solid var(--adult);  color: #92400e; }
+  .gear-child   { background: #e0f2fe; border: 1.5px solid var(--child);  color: #0369a1; }
+  .gear-tests   { background: #f3e8ff; border: 1.5px solid var(--tests);  color: #5b21b6; }
+  .gear-diag    { background: #d9f2ef; border: 1.5px solid var(--diag);   color: #0f766e; }
+  .gear-specific{ background: #fce7f3; border: 1.5px solid var(--specific); color: #9d174d; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  .algo-flow { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .algo-step { border-radius: 6px; padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); border-left: 4px solid var(--border); background: var(--surface2); }
+
+  /* 권고문 박스 */
+  .rec { border: 1px solid var(--border); border-radius: 8px; margin: 8px 0; overflow: hidden; }
+  .rec-q { background: var(--surface2); padding: 7px 12px; font-weight: 700; font-size: calc(12px * var(--fscale, 1)); border-bottom: 1px solid var(--border); }
+  .rec-body { padding: 9px 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .rec-text { flex: 3; min-width: 220px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.55; }
+  .rec-sym { flex: 0 0 46px; min-width: 46px; height: 34px; border-radius: 6px; font-weight: 800; font-size: calc(13px * var(--fscale, 1)); color: #fff; display: flex; align-items: center; justify-content: center; text-align:center; }
+  .rec-do { background: #15803d; }
+  .rec-consider { background: #86efac; color: #14532d; }
+  .rec-caution { background: #eab308; color: #3f2d00; }
+  .rec-dont { background: #dc2626; }
+  .rec-meta { flex: 1 1 150px; font-size: calc(10.5px * var(--fscale, 1)); color: var(--text2); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mdd"><span>NG206</span><span>2021</span><span>NICE</span></div>
+      <h1>ME/CFS(근육통성뇌척수염/만성피로증후군) 진단 및 관리 지침</h1>
+    </div>
+    <div class="meta-line">
+      Myalgic encephalomyelitis (or encephalopathy)/chronic fatigue syndrome: diagnosis and management — NICE guideline NG206, published 29 October 2021 (National Guideline Centre, Royal College of Physicians)
+      <br><span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 NICE의 공식 승인을 받지 않은 원문 요약·재구성본이며, COVID-19 팬데믹 이전 근거를 기반으로 개발되어 롱코비드(post-COVID-19 syndrome)에는 그대로 적용해서는 안 된다.</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">📝 진단</div>
+    <div class="tab" onclick="showTab('manage')">🧭 관리원칙</div>
+    <div class="tab" onclick="showTab('symptom')">💊 증상관리</div>
+    <div class="tab" onclick="showTab('support')">🤝 지원·안전</div>
+    <div class="tab" onclick="showTab('severe')">🛏️ 중증관리</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·출처</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:110px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">25만+</div><div class="stat-lbl">잉글랜드·웨일스<br>ME/CFS 추정 환자수(UK Biobank)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">2.4배</div><div class="stat-lbl">여성/남성<br>유병비</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--adult)">~25%</div><div class="stat-lbl">중증 질환<br>(외출불가·와상)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--child)">&lt;20%</div><div class="stat-lbl">전일제 근무<br>가능 비율</div></div>
+  </div>
+
+  <div class="alert alert-warn"><span>⚠️</span><div>ME/CFS 환자의 삶의 질은 류마티스관절염, 다발성경화증, 일부 암 등 다른 중증 만성질환 환자보다도 낮게 보고된다. 진단 지연과 의료진의 이해 부족이 신뢰 상실로 이어지는 경우가 많다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📖</span> 질환 개념</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>ME/CFS는 다장기계에 영향을 미치는 복합 만성질환으로, 병태생리는 아직 규명 중이다. 명칭(근육통성뇌척수염/ME, 만성피로증후군/CFS, CFS/ME 등)에 대한 합의가 없어 본 지침에서는 <strong>ME/CFS</strong>로 통일해 표기한다. 뇌염증의 병리학적 근거는 부족해 'encephalomyelitis' 명칭 자체가 논쟁적이며, 'chronic fatigue syndrome' 명칭은 환자들 사이에서 지나치게 광범위하고 단순화·낙인적이라는 지적을 받는다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>SNOMED CT·ICD-10(G93.3)에서는 신경계 질환으로 분류된다. 다수는 감염을 계기로 발병하는 것으로 추정되나, 단순 감염후피로와 달리 지속기간이 길고 최소한의 인지·신체활동으로도 증상이 악화된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗂️</span> 중증도 분류(Box 1)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom:8px"><span>ℹ️</span><div>중증도 경계는 명확하지 않으며 증상별로 심각도가 다를 수 있다. 아래는 일상기능에 미치는 영향 정도에 대한 가이드다.</div></div>
+      <table class="tbl">
+        <tr><th>중증도</th><th>특징</th></tr>
+        <tr><td><span class="stage t-overview">경증</span></td><td>자기관리 및 가벼운 가사 가능(때때로 지원 필요), 이동에 어려움 있을 수 있음. 대부분 근무·재학 중이나 여가·사회활동 대부분 중단, 근무시간 단축·결근·주말을 이용한 회복이 흔함</td></tr>
+        <tr><td><span class="stage t-diag">중등증</span></td><td>이동성 저하, 일상활동 전반 제한(증상 기복 있음). 대개 근무·학업 중단, 오후 1~2시간 휴식 필요, 야간 수면의 질 저하·단절 흔함</td></tr>
+        <tr><td><span class="stage t-adult">중증</span></td><td>자립적 활동 불가 또는 세안·양치 등 최소한의 일상동작만 가능. 심한 인지장애, 휠체어 필요할 수 있음, 외출 불가 또는 외출 시 심하고 장기화된 후유증. 대부분 침상에서 생활, 빛·소리에 극도로 예민</td></tr>
+        <tr><td><span class="stage t-child">최중증</span></td><td>하루 종일 침상 생활, 돌봄에 전적으로 의존. 위생·식사에 도움 필요, 감각자극에 매우 예민. 일부는 삼킴이 불가해 경관영양이 필요할 수 있음</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🎯</span> 돌봄의 원칙(1.1)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>ME/CFS는 변동성 질환이다 — 증상의 종류·중증도가 하루·일주일·그 이상의 기간에 걸쳐 예측불가하게 변화한다</li>
+        <li>환자는 가족·친구·의료진·교사 등으로부터 불신과 편견을 경험했을 수 있으며, 이는 의료서비스에 대한 신뢰 상실로 이어질 수 있음을 인지해야 한다</li>
+        <li>신뢰관계 구축에 시간을 들이고, 환자중심 접근을 취하며, 사회경제적·문화적·민족적 배경, 성정체성·성적지향을 고려한다</li>
+        <li>돌봄·지지계획의 일부를 거부·중단해도 다른 영역의 돌봄 접근에 영향이 없음을 설명한다</li>
+        <li>소아청소년은 아동중심 소통, 부모/보호자 지원 필요성, 신뢰형성을 위한 복수 진료 필요성을 고려한다</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 진단 ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="alert alert-diag"><span>🔬</span><div>ME/CFS를 확진하는 진단검사는 존재하지 않으며, <strong>임상적 판단만으로 진단</strong>한다. 검사의 목적은 ME/CFS 확인이 아니라 다른 질환의 배제다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚩</span> ME/CFS 의심 기준(1.2.2, Box 2)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-flow">
+        <div class="algo-step" style="border-color:var(--diag)"><strong>① 지속기간</strong> — Box 2의 4개 핵심증상이 성인 6주, 소아청소년 4주 이상 지속</div>
+        <div class="algo-step" style="border-color:var(--adult)"><strong>② 기능저하</strong> — 직업·교육·사회·개인활동 참여능력이 발병 전 대비 현저히 저하</div>
+        <div class="algo-step" style="border-color:var(--child)"><strong>③ 배제</strong> — 증상이 다른 질환으로 설명되지 않음</div>
+      </div>
+      <div class="sec-sep"></div>
+      <div style="font-weight:700;margin-bottom:6px">Box 2 — 4개 핵심증상(전부 존재해야 함)</div>
+      <table class="tbl">
+        <tr><th>증상</th><th>세부 내용</th></tr>
+        <tr><td>쇠약성 피로</td><td>활동으로 악화되며, 과도한 인지·신체·정서·사회적 활동이 원인이 아니고, 휴식으로 유의하게 호전되지 않음</td></tr>
+        <tr><td>노작후불쾌감(PEM)</td><td>활동 후 증상 악화가 흔히 수시간~수일 지연되어 나타나고, 활동량에 비해 불균형적이며, 회복까지 수시간~수주 이상 소요</td></tr>
+        <tr><td>비회복성 수면 / 수면장애</td><td>기상 시 극도의 피로감·독감유사감·경직감, 단절되거나 얕은 수면, 수면패턴 변화 또는 과다수면</td></tr>
+        <tr><td>인지장애("브레인포그")</td><td>단어·숫자 찾기 곤란, 언어장애, 반응속도 저하, 단기기억 문제, 집중·멀티태스킹 곤란</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>➕</span> 동반 가능 증상(1.2.4) — 진단 필수아님</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>기립못견딤증·자율신경기능이상(어지럼, 심계항진, 실신, 기립시 오심), 체온과민(다한·오한·홍조 또는 추위), 근신경증상(연축·근간대경련), 독감유사증상, 알코올·특정음식/화학물질 불내성, 감각과민(빛·소리·촉각·미각·후각), 통증(접촉통·근육통·두통·안통·복통·관절통 — 급성 발적·부종 없이)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧪</span> 배제진단을 위한 검사(1.2.3)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-diag">
+          <div class="gear-title">기본검사</div>
+          요검사(단백·혈액·포도당), 일반혈구검사, 요소전해질, 간기능, 갑상선기능, ESR/혈장점도, CRP, 칼슘·인, HbA1c, 혈청페리틴, 셀리악 선별, 크레아틴키나아제
+        </div>
+        <div class="gear-box gear-adult">
+          <div class="gear-title">임상판단에 따른 추가검사</div>
+          비타민D·B12·엽산, 감염력이 있는 경우 혈청검사, 부신기능부전 의심 시 오전 9시 코르티솔
+        </div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚖️</span><div>진단 확신이 어렵거나 조기 전문의뢰 필요성이 불확실하면 전문가 자문을 고려하고, 소아청소년은 소아과 자문을 고려한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⏱️</span> 진단·의뢰 타임라인</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="stage-timeline">
+        <div class="stage-box st-overview"><div class="st-num" style="color:var(--overview)">0주</div><div class="st-lbl">증상 발생·<br>의심 시작</div></div>
+        <div class="stage-box st-diag"><div class="st-num" style="color:var(--diag)">4~6주</div><div class="st-lbl">ME/CFS 의심<br>(소아4주/성인6주)<br>증상관리 조언 시작</div></div>
+        <div class="stage-box st-adult"><div class="st-num" style="color:var(--adult)">3개월</div><div class="st-lbl">진단 확정<br>(그 전이라도 신증상 시<br>재평가 가능)</div></div>
+        <div class="stage-box st-child"><div class="st-num" style="color:var(--child)">확진 후</div><div class="st-lbl">성인: ME/CFS전문팀 직접의뢰<br>소아: 소아과의사 평가 후<br>소아ME/CFS전문팀 의뢰</div></div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>과거(2007년 지침) 6개월이던 확진 지연기간을 3개월로 단축했다 — 조기 관리·개입으로 장기 예후를 개선하기 위함이다. 단, 4개 핵심증상 모두를 요구하는 등 기준 자체는 더 엄격해졌다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>👥</span> ME/CFS 전문팀 구성(Box 3)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>류마티스내과, 재활의학과, <strong>내분비대사내과</strong>, 감염내과, 신경과, 면역학, 일반의, 소아과 등 다양한 전문분야의 의료진과, 물리치료사·운동생리학자·작업치료사·영양사·임상/상담심리사 등에 대한 접근성을 포함한다. 소아청소년은 지역 소아과팀이 ME/CFS 전문센터와 협력해 담당하는 경우가 많다.</div>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════════════ TAB 3: 관리원칙 ══════════════════ -->
+<div id="tab-manage" class="panel">
+
+  <div class="alert alert-adult"><span>⚠️</span><div>ME/CFS 증상은 관리할 수 있으나, 현재 <strong>비약물적·약물적 치료를 통틀어 근치법은 없다</strong>(1.11.1). 이 원칙은 모든 관리 전략 설명의 전제가 된다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔋</span> 에너지관리(Energy Management)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>환자 자신이 주도하고 ME/CFS 전문팀의 지원을 받는 자기관리 전략으로, 다음 원칙을 따른다.</div>
+      <ul style="padding-left:16px;margin-top:6px;line-height:1.7">
+        <li>근치적 방법이 아니며, 인지·신체·정서·사회 활동 전체를 포괄한다</li>
+        <li>본인의 에너지 한계 내에서 활동해 노작후불쾌감(PEM)을 줄이는 것을 목표로 한다</li>
+        <li>에너지 한계는 사람마다·시기마다 다르며, 환자 자신이 최선의 판단자다</li>
+        <li>활동은 자동으로 증량하지 않고 안정화 후 상향, 악화 시 하향하는 유연한 조정을 따른다</li>
+        <li>안정화·내약성 향상까지 수주~수개월, 때로는 수년이 걸리는 장기 접근이다</li>
+      </ul>
+      <div class="sec-sep"></div>
+      <div style="font-weight:700;margin-bottom:6px">계획 수립 시 기록할 항목(1.11.3)</div>
+      <div class="grid2">
+        <div class="gear-box gear-adult">인지활동 · 이동/신체활동 · 일상생활수행능력</div>
+        <div class="gear-box gear-child">심리·정서·사회적 요구(가족·성관계 포함) · 휴식/수면의 질과 시간 · 환경요인(감각자극 등)</div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>물리치료사·작업치료사 의뢰 기준(1.11.8): ① 신체활동 저하로 어려움이 있는 경우 ② 현재 일상활동을 넘어 신체활동을 늘릴 준비가 된 경우 ③ 운동프로그램을 관리계획에 포함하고 싶은 경우</div></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">일반적인 운동/신체활동 권고를 해도 되는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-dont">금지</div>
+      <div class="rec-text">ME/CFS 전문팀이 감독하지 않는 운동(예: "헬스장에 가라", "더 움직여라")은 권고하지 않는다 — 증상을 악화시킬 수 있다(1.11.9).</div>
+      <div class="rec-meta">근거: 질적연구에서 다수 환자가 악화 보고</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏃</span> 개인 맞춤 신체활동/운동 프로그램</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>다음 두 조건 중 하나에 해당하고 <strong>본인이 원할 때만</strong> 고려한다(1.11.10): ① 현재 일상활동을 넘어 신체활동을 진행할 준비가 됨 ② 관리전략에 운동을 포함하고 싶음. 반드시 ME/CFS 전문팀 물리치료사가 감독해야 한다(1.11.12).</div>
+      <div class="sec-sep"></div>
+      <div style="font-weight:700;margin-bottom:6px">프로그램 진행 원칙(1.11.13)</div>
+      <ol style="padding-left:18px;line-height:1.7">
+        <li>증상을 악화시키지 않는 수준에서 신체활동 기준선(baseline) 설정</li>
+        <li>기준선보다 낮은 수준으로 초기 신체활동을 줄임</li>
+        <li>일정 기간 이 수준을 안정적으로 유지한 뒤에만 증량 시도</li>
+        <li>에너지 한계 내에서 유연하게(상향/하향) 조정</li>
+        <li>플레어업·재발을 조기 인지하고 관리법을 미리 정해둠</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">단계적 운동치료(Graded Exercise Therapy, GET)를 제공해도 되는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-dont">금지</div>
+      <div class="rec-text">고정된 증량 방식의 GET, 탈조건화·운동회피 이론에 근거한 프로그램, 건강인·타질환용 일반 운동프로그램은 제공하지 않는다. 운동/신체활동 기반 치료를 ME/CFS의 <strong>근치법으로 제공해서는 안 된다</strong>(1.11.14).</div>
+      <div class="rec-meta">Box 4: 본 지침에서 GET은 "기준선 설정 후 활동시간을 고정폭으로 증량하는 방식"으로 정의</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔁</span> 플레어업·재발 시 신체활동 조정(1.11.15~16)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>ME/CFS 전문팀 물리치료사의 재평가·지원에 접근 제공</li>
+        <li>신체활동을 현재 에너지 한계 이내로 줄여 증상을 안정화</li>
+        <li>증상이 안정되고 재개할 준비가 된 후에만 새로운 신체활동 기준선을 설정</li>
+        <li>플레어업 후 이전 활동수준으로 돌아가는 시간은 개인마다 다르다는 점을 설명</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /manage -->
+
+
+<!-- ══════════════════ TAB 4: 증상관리 ══════════════════ -->
+<div id="tab-symptom" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>😴</span> 휴식과 수면(1.12.1~4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>휴식은 모든 관리전략의 일부이며, 각 휴식기간 시작 시 이완기법이 도움될 수 있다</li>
+        <li>수면패턴 변화(단절/얕은 수면, 과다수면 등)를 파악하고 좋은 수면습관을 점진적으로 도입</li>
+        <li>수면관리로 개선되지 않으면 기저 수면장애 가능성을 고려하고 전문의 의뢰를 검토</li>
+        <li>휴식·수면관리 전략은 돌봄계획의 일부로 정기 재검토</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🦵</span> 신체기능·이동성(1.12.5~8)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>관절가동성·근유연성·균형·자세지지·근기능·골건강·심혈관건강 유지 전략을 소량씩 하루에 걸쳐 분산 시행한다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>중증·최중증 또는 장기 부동 환자는 매 접촉 시마다 욕창 위험부위, 심부정맥혈전증, 구축위험을 평가한다(1.12.6).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩸</span> 기립못견딤증(Orthostatic Intolerance, 1.12.9~11)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>체위성기립빈맥증후군(POTS)을 포함한 기립못견딤증이 동반될 수 있음을 인지한다. <strong>기립못견딤증 약물은 반드시 이 분야 전문성을 가진 의료진이 처방·관리</strong>해야 하며(통상 처방 약제가 다른 ME/CFS 증상을 악화시킬 수 있음), 증상이 심하거나 악화되거나 다른 질환이 의심되면 2차진료로 의뢰한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚡</span> 통증(1.12.12~14)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>통증은 ME/CFS에 흔한 동반증상이며, 특히 중증·최중증에서 심하다. 표준 진료원칙에 따라 평가·관리하고 필요시 통증 전문서비스로 의뢰한다. 신경병증통증·두통은 NICE 신경병증통증 지침, 12세 이상 두통 지침을 참고한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 약물치료(1.12.15~18)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger" style="margin-bottom:8px"><span>🚫</span><div>ME/CFS 근치 목적의 약물·보조제는 제공하지 않는다(1.12.15).</div></div>
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>NICE 복약순응도·복약최적화 지침에 따라 정기적 약물검토를 제공한다</li>
+        <li>ME/CFS 환자는 약물 불내성이 더 흔할 수 있음을 고려해, <strong>통상 용량보다 낮게 시작</strong>하고 내약성을 확인하며 점진적으로 증량한다</li>
+        <li>소아청소년의 약물치료는 반드시 소아 처방 경험이 있는 전문의의 지도·감독 하에 시작한다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🍽️</span> 식이관리(1.12.19~26)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>NHS 식이가이드에 따른 충분한 수분·균형잡힌 식사의 중요성을 강조한다</li>
+        <li>오심 시 소량씩 자주 섭취를 권장하고, 금식이 오심을 악화시킬 수 있음을 설명한다</li>
+        <li>체중감소·영양실조 위험, 체중증가, 제한적 식이를 하는 경우 ME/CFS에 특별한 관심이 있는 영양사에게 의뢰한다</li>
+        <li>외출·와상 환자는 비타민D 결핍 위험이 있음을 인지한다(NICE 비타민D 지침 참고)</li>
+        <li>비타민·미네랄 보충제가 ME/CFS를 근치하거나 증상관리에 효과가 있다는 근거는 불충분함을 설명한다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">Lightning Process를 제공해도 되는가?</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-dont">금지</div>
+      <div class="rec-text">Lightning Process 및 이에 기반한 치료는 제공하지 않는다(1.12.27) — 질적근거에서 비밀유지 강요, 교육내용의 혼란스러움, 세션 강도, "증상을 무시하고 밀어붙이라"는 조언이 에너지관리 원칙과 상충된다는 우려가 확인되었다.</div>
+      <div class="rec-meta">SMILE 연구에서 일부 이득 보고도 있었으나 위해 우려가 더 크다고 판단</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧠</span> 인지행동치료(CBT, 1.12.28~34)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-warn" style="margin-bottom:8px"><span>⚠️</span><div>Box 5: CBT가 ME/CFS의 "치료법(cure)"으로 오인되어온 경우가 있다. CBT는 <strong>증상관리·기능향상·만성질환에 따른 고통 경감을 지원하는 목적으로만</strong> 제공해야 하며 근치법이 아니다.</div></div>
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>원리·잠재적 이익과 위해를 설명한 뒤, 환자(및 부모/보호자)가 <strong>원할 경우에만</strong> 제공한다(1.12.29)</li>
+        <li>'비정상적' 질병신념·행동을 ME/CFS의 근본원인으로 가정하지 않으며, 사고·감정·행동·생리가 상호작용한다는 관점을 취한다</li>
+        <li>비판단적·지지적 태도, 협력적·구조화된·시간제한적 개입, 환자가 스스로 선택한 목표를 향한 작업임을 설명한다</li>
+        <li>ME/CFS에 대한 훈련과 경험을 가진 치료자가, 관련 전문성을 갖춘 임상감독 하에 시행한다(1.12.31)</li>
+        <li>소아청소년은 부모/보호자를 가능한 한 참여시키고 인지·정서 발달단계에 맞게 조정한다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔗</span> 동반질환 관리(1.13)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>다른 질환이 ME/CFS와 공존할 수 있으며 표준 진료원칙에 따라 조사·관리한다. 다중이환(multimorbidity), 갑상선질환, 성인 과민성장증후군은 해당 NICE 지침을 참고하고, 불안·우울 등 동반 정신건강 문제는 성인/소아 우울증 지침, 범불안장애·공황장애 지침, 일반정신건강문제 지침을 참고한다.</div>
+    </div>
+  </div>
+
+</div><!-- /symptom -->
+
+
+<!-- ══════════════════ TAB 5: 지원·안전 ══════════════════ -->
+<div id="tab-support" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚪</span> 의료접근성 개선(1.8)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>예약의 시간·길이·빈도를 환자 필요에 맞게 조정한다</li>
+        <li>이동거리·교통·주차·진료실 위치 등 물리적 접근성, 빛·소리·촉각·통증·온도극단·냄새 민감성을 고려한다</li>
+        <li>온라인·전화진료, 가정방문 등 유연한 진료방식을 제공한다</li>
+        <li><strong>예약 불참을 이유로 퇴록(discharge)하지 않는다</strong> — 증상 악화가 원인일 수 있으므로 불참 사유와 다학제팀의 지원방안을 논의한다(1.8.2)</li>
+      </ul>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>환자들은 대개 최악의 상태일 때 의료진을 만나지 못한다 — 외출 자체가 증상을 악화시키거나, 인지장애로 명확히 말할 수 있을 때까지 연락을 미루기 때문이다(1.8.3).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏥</span> 입원진료 시 고려사항(1.8.4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>병상 위치(가능하면 1인실), 화장실·세면시설 접근성, 조명·소음·난방·냄새 등 환경요인에 대해 입원이 필요한 환자와 사전에 논의한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🛡️</span> 안전보호(Safeguarding, 1.7)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-warn" style="margin-bottom:8px"><span>⚠️</span><div>중증·최중증 ME/CFS 환자는 증상이 학대·방임의 징후로 오인될 위험이 있다.</div></div>
+      <div style="font-weight:700;margin-bottom:6px">학대·방임의 징후가 "아닐 수 있는" 소아청소년 소견(1.7.4)</div>
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>흔히 알려진 질병 양상에 맞지 않는 신체증상</li>
+        <li>한 가족 내 2명 이상이 ME/CFS를 앓는 경우</li>
+        <li>돌봄·지지계획의 일부를 본인 또는 부모/보호자가 거부·중단하는 것</li>
+        <li>부모/보호자가 대리인으로서 소통을 대신하는 것</li>
+        <li>등교 감소 또는 결석</li>
+      </ul>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>안전보호 평가나 정신보건법·정신능력법 관련 평가가 필요한 경우, ME/CFS에 훈련·경험이 있는 의료진을 가능한 한 조기에 직접 참여시킨다. 소아청소년은 최소 6개월마다(필요시 더 자주) 돌봄계획을 재검토한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>👨‍👩‍👧</span> 다학제 진료 및 담당자 지정(1.10)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>1차진료에서 관리되는 환자도 ME/CFS 전문팀의 자문·직접임상상담을 통해 지원받아야 한다(1.10.2). 모든 환자(및 가족/보호자)에게 1차진료 또는 ME/CFS 전문팀 내 <strong>지정된 담당자(named contact)</strong>를 제공해 돌봄계획 조율, 서비스 접근, 재발기 지원을 돕는다(1.10.3).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔄</span> 플레어업 vs 재발(Relapse) 구분(1.14)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>구분</th><th>정의</th><th>대응</th></tr>
+        <tr><td><strong>플레어업</strong></td><td>일상적 변동을 넘는 증상악화가 며칠간 지속</td><td>유발요인 확인, 일시적 활동량 감소, 모니터링, 회복 전 평소수준 복귀 금지</td></tr>
+        <tr><td><strong>재발</strong></td><td>플레어업보다 길게 지속되는 지속적·뚜렷한 악화로 에너지관리의 실질적·지속적 조정이 필요</td><td>활동 감소/중단, 휴식 빈도·시간 증가, 에너지한계 재평가로 안정화</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>새로운 증상이나 증상변화는 <strong>자동으로 ME/CFS 탓으로 가정하지 말고</strong> 반드시 평가·조사한다(1.14.4).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📅</span> 1차진료 정기재검토(1.15)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>대상</th><th>주기</th></tr>
+        <tr><td>성인</td><td>최소 연 1회</td></tr>
+        <tr><td>소아청소년</td><td>최소 6개월마다(소아과 전문성을 가진 인력이 시행/감독)</td></tr>
+      </table>
+      <div style="margin-top:8px">중증도·복잡성, 증상관리 효과에 따라 더 자주 재검토를 시행하며, 재검토 시 병력·증상변화, 자가관리(에너지관리계획·운동프로그램), 지원현황, 심리·정서·사회적 웰빙, 향후계획을 논의·기록한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🎓</span> 근무·교육 지원(1.9)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>본인 동의 하에 고용주·교육기관·지원서비스와 연락해 ME/CFS 정보와 돌봄계획, 필요한 조정사항을 논의한다. 평등법(Equality Act 2010)에 따른 합리적 조정에 접근할 수 있음을 안내하되, 복귀가 증상을 악화시킬 수도 있음을 함께 설명한다. 소아청소년은 교육·훈련이 삶의 유일한 활동이 되지 않도록, 학업과 가정생활·사회활동 간 균형을 안내한다.</div>
+    </div>
+  </div>
+
+</div><!-- /support -->
+
+
+<!-- ══════════════════ TAB 6: 중증관리 ══════════════════ -->
+<div id="tab-severe" class="panel">
+
+  <div class="alert alert-specific"><span>🛏️</span><div>중증·최중증 ME/CFS 환자는 서비스 접근·요구 표현에 특히 어려움을 겪는 집단으로, 지침 전반에 걸쳐 별도로 고려되었다. 이 탭은 앞선 각 섹션에 대한 <strong>추가 고려사항</strong>을 다룬다(1.17).</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚠️</span> 중증·최중증에서 흔한 증상(1.17.1)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-specific">
+          근육·관절통·신경병증 양상의 심하고 지속적인 통증<br>
+          빛·소리·촉각·움직임·온도극단·냄새에 대한 과민성<br>
+          극심한 쇠약과 현저한 운동감소<br>
+          언어·삼킴 능력 저하 또는 상실
+        </div>
+        <div class="gear-box gear-child">
+          소통·정보이해를 제한하는 인지장애<br>
+          비회복성 수면·과다수면·수면패턴 변화<br>
+          오심·요실금·변비·팽만 등 위장증상<br>
+          복시 등 시각장애·어지럼, 기립못견딤증(POTS·기립성저혈압)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏠</span> 환경·소통 원칙(1.17.2~4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>저자극 환경(어두운 조용한 방)과 환자가 선택한 수준의 상호작용(최소 또는 무접촉일 수 있음)이 필요할 수 있다</li>
+        <li>외출·와상 상태로 일상생활 전반에 지원이 필요할 수 있으며, 휠체어 등 이동보조기구가 필요할 수 있다</li>
+        <li>촉각 민감성을 고려해 신중하게 신체접촉을 한다</li>
+        <li>소통에 지원이 필요할 수 있으며, 본인을 대변할 대리인(advocate)을 선택할 수 있도록 한다</li>
+        <li>가능한 한 <strong>환자와 가족에게 이미 알려진 의료·돌봄인력</strong>이 개인돌봄을 제공한다</li>
+        <li>매 상호작용 전 위험-이익을 사전평가하고, 최중증 환자는 가족/보호자와 논의를 고려하되 초점은 항상 환자 본인에 둔다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏥</span> 입원 시 고려사항(1.17.7)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>입원 시 예상되는 상황을 사전 논의하고, 이송경로를 미리 계획해 소음구간을 피하며 도착 즉시 병동으로 안내해 노작후불쾌감을 최소화한다</li>
+        <li>동반질환·불내성·민감성 정보를 포함한 돌봄계획을 공유하고 합리적 조정을 계획한다</li>
+        <li>가능하면 1인실을 제공한다</li>
+        <li>자극을 최소화한다: 1:1 진료, 차분한 동작·몸짓, 중복평가 지양, 접촉 압력에 신중, 조명·소음·냄새 최소화, 안정된 온도 유지</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔋</span> 에너지관리·식이·CBT 조정</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>ME/CFS 전문팀 물리치료사·작업치료사에게 의뢰해 에너지관리계획 수립을 지원한다(1.17.8)</li>
+        <li>활동변화 폭을 더 작게, 증량은(가능하다면) 훨씬 느리게 한다(1.17.9)</li>
+        <li>영양실조·의도치않은 체중감소 위험(제한식이·식욕저하·음식불내성·오심·연하곤란)을 모니터링하고, ME/CFS에 특별한 관심이 있는 영양사에게 의뢰한다(1.17.10~11)</li>
+        <li>소량씩 자주 섭취, 영양강화 음료·간식, 부드러운 질감의 음식, 개조된 식사보조기구, 필요시 경구영양보충·경관영양을 고려한다(1.17.12)</li>
+        <li>CBT 제공 시 세션을 더 짧고 덜 빈번하게 조정하고 장기적 목표를 설정한다(1.17.13)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏡</span> 평가·서비스 접근(1.17.5~6)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>전체적 평가와 돌봄·지지계획 수립을 위해 <strong>가정방문</strong>을 제안한다. 서비스 제공자는 가정방문, 온라인·전화진료, 서면소통 제공, 보조기구 신청 지원 등 능동적이고 유연한 서비스 제공이 필요하다.</div>
+    </div>
+  </div>
+
+</div><!-- /severe -->
+
+
+<!-- ══════════════════ TAB 7: 약어·출처 ══════════════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔤</span> 주요 용어(전체 목록)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 지침 개발 정보</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>항목</th><th>내용</th></tr>
+        <tr><td>제목</td><td>Myalgic encephalomyelitis (or encephalopathy)/chronic fatigue syndrome: diagnosis and management</td></tr>
+        <tr><td>발행처</td><td>National Institute for Health and Care Excellence(NICE) — 개발: National Guideline Centre(왕립내과의사회 소속)</td></tr>
+        <tr><td>지침번호</td><td>NG206 (ISBN 978-1-4731-4221-3)</td></tr>
+        <tr><td>발행일</td><td>2021년 10월 29일</td></tr>
+        <tr><td>대체 지침</td><td>NICE CG53(2007년 8월 발행) 개정·대체</td></tr>
+        <tr><td>적용범위</td><td>소아·청소년·성인의 ME/CFS 진단과 관리(COVID-19 팬데믹 이전 근거 기반, 롱코비드에 자동 적용 불가)</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>본 지침은 진단기준으로 미국 의학한림원(Institute of Medicine) 2015년 기준을 채택해 확진 지연기간을 6개월에서 3개월로 단축하는 등 수정을 가했다. 검증된 단일 진단기준이 부재해 향후 연구과제로 지정되었다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 향후 연구 필요 영역(Key research recommendations)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="padding-left:16px;line-height:1.7">
+        <li>ME/CFS 의심환자에서 임상적·비용효과적인 진단검사는 무엇인가</li>
+        <li>ME/CFS 치료·증상관리 임상시험에 사용할 핵심 결과지표(core outcome set)는 무엇인가</li>
+        <li>NICE 2021 합의기반 진단기준이 ME/CFS 환자 식별에 얼마나 효과적인가</li>
+        <li>자기모니터링 전략·기법이 에너지관리에 갖는 임상적·비용효과성</li>
+        <li>수면관리 전략의 임상적·비용효과성</li>
+        <li>식이전략의 임상적·비용효과성</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"ME/CFS", def:"Myalgic Encephalomyelitis (or Encephalopathy)/Chronic Fatigue Syndrome — 근육통성뇌척수염/만성피로증후군" },
+  { term:"PEM", def:"Post-Exertional Malaise — 노작후불쾌감(post-exertional symptom exacerbation으로도 표기)" },
+  { term:"POTS", def:"Postural Orthostatic Tachycardia Syndrome — 체위성기립빈맥증후군" },
+  { term:"OI", def:"Orthostatic Intolerance — 기립못견딤증" },
+  { term:"CBT", def:"Cognitive Behavioural Therapy — 인지행동치료(ME/CFS 근치법 아님, 증상관리 지원 목적)" },
+  { term:"GET", def:"Graded Exercise Therapy — 단계적 운동치료(본 지침에서 제공 금지, Box 4 정의 참고)" },
+  { term:"EHC plan", def:"Education, Health and Care plan — 교육·건강·돌봄 계획(영국 제도, 지방정부 신청)" },
+  { term:"NICE", def:"National Institute for Health and Care Excellence — 영국 국립보건임상연구원" },
+  { term:"NG206", def:"NICE guideline number 206 — 본 지침의 고유 식별번호" },
+  { term:"IOM criteria", def:"Institute of Medicine 2015 diagnostic criteria — 미국 의학한림원 2015년 진단기준(본 지침의 근간)" },
+  { term:"CG53", def:"NICE Clinical Guideline 53(2007) — 본 지침(NG206)이 대체한 구 지침" },
+  { term:"DVT", def:"Deep Vein Thrombosis — 심부정맥혈전증(장기부동 환자 평가 항목)" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

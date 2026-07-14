@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACG 2017 간기능검사 이상(Abnormal Liver Chemistries) 진료지침</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --overview: #1d4ed8;   /* 개요 — 인디고블루 */
+    --diag:     #0f766e;   /* AST/ALT — 틸 */
+    --adult:    #b45309;   /* ALP — 앰버 */
+    --child:    #0369a1;   /* 빌리루빈 — 스카이블루 */
+    --tests:    #7c3aed;   /* 질환별·접근 — 바이올렛 */
+    --specific: #be185d;
+    --unexp:    #15803d;
+    --accent: #1d4ed8;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-mdd { display: flex; align-items: center; gap: 0; font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px; }
+  .logo-mdd span:nth-child(1) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-mdd span:nth-child(2) { background: var(--adult); color:#fff; padding:3px 6px; }
+  .logo-mdd span:nth-child(3) { background: var(--unexp); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 18px; font-weight: 700; color: var(--text); text-align:center; }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn { display: flex; align-items: center; gap: 3px; flex-shrink: 0; margin: 4px 4px 4px 6px; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700; cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s; }
+  .font-zoom-btn:hover { background: var(--border); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 11px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--overview); border-bottom-color: var(--overview); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(18px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-overview{ background: #dbeafe; border-left: 3px solid var(--overview); color: #1d4ed8; }
+  .alert-diag    { background: #d9f2ef; border-left: 3px solid var(--diag);   color: #0f766e; }
+  .alert-adult   { background: #fef0d9; border-left: 3px solid var(--adult);  color: #92400e; }
+  .alert-child   { background: #e0f2fe; border-left: 3px solid var(--child);  color: #0369a1; }
+  .alert-tests   { background: #ede9fe; border-left: 3px solid var(--tests);  color: #5b21b6; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+
+  .lv1 { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+  .lv2 { background: #dbeafe; color: #1d4ed8; font-weight: 700; text-align: center; }
+  .lv3 { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .lv4 { background: #ffe4d6; color: #92400e; font-weight: 700; text-align: center; }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box { flex: 1; min-width: 120px; padding: 10px 10px 12px; border-right: 2px solid var(--bg); text-align: center; position: relative; }
+  .stage-box:last-child { border-right: none; }
+  .stage-box .st-num { font-size: calc(13px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-overview { background: #e6eefb; }
+  .st-diag     { background: #d9f2ef; }
+  .st-adult    { background: #fef0d9; }
+  .st-child    { background: #e0f2fe; }
+  .st-tests    { background: #f3e8ff; }
+
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-adult   { background: #fef0d9; border: 1.5px solid var(--adult);  color: #92400e; }
+  .gear-child   { background: #e0f2fe; border: 1.5px solid var(--child);  color: #0369a1; }
+  .gear-tests   { background: #f3e8ff; border: 1.5px solid var(--tests);  color: #5b21b6; }
+  .gear-diag    { background: #d9f2ef; border: 1.5px solid var(--diag);   color: #0f766e; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  .algo-flow { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .algo-step { border-radius: 6px; padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); border-left: 4px solid var(--border); background: var(--surface2); }
+
+  /* 권고문 박스 (강도 strong/conditional) */
+  .rec { border: 1px solid var(--border); border-radius: 8px; margin: 8px 0; overflow: hidden; }
+  .rec-q { background: var(--surface2); padding: 7px 12px; font-weight: 700; font-size: calc(12px * var(--fscale, 1)); border-bottom: 1px solid var(--border); }
+  .rec-body { padding: 9px 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .rec-text { flex: 3; min-width: 220px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.55; }
+  .rec-sym { flex: 0 0 60px; min-width: 60px; height: 34px; border-radius: 6px; font-weight: 800; font-size: calc(11px * var(--fscale, 1)); color: #fff; display: flex; align-items: center; justify-content: center; text-align:center; }
+  .rec-strong { background: #15803d; }
+  .rec-cond { background: #b45309; }
+  .rec-meta { flex: 1 1 120px; font-size: calc(10.5px * var(--fscale, 1)); color: var(--text2); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-mdd"><span>LFT</span><span>2017</span><span>ACG</span></div>
+      <h1>ACG 2017 간기능검사 이상(Abnormal Liver Chemistries) 진료지침</h1>
+    </div>
+    <div class="meta-line">
+      American College of Gastroenterology Clinical Guideline: Evaluation of Abnormal Liver Chemistries — Kwo PY, Cohen SM, Lim JK. <em>Am J Gastroenterol.</em> 2017;112:18-35
+      <br><span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🩸 AST/ALT</div>
+    <div class="tab" onclick="showTab('adult')">🧪 ALP</div>
+    <div class="tab" onclick="showTab('child')">🟡 빌리루빈</div>
+    <div class="tab" onclick="showTab('tests')">🔬 원인질환</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·출처</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:110px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="alert alert-info"><span>ℹ️</span><div>ALT·AST·ALP·빌리루빈은 간 <strong>손상</strong>의 지표이지 간 <strong>기능</strong>의 지표가 아니므로 "간기능검사(LFT)"가 아닌 "간 검사(liver tests/chemistries)"로 부르는 것이 적절하다. 실제 간기능 지표는 알부민·프로트롬빈시간(PT).</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 진정한 정상 ALT 범위</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-val" style="color:var(--diag)">29-33</div><div class="stat-lbl">남성 정상 ALT<br>상한(IU/l)</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--adult)">19-25</div><div class="stat-lbl">여성 정상 ALT<br>상한(IU/l)</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--child)">ALT&gt;AST</div><div class="stat-lbl">ALT가 간세포손상에<br>더 특이적</div></div>
+      </div>
+      <div>위험인자가 없는 건강인구에서 진정한 정상 ALT는 <strong>남성 29-33, 여성 19-25 IU/l</strong>이며 이를 초과하면 평가가 필요하다. ALT는 BMI와 선형관계를 보이므로 함께 고려한다. 정상 ALT라도 유의한 간질환을 배제하지 못하며, 임상적으로 간질환이 의심되면 검사가 정상이어도 평가를 시작한다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>ALT/AST 정상상한(ULN)은 검사실마다 크게 다르다(한 주 내 67개 검사실에서 31-72 U/l 보고). ALP·빌리루빈은 지역 검사실 ULN에 의존해도 무방하다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗂️</span> 손상 패턴 분류 및 R비(R ratio)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>패턴</th><th>정의</th></tr>
+        <tr><td>간세포성(Hepatocellular)</td><td>ALP 대비 AST/ALT의 불균형적 상승</td></tr>
+        <tr><td>담즙정체성(Cholestatic)</td><td>AST/ALT 대비 ALP의 불균형적 상승</td></tr>
+        <tr><td>혼합형(Mixed)</td><td>ALP와 AST/ALT 모두 상승</td></tr>
+        <tr><td>고립성 고빌리루빈혈증</td><td>ALP·AST/ALT 정상이면서 빌리루빈만 상승</td></tr>
+      </table>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🧮</span><div><strong>R비 = (ALT ÷ ALT ULN) ÷ (ALP ÷ ALP ULN)</strong><br>R &gt; 5 → 간세포성 / R &lt; 2 → 담즙정체성 / R 2-5 → 혼합형. 특히 약물유발간손상(DILI)에서 유용.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> AST/ALT 상승 정도 분류</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="stage-timeline">
+        <div class="stage-box st-overview"><div class="st-num" style="color:var(--overview)">경계</div><div class="st-lbl">&lt;2× ULN<br>(Borderline)</div></div>
+        <div class="stage-box st-diag"><div class="st-num" style="color:var(--diag)">경도</div><div class="st-lbl">2-5× ULN<br>(Mild)</div></div>
+        <div class="stage-box st-adult"><div class="st-num" style="color:var(--adult)">중등도</div><div class="st-lbl">5-15× ULN<br>(Moderate)</div></div>
+        <div class="stage-box st-child"><div class="st-num" style="color:var(--child)">중증</div><div class="st-lbl">&gt;15× ULN<br>(Severe)</div></div>
+        <div class="stage-box st-tests"><div class="st-num" style="color:var(--tests)">대량</div><div class="st-lbl">&gt;10,000 IU/l<br>(Massive)</div></div>
+      </div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>🚨</span><div>기저 간질환이 없던 환자에서 PT 연장·간성뇌증을 동반한 급성 간손상(전격성 간부전/급성 간부전)은 ALT 수치와 무관하게 <strong>즉시 평가</strong>가 필요하다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 권고 등급체계</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>ACG는 GRADE를 변형 적용한다. 권고 강도는 <strong>강함(Strong)</strong> 또는 <strong>조건부(Conditional)</strong>, 근거수준은 높음/중등도/낮음/매우낮음으로 표기한다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>강도</th><th>표기</th></tr>
+        <tr><td><span class="rec-sym rec-strong" style="display:inline-flex">강함</span></td><td>Strong recommendation</td></tr>
+        <tr><td><span class="rec-sym rec-cond" style="display:inline-flex">조건부</span></td><td>Conditional recommendation</td></tr>
+      </table>
+      <small>본 지침의 19개 권고는 모두 "강한 권고, 매우 낮은 근거수준"으로 분류된다(간기능검사 평가에 대한 통제 임상시험 부재).</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧫</span> 검사 항목의 의미</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>검사</th><th>의미</th></tr>
+        <tr><td>ALT</td><td>주로 간에 존재 → 간세포손상에 <strong>가장 특이적</strong></td></tr>
+        <tr><td>AST</td><td>간 외 심근·골격근·신장·뇌에도 존재. ALT 상승 없는 AST 상승은 심장/근육질환 시사</td></tr>
+        <tr><td>ALP</td><td>간세포 담관막에 존재. 담관폐쇄 시 상승(경미한 폐쇄도), 골·태반·장·신장 유래 가능. GGT로 간 유래 확인</td></tr>
+        <tr><td>빌리루빈</td><td>총빌리루빈 정상 &lt;1.1mg/dl. 직접(포합)빌리루빈 상승은 간세포기능이상/담즙정체 시사</td></tr>
+        <tr><td>알부민</td><td>간 합성, 반감기 3주 → 감소는 3주 이상 지속된 간질환 시사(단, 사이토카인 영향)</td></tr>
+        <tr><td>PT</td><td>알부민보다 예민한 간기능 지표(&lt;24시간 중증 간질환에서도 연장). 응고인자 &lt;10%로 감소해야 연장</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: AST/ALT ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩺</span> 초기 접근 공통사항</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-flow">
+        <div class="algo-step" style="border-color:var(--overview)">병력·신체진찰(간질환 위험인자·동반질환·음주·약물/OTC/한약보충제)</div>
+        <div class="algo-step" style="border-color:var(--diag)">간독성 약물 중단, 음주 중단</div>
+        <div class="algo-step" style="border-color:var(--adult)">지방간·바이러스간염 위험인자 평가</div>
+        <div class="algo-step" style="border-color:var(--child)">평가 시작 전 <strong>재검</strong> 및/또는 명확화 검사(ALP 상승 시 GGT)로 실제 이상 여부 확인</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">평가 시작 전 무엇을 먼저 해야 하는가?(권고 1)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">이상 간검사 평가 시작 전 검사 패널을 재검하거나 명확화 검사(ALP 상승 시 GGT)를 시행하여 실제 이상 여부를 확인한다.</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩸</span> 경계(&lt;2×)·경도(2-5×) 상승 접근(권고 16)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>병력·검사로 다음을 평가: 바이러스 간염 B·C, 알코올성·비알코올성지방간(NAFLD), 혈색소증, Wilson병, 알파-1 항트립신 결핍, 자가면역간염 및 약물/보충제 관련 손상 고려.</div>
+      <div class="alert alert-diag" style="margin-top:8px"><span>🧪</span><div>1차 검사: CBC/혈소판, AST/ALT, ALP, 총빌리루빈, 알부민, PT/INR, HBsAg·HBcAb·HBsAb, HCV Ab(양성 시 PCR 확인), 철검사, 복부초음파. 음성이면 3(경계)~3-6(경도)개월 관찰 후 재검 또는 지속 상승 시 ANA·ASMA·감마글로불린·세룰로플라스민·알파-1항트립신 표현형 추가.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩸</span> 중등도(5-15×) 상승 접근(권고 17)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>5× 미만의 모든 원인 + <strong>급성 A·B·C형 간염</strong>을 추가로 평가. 급성 간부전 징후가 있으면 즉시 간 전문의 자문 및 간이식센터 의뢰. 진단 음성 시 의학적으로 안정적이면 진단적 간생검 고려.</div>
+      <div class="alert alert-adult" style="margin-top:8px"><span>🔬</span><div>1차 검사에 HAV IgM/IgG, HBcAb IgM/IgG, 세룰로플라스민, ANA·SMA·감마글로불린 추가.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚨</span> 중증(&gt;15×)·대량(&gt;10,000) 상승 접근(권고 18)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div><strong>아세트아미노펜 독성 및 허혈성간병증(shock liver)</strong>을 추가 평가. 대량 상승(&gt;10,000)은 대개 shock liver/허혈성간병증 또는 약물/독성간염에서만 관찰(간외: 횡문근융해·열사병).</div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>💊</span><div>독성섭취·허혈·횡문근융해 평가, HSV/EBV/CMV, 항-LKM, 혈청 약물패널·소변독성검사, 도플러 복부초음파. <strong>아세트아미노펜 섭취 증거가 있으면 N-acetylcysteine 고려</strong>. 급성 간부전 징후 시 즉시 간이식센터 의뢰.</div></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">급성 간염 + PT 연장/뇌증 환자는?(권고 19)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">PT 연장 및/또는 간성뇌증을 동반한 급성 간염 환자는 <strong>즉시 간 전문의에게 의뢰</strong>한다.</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚖️</span> AST:ALT 비의 임상적 의미</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>소견</th><th>시사점</th></tr>
+        <tr><td>ALT &gt; AST</td><td>대부분의 간질환(만성 바이러스간염, NAFLD)</td></tr>
+        <tr><td>AST &gt; ALT (비 ≥2:1)</td><td>알코올성 간질환(~90%가 AST&gt;ALT, &gt;70%가 비&gt;2), 피리독신 결핍 반영</td></tr>
+        <tr><td>AST &gt; ALT (비 &lt;2:1)</td><td>모든 원인의 간경변에서도 가능</td></tr>
+        <tr><td>AST만 상승(ALT 정상)</td><td>심장/근육질환 시사</td></tr>
+      </table>
+      <small>알코올성·NAFLD 모두 AST/ALT가 300 IU/l를 넘는 경우는 드묾.</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> AST/ALT 상승의 원인(Table 4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid3">
+        <div class="gear-box gear-diag">
+          <div class="gear-title">간성 (대개 AST&gt;ALT)</div>
+          알코올성 간질환, 간경변(모든 원인), 허혈성간염, 울혈간병증, 급성 Budd-Chiari, 간동맥 손상/혈전, TPN
+        </div>
+        <div class="gear-box gear-adult">
+          <div class="gear-title">간성 (대개 ALT&gt;AST)</div>
+          NAFLD/지방증/NASH, 만성·급성 바이러스간염, 약물유발간손상, 독성간염(아마니타), 혈색소증, 자가면역간염, Wilson병, 알파-1항트립신결핍, 셀리악병, 급성담관폐쇄, 간외상/수술후, VOD/SOS, 암의 미만성 침윤, HELLP, 임신급성지방간, 패혈증, 혈구탐식성림프조직구증
+        </div>
+        <div class="gear-box gear-tests">
+          <div class="gear-title">비간성</div>
+          골격근손상/횡문근융해, 심근손상, 갑상선질환, macro-AST, 격렬한 운동, 열사병, 용혈, 부신기능부전
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════════════ TAB 3: ALP ══════════════════ -->
+<div id="tab-adult" class="panel">
+
+  <div class="rec">
+    <div class="rec-q">ALP 상승은 어떻게 확인하는가?(권고 13)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">ALP 상승은 <strong>GGT 상승으로 확인</strong>한다. GGT는 간질환 특이도가 낮아 다른 간검사 이상이 없을 때 단독 선별검사로 사용하지 않는다.</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> ALP 상승 평가 알고리즘(Figure 4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-flow">
+        <div class="algo-step" style="border-color:var(--overview)"><strong>① GGT로 간 유래 확인</strong> — GGT 정상이면 비간담도 원인(골질환 등) 평가</div>
+        <div class="algo-step" style="border-color:var(--diag)"><strong>② 우상복부 초음파</strong> — 담관 확장 여부 확인</div>
+        <div class="algo-step" style="border-color:var(--adult)"><strong>③ 담관 확장(+)</strong> → ERCP 또는 MRCP(간외 원인: 담관결석·악성폐쇄)</div>
+        <div class="algo-step" style="border-color:var(--child)"><strong>④ 담관 확장(-)</strong> → AMA·ANA·SMA 확인(간내 담즙정체)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">ALP 상승 시 어떤 영상·평가를 하는가?(권고 4-1 요약)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">ALP 상승 시 우상복부 초음파를 시행하고, 정상이면 간내 원인(PBC·PSC·약물유발간손상) 평가를 고려한다.</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">PBC(원발성담즙성담관염) 검사는?(권고 14)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">빌리루빈 상승 유무와 무관하게 ALP 상승 환자는 <strong>항미토콘드리아항체(AMA)</strong> 검사로 PBC를 평가한다(PBC 환자의 &gt;95%에서 양성).</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">PSC(원발성경화성담관염) 검사는?(권고 15)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">ALP 상승 환자는 <strong>MR담관조영술(MRCP) 또는 ERCP</strong> 및 IgG4 검사로 PSC를 평가한다.</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🫧</span> 담즙정체성 간질환 요점</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-adult">
+          <div class="gear-title">PBC</div>
+          간내 소엽담관 침범, 여성에 흔함, 피로·소양감. AMA 양성(&gt;95%)이 선별·진단의 표지. 간생검은 대개 불필요(AMA 음성/병기결정 시 유용)
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">PSC</div>
+          간내외 담관의 면역매개 염증·섬유화, 다발성 협착. 특이 혈청표지 없음(IgG·ANCA·IgG4 상승 가능). MRCP/ERCP로 진단. 염증성장질환(대장) 동반 흔함, 담관암·간세포암 위험 증가
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💡</span><div>입원환자의 고립성 ALP 상승 ~80%는 병력·진찰·기본검사·흉부X선만으로 진단 가능. 소아·임신(태반)·성장기에는 생리적으로 ALP가 상승한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> ALP 상승의 원인(Table 5, 발췌)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2">
+        <div class="gear-box gear-diag">
+          <div class="gear-title">간담도</div>
+          담관폐쇄(담관결석·악성폐쇄·협착·담관흡충), 담관감소증, AIDS담관병증, PBC·PSC, 약물유발간손상, 침윤성질환(육아종·결핵·아밀로이드·전이암·림프종), 간농양·간세포암, 바이러스간염, 간경변, 소실담관증후군, 허혈성담관병증, 알코올성간염, 임신간내담즙정체, 패혈증, 울혈성심부전, TPN, 이식거부
+        </div>
+        <div class="gear-box gear-tests">
+          <div class="gear-title">비간성</div>
+          골질환(골연화증·Paget병·골종양·골전이), 갑상선/부갑상선기능항진, 임신(3삼분기), 만성신부전, 림프종·간외악성종양, 울혈성심부전, 소아 성장, 감염·염증, 지방식후(O·B형 혈액형), 고령(특히 여성)
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /adult -->
+
+
+<!-- ══════════════════ TAB 4: 빌리루빈 ══════════════════ -->
+<div id="tab-child" class="panel">
+
+  <div class="alert alert-child"><span>🟡</span><div>총빌리루빈 상승 시 첫 단계는 <strong>직접(포합, conjugated/direct)·간접(비포합, unconjugated/indirect) 분획</strong>이다. 포합빌리루빈 상승은 대부분 간세포질환 또는 담관폐쇄를 시사한다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> 빌리루빈 상승 평가 알고리즘(Figure 5)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-tests">
+          <div class="gear-title">간접(비포합) 우세</div>
+          병력·진찰, 트랜스아미나제·ALP 확인, 약물 검토, 용혈 평가, Gilbert증후군 평가. 원인불명 지속 시 UGT1A1 유전자검사·Table 6 드문 원인 평가
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">직접(포합) 우세</div>
+          병력·진찰, 트랜스아미나제·ALP 확인, 약물 검토, 명백한 원인(패혈증·TPN·간경변·담관폐쇄) 평가, 우상복부 초음파. 담관확장(+)→ERCP/MRCP, (-)→AMA·ANA·SMA, 원인불명·증상·악화 시 간생검
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔵</span> 간접(비포합) 고빌리루빈혈증</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>원인: 빌리루빈 과잉생성(용혈), 간 섭취 감소, 간 포합 감소. 가장 흔한 원인은 <strong>Gilbert증후군</strong>(미국 인구 3-7%, UDP-글루쿠로닐전이효소 유전결함). 총빌리루빈이 6mg/dl을 거의 넘지 않고 보통 &lt;3mg/dl.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💡</span><div>무증상 건강인의 경도 간접고빌리루빈혈증(&lt;4mg/dl)에서 약물·용혈 배제 및 트랜스아미나제·ALP 정상이면 <strong>Gilbert증후군으로 추정 진단</strong> 가능하고 추가검사는 대개 불필요. 금식·질환은 간접빌리루빈을 2-3배 증가시킬 수 있다.</div></div>
+      <div>용혈 시: 감소된 합토글로빈, 증가된 망상적혈구·LDH. 그러나 용혈이 빌리루빈 &gt;5mg/dl을 유발하는 경우는 드묾(신·간질환/중증 급성용혈 동반 시 예외).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🟤</span> 직접(포합) 고빌리루빈혈증</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>간실질 손상 또는 담관폐쇄를 시사. 중증 간손상(알코올성간염+간경변, 진행 간경변+패혈증/신부전)에서 총빌리루빈 &gt;30mg/dl 가능. 대수술 후 고립성 고빌리루빈혈증은 대개 자연 호전.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>🧬</span><div><strong>Dubin-Johnson·Rotor 증후군</strong>: 직접빌리루빈이 총빌리루빈의 ~50%, 나머지 간검사(ALP·GGT 포함) 정상인 드문 유전질환. 두 질환의 감별은 임상적으로 불필요.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 빌리루빈 상승의 원인(Table 6, 발췌)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2">
+        <div class="gear-box gear-tests">
+          <div class="gear-title">간접(비포합) 상승</div>
+          Gilbert증후군, Crigler-Najjar증후군, 용혈(혈관내·외), 비효과적 조혈, 대량 혈종 흡수, 신생아황달, 갑상선기능항진, 약물, 수혈 후
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">직접(포합) 상승</div>
+          담관폐쇄(담관결석·악성·협착·흡충·AIDS담관병증), 바이러스/독성/알코올성 간염, 허혈성간염, 간경변, PBC·PSC, 침윤성질환(육아종·결핵·전이암·림프종), 간세포암, Wilson병(특히 전격형), 자가면역간염, 울혈간병증, 패혈증, TPN, 임신간내담즙정체, Dubin-Johnson·Rotor 증후군
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩸</span> 알부민·PT — 간기능의 진짜 지표</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>간질환이 없을 때 PT 연장은 대개 비타민K 결핍 및/또는 지방변에 의한다(담즙정체 시 비타민K 흡수장애로 응고인자 Ⅱ·Ⅶ·Ⅸ·Ⅹ 감소). PT는 와파린·헤파린볼루스·DIC·저체온에서도 연장될 수 있다. 빌리루빈은 지연 회복(delta bilirubin, 알부민과 결합·반감기 3주)으로 간염/폐쇄 회복기의 지속적 황달을 설명한다.</div>
+    </div>
+  </div>
+
+</div><!-- /child -->
+
+
+<!-- ══════════════════ TAB 5: 원인질환 ══════════════════ -->
+<div id="tab-tests" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🦠</span> 바이러스 간염 검사(권고 2-4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>간염</th><th>검사</th><th>고위험군</th></tr>
+        <tr><td>만성 C형</td><td>anti-HCV → HCV-RNA(핵산검사)로 확진</td><td>정맥/비강 약물사용, 문신, 피어싱, 수혈력, 고위험 성접촉, <strong>1945-1965년 출생 코호트</strong></td></tr>
+        <tr><td>만성 B형</td><td>HBsAg</td><td>유행지역 출생(HBsAg&gt;2%), MSM, 주사약물, 투석, HIV, 임신부, HBV감염자의 가족·성접촉자</td></tr>
+        <tr><td>급성 B형</td><td>HBsAg + IgM anti-HBc</td><td>—</td></tr>
+        <tr><td>급성 A형</td><td>IgM HAV (분변-구강 노출)</td><td>—</td></tr>
+        <tr><td>급성 E형</td><td>IgM HEV (유행지역 귀국자, A·B·C 음성 시)</td><td>—</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🍔</span> NAFLD·알코올성 간질환(권고 5-6)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-adult">
+          <div class="gear-title">NAFLD(권고 5)</div>
+          BMI 상승 + 대사증후군 특징(당뇨·과체중/비만·고지혈증·고혈압) + 경도 ALT 상승 → <strong>초음파로 NAFLD 선별</strong>. NASH는 배제진단(혈청검사로 NAFLD/NASH 감별 불가), 진단 확정에 간생검 필요. FibroScan으로 진행섬유화 비침습 평가 가능
+        </div>
+        <div class="gear-box gear-diag">
+          <div class="gear-title">알코올성(권고 6)</div>
+          여성 &gt;140g/주, 남성 &gt;210g/주 음주하며 AST&gt;ALT면 알코올성 간질환 위험군 → 금주 상담. AST:ALT ≥2:1(&gt;3:1이면 가능성 더 상승), AST/ALT는 대개 300 IU/l 미만
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 대사/유전·자가면역 질환(권고 7-10)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>유전성 혈색소증(권고 7)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">급성간염이 아닌 모든 이상 간검사에서 철·트랜스페린포화도·페리틴 검사. 트랜스페린포화도 ≥45% 및/또는 페리틴 상승 시 HFE 유전자(C282Y) 분석. 페리틴은 급성기반응물질임에 주의</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>자가면역 간질환(권고 8)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">특히 다른 자가면역질환 동반 시 ANA·ASMA·글로불린 검사. 여성:남성 4:1, 진단 확정에 간생검 필요</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>Wilson병(권고 9)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">지속 상승, 특히 &lt;55세에서 세룰로플라스민 선별. 낮으면 24시간 소변구리·세극등검사(Kayser-Fleischer 고리) 확인. ~1:30,000, ATP7B 결함</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>알파-1 항트립신 결핍(권고 10)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">지속 상승 시 알파-1 항트립신 표현형 검사(PiZZ). 소아 간질환의 가장 흔한 유전원인, 성인은 드묾</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">약물유발간손상(DILI) 평가는?(권고 11)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">처방약·OTC·비처방 보완대체의학·식이/한약 보충제에 대해 반드시 문진한다. 항생제·항간질약·NSAID·스타틴·항결핵제·항HIV제·생물학제제(항TNF)·일부 항암제가 대표적. 스타틴은 만성간질환에서도 안전성이 광범위하게 입증되어 간독성은 드묾.</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-q">간생검은 언제 고려하는가?(권고 12)</div>
+    <div class="rec-body">
+      <div class="rec-sym rec-strong">강함</div>
+      <div class="rec-text">혈청검사·영상으로 진단이 명확하지 않거나, 병기 결정이 필요하거나, 여러 진단이 가능한 경우 간생검을 고려한다.</div>
+      <div class="rec-meta">매우 낮은 근거</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔎</span> 드문 원인(비간성 등)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="padding-left:18px;line-height:1.85">
+        <li><strong>셀리악병</strong>: 조직트랜스글루타미나제 IgA + 혈청 IgA(또는 anti-DGP IgG)로 선별</li>
+        <li><strong>근육질환</strong>(선천/후천, 외상·격렬한 운동): AST 우세 상승 — CK/알돌라제로 선별</li>
+        <li><strong>갑상선질환</strong>(갑상선기능저하·항진): TSH, 선택적 free T4·T3</li>
+        <li><strong>임신 간질환</strong>: 담석증, 임신간내담즙정체, 임신급성지방간, 전자간증 — 삼분기별 고려</li>
+        <li><strong>진드기매개질환</strong>(Lyme·바베시아·에를리키아): 유행지역 노출력 시 특이검사</li>
+      </ul>
+      <div class="alert alert-info" style="margin-top:8px"><span>🔗</span><div>약물·보충제 간독성 확인에 유용한 자료: livertox.nih.gov. 간독성 한약보충제 예: chaparral, ephedra, jin bu huan, germander, green tea extract, shark cartilage.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🫆</span> 신체진찰 소견 단서</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>소견</th><th>시사 질환</th></tr>
+        <tr><td>거미혈관종·수장홍반·여성형유방·복벽정맥류</td><td>말기 간질환·문맥압항진</td></tr>
+        <tr><td>Dupuytren 구축·이하선 비대·고환위축</td><td>알코올성 간질환</td></tr>
+        <tr><td>Kayser-Fleischer 고리(+신경증상)</td><td>Wilson병</td></tr>
+        <tr><td>피부 청동색 색소침착</td><td>유전성 혈색소증</td></tr>
+        <tr><td>양측 폐저부 호흡음 감소</td><td>알파-1 항트립신결핍(간성 흉수)</td></tr>
+        <tr><td>결절성 간종대</td><td>악성종양</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /tests -->
+
+
+<!-- ══════════════════ TAB 6: 약어·출처 ══════════════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔠</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 원문 출처</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Kwo PY, Cohen SM, Lim JK. ACG Clinical Guideline: Evaluation of Abnormal Liver Chemistries. <em>Am J Gastroenterol.</em> 2017;112:18-35. doi:10.1038/ajg.2016.517 (2016년 12월 20일 온라인 게재). American College of Gastroenterology Practice Parameters Committee 협력.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"ALT", def:"Alanine Aminotransferase — 알라닌아미노전이효소(간세포손상에 가장 특이적)" },
+  { term:"AST", def:"Aspartate Aminotransferase — 아스파르테이트아미노전이효소" },
+  { term:"ALP", def:"Alkaline Phosphatase — 알칼리인산분해효소" },
+  { term:"GGT", def:"Gamma-Glutamyl Transferase — 감마글루타밀전이효소" },
+  { term:"ULN", def:"Upper Limit of Normal — 정상상한" },
+  { term:"TB", def:"Total Bilirubin — 총빌리루빈" },
+  { term:"PT / INR", def:"Prothrombin Time / International Normalized Ratio" },
+  { term:"DILI", def:"Drug-Induced Liver Injury — 약물유발간손상" },
+  { term:"NAFLD", def:"Non-Alcoholic Fatty Liver Disease — 비알코올성지방간질환" },
+  { term:"NASH", def:"Non-Alcoholic Steatohepatitis — 비알코올성지방간염" },
+  { term:"HAV / HBV / HCV / HEV", def:"A/B/C/E형 간염 바이러스" },
+  { term:"HBsAg", def:"Hepatitis B Surface Antigen — B형간염 표면항원" },
+  { term:"HBcAb", def:"Hepatitis B Core Antibody — B형간염 core 항체" },
+  { term:"HBsAb", def:"Hepatitis B Surface Antibody — 표면항체(면역)" },
+  { term:"ANA", def:"Anti-Nuclear Antibody — 항핵항체" },
+  { term:"ASMA / SMA", def:"Anti-Smooth Muscle Antibody — 항평활근항체" },
+  { term:"Anti-LKM", def:"Anti-Liver Kidney Microsomal antibody" },
+  { term:"AMA", def:"Anti-Mitochondrial Antibody — 항미토콘드리아항체(PBC 표지)" },
+  { term:"PBC", def:"Primary Biliary Cholangitis — 원발성담즙성담관염(구 담즙성간경변)" },
+  { term:"PSC", def:"Primary Sclerosing Cholangitis — 원발성경화성담관염" },
+  { term:"HFE", def:"유전성 혈색소증 관련 유전자(C282Y·H63D 변이)" },
+  { term:"A1AT", def:"Alpha-1 Anti-Trypsin — 알파-1 항트립신(PiZZ)" },
+  { term:"AIH", def:"Autoimmune Hepatitis — 자가면역간염" },
+  { term:"MRCP", def:"Magnetic Resonance Cholangiopancreatography — 자기공명담췌관조영술" },
+  { term:"ERCP", def:"Endoscopic Retrograde Cholangiopancreatography — 내시경역행담췌관조영술" },
+  { term:"R ratio", def:"(ALT/ULN)÷(ALP/ULN) — >5 간세포성, <2 담즙정체성, 2-5 혼합형" },
+  { term:"BMI", def:"Body Mass Index — 체질량지수(ALT와 선형관계)" },
+  { term:"TPN", def:"Total Parenteral Nutrition — 총정맥영양" },
+  { term:"HELLP", def:"Hemolysis, Elevated Liver tests, Low Platelets 증후군" },
+  { term:"VOD / SOS", def:"Veno-Occlusive Disease / Sinusoidal Obstruction Syndrome — 정맥폐쇄병/동양혈관폐쇄증후군" },
+  { term:"UGT1A1", def:"UDP-glucuronosyltransferase 1A1 — Gilbert증후군 관련 유전자" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

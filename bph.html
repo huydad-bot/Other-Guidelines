@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPH/LUTS 진료지침 (AUA, 2026)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --eval:     #0e7490;  /* 평가 — 시안 */
+    --life:     #15803d;  /* 비수술적치료 — 그린 */
+    --med:      #7c2d92;  /* 약물치료 — 퍼플 */
+    --proc:     #a16207;  /* 시술적치료 — 브라운골드 */
+    --special:  #be185d;  /* 특수상황 — 로즈 */
+    --future:   #0f766e;  /* 향후방향 — 틸 */
+    --tools:    #4b5563;  /* 약어/근거등급 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--special);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--proc);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--life);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:19px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 9px; font-size: calc(11.5px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(18px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-eval{background:#cffafe;border-left:3px solid var(--eval);color:#155e75;}
+  .alert-life{background:#dcfce7;border-left:3px solid var(--life);color:#15803d;}
+  .alert-med{background:#f3e8ff;border-left:3px solid var(--med);color:#7c2d92;}
+  .alert-proc{background:#fef3c7;border-left:3px solid var(--proc);color:#a16207;}
+  .alert-special{background:#fce7f3;border-left:3px solid var(--special);color:#9d174d;}
+  .alert-future{background:#ccfbf1;border-left:3px solid var(--future);color:#0f766e;}
+  .alert-tools{background:#f1f5f9;border-left:3px solid var(--tools);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .rs{background:#1d4ed8;color:#fff;font-weight:700;text-align:center;}
+  .rm{background:#93c5fd;color:#1e3a8a;font-weight:700;text-align:center;}
+  .rc{background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center;}
+  .cp{background:#e2e8f0;color:#334155;font-weight:700;text-align:center;}
+  .eo{background:#f1f5f9;color:#475569;font-weight:700;text-align:center;font-style:italic;}
+  .qa{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .qb{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .qc{background:#ffd8a8;color:#7d3b00;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .pico{display:inline-block;padding:2px 8px;border-radius:12px;font-size:calc(10px * var(--fscale,1));font-weight:700;margin-right:6px;color:#fff;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .stage-timeline{display:flex;align-items:stretch;gap:0;margin:10px 0;overflow-x:auto;}
+  .stage-box{flex:1;min-width:120px;padding:10px 10px 12px;border-right:2px solid var(--bg);text-align:center;cursor:pointer;}
+  .stage-box:last-child{border-right:none;}
+  .stage-box .st-num{font-size:calc(14px * var(--fscale,1));font-weight:800;margin-bottom:4px;}
+  .stage-box .st-lbl{font-size:calc(10px * var(--fscale,1));line-height:1.4;}
+  .gear-row{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;}
+  .gear-box{flex:1;min-width:140px;border-radius:6px;padding:10px 12px;font-size:calc(12px * var(--fscale,1));}
+  .gear-title{font-weight:700;font-size:calc(13px * var(--fscale,1));margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>B</span><span>P</span><span>H</span></div>
+      <h1>BPH/LUTS 진료지침 (AUA, 2026)</h1>
+    </div>
+    <div class="meta-line">
+      American Urological Association · J Urol. 2026;216:143-170 (Part I-III) · Clinical Principle / Expert Opinion / GRADE 방식 혼합
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 원문 요약·재구성본으로, 학회의 공식 승인을 받지 않음</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('eval')">🔍 평가</div>
+    <div class="tab" onclick="showTab('life')">🥗 비수술적치료</div>
+    <div class="tab" onclick="showTab('med')">💊 약물치료</div>
+    <div class="tab" onclick="showTab('proc')">🔪 시술적치료</div>
+    <div class="tab" onclick="showTab('special')">🩺 특수상황</div>
+    <div class="tab" onclick="showTab('future')">🔮 향후방향</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·근거등급</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">3부작</div><div class="stat-lbl">Part I 평가 · Part II 약물<br>Part III 시술 (2026)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--eval)">≥40세</div><div class="stat-lbl">지침의<br>기준 환자(index patient)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--life)">30-40%</div><div class="stat-lbl">알파차단제의<br>IPSS 감소율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--proc)">A/B/C</div><div class="stat-lbl">근거등급<br>(Strong/Moderate/Conditional)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 지침 개관</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>본 지침은 하부요로증상(LUTS)과 이를 유발하는 전립선비대증(BPH)의 평가 및 치료를 다룬다. 2025년 1월까지의 Ovid MEDLINE·Cochrane 문헌을 바탕으로 하며, 약물치료 연구는 2009년 이후, 수술적 연구는 2014년 이후로 제한했다. <strong>공유의사결정(shared decision-making)</strong>이 치료 개시·단계전환의 전 과정에서 핵심 원칙으로 강조된다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>파트</th><th>내용</th></tr>
+        <tr><td>Part I — 제시 및 평가</td><td>초기평가, 표준화 증상점수, PSA·PVR·요류검사·요역동학검사, 추적평가, 시술 전 검사</td></tr>
+        <tr><td>Part II — 약물치료</td><td>알파차단제, PDE-5억제제, 5-ARI, 병합요법, 항콜린제·베타3작용제, 전립선암 감시 병행 시 주의점</td></tr>
+        <tr><td>Part III — 시술적/수술적 치료</td><td>TURP, 레이저 적출술(HoLEP/ThuLEP), PUL, WVTT, RWT, PAE 등 다양한 최소침습기술과 적응증</td></tr>
+      </table>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🎯</span><div>기준 환자(index patient)는 <strong>LUTS/BPH로 내원하는 40세 이상 남성</strong>이다. 배뇨증상(voiding LUTS) 동반 없이 저장증상·야간뇨만 있는 경우는 전형적인 BPH 양상이 아니라는 점에 유의한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 표준화 증상점수(IPSS/AUA-SI)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>국제전립선증상점수(IPSS)는 LUTS/BPH의 역사적 표준 설문도구이다. 미국비뇨의학회 증상지수/점수(AUA-SI/AUA-SS)와 IPSS는 <strong>동일한 7개 문항(0-35점)</strong>을 공유하며 문헌에서 혼용되나, IPSS에는 별도로 채점되는 삶의 질(고통도) 문항이 추가로 포함된다.</div>
+      <div style="margin-top:8px">지난 한 달간의 배뇨상태를 기준으로 각 문항을 <strong>0점(전혀 없음)~5점(거의 항상)</strong>으로 채점한다. 마지막 잔뇨감·빈뇨·단절뇨·요절박·세뇨·복압배뇨 6개 문항은 "5회 중 몇 번" 빈도를, 야간뇨 문항만 실제 횟수를 묻는다.</div>
+      <div style="overflow-x:auto">
+      <table class="tbl" style="margin-top:8px;min-width:640px">
+        <tr><th>#</th><th>구분</th><th>문항 (지난 한 달간)</th><th>0점</th><th>1점</th><th>2점</th><th>3점</th><th>4점</th><th>5점</th></tr>
+        <tr><td>1</td><td>배뇨</td><td>배뇨 후에도 소변이 남아있는 느낌(잔뇨감)이 있었습니까?</td><td>전혀없음</td><td>5회중1회이하</td><td>1회미만</td><td>절반정도</td><td>1회초과</td><td>거의항상</td></tr>
+        <tr><td>2</td><td>저장</td><td>배뇨 후 2시간 이내에 다시 소변을 보고 싶었던 적이 있습니까?(빈뇨)</td><td>전혀없음</td><td>5회중1회이하</td><td>1회미만</td><td>절반정도</td><td>1회초과</td><td>거의항상</td></tr>
+        <tr><td>3</td><td>배뇨</td><td>소변을 보는 도중에 소변줄기가 끊겼다가 다시 나온 적이 있습니까?(단절뇨)</td><td>전혀없음</td><td>5회중1회이하</td><td>1회미만</td><td>절반정도</td><td>1회초과</td><td>거의항상</td></tr>
+        <tr><td>4</td><td>저장</td><td>소변을 참기 어려웠던 적이 있습니까?(요절박)</td><td>전혀없음</td><td>5회중1회이하</td><td>1회미만</td><td>절반정도</td><td>1회초과</td><td>거의항상</td></tr>
+        <tr><td>5</td><td>배뇨</td><td>소변 줄기가 약하다고 느낀 적이 있습니까?(세뇨)</td><td>전혀없음</td><td>5회중1회이하</td><td>1회미만</td><td>절반정도</td><td>1회초과</td><td>거의항상</td></tr>
+        <tr><td>6</td><td>배뇨</td><td>소변을 볼 때 배에 힘을 주어야 했던 적이 있습니까?(복압배뇨)</td><td>전혀없음</td><td>5회중1회이하</td><td>1회미만</td><td>절반정도</td><td>1회초과</td><td>거의항상</td></tr>
+        <tr><td>7</td><td>저장</td><td>잠자리에 든 후 아침에 일어날 때까지 몇 번이나 일어나 소변을 보았습니까?(야간뇨)</td><td>0회</td><td>1회</td><td>2회</td><td>3회</td><td>4회</td><td>5회이상</td></tr>
+      </table>
+      </div>
+      <div style="margin-top:8px">7개 문항 합산 점수(0-35점)로 중증도를 분류한다:</div>
+      <table class="tbl" style="margin-top:6px">
+        <tr><th>총점</th><th>중증도</th></tr>
+        <tr><td>0-7점</td><td>경증(mild)</td></tr>
+        <tr><td>8-19점</td><td>중등증(moderate)</td></tr>
+        <tr><td>20-35점</td><td>중증(severe)</td></tr>
+      </table>
+      <div class="alert alert-overview" style="margin-top:8px"><span>➕</span><div>IPSS는 위 7개 문항에 더해 8번째로 <strong>삶의 질(quality of life) 문항</strong> — "현재의 배뇨상태가 평생 지속된다면 어떻게 느끼겠습니까?"를 별도로 묻는다. 0점(매우 만족)부터 6점(매우 나쁨)까지 채점하며 총점(0-35점)에는 합산하지 않는다. AUA-SI/AUA-SS는 이 8번째 문항 없이 동일한 7개 증상 문항만으로 구성된다는 점이 IPSS와의 주된 차이다.</div></div>
+      <div style="margin-top:8px">임상에서는 <strong>총점(증상 중증도)과 삶의 질 문항(주관적 고통도)을 함께 평가</strong>하여 치료 필요성과 치료 반응을 판단한다 — 동일한 총점이라도 삶의 질 점수가 높은(고통이 큰) 환자는 더 적극적인 치료가 필요할 수 있다. 카테터 의존 환자에게는 적용할 수 없으며, 저장증상이나 고립성 야간뇨가 주소인 경우 배뇨일지 등 추가평가가 권고된다.</div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 평가 ══════════ -->
+<div id="tab-eval" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📋</span> 초기평가</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>초기평가에서 병력청취, 신체검진, 표준화 증상점수, <strong>요검사</strong>를 시행한다</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>공유의사결정 후 PSA를 얻을 수 있다 (이전 1년 내 PSA 없음 + 요검사 감염 없음 + 80세 미만 시)</td><td><span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>배뇨후잔뇨(PVR) 및/또는 요류검사를 요저류 평가나 타 질환 배제 목적으로 시행할 수 있다</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>진단 불확실 시 침습적/비침습적 압력요류검사(요역동학검사, UDS)를 시행할 수 있다</td><td><span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>LUTS 진행·요저류 위험인자를 안내하고, 교정 가능한 인자를 다루며, 비가역적 위험인자가 많은 환자는 치료를 고려한다</td><td><span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>행동/생활습관교정, 약물치료, 시술적 치료 등 치료 옵션을 상담한다</td><td><span class="stage cp">임상원칙</span></td></tr>
+      </table>
+      <div class="alert alert-eval" style="margin-top:8px"><span>🩺</span><div>BPH 치료의 <strong>절대적 적응증</strong>: 방광결석, 상부요로 악화(폐색성요로병증), 재발성·의미있는 육안적혈뇨, 요저류, 재발성 요로감염. 다른 원인이 없는 급성요저류(AUR) 또는 반복 도뇨가 필요한 재발성 AUR도 적응증에 해당한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>⚠️</span> LUTS 진행 위험인자</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>구분</th><th>인자</th></tr>
+        <tr><td>비가역적(fixed)</td><td>인종(흑인·히스패닉계 위험 증가), 고령(가장 강력한 인자 — Olmsted County 연구: 연평균 IPSS 0.18점 증가, 40대 0.05점/년→60대 0.44점/년)</td></tr>
+        <tr><td>교정 가능(modifiable)</td><td>전립선용적, 전립선 형태(IPP≥10mm), Qmax, 체중(BMI·TyG-BMI 상승), 식이, 운동부족(주 2-3시간 걷기로 BPH 위험 25%↓), 변비</td></tr>
+        <tr><td>노쇠(frailty)</td><td>표현형적 노쇠가 클수록 연령·동반질환과 무관하게 LUTS 중증도가 비선형적으로 증가. TUGT(Timed-Up-and-Go Test), 전자노쇠지수(eFI)로 평가 가능</td></tr>
+      </table>
+      <div>PSA와 전립선용적은 밀접히 연관되며, <strong>기저 PSA와 전립선용적이 AUR 발생의 주요 예측인자</strong>이다. 방광 내 전립선돌출(IPP)≥10mm는 치료저항성·AUR·전립선수술 필요성 증가와 연관된다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔄</span> 추적평가</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>치료 시작 <strong>6개월 이내</strong> 재평가(표준화 증상점수·이상반응 평가 포함)를 시행한다</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>정기 추적 시 PVR 및/또는 요류검사를 제공할 수 있다</td><td><span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>추적 중 LUTS/BPH 악화 시 UDS 및/또는 방광경검사를 제공할 수 있다</td><td><span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>치료 반응이 없으면 <strong>대체 진단을 재검토</strong>하고/하거나 대체 치료경로를 권고한다</td><td><span class="stage cp">임상원칙</span></td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>🚩</span><div>PVR 악화, 요실금, 재발성 요로감염·결석, 신기능 저하 등은 조기 재평가가 필요한 경고증상(red flag)이다. 초치료 무반응 시 Qmax 지속 상승+낮은 PVR, 작은 전립선(&lt;30cc)·낮은 PSA, LUTS 유발약물/동반질환, 다중이환·노쇠·다약제, 야간뇨/저장증상 우세 등의 소견이 있으면 <strong>일차성 방광기능장애 등 대체진단을 우선 고려</strong>해야 한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔬</span> 시술 전 검사</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>시술 전 PVR을 확인한다</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>영상검사로 전립선의 용적·형태를 평가한다(경복부초음파·TRUS·CT·MRI 중 선택, DRE 단독은 신뢰도 낮음)</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>방광경검사를 시행할 수 있다(혈뇨·요로상피암 의심·요도협착 의심 시 특히 유용, 중엽 폐색 평가에 PPV 94%)</td><td><span class="stage cp">임상원칙</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /eval -->
+
+
+<!-- ══════════ TAB 3: 비수술적치료 ══════════ -->
+<div id="tab-life" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥗</span> 행동/생활습관 교정</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-life"><span>✅</span><div>약물치료 시작 전 또는 병행하여 <strong>행동/생활습관 중재</strong>를 제공한다 <span class="stage rm">중등도권고</span> <span class="stage qb">근거등급B</span>. 4개의 RCT 모두 대조군 대비 IPSS·삶의 질에서 완만한 개선을 보였다. 야간뇨가 가장 불편한 환자는 알파차단제 단독보다 행동중재에 더 잘 반응할 수 있다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>구분</th><th>생활습관 교정 항목</th></tr>
+        <tr><td>전반적 비뇨기 건강</td><td>적정체중 유지, 유산소·저항운동(코어 포함), 금연, 저염 건강식, 혈압·콜레스테롤·혈당 관리, 변비 예방, 스트레스·기분장애 관리</td></tr>
+        <tr><td>저장증상 우세</td><td>배뇨일지 작성, 이중배뇨, 시간제배뇨(2-3시간마다), 방광재훈련·요절박억제기법, 방광자극물질(카페인·알코올·감미료 등) 회피, 골반물리치료, 저녁 수분제한</td></tr>
+        <tr><td>배뇨증상 우세</td><td>배뇨 시 골반저 이완, 배뇨 후 요도 짜내기(post-void dribbling 예방)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🚨</span> 급성요저류(AUR) 관리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>교정 가능한 위험인자 관리와 함께, 배뇨시도(voiding trial) 전 최소 3일간 <strong>요선택적 알파차단제</strong>를 처방한다</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>도뇨없는 배뇨시도(TWOC)에 성공한 환자에게 <strong>재발 위험이 높음</strong>을 안내한다</td><td><span class="stage cp">임상원칙</span></td></tr>
+      </table>
+      <div>메타분석에서 알파차단제군의 TWOC 성공률은 <strong>60.2% vs 위약군 38.1%</strong>였다. MTOPS 연구는 독사조신+피나스테리드 병합요법 및 피나스테리드 단독요법이 AUR과 수술 필요성 위험을 유의하게 감소시켰으나(독사조신 단독은 아님) 보여주었다.</div>
+    </div>
+  </div>
+
+</div><!-- /life -->
+
+
+<!-- ══════════ TAB 4: 약물치료 ══════════ -->
+<div id="tab-med" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 알파차단제(AB)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-med"><span>✅</span><div><strong>알푸조신, 실로도신, 탐수로신</strong> 중 하나를 요선택적 알파차단제로 제공한다 <span class="stage rs">강한권고</span> <span class="stage qa">근거등급A</span>. IPSS를 30-40% 감소시키고 Qmax를 20-25% 증가시킨다. 빠른 발현·양호한 효과·낮은 중대이상반응으로 1차 치료로 간주된다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>비교</th><th>결과</th></tr>
+        <tr><td>실로도신 vs 알푸조신</td><td>RCT 간 결과 혼재(각각 우위 보고), 삶의질·이상반응 탈락률 차이 없음</td></tr>
+        <tr><td>실로도신 vs 탐수로신</td><td>LUTS 개선은 유사, 실로도신이 삶의질 개선 우세하나 이상반응 탈락률도 높음</td></tr>
+        <tr><td>알푸조신 vs 탐수로신</td><td>LUTS·탈락률 차이 없으나 12주째 삶의질은 알푸조신 우위</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>👁️</span><div>백내장수술 예정 환자는 <strong>수술중 홍채이완증후군(IFIS)</strong> 위험을 상담하고 안과의와 논의하도록 안내한다 <span class="stage cp">임상원칙</span>. 탐수로신이 위험이 가장 높고 테라조신·독사조신도 관련되며, 알푸조신은 위험이 적고 실로도신은 아직 연구되지 않았다. 증상성 LUTS/BPH와 백내장이 모두 있는 환자는 <strong>알파차단제 시작 전 백내장수술을 먼저 시행</strong>할 것을 권고한다.</div></div>
+      <div>이상반응 프로파일에 따라 환자별로 선택한다 <span class="stage cp">임상원칙</span>. 사정기능 저하 우려가 있는 젊은 남성은 알푸조신(이상사정 0%, 탐수로신·실로도신 3-10%)이 선호되며, 심혈관위험이 있는 고령 남성은 기립성저혈압 위험이 낮은 실로도신이 선호된다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💙</span> PDE-5억제제</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-med"><span>✅</span><div>발기부전 동반 여부와 무관하게 <strong>타다라필 5mg 매일 복용</strong>을 제공한다 <span class="stage rm">중등도권고</span> <span class="stage qb">근거등급B</span>. IIEF 개선과 함께 IPSS·저장/배뇨증상·삶의 질을 개선시키나 Qmax는 위약과 유의한 차이가 없다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 5-알파환원효소억제제(5-ARI)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>전립선용적&gt;30cc 및/또는 PSA&gt;1.5ng/mL인 환자에서 증상완화 목적으로 5-ARI를 제공한다</td><td><span class="stage rm">중등도권고</span> <span class="stage qa">근거등급A</span></td></tr>
+        <tr><td>같은 조건에서 임상적 BPH 진행(증상악화·AUR·수술필요성) 위험감소 목적으로 제공할 수 있다</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>이상반응 위험과 전립선암 진단에 미치는 영향을 상담한다</td><td><span class="stage rm">중등도권고</span> <span class="stage qc">근거등급C</span></td></tr>
+      </table>
+      <div>피나스테리드·두타스테리드는 <strong>12·24개월 후 전립선용적을 17.9-21% 감소</strong>시키며, 대규모 위약대조시험에서 수술 필요성 55%·AUR 발생 57% 감소를 보였다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div><strong>이상반응</strong>: 성기능(리비도·발기·사정기능 점진적 저하), 여성형유방(두타스테리드군 1.9% vs 1.0%), 우울증 위험 증가 보고(자살위험 증가는 아님). 후피나스테리드증후군(PFS)은 RCT 이상반응 보고에서 입증되지 않았으나 FDA는 라벨에 경고를 추가했다. <strong>전립선암 진단</strong>: PCPT·REDUCE 시험 모두 전체 암 발생은 감소시켰으나 고등급암(Gleason≥8) 비율은 증가시켜 2011년 FDA 블랙박스 경고가 추가되었다 — 다만 PCPT 18년 추적에서 전체생존율 차이는 없었다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔗</span> 병합요법</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>병합</th><th>권고</th><th>등급</th></tr>
+        <tr><td>5-ARI + 알파차단제</td><td>전립선용적&gt;30cc 및/또는 PSA&gt;1.5ng/mL 환자에서 제공</td><td><span class="stage rm">중등도권고</span> <span class="stage qb">근거등급B</span></td></tr>
+        <tr><td>타다라필5mg + 요선택적 알파차단제</td><td>ED 동반 여부 무관하게 제공 가능</td><td><span class="stage rc">조건부권고</span> <span class="stage qc">근거등급C</span></td></tr>
+        <tr><td>타다라필5mg + 5-ARI</td><td>전립선용적&gt;30cc 및/또는 PSA&gt;1.5ng/mL 환자에서 제공 가능</td><td><span class="stage rc">조건부권고</span> <span class="stage qc">근거등급C</span></td></tr>
+        <tr><td>항콜린제 ± 알파차단제</td><td>중등도-중증 저장증상 우세 환자에서 제공 가능</td><td><span class="stage rc">조건부권고</span> <span class="stage qc">근거등급C</span></td></tr>
+        <tr><td>베타3작용제 ± 알파차단제</td><td>중등도-중증 저장증상 우세 환자에서 제공 가능</td><td><span class="stage rc">조건부권고</span> <span class="stage qc">근거등급C</span></td></tr>
+      </table>
+      <div class="alert alert-med" style="margin-top:8px"><span>📊</span><div><strong>MTOPS</strong>: 병합요법(독사조신+피나스테리드)이 AUR 위험 81% 감소, 수술필요성 약 67% 감소. <strong>CombAT</strong>: 두타스테리드+탐수로신 병합이 탐수로신 단독보다 우수, 두타스테리드 단독과는 큰 차이 없음(임상결과는 병합이 다소 유리). <strong>CONDUCT</strong>: 즉시 병합요법이 관찰대기+지연 탐수로신보다 IPSS·진행률 개선, 단 ED·사정장애 관련 탈락 증가.</div></div>
+      <div>지속적 저장증상은 약물치료보다 <strong>행동/생활습관 중재를 추가</strong>해야 한다 <span class="stage eo">전문가의견</span> — MOTIVE·COBALT 시험에서 행동중재가 항콜린제 단독보다 우수하거나 대등했다.</div>
+    </div>
+  </div>
+
+</div><!-- /med -->
+
+
+<!-- ══════════ TAB 5: 시술적치료 ══════════ -->
+<div id="tab-proc" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> 시술 일반원칙</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>신부전, 불응성 요저류, 재발성 요로감염·방광결석·육안혈뇨, 타 치료에 불응 또는 원치 않는 LUTS/BPH는 시술 적응증이다 <span class="stage cp">임상원칙</span>. <strong>무증상 방광게실만으로는 수술 적응증이 아니다</strong> <span class="stage cp">임상원칙</span>. 사정·발기·오르가즘 기능 변화 가능성을 상담하고 <span class="stage cp">임상원칙</span>, BPH 특이적 재치료율을 논의한다 <span class="stage rm">중등도권고</span> <span class="stage qb">근거등급B</span>. 시술 후 최소 1년간 추적평가한다 <span class="stage cp">임상원칙</span>.</div>
+      <div class="alert alert-proc" style="margin-top:8px"><span>⚖️</span><div><strong>사정보존형 시술(PUL·WVTT·RWT 등)</strong>은 역행성사정 위험이 낮지만, 조직을 보존하는 특성상 <strong>BPH 특이적 재치료 위험이 더 높다</strong>는 상충관계(trade-off)를 설명해야 한다 <span class="stage eo">전문가의견</span>.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔪</span> 시술별 권고 요약</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>시술</th><th>적응증(전립선용적 등)</th><th>권고·등급</th></tr>
+        <tr><td>B-TURP / M-TURP</td><td>표준 시술, 용적 제한 없음</td><td><span class="stage rs">강한권고</span> <span class="stage qa">A</span></td></tr>
+        <tr><td>TUIP</td><td>&lt;30cc, 중엽 없음</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>PVP(광선택적기화술)</td><td>용적 제한 없음, 고출력(120/180W) 권장</td><td><span class="stage rs">강한권고</span> <span class="stage qb">B</span></td></tr>
+        <tr><td>TUVP</td><td>B-TURP와 유사 결과</td><td><span class="stage cp">임상원칙</span></td></tr>
+        <tr><td>HoLEP / ThuLEP(레이저 적출술)</td><td>용적 제한 없음, 최고 수준 장기 근거</td><td><span class="stage rs">강한권고</span> <span class="stage qa">A</span></td></tr>
+        <tr><td>기타 경요도 적출기술</td><td>양극성·다이오드레이저 등</td><td><span class="stage rc">조건부권고</span> <span class="stage qc">C</span></td></tr>
+        <tr><td>단순전립선절제술(개복/복강경/로봇)</td><td>&gt;80cc</td><td><span class="stage rm">중등도권고</span> <span class="stage qb">B</span></td></tr>
+        <tr><td>PUL(요도거상술)</td><td>30-80cc, 중엽폐색 없음(FDA는 100cc·중엽까지 확대승인)</td><td><span class="stage rm">중등도권고</span> <span class="stage qb">B</span></td></tr>
+        <tr><td>WVTT(수증기 열치료, Rezum)</td><td>30-80cc(최대 150cc까지 근거 확대)</td><td><span class="stage rm">중등도권고</span> <span class="stage qb">B</span></td></tr>
+        <tr><td>RWT(로봇 워터젯, Aquablation)</td><td>30-80cc / 80-150cc는 전문가의견</td><td><span class="stage rm">중등도권고</span> <span class="stage qb">B</span> / <span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>TIPD(임시삽입 전립선기구, iTind)</td><td>25-75cc, 중엽폐색 없음</td><td><span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>IPDCB(약물코팅풍선)</td><td>20-80cc, 요도길이 32-55mm, 중엽 없음</td><td><span class="stage rc">조건부권고</span> <span class="stage qc">C</span></td></tr>
+        <tr><td>PAE(전립선동맥색전술)</td><td>≥50cc, 입자색전물 사용</td><td><span class="stage rc">조건부권고</span> <span class="stage qb">B</span></td></tr>
+        <tr><td>HIFU/냉동소작술</td><td>임상시험 밖에서는 <strong>권고하지 않음</strong></td><td><span class="stage eo">전문가의견</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📊</span> 주요 시술 핵심 근거</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="gear-row">
+        <div class="gear-box" style="background:#fef3c7;border:1.5px solid var(--proc);color:#78350f"><div class="gear-title">HoLEP/ThuLEP</div>가장 견고한 장기 유효성·내구성·안전성 데이터 보유. 학습곡선이 가파르며 시행 여부는 술자 숙련도·장비 가용성에 따라 결정</div>
+        <div class="gear-box" style="background:#dcfce7;border:1.5px solid var(--life);color:#14532d"><div class="gear-title">PUL(요도거상술)</div>L.I.F.T. 연구(n=206)에서 가짜시술 대비 IPSS·Qmax·삶의질 개선 우수. <strong>영구 tine 삽입</strong>으로 향후 시술·mpMRI 판독에 영향(40%에서 화질 저하) — 시술 전 상담 필수</div>
+        <div class="gear-box" style="background:#f3e8ff;border:1.5px solid var(--med);color:#581c87"><div class="gear-title">RWT(Aquablation)</div>WATER 연구: TURP 대비 유사한 IPSS 개선이나 6개월째 <strong>무사정 10% vs TURP 36%</strong>(P=.0003). WATER II(80-150cc)에서도 durable 개선</div>
+        <div class="gear-box" style="background:#fce7f3;border:1.5px solid var(--special);color:#831843"><div class="gear-title">PAE</div>TURP 대비 IPSS 개선은 유사하나 <strong>재치료율이 더 높음</strong>. &gt;80cc 환자에서 개복단순전립선절제술과 비교 시 기능적 결과(Qmax·UDS)는 OSP가 우수. 유일하게 방사선 노출이 있는 시술</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /proc -->
+
+
+<!-- ══════════ TAB 6: 특수상황 ══════════ -->
+<div id="tab-special" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🎗️</span> 전립선암 능동감시 병행 환자</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>능동감시 중인 환자에게 5-ARI가 전립선암 진행 위험을 높이지 않는다고 상담한다</td><td><span class="stage eo">전문가의견</span></td></tr>
+        <tr><td>능동감시 중 증상성 LUTS/BPH에 시술적 치료를 제공할 수 있다</td><td><span class="stage eo">전문가의견</span></td></tr>
+      </table>
+      <div>절제형 시술(TURP·단순전립선절제술·AEEP·RWT·PVP)은 PSA를 더 크게 낮추고 병리조직 검체를 얻어 암치료 방침에 영향을 줄 수 있다. 그 외 최소침습시술(PUL·WVTT·TIPD·PAE·IPDCB)의 PSA·암치료에 대한 영향은 아직 잘 규명되지 않았다. 5-ARI가 PSA 동태를 변화시킨다는 점은 감시 중 고려해야 한다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩸</span> 출혈고위험/항혈전제 복용 환자</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>항응고제/항혈소판제(AC/AP)를 복용 중이거나 출혈위험이 높은 환자는 <strong>HoLEP, ThuLEP, PVP 또는 PAE</strong>를 치료 옵션으로 고려할 수 있다 <span class="stage eo">전문가의견</span>. 레이저 시술은 TURP 대비 수혈률이 낮으며, PAE는 항혈전제 복용 중인 노쇠·고령 환자에서도 유효성이 입증되었다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🚽</span> 도뇨의존성 요저류</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>양성 전립선비대에 의한 도뇨의존성 요저류 환자는 동반질환을 고려하여 <strong>절제형(resective) 시술</strong>을 권고한다 <span class="stage eo">전문가의견</span> — 조직을 실제로 제거하는 시술이 도뇨 이탈 가능성을 가장 높인다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔒</span> 일차성 방광경부폐색(PBNO)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>PBNO 의심 환자는 <strong>TUIP, 경요도 방광경부절제술(TURBN), 또는 TIPD</strong>를 고려할 수 있다 <span class="stage eo">전문가의견</span>. 장기 데이터가 제한적이라, 방광경부를 절개하되 손상을 최소화하는 시술로 권고를 한정했다.</div>
+    </div>
+  </div>
+
+</div><!-- /special -->
+
+
+<!-- ══════════ TAB 7: 향후방향 ══════════ -->
+<div id="tab-future" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔮</span> 향후 연구 방향</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>영역</th><th>내용</th></tr>
+        <tr><td>신규 기전 연구</td><td>염증·섬유화·에스트로겐 등이 증상·치료반응을 예측하는 기전 연구, BPH 증상·합병증을 막아주는 회복탄력 인자 규명 필요</td></tr>
+        <tr><td>새로운 진단·계층화</td><td>가정용 요류검사·이동형 UDS로 자연스러운 환경에서 진단 정확도 향상 기대. 반응/비반응 예측인자 규명으로 부적절한 중재 최소화</td></tr>
+        <tr><td>합병증 위험 정량화</td><td>개인별 BPH 불량결과 위험을 정량화하고, 무증상이라도 선제적 치료가 말기방광 등 합병증을 예방할 수 있는지 규명 필요</td></tr>
+        <tr><td>신기술 도입</td><td>전립선 스텐트(임시·영구형) 다수 개발 중. 경회음레이저소작술(TPLA)은 TURP·WVTT 대비 양호한 초기결과 — 최적 프로토콜 추가 연구 필요</td></tr>
+        <tr><td>인공지능(AI)</td><td>위험계층화·영상판독·치료결과 예측 등에 AI 활용은 아직 연구단계</td></tr>
+        <tr><td>비만·대사증후군·신체활동</td><td>비만·복부비만이 LUTS/BPH 불량결과의 강력한 예측인자로 확인되었으나, 생활습관중재 효능에 대한 고품질 임상시험은 부족</td></tr>
+        <tr><td>건강 형평성</td><td>인종/민족과 BPH 결과 간 관계에 대한 이해가 깊어지면 향후 지침이 이를 반영한 권고를 제공할 수 있을 것으로 기대</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /future -->
+
+
+<!-- ══════════ TAB 8: 약어·근거등급 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> AUA 권고 강도 및 근거등급 체계</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고 유형</th><th>정의</th></tr>
+        <tr><td><span class="stage rs">강한권고</span></td><td>편익이 위해(또는 부담)를 확실히 상회하거나 그 반대 — 대다수 환자에게 적용 가능</td></tr>
+        <tr><td><span class="stage rm">중등도권고</span></td><td>편익이 위해를 상회할 가능성이 높음(또는 그 반대) — 근거 질이 다소 제한적</td></tr>
+        <tr><td><span class="stage rc">조건부권고</span></td><td>편익-위해 균형이 근소하거나 근거·환자 가치관에 따라 접근이 달라질 수 있음</td></tr>
+        <tr><td><span class="stage cp">임상원칙(Clinical Principle)</span></td><td>일반적으로 합의된 진료원칙 — 문헌으로 등급화되지 않으나 임상적으로 널리 수용됨</td></tr>
+        <tr><td><span class="stage eo">전문가의견(Expert Opinion)</span></td><td>패널의 임상경험에 기반한 합의 — 체계적 문헌근거가 충분하지 않은 영역</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>근거 등급</th><th>정의</th></tr>
+        <tr><td><span class="stage qa">Grade A</span></td><td>매우 신뢰할 수 있는 근거(대개 잘 시행된 RCT 다수)</td></tr>
+        <tr><td><span class="stage qb">Grade B</span></td><td>신뢰할 수 있는 근거지만 일부 제한점 존재</td></tr>
+        <tr><td><span class="stage qc">Grade C</span></td><td>신뢰도가 낮은 근거(관찰연구·소규모 RCT·이질적 결과)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Goueli R, Badlani GH, Welliver C, et al. Management of Lower Urinary Tract Symptoms Attributed to Benign Prostatic Hyperplasia: AUA Guideline (2026) Part I: Presentation and Evaluation. J Urol. 2026;216:143-151.<br>Part II: Medical Management. J Urol. 2026;216:152-160.<br>Part III: Procedural/Surgical Management. J Urol. 2026;216:161-170. 전문은 AUAnet.org/guidelines에서 확인 가능.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"BPH", def:"Benign Prostatic Hyperplasia — 전립선비대증" },
+  { term:"LUTS", def:"Lower Urinary Tract Symptoms — 하부요로증상" },
+  { term:"IPSS", def:"International Prostate Symptom Score — 국제전립선증상점수" },
+  { term:"AUA-SI / AUA-SS", def:"American Urological Association Symptom Index/Score — 미국비뇨의학회 증상지수/점수" },
+  { term:"PVR", def:"Post-Void Residual — 배뇨후잔뇨" },
+  { term:"Qmax / Qavg", def:"Maximum / Average urinary flow rate — 최대/평균 요류속도" },
+  { term:"UDS", def:"Urodynamic Studies — 요역동학검사" },
+  { term:"PCT", def:"Penile Cuff Test — 음경압박대검사" },
+  { term:"PSA", def:"Prostate-Specific Antigen — 전립선특이항원" },
+  { term:"IPP", def:"Intravesical Prostatic Protrusion — 방광 내 전립선돌출" },
+  { term:"BOO", def:"Bladder Outlet Obstruction — 방광출구폐색" },
+  { term:"AUR", def:"Acute Urinary Retention — 급성요저류" },
+  { term:"TWOC", def:"Trial Without Catheter — 도뇨없는 배뇨시도" },
+  { term:"AB", def:"Alpha Blocker — 알파차단제" },
+  { term:"5-ARI", def:"5-Alpha Reductase Inhibitor — 5-알파환원효소억제제" },
+  { term:"PDE-5I", def:"Phosphodiesterase-Type 5 Inhibitor — 포스포디에스테라제-5 억제제" },
+  { term:"IFIS", def:"Intraoperative Floppy Iris Syndrome — 수술중 홍채이완증후군" },
+  { term:"OAB", def:"Overactive Bladder — 과민성방광" },
+  { term:"DO / DU", def:"Detrusor Overactivity / Underactivity — 배뇨근과활동/저활동" },
+  { term:"TURP (M-/B-)", def:"(Monopolar/Bipolar) Transurethral Resection of the Prostate — (단극성/양극성) 경요도전립선절제술" },
+  { term:"TUIP / TUVP", def:"Transurethral Incision / Vaporization of the Prostate — 경요도 절개술/기화술" },
+  { term:"PVP", def:"Photoselective Vaporization of the Prostate — 광선택적 전립선기화술" },
+  { term:"AEEP", def:"Anatomic Endoscopic Enucleation of the Prostate — 해부학적 내시경 전립선적출술" },
+  { term:"HoLEP / ThuLEP", def:"Holmium / Thulium Laser Enucleation of the Prostate — 홀뮴/툴륨 레이저 전립선적출술" },
+  { term:"OSP", def:"Open Simple Prostatectomy — 개복 단순전립선절제술" },
+  { term:"PUL", def:"Prostatic Urethral Lift — 전립선요도거상술" },
+  { term:"WVTT", def:"Water Vapor Thermal Therapy — 수증기 열치료(Rezum)" },
+  { term:"RWT", def:"Robotic Waterjet Treatment — 로봇 워터젯 치료(Aquablation)" },
+  { term:"TIPD", def:"Temporary Implanted Prostatic Device — 임시삽입 전립선기구" },
+  { term:"IPDCB", def:"Intraprostatic Drug Coated Balloon — 전립선내 약물코팅풍선" },
+  { term:"PAE", def:"Prostate Artery Embolization — 전립선동맥색전술" },
+  { term:"HIFU", def:"High-Intensity Focused Ultrasound — 고강도집속초음파" },
+  { term:"TPLA", def:"Transperineal Laser Ablation of the Prostate — 경회음 레이저 전립선소작술" },
+  { term:"PBNO", def:"Primary Bladder Neck Obstruction — 일차성 방광경부폐색" },
+  { term:"rUTI", def:"Recurrent Urinary Tract Infection — 재발성 요로감염" },
+  { term:"AC / AP", def:"Anticoagulant / Antiplatelet — 항응고제/항혈소판제" },
+  { term:"EjD / ED", def:"Ejaculatory Dysfunction / Erectile Dysfunction — 사정장애/발기부전" },
+  { term:"mpMRI", def:"Multiparametric Magnetic Resonance Imaging — 다중매개변수 자기공명영상" },
+  { term:"TyG-BMI", def:"Triglyceride Glucose-Body Mass Index — 중성지방-포도당 체질량지수" },
+  { term:"eFI", def:"Electronic Frailty Index — 전자노쇠지수" },
+  { term:"TUGT", def:"Timed-Up-and-Go Test — 기립보행시간검사" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+const ALL_ABBR = ABBR_DATA;
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

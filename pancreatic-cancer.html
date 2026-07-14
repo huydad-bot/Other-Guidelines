@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>췌장암 진료지침 (ESMO, 2023)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --diag:     #0e7490;  /* 진단 — 시안 */
+    --local:    #15803d;  /* 국소치료 — 그린 */
+    --advanced: #7c2d92;  /* 전이성치료 — 퍼플 */
+    --fu:       #be185d;  /* 추적·지지 — 로즈 */
+    --tools:    #4b5563;  /* 약어/근거등급 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--fu);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--advanced);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--local);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:18px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 9px; font-size: calc(11.5px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(17px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-diag{background:#cffafe;border-left:3px solid var(--diag);color:#155e75;}
+  .alert-local{background:#dcfce7;border-left:3px solid var(--local);color:#15803d;}
+  .alert-advanced{background:#f3e8ff;border-left:3px solid var(--advanced);color:#7c2d92;}
+  .alert-fu{background:#fce7f3;border-left:3px solid var(--fu);color:#9d174d;}
+  .alert-tools{background:#f1f5f9;border-left:3px solid var(--tools);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .grade{display:inline-block;padding:2px 7px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .grade-a{background:#1d4ed8;color:#fff;}
+  .grade-b{background:#93c5fd;color:#1e3a8a;}
+  .grade-c{background:#dbeafe;color:#1d4ed8;}
+  .grade-d{background:#fed7aa;color:#9a3412;}
+  .grade-e{background:#fecaca;color:#991b1b;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0;}
+  .flow-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:calc(11.5px * var(--fscale,1));text-align:center;flex:1;min-width:120px;}
+  .flow-arrow{color:var(--text2);font-weight:700;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>P</span><span>a</span><span>C</span></div>
+      <h1>췌장암 진료지침 (ESMO Clinical Practice Guideline, 2023)</h1>
+    </div>
+    <div class="meta-line">
+      European Society for Medical Oncology · Ann Oncol. 2023;34(11):987-1002 · 2002년 최초 승인, 2023년 8월 개정
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 원문 요약·재구성본으로, 학회의 공식 승인을 받지 않음</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🔍 진단</div>
+    <div class="tab" onclick="showTab('local')">🔪 국소·국소진행성치료</div>
+    <div class="tab" onclick="showTab('advanced')">💊 전이성치료</div>
+    <div class="tab" onclick="showTab('followup')">🔄 추적·지지요법</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·근거등급</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">2023.08</div><div class="stat-lbl">최신 개정판<br>(2002년 최초승인)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">65-69세</div><div class="stat-lbl">남성 발생률 최고연령<br>(여성 75-79세)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--local)">&gt;80%</div><div class="stat-lbl">산발성 체세포변이<br>(유전성은 소수)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--advanced)">I-V · A-E</div><div class="stat-lbl">ESMO 근거수준·<br>권고등급 체계</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 지침 개관</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>본 지침은 <strong>유럽종양학회(ESMO)</strong>가 제작한 췌장암(PC) 진료지침으로, 2002년 최초 승인되어 2023년 8월 최신 개정되었다(2015년판을 대체). 진단·병리·분자생물학, 병기·위험평가, 국소/국소진행성 질환 관리, 전이성 질환 관리, 추적관찰·지지요법·survivorship의 5개 영역으로 구성된다.</div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🎯</span><div>췌장암은 조기진단이 어렵고 <strong>수술적 절제만이 유일한 근치적 치료</strong>다. 지침은 절제가능(resectable)·경계절제가능(borderline resectable, BRPC)·국소진행성(LAPC)·전이성으로 병기를 구분해 단계별 치료전략을 제시한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🌍</span> 역학 및 위험인자</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>가장 강력한 위험인자는 <strong>고령</strong>이며 발생률은 남성 65-69세, 여성 75-79세에서 최고치를 보인다. 췌장암의 &gt;80%는 <strong>산발성 체세포변이</strong>로 발생하며, 유전성 생식세포변이에 의한 경우는 소수다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>구분</th><th>내용</th></tr>
+        <tr><td>가족성 췌장암</td><td>1촌 친족 2명 이상 이환 시 정의 — 전체 증례의 4-10%. BRCA2 변이가 가장 흔한 유전적 이상</td></tr>
+        <tr><td>산발성 위험인자</td><td>흡연, 헬리코박터파일로리 감염, 식이요인(붉은고기 과다·과음·과일채소부족·과체중/비만·제2형당뇨), 원인 불문 만성췌장염</td></tr>
+        <tr><td>고위험군 감시</td><td>50세부터(또는 최연소 이환 친족보다 10년 이른 시점) 매년 내시경초음파(EUS) 및/또는 췌장 MRI로 감시</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>금연, 절주, 건강체중 유지 및 도달을 강력히 권고한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>고위험 가족은 유전상담을 받고 연구목적 선별검사 등록에 등록을 고려한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>전문센터에서 50세부터(또는 최연소 이환 친족 10년 전) 조기발견을 위한 감시를 시행한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>감시에는 매년 EUS 및/또는 췌장 MRI가 선호된다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📊 조기진단의 어려움과 고위험군 선별의 과제</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">치유 가능한 시점에서 췌장암을 발견할 기회는 조기진단과 무증상 단계에서 고위험군을 식별·선별할 수 있는 능력에 달려 있다. 그러나 고위험군 식별 자체가 쉽지 않고 최적의 선별도구도 아직 불명확하다. 117개 메타분석을 통합한 대규모 분석이 흔한 위험인자들의 상대위험도를 제시했으며, 나이(고령)가 가장 강력한 단일 위험인자로 확인되었다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧬 가족성 증후군과 유전상담</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">가족성 췌장암(1촌 친족 2명 이상 이환)은 전체 증례의 4-10%에 불과하며, 이 중 BRCA2 변이가 가장 흔한 유전적 이상이다. BRCA2 외에도 여러 유전성 증후군이 췌장암과 연관되어 있다고 보고된다(원문 보충표 참조). 위험가족 구성원은 유전상담을 받고 연구목적 선별검사 등록(investigational screening registries) 참여를 고려해야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 고위험군 전향적 감시 프로그램의 성과</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">감시 프로그램은 통상 50세부터(또는 최연소 이환 친족보다 10년 이른 시점부터) 시작하며, 현재 고위험군에서는 매년 EUS 및/또는 췌장 MRI가 감시의 선택 술기다. 고위험군 대상 전향적 감시 자료는 <strong>높은 절제가능률과 고무적인 장기생존</strong> 관찰결과를 보여주었다 — 이는 조기발견 프로그램이 실제로 예후에 긍정적 영향을 줄 수 있음을 시사하는 근거다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🚬 산발성 위험인자와 1차 예방</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">산발성 췌장암의 주요 위험인자는 흡연, 헬리코박터파일로리 감염, 식이습관 관련 요인(붉은고기 과다섭취, 과음, 과일·채소 부족섭취, 과체중/비만, 제2형당뇨병)이다. 원인과 무관하게(음주·흡연·유전자변이) 만성췌장염 자체가 췌장암의 위험인자다. 이러한 위험인자 중 상당수는 <strong>잠재적으로 교정 가능</strong>하여 1차 예방의 고유한 기회를 제공하지만, 아직 이 기회는 충분히 실현되지 못하고 있다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔬</span> 병리 분류</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>췌장암의 <strong>~95%는 외분비 조직</strong>에서 발생하며, 이 중 <strong>췌관선암(PDAC)이 전체 췌장암의 ~80%</strong>를 차지한다. 외분비 종양의 2%만이 양성이다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>분류</th><th>특징</th></tr>
+        <tr><td>췌관선암(PDAC)</td><td>고분화(비신생물성 샘 모방)~저분화(면역염색으로만 상피분화 확인)까지 다양, 강한 간질반응 동반</td></tr>
+        <tr><td>선편평상피암·미분화암(파골세포유사거대세포 동반)</td><td>PDAC보다 예후 불량</td></tr>
+        <tr><td>선방세포암</td><td>PDAC보다 예후가 다소 양호, RAF 융합·DNA복구유전자 불활성화 빈번(표적치료 가능성)</td></tr>
+        <tr><td>췌장 신경내분비종양/암종</td><td>두 번째로 흔한 췌장암 — 별도 지침에서 다룸</td></tr>
+        <tr><td>낭성종양(전체 낭성병변의 10-15%)</td><td>장액낭선종(양성), 관내유두상점액종양(IPMN), 점액낭성종양 — 점액성 병변은 악성전환 가능성 있음</td></tr>
+      </table>
+      <div class="alert alert-local" style="margin-top:8px"><span>🧬</span><div>가장 흔한 전구병변은 <strong>췌장상피내신생물(PanIN)</strong>이며, IPMN·점액낭성종양이 뒤를 잇는다. PanIN은 5mm 미만의 미세한 점액유두상 병변으로 샘-암 연쇄를 거쳐 침습암으로 진행한다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 PDAC의 조직학적 스펙트럼</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">췌관선암(PDAC)은 현미경적으로 비신생물성 샘을 모방할 정도의 고분화 관형성암종부터, 상피분화가 면역표지로만 확인되는 저분화암종까지 폭넓은 스펙트럼을 보인다. PDAC는 전형적으로 <strong>강한 간질반응(stromal reaction)</strong>을 동반하는 것이 특징이다. 선편평상피암종과 파골세포유사거대세포를 동반한 미분화암종 등의 변이형은 예후가 더 불량한 반면, 선방세포암종은 PDAC보다 다소 예후가 양호하다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🫧 낭성종양의 감별 — 점액성 vs 비점액성</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">낭성신생물은 췌장 낭성병변의 10-15%를 차지한다. 가장 흔히 마주치는 낭성신생물은 장액낭선종, 관내유두상점액종양(IPMN), 점액낭성종양(낭선종 또는 낭선암)이다. <strong>점액성 병변(IPMN·점액낭성종양)은 악성으로 진행할 잠재력이 있거나 진단 당시 이미 악성을 동반</strong>하고 있을 수 있는 반면, <strong>비점액성 병변(장액낭선종)은 악성 잠재력이 없다</strong> — 이 구분이 임상적 관리방침을 결정하는 핵심이다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧭 전구병변의 단계적 진행 — PanIN·IPMN</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">췌장암의 가장 흔한 전구병변은 PanIN이며, IPMN과 점액낭성종양이 그 뒤를 잇는다. PanIN은 5mm 미만의 미세한 점액유두상 병변으로, <strong>샘-암 연쇄(adenoma-carcinoma sequence)</strong>를 거쳐 침습암으로 진행한다. IPMN과 점액낭선종 역시 단계적인 유전자변이 축적을 통해 신생물화된다는 점에서 PanIN과 유사한 진행경로를 공유한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 분자생물학</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>구분</th><th>내용</th></tr>
+        <tr><td>종양유전자 활성화</td><td><strong>KRAS</strong> 돌연변이가 전체 췌장암의 &gt;90%에서 발견 — 가장 특징적인 분자적 이상</td></tr>
+        <tr><td>종양억제유전자 불활성화</td><td>TP53, p16/CDKN2A, SMAD4</td></tr>
+        <tr><td>유전체유지유전자 불활성화</td><td>hMLH1, MSH2 등 DNA손상복구(DDR) 관련 유전자 — 대부분 체세포성</td></tr>
+        <tr><td>상동재조합복구(HRR) 경로</td><td>BRCA1, BRCA2 — 대부분 생식세포성. DDR/HRR 경로 이상은 전체 환자의 24%에서 관찰됨</td></tr>
+      </table>
+      <div style="margin-top:8px">염색체 구조변이 양상에 따라 <strong>안정형(stable)·국소재배열형(locally rearranged)·산발형(scattered)·불안정형(unstable)</strong>의 4개 아형으로 분류되며, 불안정형은 BRCA1/2·PALB2 등 DNA유지유전자 불활성화 및 DDR결핍 돌연변이 특징과 동반된다. 전사체 기반으로는 <strong>편평상피형/기저형(예후불량, 화학저항성)</strong>과 <strong>고전형(classical, 예후양호)</strong> 두 임상적으로 유의한 아형이 확인되었으며, COMPASS 연구는 전사체 프로파일에 따라 화학요법 반응률이 다름을 최초로 입증했다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>📊</span><div><strong>CA 19-9</strong>는 선별검사에는 유용하지 않으나(루이스항원 음성 표현형에서는 검출불가) 진행성 췌장암 환자의 약 80%에서 상승하여 예후인자로서 의미가 크다. 수술 전 CA19-9≥500 IU/mL는 불량한 수술 후 예후를 시사하여 즉시 수술을 신중히 고려해야 한다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧩 구조변이 기반 4개 아형 — 불안정형의 임상적 의미</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">염색체 구조변이 양상에 따라 췌장암은 <strong>안정형(stable)·국소재배열형(locally rearranged)·산발형(scattered)·불안정형(unstable)</strong>의 4개 아형으로 분류되며, 잠재적 임상적 유용성을 가진다. 불안정형 그룹에서는 DNA손상복구(DDR), 특히 상동재조합복구(HRR) 시스템의 유의한 결함과 연관된 높은 비율의 DNA변이가 관찰된다. 또한 유전체불안정성은 BRCA1·BRCA2·PALB2 등 DNA유지유전자의 불활성화 및 DDR결핍의 돌연변이 특징(mutational signature)과 함께 나타난다. 전체적으로 DDR/HRR 경로의 이상은 환자의 24%에서 관찰된다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧬 전사체 아형 — 편평상피형/기저형 vs 고전형, COMPASS 연구</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">전사체 네트워크를 이용한 분류에서는 임상적으로 유의한 두 가지 주요 아형이 확인되었다. <strong>편평상피형(squamous)과 '기저형(basal-like)' 표현형</strong>은 높은 종양등급, 전이성 질환, 화학저항성, 불량한 예후라는 중요한 특징을 공유한다. 반면 <strong>'고전형(classical)' 아형</strong>은 더 양호한 결과와 연관된다. 유전체 기반의 <strong>COMPASS 연구</strong>는 진행성 PDAC 환자에서 전사체 프로파일에 따라 화학요법 반응률이 다르다는 것을 처음으로 입증한 연구다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧪 KRAS-야생형(wt) 종양 — 별도의 분자적 실체</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">KRAS 돌연변이는 췌장암의 &gt;90%에서 발견되는 가장 특징적인 이상이나, <strong>KRAS-야생형(wt) 전이성 PDAC는 별도의 독립된 분자적 실체</strong>로 확립되었으며 유전자융합 사건을 넘어서는 치료적 기회가 존재한다. 다유전자시퀀싱(NGS)은 드물지만 실행가능한(actionable) 소견을 선별하는 데 유용한 도구다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📈 CA19-9의 임상적 활용과 한계</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">CA19-9는 선별검사(screening) 목적으로는 유용하지 않지만, 진행성 췌장암 환자의 거의 80%에서 상승하여 예후인자로서 유의미하다. 다만 <strong>루이스항원 음성 표현형(Lewis antigen-negative phenotype)</strong>인 환자에서는 CA19-9가 검출되지 않는다는 한계가 있어, 해석 시 이 표현형 가능성을 항상 염두에 두어야 한다. 수술 전 혈청 CA19-9가 500 IU/mL 이상이면 수술 후 예후가 불량함을 시사하므로, 이런 경우 즉시 수술을 신중하게 고려해야 한다.</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 진단 ══════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩺</span> 임상 양상 및 진단 흐름</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>췌장암의 약 3/4은 췌장두부, 17-26%는 체부·미부, 5-8%는 다발성으로 발생한다. 두부종양은 담관·췌관 폐색에 따른 증상(황달)으로 <strong>비교적 조기에 발견</strong>되는 반면, 체부·미부 종양은 증상이 늦게 나타나 <strong>더 진행된 병기에서 진단</strong>되는 경향이 있다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>주요 증상</th><th>기전</th></tr>
+        <tr><td>황달</td><td>두부종양의 담관폐색</td></tr>
+        <tr><td>복통, 체중감소, 지방변</td><td>췌장 기능 저하 및 종양 침범</td></tr>
+        <tr><td>신규발병 또는 악화되는 당뇨병</td><td>췌장 내분비 기능 저하</td></tr>
+        <tr><td>십이지장폐색</td><td>두부종양의 근위부 또는 체부/미부종양의 원위부 국소침범</td></tr>
+      </table>
+      <div class="flow" style="margin-top:8px">
+        <div class="flow-box">초기위험평가<br>(증상·병력)</div><span class="flow-arrow">→</span>
+        <div class="flow-box">다상 조영증강 CT<br>(흉부·복부·골반)</div><span class="flow-arrow">→</span>
+        <div class="flow-box">병기분류<br>(절제가능/경계절제/국소진행성/전이성)</div><span class="flow-arrow">→</span>
+        <div class="flow-box">MDTB 논의 후<br>치료방침 결정</div>
+      </div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📍 종양 위치에 따른 진단시점의 차이</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">췌장암의 약 3/4은 두부, 17-26%는 체부·미부, 나머지 5-8%는 다발성 위치에서 발생한다. <strong>체부·미부 종양은 두부종양 대비 더 진행된 병기에서 진단될 가능성이 높다</strong> — 두부종양은 총담관 및/또는 췌관의 폐색과 관련된 증상(황달 등)을 조기에 유발하는 반면, 체부·미부 종양은 이런 조기 경고신호가 없기 때문이다. 종양은 국소적으로 십이지장에 침윤할 수 있으며(두부종양은 근위부, 체부/미부종양은 원위부), 이 경우 십이지장폐색을 유발한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩺 주요 증상의 기전</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">췌장암의 흔한 임상 증상으로는 황달(두부종양), 복통, 체중감소, 지방변, 그리고 신규발병 또는 기존 당뇨병의 악화가 있다. 황달은 담관폐색을, 지방변은 외분비기능부전을, 신규/악화된 당뇨는 내분비기능 저하를 반영한다. 이러한 증상 조합은 진단 단서로서 임상적으로 매우 중요하다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📡</span> 영상검사</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>영상검사의 목표는 ① 종양 위치·크기, ② 췌장주위 정맥·동맥 혈관침범, ③ 국소 및 원격전이(간·림프절·복막·폐) 범위 평가다. <strong>다상(multiphasic) 조영증강 CT가 1차 진단영상</strong>이다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>영상기법</th><th>역할·특징</th></tr>
+        <tr><td>CT(1차 선택)</td><td>췌장기·동맥기·문맥기의 다상 박절편 영상 + 요오드조영제(1.5mL/kg, 4-5mL/s) 정맥주입. 췌장기가 종양-정상췌장 대조가 가장 뚜렷해 종양발견에 최적. 지연기 CT는 작은 원발종양 발견 민감도를 높임</td></tr>
+        <tr><td>MRI</td><td>CT가 불명확하거나(등음영종양, 5-17%) 조영증강CT 금기 시 사용, 이 경우 흉부CT 병행 필수. T2·지방억제T1·확산강조영상+MR담췌관조영술(MRCP)+다상 조영증강 시퀀스 권장. 확산강조 MRI는 CT보다 작은 간전이 발견에 더 민감(10-23%에서 CT 미발견 병변 확인)</td></tr>
+        <tr><td>PET-CT</td><td>원발종양 진단에는 권고되지 않음(자가면역/만성췌장염과 소견이 겹침). 원격전이 발견에서 CT 대비 우위 없음(위양성 7.8%, 위음성 9.8%). 국소질환의 병기설정이나 원격전이 여부가 불확실할 때 고려 가능</td></tr>
+        <tr><td>EUS</td><td>등음영종양·정맥침범 평가 등 선택적 병기설정에 유용. 췌장·림프절·좌엽간병변 생검 및 복수 채취에도 활용</td></tr>
+      </table>
+      <div class="alert alert-diag" style="margin-top:8px"><span>🔬</span><div>ERCP나 영상에서 확인되는 <strong>이중관 징후(double duct sign)</strong>는 병리특이적(pathognomonic) 소견이나, ERCP 자체는 CT/MRI 대비 진단적 가치가 크지 않다.</div></div>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚙️ CT 기술적 최적화 — 왜 프로토콜이 중요한가</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">고품질 CT의 핵심 기술요소는 ① 췌장기·동맥기·문맥기를 포함하는 다상 박절편 영상, ② 1.5mL/kg 용량을 4-5mL/s 속도로 주입하는 정맥 내 요오드화 비이온성 조영제다. 진단기준에는 저혈관성 종양이라는 직접징후와, 주췌관 및/또는 총담관 확장·췌실질의 구역성 위축·췌장윤곽 이상이라는 간접징후가 포함된다. <strong>췌장기의 종양-정상췌장 감쇠기울기가 다른 시기보다 커서 종양발견에 가장 우수한 시기</strong>이며, 지연기 CT를 추가하면 작은 원발종양 발견 민감도가 높아진다. CT는 치료 시작 4주 이내에 시행해야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧲 MRI의 적응증과 간전이 발견 우수성</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">복부 MRI는 통상 CT가 불명확할 때(등음영종양, 5-17%에서 발생) 또는 조영증강CT가 금기일 때 사용하며, 이 경우 흉부CT는 반드시 병행해야 한다. MRI 시퀀스는 T2·지방억제T1·확산강조영상과 자기공명담췌관조영술(2차원 및/또는 3차원), 이어서 다상 조영증강 시퀀스를 포함해야 한다. 여러 연구에서 확산강조영상을 포함한 MRI가 <strong>작은 간전이 발견에 CT보다 더 민감</strong>함이 입증되었다 — 3개 연구·1개 메타분석에 따르면 MRI는 CT에서 보이지 않던 간전이를 10-23%의 증례에서 추가로 발견해, 수술가능환자에서 불필요한 개복술 비율을 낮출 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📄 표준화 보고서식의 중요성</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">영상보고서에는 종양 특성, 각 췌장주위 혈관과의 종양접촉 정도, 국소침범 여부(간·림프절병증·대망), 원격전이 유무를 상세히 기재해야 한다. 췌장암 전문가 다학제그룹이 제안한 <strong>표준화 보고서식</strong>의 사용이 권고되는데, 이는 구조화된 보고서가 자유서술형 보고서에 비해 형태학적·혈관 관련 소견의 누락을 유의하게 줄인다는 것이 입증되었기 때문이다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>☢️ PET-CT의 역할이 제한적인 이유</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PET-CT는 자가면역췌장염·만성췌장염 소견과의 중첩으로 인해 원발종양 진단 목적으로는 일상적으로 권고되지 않는다. 1,343명을 포함한 17개 임상연구 메타분석에서 PET-CT는 원격전이 발견에서 CT 대비 우위를 보이지 못했으며(위양성률 7.8%, 위음성률 9.8%), 다만 CT상 비전이성 질환이면서 국소암치료(수술 또는 방사선치료)를 받을 예정인 환자의 병기설정에는 고려할 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩹 EUS와 병기설정 복강경검사·복강세척세포검사</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">EUS는 등음영 종양이나 정맥침범 평가 등 선택된 경우의 병기설정에 적합하며, 췌장·림프절·좌엽 간병변 생검이나 복수 채취에도 활용된다. 절제가능/경계절제가능 췌장암에서 복막전이 평가를 위한 <strong>병기설정 복강경검사</strong>는 일부 저자들이 옹호하나 일상적으로 시행되지는 않는다 — 메타분석 소견은 이 방법이 유용할 수 있음을 시사한다. <strong>복강세척세포검사</strong>는 민감도가 낮아 여전히 논란이 있으나 특히 일본·한국에서 사용이 점차 늘고 있으며, 현재 그 예후적 영향을 평가하는 연구가 진행 중이다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💉</span> 조직검사(생검)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>생검은 <strong>양성 만성췌장염과의 감별진단이 필요하거나 화학요법을 시작하는 경우</strong>(조직학적 진단 필요) 시행하며, 수술적 절제가 계획된 경우에는 일상적으로 권고되지 않는다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>상황</th><th>권장 방법</th></tr>
+        <tr><td>국소질환</td><td><strong>EUS유도 세침생검이 선호</strong>되며 CT유도 생검보다 권장된다. 최소 1회 시도(환자에게 위험하지 않은 한)가 권고되며, 2회 시도가 불명확할 경우 MDTB 논의·영상소견·CA19-9가 악성을 시사한다면 조직학적 확진 없이 치료를 시작할 수 있음</td></tr>
+        <tr><td>전이성 질환 확인</td><td>가장 접근이 쉬운 전이부위의 경피생검으로 확진 가능</td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🎯 조직학적 확진 없이 치료를 시작할 수 있는 조건</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">국소질환에서는 EUS유도 세침생검이 조직학적으로 악성을 확인할 수 있고 CT유도 생검보다 권장되어 선호된다. 최소 1회의 생검 시도(환자에게 안전하지 않은 경우 제외)가 권고되며, <strong>2회 시도에도 결과가 불명확한 경우</strong>에는 다학제종양위원회(MDTB) 논의, 영상소견, CA19-9 수치가 모두 악성을 시사한다면 조직학적 증명 없이 치료를 시작할 수 있다 — 이는 진단이 지연되어 치료기회를 놓치는 것을 방지하기 위한 실용적 접근이다. 가장 접근이 쉬운 전이 부위의 경피생검으로 전이성 질환을 확진할 수 있다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 분자생물학적 검사 및 병기설정</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>가족력 및 고위험군은 유전상담을 받는다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>KRAS 및 BRCA 검사가 일반적으로 권고된다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+        <tr><td>NGS로 KRAS 야생형(wt) 종양이 확인되면 추가 프로파일링을 시행할 수 있다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+        <tr><td>전이성+KRAS-wt 환자는 MSI 상태·NTRK융합·기타 희귀 융합을 평가한다</td><td><span class="grade grade-c">III, B</span></td></tr>
+        <tr><td>다유전자시퀀싱이 없다면 표준방법으로 MSI·NTRK융합을 검출할 수 있다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+        <tr><td>CA19-9는 질병부담 측정 및 치료결정 안내에 혈청표지자로 사용할 수 있다</td><td><span class="grade grade-c">III, B</span></td></tr>
+      </table>
+
+      <div style="margin-top:10px"><strong>영상 권고사항</strong></div>
+      <table class="tbl" style="margin-top:4px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>흉부-복부-골반 다상 조영증강CT(후기동맥기+문맥기 포함)를 1차 영상으로 사용한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>두부종양에 의한 폐쇄성 황달의 경우 담도배액/스텐트 시행 전 영상검사를 시행한다</td><td><span class="grade grade-a">IV, A</span></td></tr>
+        <tr><td>치료 시작 4주 이내에 영상검사를 시행한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>CT가 불가능/불명확하거나 낭성병변인 경우 복부 MRI를 사용할 수 있다(이 경우 흉부CT 필수)</td><td><span class="grade grade-c">IV, C</span> / <span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>전용 영상 프로토콜을 사용하고 표준화된 보고서식에 종합소견을 기재한다</td><td><span class="grade grade-b">IV, B</span> / <span class="grade grade-a">IV, A</span></td></tr>
+        <tr><td>PET-CT는 원발종양 진단에 권고되지 않으나 국소종양 병기설정, 원격전이 여부 불확실 시 유용할 수 있다</td><td><span class="grade grade-e">III, D</span> / <span class="grade grade-c">III, B</span></td></tr>
+        <tr><td>수술 전 작은 간전이 배제를 위해 간 MRI를 권고한다</td><td><span class="grade grade-c">III, B</span></td></tr>
+        <tr><td>국소질환에서 화학요법 시작 전 세포/조직검사(EUS 선호)로 확진한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>모든 국소질환 환자는 췌장영상·수술·종양내과 전문가가 참여하는 MDTB에서 영상을 재검토한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════ TAB 3: 국소·국소진행성 치료 ══════════ -->
+<div id="tab-local" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>⚖️</span> 병기·절제가능성 평가</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>췌장암의 예후는 주로 <strong>UICC TNM 8판</strong>에 반영된 종양관련인자에 의해 결정된다. T병기는 (pT4 제외) 크기에 기반하며, N병기는 양성 국소림프절 수에 따라 N1·N2로 세분된다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>분류체계</th><th>기준</th></tr>
+        <tr><td>NCCN 해부학적 기준</td><td>상장간막정맥(SMV)/문맥(PV), 상장간막동맥(SMA), 복강동맥, 총간동맥과 종양의 접촉 정도에 따라 절제가능/경계절제가능/국소진행성/전이성으로 분류. 가장 널리 사용되며 정기적으로 갱신됨(최신판이 이전판보다 정확도 높음)</td></tr>
+        <tr><td>IAP 경계절제가능(BRPC) 정의(2017)</td><td>① 해부학적, ② 생물학적(혈청CA19-9&gt;500IU/mL, 생검 또는 PET-CT로 확인된 국소림프절전이), ③ 조건적(ECOG PS≥2) 3개 차원으로 정의</td></tr>
+      </table>
+      <div class="alert alert-local" style="margin-top:8px"><span>📊</span><div>절제된 종양 환자의 예후를 결정하는 또 다른 주요인자는 <strong>보조치료를 완료할 수 있는지 여부</strong>다. 전이성 질환에서는 ECOG PS≥2, 연령&gt;65세, 알부민&lt;35g/L, 동시성전이·간전이 존재, 전이부위 개수, 높은 CA19-9가 불량한 예후와 연관된다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>UICC TNM 8판으로 병기를 분류한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>절제가능성은 NCCN 해부학적 기준과 IAP 합의의 생물학적·조건적 특징을 함께 사용해 평가한다</td><td><span class="grade grade-c">III, B</span></td></tr>
+        <tr><td>전문센터에서의 MDTB 논의로 치료전략을 결정한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📐 TNM 8판의 변경점 — T병기와 N병기</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">8판에서 T병기는 (pT4를 제외하고) <strong>종양크기에 기반</strong>하도록 변경되었다. 또한 N병기는 양성 국소림프절의 개수에 따라 <strong>N1과 N2로 세분</strong>된다 — 이는 이전 판보다 더 정밀한 예후 계층화를 가능하게 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚖️ IAP 3차원 정의 — 해부학·생물학·조건</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">2017년 국제췌장학회(IAP)는 UICC TNM·NCCN 기준을 넘어, 종양생물학과 환자관련 조건적 요인의 중요성을 반영한 BRPC 정의를 발표했다: <strong>① 해부학적 차원</strong>(혈관침범 정도), <strong>② 생물학적 차원</strong>(혈청 CA19-9&gt;500IU/mL, 생검 또는 PET-CT로 확인된 국소림프절전이), <strong>③ 조건적 차원</strong>(ECOG 수행능력≥2). 지침 저자단은 이 요인들이 절제가능성 평가에도 중요하다고 판단해 NCCN 해부학적 기준과 함께 사용할 것을 권고한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📊 진행성 질환의 예후인자</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">진행성 질환에서 불량한 예후를 결정하는 인자들은 주요 3상연구 자료에서 도출되었다: <strong>불량한 전신상태(ECOG PS≥2), 연령&gt;65세, 알부민&lt;35g/L, 동시성전이의 존재, 간전이, 전이부위의 개수, 높은 혈청 CA19-9</strong>가 모두 생존과 음의 상관관계를 보인다. 절제된 종양 환자에서는 예후를 결정하는 또 다른 핵심 요인이 <strong>보조치료를 받고 완료할 수 있는지 여부</strong>다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔪</span> 절제가능 췌장암 — 수술</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>수술적 절제는 <strong>유일한 근치적 치료</strong>다. 영상평가 후 모든 절제면에서 종양이 없을(<strong>R0, 모든 절제면 1mm 이내에 암세포 없음</strong>) 가능성이 높은 환자만 선행수술의 좋은 후보가 된다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>위치</th><th>수술법</th></tr>
+        <tr><td>두부종양</td><td>췌십이지장절제술(Whipple 수술) — 복강동맥 우측의 SMA 우반원주 박리로 양호한 내측절제면 확보 및 R0율 개선</td></tr>
+        <tr><td>체부·미부종양</td><td>원위췌장절제술(비장 포함) — 복강동맥 좌측의 SMA 좌반원주 박리를 포함한 근치적 역행성 구획적 췌비장절제술(RAMPS)로 R0 확보</td></tr>
+      </table>
+      <div>정맥침범 시 완전 정맥절제(PV 또는 SMV)+재건으로 R0를 얻을 수 있으나, 정맥절제는 종양 자체의 공격성으로 인해 R0율 저하·생존 저하와 연관된다. 췌십이지장절제술 중 동맥절제는 이환율·사망률 증가와 연관된다. 최소침습기법은 이환율을 낮출 수 있으나 종양학적 결과에 대한 근거가 부족해 <strong>개복수술이 여전히 표준</strong>이다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>👤</span><div>연령 자체는 절제 대상 선정의 결정인자가 아니다 — 숙련된 센터에서는 연대기적 연령이 절제의 금기가 아님이 체계적문헌고찰로 확인되었다. 다만 중증 동반질환(ECOG PS&gt;2)이나 최적 지지치료에도 심한 영양실조가 있으면 기술적으로 가능해도 수술을 피하는 것이 타당할 수 있다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>췌장경부 및 총담관 절제면의 동결절편검사를 시행한다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+        <tr><td>외과의가 확인한 모든 절제면에서 종양청소(tumour clearance)를 정의해야 한다</td><td><span class="grade grade-c">III, B</span></td></tr>
+        <tr><td>체부·미부 종양은 좌측 SMA 반원주 박리를 포함한 근치적역행성구획적췌비장절제술을 시행한다</td><td><span class="grade grade-a">IV, A</span></td></tr>
+        <tr><td>표준 림프절절제술로 16개의 림프절을 절제해 적절한 병리학적 병기설정이 가능하도록 한다</td><td><span class="grade grade-a">IV, A</span></td></tr>
+        <tr><td>검사한 총 림프절 수와 림프절비(양성/전체검사)를 병리보고서에 기재한다</td><td><span class="grade grade-a">IV, A</span></td></tr>
+        <tr><td>수술 환자는 금기가 없는 한 미분획/저분자량 헤파린으로 주술기 혈전예방을 받는다</td><td><span class="grade grade-a">I, A</span></td></tr>
+        <tr><td>빌리루빈&gt;250μmol/L이면 담관염, 신보조치료 계획, 수술 2주 이상 지연 환자에서 내시경적 배액을 시행한다</td><td><span class="grade grade-b">I, B</span></td></tr>
+        <tr><td>절제가능 췌장암에서 신보조치료는 (임상시험 외에는) 3상 근거 부족으로 권고되지 않는다</td><td><span class="grade grade-e">II, E</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩸 정맥·동맥 침범 시 혈관절제의 득실</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">정맥침범이 있으면 완전 정맥절제(PV 또는 SMV)와 재건을 통해 R0 절제가 가능하다. 그러나 정맥절제는 R0율 저하 및 생존 저하와 연관되는데, 이는 정맥절제 자체가 문제라기보다는 <strong>정맥침범을 유발할 정도의 종양이 본질적으로 더 공격적</strong>이기 때문으로 해석된다. 췌십이지장절제술 중 동맥절제는 이환율·사망률 증가와 연관되어 신중한 환자선택이 필요하다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 국제췌장외과연구그룹(ISGPS)의 절제면 평가기준</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">ISGPS는 검체검사 및 현미경적 절제면양성(R1, 절제면&lt;1mm) 정의에 있어 영국왕립병리학회 지침 준수를 권고한다. 외과의는 해당되는 경우 전방·후방·내측(상장간막구)·SMA·췌장절단·담관·장관 절제면을 각각 식별해야 한다. 췌장암에서 <strong>확대 림프절절제술은 ISGPS가 권고하지 않는다</strong> — 표준 림프절절제(16개 절제)로 충분한 병기정보를 얻을 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>👴 고령환자 수술 — 나이는 금기가 아니다</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">'고령환자'에 대한 표준화된 정의는 없으며(70·75·80세 등 다양한 기준 사용), 포괄적 체계적문헌고찰·메타분석은 <strong>연대기적 연령 자체가 숙련된 센터에서 절제의 금기가 아니라는 결론</strong>을 내렸다. 다만 중증 동반질환(ECOG PS&gt;2)이 있거나 최적의 지지치료에도 불구하고 심한 영양실조 상태라면, 기술적으로 절제가 가능하더라도 수술을 피하는 것이 정당화될 수 있다. 수술 전 인자를 기반으로 주술기 사망위험을 정확히 예측하는 '수술결과 췌장절제술 점수'가 제안되어 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🩹 수술 전 담도배액의 기준</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">한 무작위연구는 총빌리루빈≥250μmol/L(146mg/L)인 환자에서 일상적인 수술 전 담도배액이 오히려 합병증률을 높인다는 것을 입증했다. 따라서 빌리루빈이 250μmol/L을 초과하면서 <strong>신보조치료가 계획되었거나 수술이 2주 이상 지연될 예정</strong>인 환자에서는 내시경적 배액이 권고되며, 그 외(예: 빌리루빈≤250μmol/L)의 경우는 사례별로 판단해야 한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 절제 후 보조치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>ESPAC-1 연구가 절제 후 보조화학요법의 생존이득을 최초로 입증했다(일부 방법론적 비판 존재). 이후 CONKO-001(젬시타빈 vs 관찰), ESPAC-3(젬시타빈 vs 5-FU/류코보린 — 유사한 이득), ESPAC-4(젬시타빈+카페시타빈이 젬시타빈 단독보다 우수)를 거쳐, <strong>PRODIGE 24/CCTG PA.6 연구가 mFOLFIRINOX를 적합환자의 표준 보조요법으로 확립</strong>했다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구</th><th>비교</th><th>결과</th></tr>
+        <tr><td>CONKO-001</td><td>젬시타빈 vs 관찰</td><td>젬시타빈의 유효성 입증</td></tr>
+        <tr><td>ESPAC-3</td><td>젬시타빈 vs 5-FU/LV</td><td>생존이득 유사</td></tr>
+        <tr><td>ESPAC-4</td><td>젬시타빈 vs 젬시타빈+카페시타빈</td><td>병용요법이 다소 우수 — mFOLFIRINOX 부적합 환자의 대안으로 자리매김</td></tr>
+        <tr><td>PRODIGE 24/CCTG PA.6</td><td>mFOLFIRINOX vs 젬시타빈</td><td>mFOLFIRINOX가 새 표준으로 확립. ESPAC-3·PRODIGE24 모두 보조화학요법 전체주기 완료가 전체생존의 유리한 예후인자임을 확인</td></tr>
+        <tr><td>APACT</td><td>젬시타빈+nab-파클리탁셀(GN) vs 젬시타빈</td><td>1차종점(무병생존) 미충족 — 보조요법에서 GN의 역할 없음</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>☢️</span><div>보조 화학방사선요법(CRT)을 평가한 3건의 RCT 중 어느 것도 명확한 생존이득을 입증하지 못했으며, ESPAC-1은 오히려 <strong>유의한 유해효과</strong>를 시사했다(P=0.05) — R1(절제면양성) 환자에서도 이득이 없었다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>췌장암 절제 후 6개월간의 보조화학요법 완료를 강력히 권고한다</td><td><span class="grade grade-a">I, A</span></td></tr>
+        <tr><td>ECOG PS 0-1인 절제 환자에게 보조 mFOLFIRINOX를 권고한다</td><td><span class="grade grade-a">I, A (MCBS: A)</span></td></tr>
+        <tr><td>mFOLFIRINOX 부적합 환자(75세 초과, ECOG PS≥2, 금기)는 젬시타빈+카페시타빈이 대안이다</td><td><span class="grade grade-b">I, B (MCBS: A)</span></td></tr>
+        <tr><td>보조 젬시타빈 또는 5-FU/LV는 노쇠환자로 제한한다</td><td><span class="grade grade-b">I, B</span></td></tr>
+        <tr><td>보조 화학방사선요법은 임상시험 외에는 권고되지 않는다</td><td><span class="grade grade-e">I, E</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 개별 임상시험의 상세를 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 보조 화학요법의 발전 과정 — ESPAC·CONKO 계열</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body"><strong>ESPAC-1</strong>은 절제된 췌장암에서 보조화학요법의 생존이득을 최초로 입증한 연구로, 방법론에 대한 상당한 비판에도 불구하고 이 분야의 초석이 되었다. <strong>CONKO-001 3상 연구</strong>는 젬시타빈이 관찰군 대비 효과적임을 입증했다. <strong>ESPAC-3 연구</strong>는 보조 젬시타빈과 5-FU+류코보린(LV)이 유사한 생존이득을 보임을 확인했다. <strong>ESPAC-4 연구</strong>는 진행성 질환 상황에서 관찰된 젬시타빈+카페시타빈 병용의 완만한 전체생존 개선 신호를 바탕으로, 젬시타빈 단독과 젬시타빈+카페시타빈을 무작위비교했다 — 이 연구가 젬시타빈+카페시타빈을 보조치료 옵션으로 확립했으나, 현재는 통상 mFOLFIRINOX에 부적합한 환자를 위해 남겨둔다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🥇 mFOLFIRINOX 표준화 — PRODIGE 24/CCTG PA.6</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body"><strong>보조 mFOLFIRINOX는 PRODIGE 24/CCTG PA.6 연구</strong> 결과를 근거로 췌장암 근치수술을 받은 적합환자의 기준 표준 보조요법으로 확립되었다. ESPAC-3와 PRODIGE 24/CCTG PA.6 두 연구 모두 <strong>보조화학요법의 전체 주기를 완료하는 것이 전체생존의 유리한 예후인자</strong>임을 확인했다 — 이는 치료 완료 자체를 목표로 삼아야 함을 시사하는 중요한 소견이다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>❌ APACT — GN 보조요법의 실패</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">APACT 연구는 보조요법에서 젬시타빈+nab-파클리탁셀(GN) 병용의 역할을 평가했다. 이 연구는 <strong>1차종점(독립적으로 평가된 무병생존)을 충족하지 못했으며</strong>, 이에 따라 보조요법 상황에서 GN이 설 자리는 없는 것으로 결론지어졌다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>☢️ 보조 화학방사선요법(CRT) — 3개 무작위연구의 실망스러운 결과</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">3건의 무작위연구가 절제 후 보조CRT를 관찰단독과 비교했다. 위장관종양연구그룹(GITSG)의 첫 연구(40Gy+5-FU)는 40명 등록 후 조기중단되었으나, 중간분석에서 CRT군에 유리한 유의한 생존차이가 확인되었다. 반면 유럽암연구치료기구(EORTC)의 114명 대상 연구는 보조CRT의 생존이득을 확인하지 못했다. <strong>ESPAC-1은 보조CRT의 유의한 유해효과 가능성을 시사했으며(P=0.05)</strong>, 절제면양성(R1) 환자에서도 보조CRT의 이득이 관찰되지 않았다. 이런 상충되는 결과와 전반적으로 부정적인 근거의 무게로 인해 보조CRT는 임상시험 밖에서는 권고되지 않는다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔗</span> 경계절제가능 췌장암(BRPC) — 유도치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>BRPC에서는 <strong>선행수술보다 유도치료(induction therapy)</strong>가 이점을 보인다는 근거가 있다. 5개 연구 메타분석에서 유도치료가 전체생존을 유의하게 개선시켰다(HR 0.61). <strong>PREOPANC-1 3상 연구</strong>(113명 BRPC 환자 포함)는 유도 화학방사선요법이 선행수술 대비 전체생존·무병생존·국소구역실패까지의 시간 모두 유의하게 개선시켰음을 보고했다.</div>
+      <div>최적 유도전략(화학요법 단독 vs 화학방사선요법)은 여전히 논쟁적이며 3상 직접비교 결과는 아직 없다. 선호되는 다제병용화학요법은 <strong>FOLFIRINOX 또는 GN(젬시타빈+nab-파클리탁셀)</strong>이며, 이것이 불가능하면 젬시타빈+옥살리플라틴 또는 카페시타빈을 사용할 수 있다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>BRPC는 R1절제 가능성이 높아 유도치료를 고려해야 한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>가능하면 임상시험에 포함시킨다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>임상시험이 불가하면 선행수술보다 유도치료가 권고된다</td><td><span class="grade grade-a">II, A</span></td></tr>
+        <tr><td>유도화학요법(FOLFIRINOX 또는 GN) 후 사례별로 CRT, 이후 수술을 고려한다(GN은 이 적응증에서 EMA/FDA 미승인)</td><td><span class="grade grade-c">III, B</span></td></tr>
+        <tr><td>FOLFIRINOX/GN이 불가능하면 젬시타빈+옥살리플라틴 또는 카페시타빈을 고려할 수 있다</td><td><span class="grade grade-c">II, C</span></td></tr>
+        <tr><td>유도화학요법 후 카페시타빈 병용 CRT를 고려할 수 있다</td><td><span class="grade grade-c">III, C</span></td></tr>
+        <tr><td>유도치료 후 진행이 없고 CA19-9가 감소한 적합환자는 수술적 탐색을 시행한다(금기 없는 한)</td><td><span class="grade grade-a">III, A</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📈 PREOPANC-1 연구 상세</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PREOPANC-1은 절제가능/경계절제가능 췌장암 환자를 대상으로 <strong>수술 전 화학방사선요법과 즉시수술을 비교한 네덜란드 3상 무작위연구</strong>다. 이 중 BRPC 환자 113명의 결과에서 유도CRT군이 즉시수술군 대비 전체생존·무병생존·국소구역실패까지의 시간을 모두 유의하게 개선시켰음을 보고했다(장기추적 결과로 재확인됨). 5개 유도치료 연구의 메타분석에서도 BRPC 유도치료는 선행수술 대비 전체생존을 유의하게 개선시켰다(HR 0.61, 95%CI 0.44-0.85).</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🤔 유도전략 선택의 딜레마 — 화학요법 vs 화학방사선요법</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">BRPC 유도치료로서 화학요법 단독이 나은지 화학방사선요법이 나은지는 <strong>여전히 논쟁적인 사안</strong>이며, 3상 직접비교 연구 결과는 아직 없다. 따라서 지침은 가능한 한 임상시험 참여를 우선하도록 권고하며, 임상시험이 불가능한 경우 <strong>사례별 판단에 따라 유도화학요법 후 화학방사선요법, 이어서 수술</strong>을 시행하는 것이 선호되는 옵션으로 제시된다. 선호되는 다제병용화학요법은 FOLFIRINOX 또는 GN이다. 화학방사선요법 전략의 경우, 대부분의 연구가 전용량 방사선치료와 카페시타빈·5-FU·젬시타빈 중 하나를 병용했다. 7주기의 mFOLFIRINOX 이후 정위방사선치료를 추가한 경우, mFOLFIRINOX 단독 대비 이득을 보이지 못했다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🎯 절제 여부 판단의 어려움 — 영상평가의 한계</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">화학요법 또는 화학방사선요법 이후의 절제가능성 평가는 CT·EUS·MRI 모두 치료 미경험 상황보다 정확도가 낮다. 가장 흔한 이유는 <strong>종양크기 및 혈관침범 정도의 과대평가</strong>다 — 특히 혈관주위 연조직의 잔존이 반드시 잔여종양을 의미하지 않고 치료 후 변화와 관련될 수 있다는 점에 유의해야 한다. 17개 연구·2,242명의 통합분석에서 신보조치료 후 CA19-9가 50% 이상 감소하거나 정상화되면 전체생존 개선과 유의하게 연관되었다(P&lt;0.0001) — 따라서 절제가능성 여부는 영상소견, 혈청 CA19-9, 수행능력, 임상반응을 종합하여 MDTB 합의로 결정해야 한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🎯</span> 국소진행성 췌장암(LAPC) — 전환(conversion)치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>LAPC는 질환의 스펙트럼을 대표하며, 환자의 30-40%는 혈관침범으로 절제불가능하다. 전환(유도)치료의 목적은 <strong>종양 축소를 유도해 초기 절제불가능 환자의 절제를 가능하게 하는 것</strong>이다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구</th><th>내용</th><th>결과</th></tr>
+        <tr><td>LAP-07</td><td>젬시타빈±얼로티닙 4개월 후 진행 없는 환자를 화학요법 지속 vs CRT로 2차 무작위배정(449명)</td><td>중앙생존기간은 CRT군에서 개선되지 않았으나 국소구역진행은 지연됨</td></tr>
+        <tr><td>CONKO-007</td><td>주로 FOLFIRINOX 유도 후 CRT 추가 여부 비교</td><td>병리학적 완전관해율 증가, 무진행생존·전체생존에는 영향 없음</td></tr>
+        <tr><td>FOLFIRINOX±RT 메타분석(13개 연구, 315명)</td><td>-</td><td>FOLFIRINOX 시작부터 중앙 통합생존 24개월, 절제전환율 26%(범위 0-43%)</td></tr>
+      </table>
+      <div>최근 리뷰에서는 FOLFIRINOX 치료 후 약 30%, GN 치료 후 약 20%에서 절제가 이루어졌다. 메타분석은 유도치료에 양호한 반응을 보인 초기 절제불가능 환자에서 전환수술이 장기생존을 개선시킴을 보였다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>모든 환자는 지역 MDTB에서 2-3개월마다 절제가능성을 재평가받아야 한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>가능하면 임상시험에 포함시킨다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>최대 6개월간의 표준 병용화학요법(FOLFIRINOX 또는 GN)을 이용한 전환수술 전략을 선택할 수 있다(GN은 LAPC에서 EMA/FDA 미승인)</td><td><span class="grade grade-b">I, B</span></td></tr>
+        <tr><td>CA19-9의 유의한 감소, 임상적 호전, 종양 하향병기화가 있으면 절제 탐색을 논의할 수 있다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+        <tr><td>유도치료 후 동맥절제는 일반적으로 권고되지 않으나 경험 있는 센터에서 선택된 환자에 사례별로 고려할 수 있다</td><td><span class="grade grade-e">IV, D</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>☢️ CRT 추가의 가치 — LAP-07·CONKO-007</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body"><strong>LAP-07 연구</strong>는 449명을 대상으로, 화학요법 단독(젬시타빈±얼로티닙 4개월)에서 진행이 없는 환자를 2개월간의 화학요법 지속군과 CRT군으로 2차 무작위배정했다(269명). 중앙전체생존은 CRT군에서 개선되지 않았으나, <strong>CRT는 국소구역진행을 지연</strong>시켰다. <strong>CONKO-007 연구</strong>는 주로 FOLFIRINOX를 유도치료로 사용해 매우 유사한 결과를 얻었다 — CRT 추가는 병리학적 완전관해율을 높였으나 무진행생존이나 전체생존에는 영향을 주지 못했다. 이 두 연구는 CRT가 국소제어에는 기여하나 생존연장의 근거는 약하다는 일관된 메시지를 전달한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💊 전신화학요법의 근거 — FOLFIRINOX 메타분석</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">대부분 후향적인 13개 연구·315명의 LAPC 환자를 대상으로 FOLFIRINOX±방사선치료의 효능을 평가한 메타분석에서, FOLFIRINOX 시작 시점부터 계산한 통합 중앙전체생존은 24개월이었다. 통합된 절제전환 비율은 26%(범위 0-43%)였다. 최근 LAPC 최적관리에 대한 리뷰에서는 FOLFIRINOX 치료 후 약 30%, GN 치료 후 약 20%에서 절제가 이루어진 것으로 보고되었다. 메타분석은 유도치료에 양호한 반응을 보인 초기 절제불가능 환자에서 <strong>전환수술이 장기생존을 개선</strong>시킴을 확인했다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /local -->
+
+
+<!-- ══════════ TAB 4: 전이성치료 ══════════ -->
+<div id="tab-advanced" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥇</span> 1차 전신치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>1997년 젬시타빈 단독요법이 5-FU 대비 임상적 이득을 보여 표준치료로 자리잡았다. 이후 젬시타빈·카페시타빈·시스플라틴 기반 병용요법과 표적제 추가는 제한적 이득에 그쳤다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구</th><th>비교</th><th>결과</th></tr>
+        <tr><td>Conroy 2011</td><td>FOLFIRINOX vs 젬시타빈(ECOG 0-1, 빌리루빈&lt;1.5×ULN)</td><td>FOLFIRINOX의 우수한 효능 입증 — 전이성 질환 치료의 주요 진전</td></tr>
+        <tr><td>Von Hoff 2013(MPACT)</td><td>GN(젬시타빈+nab-파클리탁셀) vs 젬시타빈</td><td>GN이 젬시타빈 단독보다 우수</td></tr>
+        <tr><td>NAPOLI-3(770명)</td><td>NALIRIFOX(리포좀이리노테칸+5-FU/LV+옥살리플라틴) vs GN</td><td>무진행생존·전체생존 모두 NALIRIFOX군에서 유의하게 개선(중앙OS 11.1 vs 9.2개월, HR 0.83)</td></tr>
+      </table>
+      <div><small>FOLFIRINOX와 GN을 직접비교한 전향적 무작위 자료는 없다. 다수 후향적 실사용데이터는 FOLFIRINOX가 더 높은 활성과 함께 더 높은 독성을 보임을 시사한다.</small></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>수행능력·조건</th><th>권고요법</th><th>등급</th></tr>
+        <tr><td>ECOG PS 0-1, 빌리루빈&lt;1.5×ULN</td><td>FOLFIRINOX 또는 GN</td><td><span class="grade grade-a">I, A (MCBS 5)</span> / <span class="grade grade-a">I, A (MCBS 3)</span></td></tr>
+        <tr><td>ECOG PS 2, KPS≥70, 빌리루빈≤1.5×ULN</td><td>GN</td><td><span class="grade grade-a">II, A (MCBS 3)</span></td></tr>
+        <tr><td>ECOG PS 2, KPS&lt;70 및/또는 빌리루빈&gt;1.5×ULN</td><td>젬시타빈 단독</td><td><span class="grade grade-a">I, A</span></td></tr>
+        <tr><td>ECOG PS 3-4</td><td>증상완화 중심 치료(화학요법 위험이 이득을 상회)</td><td><span class="grade grade-a">IV, A</span></td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>치료 효과는 통상 8-12주마다 임상상태·CA19-9 추이·영상에 기반해 평가한다</td><td><span class="grade grade-a">III, A</span></td></tr>
+        <tr><td>BRCA 변이 환자는 백금기반 화학요법을 받는다</td><td><span class="grade grade-a">III, A</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 개별 임상시험의 상세를 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🥇 FOLFIRINOX — 전이성 질환 치료의 전환점</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">1997년 젬시타빈 단독요법이 5-FU 대비 임상적 이득을 보이며 표준치료로 자리잡았으나, 이후 젬시타빈·카페시타빈·시스플라틴 기반 병용요법이나 젬시타빈에 표적제를 추가하는 시도는 실망스러운 결과에 그쳤다. <strong>Conroy 등의 연구(2011)</strong>가 ECOG PS 0-1, 빌리루빈&lt;1.5×정상상한(ULN)인 환자에서 FOLFIRINOX가 젬시타빈 단독보다 우수한 효능을 보임을 입증하면서 전이성 질환 치료의 주요한 진전이 이루어졌다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🥈 GN(MPACT)과 FOLFIRINOX vs GN 비교의 공백</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">또 다른 연구(Von Hoff 등, MPACT)는 젬시타빈+nab-파클리탁셀(GN)이 전이성 질환에서 젬시타빈 단독보다 우수함을 입증했다. <strong>FOLFIRINOX와 GN을 직접비교한 전향적 무작위 자료는 현재까지 없다.</strong> 다수의 센터가 발표한 후향적 실사용데이터는 FOLFIRINOX가 더 큰 활성을 보이는 동시에 더 높은 독성도 동반함을 시사한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🆕 NALIRIFOX(NAPOLI-3) — 새로운 표준의 등장</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">최근 <strong>NALIRIFOX(리포좀이리노테칸+5-FU+LV+옥살리플라틴)</strong>가 770명을 포함한 무작위 3상 NAPOLI-3 연구에서 GN과 비교되었다. 무진행생존과 전체생존 모두 NALIRIFOX군에서 유의하게 개선되었다(중앙전체생존 11.1개월 vs GN군 9.2개월, HR 0.83, 95%CI 0.70-0.99, P=0.04) — 이는 전이성 췌장암 1차치료의 옵션을 넓히는 새로운 근거다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥈</span> 2차 전신치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>젬시타빈 기반 1차치료 후 진행한 환자에서, <strong>NAPOLI-1 3상 연구</strong>는 나노리포좀 이리노테칸+5-FU/LV가 5-FU/LV 단독 대비 전체생존을 개선시켰음을 보였다(6.1개월 vs 4.2개월, HR 0.67).</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>연구</th><th>비교</th><th>결과</th></tr>
+        <tr><td>NAPOLI-1</td><td>nal-IRI+5-FU/LV vs 5-FU/LV(젬시타빈 치료경험자)</td><td>OS·PFS·객관적반응률 모두 개선(OS 6.1 vs 4.2개월, HR 0.67)</td></tr>
+        <tr><td>CONKO-003</td><td>OFF(옥살리플라틴+5-FU/LV) vs 5-FU/LV(젬시타빈불응)</td><td>OFF군에서 OS 개선</td></tr>
+        <tr><td>PANCREOX</td><td>mFOLFOX6 vs 5-FU/LV</td><td>mFOLFOX6군에서 오히려 OS 저하 — 옥살리플라틴 2차요법에 대해 패널 내 합의 없음</td></tr>
+        <tr><td>PRODIGE 65-GEMPAX</td><td>젬시타빈+파클리탁셀 vs 젬시타빈(전이성PDAC, 2차)</td><td>OS 이득 없음(PFS·반응률은 유의하게 개선)</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>FOLFIRINOX 치료 후 ECOG PS 0-1+양호한 동반질환 환자는 GN(2차 미승인) 또는 젬시타빈 단독을 제공할 수 있다</td><td><span class="grade grade-c">III, C</span></td></tr>
+        <tr><td>젬시타빈 기반 치료 후 ECOG PS 0-1(또는 회복)인 환자는 나노리포좀이리노테칸+5-FU/LV를 고려한다</td><td><span class="grade grade-b">I, B (MCBS 3)</span></td></tr>
+        <tr><td>옥살리플라틴 기반 2차치료(mFOLFOX6 또는 OFF)는 논란이 있으나 이전에 사용하지 않았다면 ECOG PS 0-2에서 대안으로 고려할 수 있다</td><td><span class="grade grade-c">II, C</span></td></tr>
+        <tr><td>ECOG PS 3-4는 증상완화 중심 치료를 권고한다</td><td><span class="grade grade-a">IV, A</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🥇 NAPOLI-1 — nal-IRI+5-FU/LV의 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">젬시타빈 기반 치료를 받은 환자에서, 나노리포좀이리노테칸(nal-IRI)+5-FU/LV 병용은 무작위 3상 <strong>NAPOLI-1 연구</strong>에서 5-FU/LV 단독 대비 전체생존(6.1개월 vs 4.2개월, HR 0.67, P=0.012), 무진행생존, 객관적반응률 모두를 개선시켰다. 적합한 전이성 질환 환자에서 이 병용은 활성이 있으면서도 내약성이 양호한 2차치료 옵션으로 자리잡았다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚖️ 옥살리플라틴 기반 2차요법 — 상충되는 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">진행성·젬시타빈불응 췌장암에서 옥살리플라틴+5-FU/LV 병용을 평가한 무작위연구들은 <strong>상충되는 결과</strong>를 보였다. <strong>CONKO-003 연구</strong>에서는 옥살리플라틴을 5-FU/LV에 추가한 OFF요법이 5-FU/LV 단독 대비 전체생존을 개선시켰다. 반면 <strong>변형 LV+5-FU+옥살리플라틴(mFOLFOX6) 요법을 평가한 PANCREOX 연구</strong>는 5-FU/LV 대비 오히려 전체생존에 해로운 효과를 보였다. S-1에 옥살리플라틴을 추가한 연구도 S-1 단독 대비 전체생존 개선을 보이지 못했다. 이런 상충된 결과로 인해 <strong>지침 저자단은 2차요법에서 옥살리플라틴+5-FU/LV의 이득에 대해 합의에 이르지 못했다</strong>. 플루오로피리미딘 기반 1차요법 이후의 최적 2차치료 선택을 알려주는 무작위 자료도 없다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>❌ PRODIGE 65-GEMPAX — 파클리탁셀+젬시타빈의 실패</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">무작위 3상 <strong>PRODIGE 65-UCGI 36-GEMPAX 연구</strong>는 전이성 PDAC 환자의 2차치료로 파클리탁셀+젬시타빈을 젬시타빈 단독과 비교했다. 그 결과 병용요법은 젬시타빈 단독 대비 <strong>전체생존 이득을 보이지 못했으나</strong>, 무진행생존과 객관적반응률은 유의하게 개선시켰다 — 즉 반응지표의 개선이 생존연장으로 이어지지 않은 사례다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🥉</span> 3차 전신치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>대부분의 환자는 불량한 영양상태 및/또는 수행능력으로 3차 치료에 적합하지 않으며, 이 경우 <strong>최선의 지지치료(BSC)</strong>가 적절한 치료 선택이다. 수행능력이 양호한 환자는 이용 가능하다면 임상시험 참여가 첫 번째 선택지다. 표준으로 권고할 수 있는 특정 요법은 없다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧬</span> 전이성 질환의 정밀의료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>표지자</th><th>빈도·특징</th><th>치료전략</th></tr>
+        <tr><td>생식세포 BRCA 변이(gBRCA)</td><td>백인 환자의 5-7%. DNA가교제(백금화합물)·PARP억제제에 감수성 높음</td><td>백금기반 화학요법 → 무진행/반응 시 올라파립 유지요법</td></tr>
+        <tr><td>MSI-H/dMMR</td><td>췌장암의 ~0.8%(대부분 린치증후군, 드물게 산발성)</td><td>면역관문억제제(펨브롤리주맙) — 2·3차 이후 옵션</td></tr>
+        <tr><td>NTRK 융합</td><td>KRAS-wt 종양 및 전체 췌장암의 &gt;1%</td><td>라로트렉티닙 또는 엔트렉티닙</td></tr>
+        <tr><td>선방세포암의 RAF융합</td><td>DNA복구유전자 불활성화 빈번</td><td>잠재적 표적치료 가능성</td></tr>
+      </table>
+      <div class="alert alert-advanced" style="margin-top:8px"><span>🔬</span><div><strong>POLO 연구</strong>(154명, gBRCA변이+16주 백금기반요법 후 무진행): 올라파립 유지요법이 위약 대비 무진행생존을 유의하게 개선(7.4 vs 3.8개월, HR 0.53)시켰으나 전체생존 차이는 없었고 3등급 이상 이상반응은 올라파립군에서 2배(49% vs 25%) 많았다. gBRCA 변이 환자에서 FOLFIRINOX와 시스플라틴+젬시타빈 중 어느 것이 우선인지 직접비교자료는 없어 실행가능성·독성·환자선호에 따라 선택한다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>모든 전이성 췌장암 환자에게 BRCA 유전자검사를 제공해 백금기반 화학요법 및 올라파립 유지요법 적합성을 확인한다</td><td><span class="grade grade-b">I, B (MCBS 2)</span></td></tr>
+        <tr><td>gBRCA1/2 변이 보유+백금기반 화학요법에 안정적/반응 환자는 올라파립 유지요법을 고려한다</td><td><span class="grade grade-b">I, B (MCBS 2, ESCAT I-A)</span></td></tr>
+        <tr><td>MSI-H/dMMR 췌장종양 환자는 2차 이후 치료로 펨브롤리주맙을 고려할 수 있다</td><td><span class="grade grade-b">II, B (MCBS 3, ESCAT I-C)</span></td></tr>
+        <tr><td>NTRK융합 환자는 라로트렉티닙 또는 엔트렉티닙을 권고한다</td><td><span class="grade grade-a">III, A (MCBS 3, ESCAT I-C)</span></td></tr>
+      </table>
+
+      <div style="margin-top:8px">항목을 클릭하면 상세 내용을 볼 수 있다.</div>
+      <div class="acc" style="margin-top:6px">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧬 BRCA 변이 — 검사방법과 POLO 연구 상세</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">백인 환자의 약 5-7%가 유전상담 후 생식세포검사로 확인 가능한 <strong>생식세포 BRCA(gBRCA) 병원성 변이</strong>를 보유한다. 체세포검사로 추가적인 BRCA 변이가 발견될 수도 있다. 이런 환자의 종양은 백금화합물 같은 DNA가교제·PARP억제제 치료에 더 감수성이 높다. gBRCA변이 환자 대상 무작위 2상 연구는 젬시타빈+시스플라틴의 높은 반응률을 보였으나 벨리파립 추가의 이득은 입증하지 못했다. <strong>POLO 연구</strong>는 16주간의 백금함유요법 후 진행이 없었던 154명의 전이성 gBRCA변이 환자를 대상으로 올라파립 유지요법과 위약을 비교했다 — 1차종점인 중앙무진행생존이 올라파립군에서 유의하게 개선되었으나(7.4개월 vs 3.8개월, HR 0.53, P=0.004), 중앙전체생존에는 군 간 차이가 없었고 3등급 이상 이상반응 발생률은 올라파립군에서 2배였다(49% vs 25%). gBRCA변이 환자에서 FOLFIRINOX와 시스플라틴+젬시타빈 중 어느 전략이 우선인지 직접비교자료는 없어, 실행가능성·잠재적 독성·환자선호에 따라 선택이 이루어져야 한다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 MSI-H/dMMR — 빈도와 펨브롤리주맙 근거</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">췌장암에서 MSI-H/dMMR의 빈도는 약 0.8%로 대부분 린치증후군에 의한 것이며, 산발성 증례도 드물게 발생한다. dMMR인 경우 면역관문억제제 치료가 일정한 이득을 보였다. 한 전향적 비무작위 연구에서 MSI-H/dMMR 췌장암 환자 22명에게 펨브롤리주맙을 투여한 결과, 완전반응 1명·부분반응 3명(객관적반응률 18.2%)이 확인되었으며 중앙무진행생존 2.1개월·중앙전체생존 3.7개월이었다. 선방세포암종은 RAF융합과 DNA복구유전자의 빈번한 불활성화를 보유하고 있어 잠재적 표적치료 대상이 될 수 있다.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🎯 NTRK 융합 — 빈도와 표적치료</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">NTRK 융합은 KRAS-야생형(wt) 종양에서 발생하며 전체 췌장암의 &gt;1%를 차지한다. 라로트렉티닙·엔트렉티닙 같은 특이적 억제제로 표적치료가 가능하다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /advanced -->
+
+
+<!-- ══════════ TAB 5: 추적·지지요법 ══════════ -->
+<div id="tab-followup" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔄</span> 추적관찰</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>근치목적 초기치료 후 정기적 추적관찰이 예후에 미치는 영향에 대한 근거는 <strong>부족</strong>하다. 능동감시 프로그램에 포함된 환자는 무증상 단계에서 재발이 발견되어 재발에 대한 치료를 받을 가능성이 더 높으나, 전체생존에 미치는 영향은 아직 불명확하다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>절제된 췌장암 환자는 정기적 추적관찰이 권고되나, 전체생존에 대한 영향의 근거는 충분하지 않다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🏃</span> 운동 및 재활</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>췌장암 환자는 <strong>근감소증·악액질 위험이 높다</strong>. 운동은 피로·심리적 고통 관리, 근육손실·신체기능저하·삶의 질 저하 완화에 효과적인 치료로 권고된다. 운동이 종양 혈관을 정상화시켜 화학요법 전달을 증가시킬 수 있다는 가설이 있으며, 면역동원과 인터루킨(IL)-15 경로 자극을 촉진하는 것으로도 알려져 있다. 절제가능 췌장암 관리에서 재활전처치(prehabilitation)의 역할을 평가하는 소규모 연구들에서 흥미로운 자료가 나오고 있으나 공식적인 근거는 아직 확립되지 않았다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩸</span> 혈전예방</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>췌장암의 <strong>정맥혈전색전증(VTE) 유병률은 약 25%</strong>로 보고되며, 말초정맥계뿐 아니라 심부정맥·내장정맥계에서도 발생할 수 있다. 기전은 다인성이며 화학요법 투여로 위험이 더 증가한다.</div>
+      <div>3건의 연구가 진행성 췌장암 외래환자의 화학요법 중 저분자량헤파린(LMWH)·아픽사반·리바록사반을 이용한 1차 예방의 안전성·유효성을 입증했다. 암 및 급성 VTE 환자 대상 무작위연구에서는 6개월간의 직접경구항응고제가 LMWH 대비 6개월 추적 시 VTE 재발 예방에 비열등했으며 주요출혈 발생률도 군 간 유의차가 없었다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>화학요법을 받는 진행성 췌장암 환자는 1차 혈전예방을 고려해야 한다</td><td><span class="grade grade-b">I, B</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩹</span> 폐색 관리 및 통증조절</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>문제</th><th>관리</th></tr>
+        <tr><td>담도폐색</td><td>내시경적 스텐트 삽입이 경피적 삽입보다 안전하며 수술적 간공장문합술만큼 성공적 — <strong>완전피복 자가팽창형 금속담도스텐트</strong> 권고</td></tr>
+        <tr><td>십이지장폐색</td><td>가능하면 소화관우회술보다 <strong>내시경적 팽창형 금속스텐트</strong> 삽입이 우선 선택</td></tr>
+        <tr><td>외분비기능부전(체중감소·복부불편감·지방변)</td><td>췌장효소보충요법으로 증상 관리</td></tr>
+        <tr><td>통증</td><td>표준 통증치료지침에 따라 적극적으로 관리해야 하며 통증전문의 참여가 흔히 필요. <strong>복강신경총차단술(CPB)</strong>(EUS유도가 선호)이 통증을 효과적으로 완화시켜 마약성진통제 총량과 관련 부작용을 감소시킬 수 있음 — 지속적 통증이 있고 수행능력이 적절한 경우에만 사용</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고</th><th>등급</th></tr>
+        <tr><td>담도폐색 시 완전피복 자가팽창형 금속담도스텐트의 내시경적 삽입을 권고한다</td><td><span class="grade grade-b">II, B</span></td></tr>
+        <tr><td>십이지장폐색은 수술 대신 내시경적 팽창형 금속스텐트 삽입으로 우선 관리할 수 있다</td><td><span class="grade grade-b">IV, B</span></td></tr>
+        <tr><td>효과적인 통증조절을 강력히 권고하며 필요시 통증전문의를 참여시킨다</td><td><span class="grade grade-a">III, A</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /followup -->
+
+
+<!-- ══════════ TAB 6: 약어·근거등급 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> ESMO 근거수준 및 권고등급 체계</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>ESMO 지침은 각 권고 뒤에 <strong>[근거수준, 권고등급]</strong> 형식(예: [III, A])으로 표기하며, 등급 표기가 없는 서술은 저자들이 표준 임상practice로 판단한 것이다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>근거수준</th><th>정의</th></tr>
+        <tr><td>I</td><td>큰 규모의 무작위대조시험 또는 메타분석에서 나온 근거, 낮은 위양성/위음성 오류</td></tr>
+        <tr><td>II</td><td>소규모 무작위시험 또는 큰 규모지만 위양성/위음성 오류 위험이 있는 시험의 근거</td></tr>
+        <tr><td>III</td><td>전향적 코호트 연구</td></tr>
+        <tr><td>IV</td><td>후향적 코호트 연구 또는 환자-대조군 연구</td></tr>
+        <tr><td>V</td><td>대조군 없는 연구, 증례보고, 전문가의견</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고등급</th><th>정의</th></tr>
+        <tr><td><span class="grade grade-a">A</span></td><td>유효성에 대한 강력한 근거와 상당한 임상적 이득 — 강력히 권고</td></tr>
+        <tr><td><span class="grade grade-b">B</span></td><td>유효성에 대한 강력하거나 중등도 근거이나 이득이 제한적 — 일반적으로 권고</td></tr>
+        <tr><td><span class="grade grade-c">C</span></td><td>유효성 근거가 불충분하거나 이득이 위해·부작용·비용 대비 크지 않음 — 선택적</td></tr>
+        <tr><td><span class="grade grade-d">D</span></td><td>중등도 근거로 유효성에 반함 또는 부정적 결과 — 일반적으로 비권고</td></tr>
+        <tr><td><span class="grade grade-e">E</span></td><td>비유효성 또는 부정적 결과에 대한 강력한 근거 — 사용 금지</td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>ℹ️</span><div><strong>ESMO-MCBS(Magnitude of Clinical Benefit Scale)</strong>는 EMA·FDA가 승인한 신규 치료제/적응증의 임상적 이득 크기를 1-5점(비근치적 상황) 또는 A-C(근치적 상황)로 평가한다. <strong>ESCAT(Scale for Clinical Actionability of molecular Targets)</strong>는 유전체기반 분석에서 발견된 분자표적의 실행가능성을 I-A(가장 강력한 근거)부터 등급화한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-info"><span>🔗</span><div>Conroy T, Pfeiffer P, Vilgrain V, et al. Pancreatic cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up. Ann Oncol. 2023;34(11):987-1002. 전문 및 보충자료는 https://doi.org/10.1016/j.annonc.2023.08.009 에서 확인 가능. 최신 업데이트는 esmo.org/guidelines 참조.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"PC / PDAC", def:"Pancreatic Cancer / Pancreatic Ductal Adenocarcinoma — 췌장암 / 췌관선암" },
+  { term:"CT / MRI", def:"Computed Tomography / Magnetic Resonance Imaging — 전산화단층촬영 / 자기공명영상" },
+  { term:"EUS", def:"Endoscopic Ultrasound — 내시경초음파" },
+  { term:"ERCP", def:"Endoscopic Retrograde Cholangiopancreatography — 내시경역행담췌관조영술" },
+  { term:"PET-CT", def:"Positron Emission Tomography-CT — 양전자방출단층촬영" },
+  { term:"MRCP", def:"Magnetic Resonance Cholangiopancreatography — 자기공명담췌관조영술" },
+  { term:"CA 19-9", def:"Carbohydrate Antigen 19-9 — 탄수화물항원 19-9(혈청표지자)" },
+  { term:"IPMN", def:"Intraductal Papillary Mucinous Neoplasm — 관내유두상점액종양" },
+  { term:"PanIN", def:"Pancreatic Intraepithelial Neoplasia — 췌장상피내신생물" },
+  { term:"KRAS / TP53 / CDKN2A / SMAD4", def:"췌장암에서 흔히 변이되는 종양유전자·종양억제유전자" },
+  { term:"DDR / HRR", def:"DNA Damage Repair / Homologous Recombination Repair — DNA손상복구 / 상동재조합복구" },
+  { term:"BRCA1/2 / PALB2", def:"유방암감수성유전자 1/2, Partner and Localizer of BRCA2 — HRR 경로 관련 유전자" },
+  { term:"MSI-H / dMMR", def:"Microsatellite Instability-High / mismatch repair deficient — 고빈도현미부수체불안정성 / 불일치복구결핍" },
+  { term:"NTRK", def:"Neurotrophic Tyrosine Receptor Kinase — 신경영양성티로신수용체키나제(융합 시 표적치료 가능)" },
+  { term:"UICC TNM", def:"Union for International Cancer Control Tumour-Node-Metastasis — 종양·림프절·전이 병기분류(8판)" },
+  { term:"NCCN / IAP", def:"National Comprehensive Cancer Network / International Association of Pancreatology — 미국 종합암네트워크 / 국제췌장학회" },
+  { term:"BRPC / LAPC", def:"Borderline Resectable PC / Locally Advanced PC — 경계절제가능 췌장암 / 국소진행성 췌장암" },
+  { term:"ECOG PS / KPS", def:"Eastern Cooperative Oncology Group Performance Status / Karnofsky PS — 수행능력 평가척도" },
+  { term:"MDTB", def:"Multidisciplinary Tumour Board — 다학제종양위원회" },
+  { term:"SMV / PV / SMA", def:"Superior Mesenteric Vein / Portal Vein / Superior Mesenteric Artery — 상장간막정맥 / 문맥 / 상장간막동맥" },
+  { term:"R0 / R1", def:"완전절제(절제면 1mm 이내 암세포 없음) / 현미경적 절제면양성" },
+  { term:"ISGPS", def:"International Study Group of Pancreatic Surgery — 국제췌장외과연구그룹" },
+  { term:"RAMPS", def:"Radical Antegrade Modular Pancreatosplenectomy — 근치적역행성구획적췌비장절제술" },
+  { term:"ChT / CRT", def:"Chemotherapy / Chemoradiotherapy — 화학요법 / 화학방사선요법" },
+  { term:"FOLFIRINOX / mFOLFIRINOX", def:"류코보린+5-FU+이리노테칸+옥살리플라틴 (변형판 포함) 병용화학요법" },
+  { term:"GN", def:"Gemcitabine plus nab-paclitaxel — 젬시타빈+nab-파클리탁셀" },
+  { term:"NALIRIFOX / nal-IRI", def:"리포좀이리노테칸+5-FU+LV+옥살리플라틴 / 나노리포좀이리노테칸" },
+  { term:"5-FU / LV", def:"5-Fluorouracil / Leucovorin — 5-플루오로우라실 / 류코보린" },
+  { term:"OFF / mFOLFOX6", def:"옥살리플라틴+5-FU+LV / 변형 류코보린+5-FU+옥살리플라틴 요법" },
+  { term:"S-1", def:"Tegafur-gimeracil-oteracil — 경구 5-FU 전구약물 병용제제" },
+  { term:"VTE / LMWH", def:"Venous Thromboembolism / Low-Molecular-Weight Heparin — 정맥혈전색전증 / 저분자량헤파린" },
+  { term:"CPB", def:"Coeliac Plexus Block — 복강신경총차단술" },
+  { term:"BSC", def:"Best Supportive Care — 최선의 지지치료" },
+  { term:"ESMO-MCBS", def:"ESMO Magnitude of Clinical Benefit Scale — ESMO 임상이득크기척도" },
+  { term:"ESCAT", def:"ESMO Scale for Clinical Actionability of molecular Targets — ESMO 분자표적 실행가능성척도" },
+  { term:"ULN", def:"Upper Limit of Normal — 정상 상한치" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+const ALL_ABBR = ABBR_DATA;
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

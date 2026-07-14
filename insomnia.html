@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성인 만성 불면증 병용치료 AASM 임상진료지침 (2026)</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --text: #1f2328; --text2: #57606a;
+    --overview: #1e3a8a;  /* 개요 — 딥네이비 */
+    --rec:      #0f766e;  /* 권고 — 틸 */
+    --disc:     #7c2d92;  /* 논의·임상적용 — 퍼플 */
+    --limit:    #b45309;  /* 한계·향후연구 — 앰버 */
+    --tools:    #4b5563;  /* 약어·근거등급 — 그레이 */
+    --accent: #1e3a8a; --green: #1a7f37; --red: #cf222e; --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale,1)); line-height: 1.5; min-height:100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; position: sticky; top:0; z-index:100; }
+  .header-inner { width:100%; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .logo-row { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .logo-tb { display:flex; font-size: calc(11px * var(--fscale,1)); font-weight:800; letter-spacing:1px; }
+  .logo-tb span:nth-child(1){background:var(--disc);color:#fff;padding:3px 6px;border-radius:4px 0 0 4px;}
+  .logo-tb span:nth-child(2){background:var(--overview);color:#fff;padding:3px 6px;}
+  .logo-tb span:nth-child(3){background:var(--rec);color:#fff;padding:3px 6px;border-radius:0 4px 4px 0;}
+  header h1 { font-size:19px; font-weight:700; }
+  .meta-line { color:var(--text2); font-size: calc(11px * var(--fscale,1)); text-align:center; line-height:1.6; }
+  .tab-bar { display:flex; justify-content:center; background:var(--surface); border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .font-zoom-btn { display:flex; align-items:center; gap:3px; flex-shrink:0; margin:4px 4px 4px 6px; padding:5px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text2); font-size: calc(11px * var(--fscale,1)); font-weight:700; cursor:pointer; user-select:none; white-space:nowrap; }
+  .font-zoom-btn:hover{background:var(--border);}
+  .tab-bar-inner { width:100%; max-width:980px; display:flex; align-items:center; justify-content:center; gap:1px; }
+  .tab { padding:8px 9px; font-size: calc(11.5px * var(--fscale,1)); color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; user-select:none; }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--overview);border-bottom-color:var(--overview);font-weight:600;}
+  .tab-abbr-wrap { display:flex; align-items:center; padding:4px 6px; margin-left:4px; flex-shrink:0; position:relative; }
+  .main { padding:12px 16px; max-width:980px; margin:0 auto; }
+  .panel { display:none; } .panel.active{display:block;}
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  @media (max-width:680px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:10px; }
+  .card-header { background:var(--surface2); padding:8px 12px; font-size: calc(12px * var(--fscale,1)); font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; }
+  .card-header .ch-title{display:flex;align-items:center;gap:8px;}
+  .card-header .toggle{font-size:calc(14px * var(--fscale,1));transition:transform .2s;}
+  .card-header.open .toggle{transform:rotate(180deg);}
+  .card-body{padding:10px 12px;} .card-body.collapsed{display:none;}
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;text-align:center;min-width:90px;}
+  .stat-val{font-size:calc(18px * var(--fscale,1));font-weight:700;}
+  .stat-lbl{font-size:calc(10px * var(--fscale,1));color:var(--text2);margin-top:2px;line-height:1.35;}
+  .alert{padding:8px 12px;border-radius:6px;font-size:calc(12px * var(--fscale,1));margin:8px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.55;}
+  .alert-danger{background:#ffebe9;border-left:3px solid var(--red);color:#82071e;}
+  .alert-info{background:#ddf4ff;border-left:3px solid var(--accent);color:#0550ae;}
+  .alert-warn{background:#fff8c5;border-left:3px solid var(--yellow);color:#7d4e00;}
+  .alert-success{background:#dafbe1;border-left:3px solid var(--green);color:#116329;}
+  .alert-overview{background:#dbeafe;border-left:3px solid var(--overview);color:var(--overview);}
+  .alert-rec{background:#ccfbf1;border-left:3px solid var(--rec);color:#0f766e;}
+  .alert-disc{background:#f3e8ff;border-left:3px solid var(--disc);color:#7c2d92;}
+  .alert-limit{background:#fef3c7;border-left:3px solid var(--limit);color:#92400e;}
+  .alert-tools{background:#f1f5f9;border-left:3px solid var(--tools);color:#334155;}
+  .tbl{width:100%;border-collapse:collapse;font-size:calc(11px * var(--fscale,1));}
+  .tbl th{background:var(--surface2);color:var(--text2);padding:6px 8px;font-size:calc(10px * var(--fscale,1));text-transform:uppercase;letter-spacing:.3px;font-weight:600;text-align:left;}
+  .tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+  .tbl tr:last-child td{border-bottom:none;} .tbl tr:hover td{background:rgba(0,0,0,.02);}
+  .rec-strongfor{background:#155724;color:#fff;font-weight:700;text-align:center;}
+  .rec-condfor{background:#d4edda;color:#155724;font-weight:700;text-align:center;}
+  .rec-condagainst{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .rec-strongagainst{background:#f8d7da;color:#82071e;font-weight:700;text-align:center;}
+  .ev-low{background:#fff3cd;color:#856404;font-weight:700;text-align:center;}
+  .acc{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;}
+  .acc-hdr{background:var(--surface2);padding:7px 12px;font-size:calc(12px * var(--fscale,1));font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+  .acc-hdr:hover{background:#e5e9ef;}
+  .acc-toggle{font-size:calc(11px * var(--fscale,1));color:var(--text2);transition:transform .2s;}
+  .acc-hdr.open .acc-toggle{transform:rotate(180deg);}
+  .acc-body{display:none;padding:10px 12px;font-size:calc(12px * var(--fscale,1));line-height:1.65;}
+  .acc-body ul{padding-left:16px;margin:4px 0;} .acc-body li{margin-bottom:3px;}
+  .stage{display:inline-block;padding:2px 8px;border-radius:4px;font-size:calc(10px * var(--fscale,1));font-weight:700;white-space:nowrap;}
+  .pico{display:inline-block;padding:2px 8px;border-radius:12px;font-size:calc(10px * var(--fscale,1));font-weight:700;margin-right:6px;color:#fff;}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;}
+  .abbr-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;}
+  .abbr-term{font-weight:700;color:var(--accent);font-size:calc(12px * var(--fscale,1));font-family:'Courier New',monospace;}
+  .abbr-def{font-size:calc(11px * var(--fscale,1));color:var(--text2);line-height:1.45;}
+  ::-webkit-scrollbar{width:5px;height:5px;} ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#c8d0d9;border-radius:3px;}
+  small{color:var(--text2);font-size:calc(10px * var(--fscale,1));}
+  .stage-timeline{display:flex;align-items:stretch;gap:0;margin:10px 0;overflow-x:auto;}
+  .stage-box{flex:1;min-width:120px;padding:10px 10px 12px;border-right:2px solid var(--bg);text-align:center;cursor:default;}
+  .stage-box:last-child{border-right:none;}
+  .stage-box .st-num{font-size:calc(14px * var(--fscale,1));font-weight:800;margin-bottom:4px;}
+  .stage-box .st-lbl{font-size:calc(10px * var(--fscale,1));line-height:1.4;}
+  .gear-row{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;}
+  .gear-box{flex:1;min-width:140px;border-radius:6px;padding:10px 12px;font-size:calc(12px * var(--fscale,1));}
+  .gear-title{font-weight:700;font-size:calc(13px * var(--fscale,1));margin-bottom:4px;}
+  .kq-num{display:inline-block;background:var(--overview);color:#fff;border-radius:5px;padding:2px 8px;font-size:calc(11px * var(--fscale,1));font-weight:700;margin-right:6px;}
+  .ladder{display:flex;align-items:center;gap:8px;margin:10px 0;flex-wrap:wrap;justify-content:center;}
+  .ladder-box{padding:10px 16px;border-radius:8px;font-weight:700;text-align:center;font-size:calc(12px * var(--fscale,1));}
+  .ladder-arrow{font-size:calc(16px * var(--fscale,1));color:var(--text2);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-tb"><span>CBT-I</span><span>+</span><span>Rx</span></div>
+      <h1>성인 만성 불면증 병용치료 AASM 임상진료지침 (2026)</h1>
+    </div>
+    <div class="meta-line">
+      American Academy of Sleep Medicine (AASM) · J Clin Sleep Med 2026;22:56 · 2026년 4월 발표
+      <br><span style="font-size:calc(10px * var(--fscale,1));font-style:italic">본 도구는 원문(Buysse 등, AASM Clinical Practice Guideline)을 요약·재구성한 비공식 참고자료이다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span>🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('rec')">📋 권고</div>
+    <div class="tab" onclick="showTab('disc')">💬 임상적 함의</div>
+    <div class="tab" onclick="showTab('limit')">🔬 한계·향후연구</div>
+    <div class="tab" onclick="showTab('tools')">📏 약어·근거등급</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:calc(12px * var(--fscale,1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:calc(12px * var(--fscale,1));width:100px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:calc(10px * var(--fscale,1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ TAB 1: 개요 ══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">10-15%</div><div class="stat-lbl">성인에서<br>만성 불면증 유병률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--rec)">2개</div><div class="stat-lbl">핵심 권고<br>(조건부 권고 1 · 조건부 반대 1)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--disc)">낮음</div><div class="stat-lbl">두 권고 모두<br>근거수준(certainty)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--limit)">2025.6</div><div class="stat-lbl">최종 문헌검색<br>시점</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📖</span> 배경</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>본 지침에서 정의하는 "병용치료(combination treatment)"란 불면증 인지행동치료(CBT-I)와 약물치료를 <strong>동시에</strong> 시작하는 치료를 말한다. AASM은 2017년 약물치료 단독에 대한 지침을, 2021년 행동·심리치료 단독에 대한 지침을 각각 발표한 바 있으나, 두 치료를 병용할지·어떻게·언제 병용할지에 대한 근거기반 지침은 부재하였다.</div>
+      <div class="alert alert-overview" style="margin-top:8px"><span>🌙</span><div>만성 불면증은 성인의 약 <strong>10-15%</strong>에서 발생하며, 삶의 질 저하 및 심혈관질환·고혈압·당뇨병·정신건강/물질사용장애 위험 증가와 연관된다. 진단은 국제수면장애분류(ICSD) 또는 DSM 기준에 따른 병력청취로 이루어지며, 별도의 수면다원검사는 필수가 아니다(단, 다른 수면장애 의심 시 고려).</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>기존 AASM 지침</th><th>핵심 내용</th></tr>
+        <tr><td>2017년 약물치료 지침</td><td>수면유도(triazolam, ramelteon, zaleplon), 수면유지(doxepin, suvorexant), 복합형(temazepam, zolpidem, eszopiclone)에 조건부 권고. trazodone·melatonin·valerian 등은 근거 부족으로 조건부 반대</td></tr>
+        <tr><td>2021년 행동·심리치료 지침</td><td>다요소 CBT-I에 강력 권고. 단일요소 치료(자극조절·수면제한·이완요법)는 조건부 권고. 수면위생 단독은 조건부 반대</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🧪</span> 방법론 (GRADE 과정)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>AASM은 불면증 치료 전문가 및 방법론 전문가로 구성된 태스크포스(TF)를 구성하였고, 이해상충(COI) 정책에 따라 Level 1 상충 위원은 참여를 배제하고 Level 2 상충 위원은 관련 논의에서 배제하였다. 체계적 문헌고찰 후 GRADE 과정에 따라 다음 4개 요소를 평가하여 권고의 방향과 강도를 결정하였다: <strong>근거의 확실성, 유익·유해 효과의 균형, 환자 가치관·선호, 자원 사용</strong>.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>구분</th><th>핵심 결과지표</th><th>측정도구</th></tr>
+        <tr><td>중대(critical) 결과 — 전반적 불면증 중증도</td><td>불면증 증상, 수면의 질</td><td>Insomnia Severity Index, Pittsburgh Sleep Quality Index</td></tr>
+        <tr><td>중대 결과 — 수면 연속성</td><td>수면효율, 수면잠복기, 입면 후 각성시간(WASO)</td><td>수면일지</td></tr>
+        <tr><td>중대 결과 — 주간 기능</td><td>우울, 불안, 피로, 삶의 질</td><td>Beck Anxiety/Depression Inventory, PHQ, MFI, SF-36 등</td></tr>
+        <tr><td>중요(important) 결과</td><td>총 수면시간(TST), 치료 부작용</td><td>수면일지, 이상반응 설문</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>TF는 각 결과지표마다 <strong>임상적으로 유의한 차이 기준(clinically meaningful threshold, CMT)</strong>을 사전에 설정하여, 중재군과 대조군 간 평균 차이가 임상적으로 의미 있는지 판단하였다. 자료는 급성치료 종료 직후의 단기 결과에 집중되어 있다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📏</span> 권고 강도의 의미</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>대상</th><th>강력 권고 ("권고한다")</th><th>조건부 권고 ("제안한다")</th></tr>
+        <tr><td>임상의</td><td>거의 모든 환자에게 시행되어야 함. 질 지표로 활용 가능</td><td>대부분의 환자에게 제안하되, 환자별로 다른 선택이 적절할 수 있음. 임상의는 환자의 가치관·선호에 맞는지 함께 판단해야 함</td></tr>
+        <tr><td>환자</td><td>거의 모든 환자가 선택해야 하나, 일부는 선택하지 않을 수 있음</td><td>대부분의 환자에게 제안되나 일부는 선택하지 않을 수 있음. 임상의와 함께 적절성을 판단해야 함</td></tr>
+        <tr><td>정책입안자</td><td>대부분의 상황에서 정책으로 채택 가능</td><td>임상의·환자가 함께 판단할 재량이 필요하며 정책 수립 시 이를 반영해야 함</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🪜</span> 치료 우선순위 사다리</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div style="margin-bottom:6px;color:var(--text2);font-size:calc(11px * var(--fscale,1))">본 지침의 전체 권고를 종합하면, 대부분의 상황에서 다음과 같은 우선순위를 따른다.</div>
+      <div class="ladder">
+        <div class="ladder-box" style="background:#dcfce7;color:#15803d">① CBT-I 단독<br><small>최우선</small></div>
+        <div class="ladder-arrow">›</div>
+        <div class="ladder-box" style="background:#ccfbf1;color:#0f766e">② 병용치료<br>(CBT-I+약물)</div>
+        <div class="ladder-arrow">›</div>
+        <div class="ladder-box" style="background:#fee2e2;color:#b91c1c">③ 약물치료 단독</div>
+      </div>
+      <div class="alert alert-overview"><span>🎯</span><div>즉, CBT-I 단독이 병용치료보다 우선하고, 병용치료는 약물치료 단독보다 우선한다. 다만 총 수면시간(TST)의 조기 증가를 중요시하거나 주간증상 개선을 상대적으로 덜 중요시하는 환자는 병용치료를 CBT-I 단독 대신 선택하는 것이 합리적일 수 있다.</div></div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+
+<!-- ══════════ TAB 2: 권고 ══════════ -->
+<div id="tab-rec" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">권고 1</span> 병용치료 vs 약물치료 단독</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-rec"><span>✅</span><div><strong>성인 만성 불면증 환자에서, AASM은 약물치료 단독보다 CBT-I와 불면증 약물의 병용치료 사용을 제안한다.</strong> <span class="stage rec-condfor">조건부 권고</span> <span class="stage ev-low">낮은 근거수준</span></div></div>
+      <div style="margin-top:8px">TF는 메타분석 가능한 자료를 보고한 6개 무작위배정임상시험(7개 논문)을 확인하였다. 5개 시험은 대면 CBT-I를, 1개 시험은 자가시행 CBT-I를 시행하였다. 사용된 불면증 약물은 lormetazepam, temazepam, zolpidem, zopiclone이었다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>결과지표</th><th>병용치료 vs 약물단독 결과</th></tr>
+        <tr><td>전반적 불면증 중증도</td><td>임상적으로 유의한 개선 (병용치료 우위)</td></tr>
+        <tr><td>수면 연속성</td><td>임상적으로 유의한 개선 (병용치료 우위)</td></tr>
+        <tr><td>주간 기능</td><td>병용군이 더 양호했으나 임상적으로 유의하지 않음</td></tr>
+        <tr><td>총 수면시간(TST)</td><td>임상적으로 유의한 개선 없음 (점추정치는 오히려 약물단독 우위)</td></tr>
+        <tr><td>치료 부작용(아침 졸림)</td><td>병용군에서 더 많이 보고됨 (사전 설정 CMT 없음, 효과크기 미미)</td></tr>
+      </table>
+      <div style="margin-top:8px">병용치료의 유익 효과는 작은 효과크기로 판단되었고, 유해 효과는 미미한 것으로 평가되었다. TF는 <strong>병용치료의 잠재적 유익이 잠재적 유해를 능가한다</strong>고 판단하였다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>전반적 근거의 확실성은 비뚤림 위험과 비정밀성으로 인해 <strong>낮음</strong>으로 평가되었다. 약물치료 단독 대비 병용치료의 비용은 중등도로 평가되었다. 건강형평성에 미치는 직접적 근거는 없으나, CBT-I 접근이 어렵거나 비용 부담이 큰 환경에서는 병용치료 권고가 형평성에 부정적 영향을 줄 수 있다. 병용치료는 이해관계자(환자·임상의)에게 대체로 수용 가능하고 시행 가능한 중재로 판단되었다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span class="kq-num">권고 2</span> 병용치료 vs CBT-I 단독</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div class="alert alert-rec"><span>🚫</span><div><strong>성인 만성 불면증 환자에서, AASM은 CBT-I 단독보다 CBT-I와 불면증 약물의 병용치료 사용에 대해 반대할 것을 제안한다.</strong> <span class="stage rec-condagainst">조건부 반대</span> <span class="stage ev-low">낮은 근거수준</span></div></div>
+      <div class="alert alert-info" style="margin-top:8px"><span>📝</span><div><strong>Remark(주해)</strong>: 치료 초기 총 수면시간 증가를 더 중요시하거나, 주간증상 개선을 상대적으로 덜 중요시하는 환자는 CBT-I 단독 대신 병용치료를 합리적으로 선택할 수 있다.</div></div>
+      <div style="margin-top:8px">TF는 메타분석 가능한 자료를 보고한 6개 무작위배정임상시험(7개 논문)을 확인하였다. 모든 연구가 대면 CBT-I를 시행하였으며, 사용된 약물은 temazepam, trazodone, zolpidem, zopiclone이었다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>결과지표</th><th>병용치료 vs CBT-I 단독 결과</th></tr>
+        <tr><td>전반적 불면증 중증도</td><td>임상적으로 유의한 개선 없음</td></tr>
+        <tr><td>수면 연속성</td><td>임상적으로 유의한 개선 없음</td></tr>
+        <tr><td>주간 기능</td><td>임상적 유의성 없음(단, 신뢰구간상 병용치료의 더 큰 유해 가능성 배제 못함)</td></tr>
+        <tr><td>총 수면시간(TST)</td><td>임상적으로 유의한 개선(신뢰구간이 0을 포함)</td></tr>
+        <tr><td>치료 부작용</td><td>보고된 자료 없음</td></tr>
+      </table>
+      <div style="margin-top:8px">병용치료의 유익·유해 효과 모두 미미한 효과크기로 평가되었다. TF는 <strong>병용치료의 잠재적 유익이 잠재적 유해를 능가하지 않는다</strong>고 판단하였다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>근거의 확실성은 비뚤림 위험·비정밀성으로 <strong>낮음</strong>이다. CBT-I 단독 대비 병용치료의 추가 비용은 포함된 연구의 약물 기준 무시할 만한(negligible) 수준으로 평가되었다. 건강형평성에 대한 직접 근거는 없다. 병용치료는 대체로 수용 가능하고 시행 가능한 중재로 판단되었다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /rec -->
+
+
+<!-- ══════════ TAB 3: 임상적 함의·논의 ══════════ -->
+<div id="tab-disc" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🩺</span> 임상 적용 시나리오</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>본 지침의 권고는 대부분의 상황에서 <strong>CBT-I 단독을 우선 시행</strong>하고, 병용치료는 특정 임상 상황에 한해 선택할 것을 지지한다. 다음과 같은 경우 병용치료가 합리적으로 고려될 수 있다.</div>
+      <ul style="margin:8px 0 0 18px; line-height:1.8">
+        <li>치료 초기 총 수면시간(TST) 증가를 수면 연속성 개선보다 더 우선시하는 경우 (환자 또는 임상의 판단)</li>
+        <li>수면 부족 자체가 주된 호소이거나, 충분한 수면 확보가 특히 중요한 직업군(예: 안전 민감 직종)에 종사하는 경우</li>
+        <li>빠른 증상 완화가 우선순위인 경우, 또는 CBT-I가 수용 가능하나 즉시 이용이 어려운 경우</li>
+        <li>주간증상이 경미하여 병용치료의 상대적으로 작은 주간기능 개선 폭이 문제되지 않는 경우</li>
+      </ul>
+      <div class="alert alert-disc" style="margin-top:8px"><span>💊</span><div>반대로, CBT-I 단독보다 <strong>비용이 낮고 부담이 적은 약물치료 단독</strong>을 선호하는 환자, 인지장애로 행동적 변화·인지전략 수행이 어려운 환자, CBT-I 대기시간이 매우 긴 경우 등에서는 약물치료 단독이 적절할 수 있다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔀</span> 동시병용 vs 순차치료</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>본 지침은 두 치료가 <strong>동시에 시작되는</strong> 병용치료만을 다루었다. 실제 임상에서 더 흔할 것으로 추정되는 <strong>순차치료</strong>(예: CBT-I 반응이 불충분할 때 약물 추가, 또는 그 반대)에 대한 임상시험은 수가 적고 설계가 다양하여 이번 지침의 근거평가·의사결정 과정에서 제외되었다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>🔬</span><div>한 최근 순차치료 무작위임상시험(Morin 등, 2020)에서는 <strong>행동치료 후 zolpidem 추가</strong> 순서가 <strong>zolpidem 후 행동치료 추가</strong> 순서보다 더 높은 불면증 관해율을 보였다. 또한 <strong>zolpidem 후 trazodone</strong> 순서는 다른 모든 순서(병용치료 포함)보다 총 수면시간을 더 크게 연장시켰다. 그러나 현재 근거로는 TF가 동시병용과 순차치료 중 무엇이 더 나은지 권고할 수 없다.</div></div>
+      <div style="margin-top:8px">이에 따라 TF는 임상의에게 다음 두 가지를 권고한다: <strong>① CBT-I 접근성 확대</strong>(대면·원격진료·디지털 CBT-I 자원 활용 및 수면/외래 센터에서의 CBT-I 포함 옹호), <strong>② 공유의사결정</strong>(비용·시간 부담 등 상류 요인과 관해율·TST 등 하류 효과를 환자 개별 수준에서 함께 고려).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🌐</span> 접근성과 건강형평성</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <div>CBT-I 접근성은 일반 인구에서도 문제이며, 취약지역·농촌 지역에서는 더욱 어렵다. 디지털 CBT-I(dCBT-I)는 접근성 개선 가능성을 보이나 참여도·중도탈락 문제가 있고 모든 건강보험에서 보장되지 않는다. 다수의 dCBT-I 제품이 시중에 있으나 현재 FDA 승인·근거기반으로 분류된 것은 <strong>Somryst, SleepioRx</strong> 2종뿐이며, 미국 CMS의 상환 가능한 디지털 정신건강 치료로 지정되어 있다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>💰</span><div>비용·보험 보장은 치료 접근성의 주요 장벽이다. CBT-I는 다회기 방문이 필요해 보장되지 않거나 대기시간이 길 수 있고, 디지털 CBT-I도 구독료·인터넷 접근·기술 활용능력이 필요하다. 사회경제적으로 취약한 환자는 교통·근무일정·육아 등 물리적 제약으로 CBT-I 접근이 더 어려울 수 있으며, 이로 인한 <strong>약물치료 과의존</strong>은 장기적 불면증 관리의 격차를 고착시킬 수 있다.</div></div>
+      <div style="margin-top:8px">따라서 저렴하고 근거기반인 행동·심리적 중재에 대한 접근성 확대는 중요한 공중보건 목표로 남아 있다. 반면 약물치료는 폭넓게 접근 가능하나, 특히 제네릭이 없는 신약의 경우 비용 부담이 문제가 될 수 있다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📌</span> 결론</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div>본 지침은 성인 만성 불면증 환자에서 임상의가 <strong>약물치료 단독보다 병용치료(CBT-I+약물)를 사용</strong>할 것을 권고하되, <strong>행동·심리치료(CBT-I) 단독보다 병용치료를 사용하는 것에는 반대</strong>할 것을 권고한다. 다만 수면시간 연장을 핵심 임상결과로 우선시하거나 주간증상 개선을 상대적으로 덜 중요시하는 환자는 병용치료를 선호적으로 선택할 수 있다. 전반적으로 환자의 가치관·선호, 사회적 결정요인, 치료 접근성을 함께 고려한 개별화된 임상 의사결정이 권장된다.</div>
+    </div>
+  </div>
+
+</div><!-- /disc -->
+
+
+<!-- ══════════ TAB 4: 한계·향후연구 ══════════ -->
+<div id="tab-limit" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>⚠️</span> 근거의 한계</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <ul style="margin:0 0 0 18px; line-height:1.8">
+        <li>단일·병용치료를 비교한 연구 수가 적어 메타분석 정밀도가 낮고, 주간증상 등 결과를 넓은 범주로 통합해야 했다</li>
+        <li>다양한 인종/민족, 성별, 사회경제적 계층, 동반 약물·의학적/정신과적 질환을 가진 환자에 대한 자료가 매우 제한적이어서 결과를 다양한 배경의 환자에게 확신 있게 일반화하기 어렵다</li>
+        <li>대부분의 시험이 표본 크기가 작고, 단일 학술기관에서 시행되었으며, 비교적 동질적인 집단을 대상으로 하여 일반화 가능성이 제한적이다</li>
+        <li>순차치료(더 흔한 실제 임상 시나리오로 추정됨)에 대한 연구는 수가 적어 이번 분석·의사결정 과정에서 제외되었다</li>
+        <li>포함된 시험의 약물 범위가 좁아 대부분 benzodiazepine 수용체 작용제에 집중되었고, DORA(이중 오렉신 수용체 길항제)나 melatonin 수용체 작용제를 조사한 연구는 없었다. Trazodone은 1개 연구에서만 사용되었다(불면증 적응증으로 FDA 승인되지 않았으나 미국에서 널리 처방됨)</li>
+        <li>연구 간 CBT-I 구성요소·전달방식의 차이가 커서 병용치료에 가장 유익한 특정 구성요소를 결론짓기 어렵다</li>
+        <li>단일요소 행동·심리치료, 단기치료, 또는 최신 심리치료(예: 수용전념치료)와 약물의 병용에 대한 충분한 연구가 확인되지 않았다</li>
+        <li>이상반응을 체계적으로 수집한 연구가 적고, 장기 결과·비용효과 분석 자료가 부재하다</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>🔭</span> 향후 연구 방향</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <ul style="margin:0 0 0 18px; line-height:1.8">
+        <li>현대적 임상시험 기준을 적용한, 충분한 검정력을 갖춘 비교효과 연구가 가장 중요한 연구 공백으로 확인되었다</li>
+        <li>주간기능 영향 및 우울·물질오남용·통증·고혈압 등 동반 임상결과에 대한 체계적 평가를 포함하고, 주요 하위집단에서 검증되어야 한다</li>
+        <li>병용치료로 인한 주간 부작용 정보가 임상시험에 더 체계적으로 통합되어야 한다</li>
+        <li>병용치료와 각 단독치료 간 효과 지속성(장기 추적)을 비교하는 연구가 필요하나, 시행이 어렵고 유용성에 제한이 있다</li>
+        <li>객관적으로 짧은 수면시간을 보이는 불면증 표현형에서 병용치료의 TST 개선 효과를 검증해야 한다</li>
+        <li>순차치료(CBT-I 후 약물 vs 동시병용) 등 임상적으로 중요한 설계 이슈를 다루는 향후 RCT가 필요하며, DORA를 포함한 다양한 수면제가 병용치료에서 검증되어야 한다</li>
+        <li>실제 임상에서 병용치료의 시행 빈도(유병률)에 대한 자료가 부족하여 추가 연구가 필요하다</li>
+      </ul>
+      <div class="alert alert-limit" style="margin-top:8px"><span>💡</span><div>이러한 연구 공백이 해소될 경우, 본 지침의 병용치료 권고는 향후 개정 시 바뀔 수 있다. AASM은 발표된 모든 임상진료지침에 대해 2년마다 범위 문헌검색(scoping search)을 시행하여 새로운 근거를 검토하고 필요 시 개정한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /limit -->
+
+
+<!-- ══════════ TAB 5: 약어·근거등급 ══════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)"><div class="ch-title"><span>📐</span> 권고등급 (AASM/GRADE 방식)</div><span class="toggle">▾</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>권고등급</th><th>정의</th></tr>
+        <tr><td><span class="stage rec-strongfor">강력 권고 (We recommend)</span></td><td>거의 모든 환자에게 시행되어야 하는, 대부분의 상황에서 따라야 할 권고</td></tr>
+        <tr><td><span class="stage rec-condfor">조건부 권고 (We suggest)</span></td><td>임상 지식·경험 및 환자 가치관·선호를 함께 고려하여 결정해야 하는 권고</td></tr>
+        <tr><td><span class="stage rec-condagainst">조건부 반대 (We suggest against)</span></td><td>대부분의 상황에서는 권고하지 않으나 환자별 개별 판단이 필요한 권고</td></tr>
+      </table>
+      <div class="alert alert-tools" style="margin-top:8px"><span>ℹ️</span><div>근거의 확실성(certainty of evidence)은 GRADE 방식에 따라 <strong>높음·중등도·낮음·매우낮음</strong>으로 평가하며, 본 지침의 두 권고 모두 <span class="stage ev-low">낮은 근거수준</span>으로 평가되었다(비뚤림 위험 및 비정밀성).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>🔠</span> 주요 약어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>💊</span> 치료·약물 관련 용어</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div id="abbr-drug-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)"><div class="ch-title"><span>📚</span> 원문 출처</div><span class="toggle">▾</span></div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Buysse DJ, Arnedt JT, Buenaver L, et al. Combination treatment for chronic insomnia disorder in adults: an American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med. 2026;22:56. doi:10.1007/s44470-025-00038-8. 동반 체계적 문헌고찰·메타분석·GRADE 평가는 별도 논문(J Clin Sleep Med. 2026;22(1), doi:10.1007/s44470-025-00039-7)에 게재되어 있다. 미국가정의학회(AAFP)·미국노인병학회(AGS)가 가치를 인정하였고, 미국의사보조사협회(AAPA)·미국불안우울증협회(ADAA)·캐나다수면학회 등 다수 학회의 승인을 받았다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS=[1,1.25,1.5]; let fontZoomIndex=0;
+function applyFontZoom(s){document.documentElement.style.setProperty('--fscale',s);const l=document.getElementById('font-zoom-label');if(l)l.textContent=Math.round(s*100)+'%';}
+function cycleFontZoom(){fontZoomIndex=(fontZoomIndex+1)%FONT_ZOOM_LEVELS.length;applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);}
+
+const ABBR_DATA = [
+  { term:"CBT-I", def:"Cognitive Behavioral Therapy for Insomnia — 불면증 인지행동치료" },
+  { term:"AASM", def:"American Academy of Sleep Medicine — 미국수면의학회" },
+  { term:"CPG", def:"Clinical Practice Guideline — 임상진료지침" },
+  { term:"GRADE", def:"Grading of Recommendations Assessment, Development and Evaluation — 근거·권고등급 평가체계" },
+  { term:"TF", def:"Task Force — 지침개발 태스크포스" },
+  { term:"COI", def:"Conflict of Interest — 이해상충" },
+  { term:"CMT", def:"Clinically Meaningful Threshold — 임상적으로 유의한 차이 기준" },
+  { term:"RCT", def:"Randomized Controlled Trial — 무작위배정 비교임상시험" },
+  { term:"ICSD", def:"International Classification of Sleep Disorders — 국제수면장애분류" },
+  { term:"DSM", def:"Diagnostic and Statistical Manual of Mental Disorders — 정신질환진단 및 통계편람" },
+  { term:"SE", def:"Sleep Efficiency — 수면효율" },
+  { term:"SOL", def:"Sleep Onset Latency — 수면잠복기" },
+  { term:"WASO", def:"Wake After Sleep Onset — 입면 후 각성시간" },
+  { term:"TST", def:"Total Sleep Time — 총 수면시간" },
+  { term:"dCBT-I", def:"Digital CBT-I — 디지털(온라인/앱 기반) 불면증 인지행동치료" },
+  { term:"CMS", def:"Centers for Medicare and Medicaid Services — 미국 메디케어·메디케이드 관리센터" },
+];
+const DRUG_ABBR = [
+  { term:"Zolpidem", def:"졸피뎀 — 비벤조디아제핀계 수면유도제" },
+  { term:"Zopiclone", def:"조피클론 — 비벤조디아제핀계 수면유도제" },
+  { term:"Temazepam", def:"테마제팜 — 벤조디아제핀계 수면제" },
+  { term:"Lormetazepam", def:"로르메타제팜 — 벤조디아제핀계 수면제" },
+  { term:"Trazodone", def:"트라조돈 — 불면증에 비승인(off-label)이나 미국에서 널리 처방되는 항우울제" },
+  { term:"Suvorexant", def:"수보렉산트 — 이중 오렉신 수용체 길항제(DORA)" },
+  { term:"Ramelteon", def:"라멜테온 — 멜라토닌 수용체 작용제" },
+  { term:"DORA", def:"Dual Orexin Receptor Antagonist — 이중 오렉신 수용체 길항제 (예: suvorexant, lemborexant, daridorexant)" },
+  { term:"Eszopiclone", def:"에스조피클론 — 비벤조디아제핀계 수면유도/유지제" },
+  { term:"Somryst / SleepioRx", def:"FDA 승인 근거기반 디지털 CBT-I 프로그램" },
+];
+function renderGrid(id,data){const g=document.getElementById(id);if(g)g.innerHTML=data.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+renderGrid('abbr-main-grid',ABBR_DATA);
+renderGrid('abbr-drug-grid',DRUG_ABBR);
+const ALL_ABBR = ABBR_DATA.concat(DRUG_ABBR);
+
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick')===`showTab('${id}')`)t.classList.add('active');});}
+function toggleCard(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.classList.toggle('collapsed');}
+function toggleAcc(hdr){hdr.classList.toggle('open');const body=hdr.nextElementSibling;body.style.display=body.style.display==='block'?'none':'block';}
+function filterAbbr(q){const drop=document.getElementById('abbr-dropdown');const grid=document.getElementById('abbr-grid-drop');const cnt=document.getElementById('abbr-count');q=q.trim().toLowerCase();if(!q){drop.style.display='none';cnt.textContent='';return;}const hits=ALL_ABBR.filter(a=>a.term.toLowerCase().includes(q)||a.def.toLowerCase().includes(q));cnt.textContent=hits.length||'';if(!hits.length){drop.style.display='none';return;}drop.style.display='block';const inp=document.getElementById('abbr-input');const rect=inp.getBoundingClientRect();drop.style.top=(rect.bottom+4)+'px';drop.style.left=Math.max(8,rect.right-440)+'px';grid.innerHTML=hits.map(a=>`<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`).join('');}
+document.addEventListener('click',e=>{if(!e.target.closest('.tab-abbr-wrap')){document.getElementById('abbr-dropdown').style.display='none';document.getElementById('abbr-count').textContent='';}});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.card-header:not(.open)').forEach(h=>{const b=h.nextElementSibling;if(b)b.classList.add('collapsed');});});
+</script>
+</body>
+</html>

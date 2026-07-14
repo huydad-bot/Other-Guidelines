@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>비염 2020 진료지침 (AAAAI/ACAAI Practice Parameter Update)</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --overview: #1d4ed8;   /* 개요 — 인디고블루 */
+    --summary:  #475569;   /* 권고요약 — 슬레이트 */
+    --diag:     #0f766e;   /* 진단 — 틸 */
+    --adult:    #b45309;   /* AR치료 — 앰버 */
+    --child:    #0369a1;   /* NAR치료 — 스카이블루 */
+    --tests:    #7c3aed;   /* 아형질환 — 바이올렛 */
+    --specific: #be185d;   /* 특수집단 — 로즈 */
+    --unexp:    #15803d;   /* AIT·대체요법 — 그린 */
+    --accent: #1d4ed8;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-rhin { display: flex; align-items: center; gap: 0; font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px; }
+  .logo-rhin span:nth-child(1) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-rhin span:nth-child(2) { background: var(--adult); color:#fff; padding:3px 6px; }
+  .logo-rhin span:nth-child(3) { background: var(--unexp); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 19px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+  .source-link { color: var(--accent); font-size: calc(11px * var(--fscale, 1)); text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn { display: flex; align-items: center; gap: 3px; flex-shrink: 0; margin: 4px 4px 4px 6px; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700; cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s; }
+  .font-zoom-btn:hover { background: var(--border); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 11px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--overview); border-bottom-color: var(--overview); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(18px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-overview{ background: #dbeafe; border-left: 3px solid var(--overview); color: #1d4ed8; }
+  .alert-diag    { background: #d9f2ef; border-left: 3px solid var(--diag);   color: #0f766e; }
+  .alert-adult   { background: #fef0d9; border-left: 3px solid var(--adult);  color: #92400e; }
+  .alert-child   { background: #e0f2fe; border-left: 3px solid var(--child);  color: #0369a1; }
+  .alert-tests   { background: #ede9fe; border-left: 3px solid var(--tests);  color: #5b21b6; }
+  .alert-specific{ background: #fce7f3; border-left: 3px solid var(--specific);color: #9d174d; }
+  .alert-unexp   { background: #dcfce7; border-left: 3px solid var(--unexp);  color: #15803d; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+
+  .ev-high { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+  .ev-mod  { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .ev-low  { background: #ffd8a8; color: #7d3b00; font-weight: 700; text-align: center; }
+  .ev-vlow { background: #ffd8d8; color: #82071e; font-weight: 700; text-align: center; }
+  .rec-strong { background:#d4edda;color:#155724;font-weight:700;text-align:center; }
+  .rec-cond   { background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center; }
+  .rec-na     { background:#eee;color:#555;font-weight:700;text-align:center; }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-overview { background: #dbeafe; color: var(--overview); border: 1px solid var(--overview); }
+  .t-diag     { background: #d9f2ef; color: var(--diag);     border: 1px solid var(--diag); }
+  .t-adult    { background: #fef0d9; color: var(--adult);    border: 1px solid var(--adult); }
+  .t-child    { background: #e0f2fe; color: var(--child);    border: 1px solid var(--child); }
+  .t-tests    { background: #ede9fe; color: var(--tests);    border: 1px solid var(--tests); }
+  .t-specific { background: #fce7f3; color: var(--specific); border: 1px solid var(--specific); }
+  .t-unexp    { background: #dcfce7; color: var(--unexp);    border: 1px solid var(--unexp); }
+
+  .pico { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; margin-right: 6px; color:#fff; white-space:nowrap; }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box { flex: 1; min-width: 130px; padding: 10px 10px 12px; border-right: 2px solid var(--bg); text-align: center; position: relative; cursor: pointer; transition: opacity .15s; }
+  .stage-box:last-child { border-right: none; }
+  .stage-box:hover { opacity: .88; }
+  .stage-box .st-num { font-size: calc(14px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-overview { background: #e6eefb; }
+  .st-diag     { background: #d9f2ef; }
+  .st-adult    { background: #fef0d9; }
+  .st-child    { background: #e0f2fe; }
+  .st-tests    { background: #f3e8ff; }
+  .st-unexp    { background: #dcfce7; }
+
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-adult   { background: #fef0d9; border: 1.5px solid var(--adult);  color: #92400e; }
+  .gear-child   { background: #e0f2fe; border: 1.5px solid var(--child);  color: #0369a1; }
+  .gear-tests   { background: #f3e8ff; border: 1.5px solid var(--tests);  color: #5b21b6; }
+  .gear-unexp   { background: #dcfce7; border: 1.5px solid var(--unexp);  color: #15803d; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  .algo-flow { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .algo-step { border-radius: 6px; padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); border-left: 4px solid var(--border); background: var(--surface2); }
+  .algo-arrow { text-align: center; color: var(--text2); font-size: calc(14px * var(--fscale, 1)); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-rhin"><span>AR</span><span>NAR</span><span>2020</span></div>
+      <h1>비염(Rhinitis) 2020 진료지침</h1>
+    </div>
+    <div class="meta-line">
+      AAAAI / ACAAI Joint Task Force on Practice Parameters — Rhinitis 2020: A Practice Parameter Update (J Allergy Clin Immunol 2020;146:721-67)
+      <br><span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('summary')">📋 권고요약</div>
+    <div class="tab" onclick="showTab('diag')">🩺 진단적접근</div>
+    <div class="tab" onclick="showTab('ar')">💊 AR치료</div>
+    <div class="tab" onclick="showTab('nar')">🌬️ NAR치료</div>
+    <div class="tab" onclick="showTab('tests')">🔬 아형질환</div>
+    <div class="tab" onclick="showTab('specific')">👶 특수집단</div>
+    <div class="tab" onclick="showTab('unexp')">🧬 AIT·대체요법</div>
+    <div class="tab" onclick="showTab('tools')">📏 평가·약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:110px;outline:none;"
+          onfocus="this.style.borderColor='var(--overview)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--overview)">10-30%</div><div class="stat-lbl">미국 성인<br>알레르기비염(AR) 유병률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">17-52%</div><div class="stat-lbl">성인 만성<br>비알레르기비염(NAR) 유병률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--adult)">34%</div><div class="stat-lbl">AR+NAR 혼합<br>('mixed rhinitis')</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--tests)">75-80%</div><div class="stat-lbl">천식 환자 중<br>AR 동반 비율</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 비염의 정의 및 분류</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-overview">
+        <span>📌</span>
+        <div>비염(rhinitis)의 진단은 <strong>코막힘, 콧물(전·후비루), 재채기, 가려움</strong> 중 1개 이상의 증상으로 시사되며, 병인기전에 따라 <strong>알레르기비염(AR)</strong>과 <strong>비알레르기비염(NAR)</strong>으로 분류하고, 비염과 증상이 겹치는 다른 질환들과 감별해야 한다.</div>
+      </div>
+      <div class="grid2" style="margin-top:8px">
+        <div class="acc">
+          <div class="acc-hdr open" onclick="toggleAcc(this)"><span>중증도 분류 (2단계)</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body" style="display:block"><strong>경증(mild)</strong>: 일상활동·업무·학업·여가·수면에 지장 없음<br><strong>중등증/중증(moderate/severe)</strong>: 위 항목 중 1개 이상 지장 있음. VAS(0-10) 사용 시 &lt;5=경증, ≥5=중등증/중증</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr open" onclick="toggleAcc(this)"><span>빈도 분류 (2단계)</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body" style="display:block"><strong>간헐적(intermittent)</strong>: 주 &lt;4일 또는 연 &lt;4주 연속<br><strong>지속적(persistent)</strong>: 주 ≥4일 및 연 ≥4주 연속<br>※ 계절성(SAR)/통년성(PAR) 분류와는 독립적 개념</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 삶의 질(QOL) 및 사회경제적 부담</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>AR·NAR은 수면장애, 주간졸림, 피로, 과민성, 우울, 주의력·학습·기억력 저하와 연관되며, 성인 35-50%가 코알레르기가 일상에 중등도 이상 영향을 미친다고 보고한다. 결근·결석뿐 아니라 <strong>출근은 했으나 생산성 저하(presenteeism)</strong>가 더 큰 문제로, 증상이 가장 심한 날 생산성이 23-33% 감소한다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>👃</span><div>후각 저하는 AR·NAR 모두에서 나타날 수 있으며 미각 상실, 상한 음식·가스 누출 등을 인지하지 못하는 건강 위험 증가로도 이어진다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗂️</span> AR 하위분류: 국소알레르기비염(LAR)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>LAR('entopy')은 <strong>① 알레르겐 노출에 따른 계절/통년성 병력, ② 피부단자·혈청 특이IgE 음성, ③ 비강알레르겐유발검사(NAPT) 양성</strong>의 3요소로 정의되는 비교적 새로운 개념이다. 비염 환자의 최대 26%, NAR 환자의 최대 100%에서 보고되나 국가별 편차가 크다(중국 7.7% vs 스페인 인구기반 연구 25%). 여성에 많고 평균 발병연령 21세이나 36%는 소아기 발병.</div>
+      <div class="alert alert-diag" style="margin-top:8px"><span>💉</span><div>특이 알레르겐이 확인되면 <strong>피하면역요법(SCIT)</strong>이 증상점수 47% 감소, NAPT 반응 50% 완전 억제 등 효과를 보였다는 소규모 RCT가 있으나 미국 내 연구는 제한적이며 추가 대규모 연구가 필요하다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> 전체 진단·치료 흐름</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="stage-timeline">
+        <div class="stage-box st-overview"><div class="st-num" style="color:var(--overview)">①</div><div class="st-lbl">병력·신체검사<br>+약물력(약물유발비염 배제)</div></div>
+        <div class="stage-box st-diag"><div class="st-num" style="color:var(--diag)">②</div><div class="st-lbl">피부단자/특이IgE로<br>AR 확인, 식품검사는 비권장</div></div>
+        <div class="stage-box st-adult"><div class="st-num" style="color:var(--adult)">③</div><div class="st-lbl">간헐적/지속적,<br>경증/중등증-중증 분류</div></div>
+        <div class="stage-box st-child"><div class="st-num" style="color:var(--child)">④</div><div class="st-lbl">알고리즘에 따른<br>단계적 약물치료</div></div>
+        <div class="stage-box st-unexp"><div class="st-num" style="color:var(--unexp)">⑤</div><div class="st-lbl">조절 불량 시<br>AIT 고려(중등증-중증 AR)</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 권고요약 ══════════════════ -->
+<div id="tab-summary" class="panel">
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📐</span> 근거수준(Certainty) · 권고강도(Strength) 분류기준</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>근거수준(Certainty of Evidence)</th><th>정의</th></tr>
+        <tr><td><span class="stage ev-high">High</span></td><td>추가 연구로도 효과추정치에 대한 확신이 거의 바뀌지 않음 (다수의 양질 RCT·메타분석)</td></tr>
+        <tr><td><span class="stage ev-mod">Moderate</span></td><td>추가 연구가 추정치에 중요한 영향을 미칠 가능성 있음 (제한된 수/질의 RCT)</td></tr>
+        <tr><td><span class="stage ev-low">Low</span></td><td>추가 연구가 추정치를 바꿀 가능성이 매우 높음 (비실험 연구, 레지스트리)</td></tr>
+        <tr><td><span class="stage ev-vlow">Very low</span></td><td>효과추정치가 매우 불확실 (매우 낮은 질 연구·전문가 의견 위주)</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>권고강도</th><th>표현</th><th>의미</th></tr>
+        <tr><td><span class="stage rec-strong">Strong</span></td><td>"We recommend" (권고한다)</td><td>대부분의 환자가 원할 것이며, 대부분의 임상의가 시행해야 함</td></tr>
+        <tr><td><span class="stage rec-cond">Conditional</span></td><td>"We suggest" (제안한다)</td><td>환자별로 선택이 달라질 수 있어 공유의사결정이 중요함</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>대부분의 권고는 <strong>합의기반진술(CBS, Consensus-Based Statement)</strong>이며, 일부(권고 7·15·22·29)만 2017년 GRADE 개정문서에서 인용된 <strong>GRADE 권고</strong>다. CBS는 GRADE 수준의 엄격성과 동일하지 않음에 유의.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 권고 1-10: 진단·전신치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>강도</th><th>근거</th></tr>
+        <tr><td>1</td><td>비염 증상 환자에서 상세 병력청취 및 신체검사 시행</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-low">Low</span></td></tr>
+        <tr><td>2</td><td>모든 현재 복용약물 검토 — 약물유발비염 가능성 평가</td><td><span class="stage rec-strong">강</span></td><td><span class="stage rec-na">등급없음</span></td></tr>
+        <tr><td>3</td><td>병력상 AR 의심 시 피부단자검사 또는 특이IgE로 확진</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-high">High</span></td></tr>
+        <tr><td>4</td><td>AR 의심 환자에서 식품 피부단자·특이IgE 검사는 시행하지 않음</td><td><span class="stage rec-strong">강</span></td><td><span class="stage rec-na">등급없음</span></td></tr>
+        <tr><td>5</td><td>검증된 도구(척도·설문)로 중증도 평가 및 조절상태 모니터링 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-low">Low</span></td></tr>
+        <tr><td>6</td><td>경구항히스타민제는 1세대 대신 2세대(비진정성) 선택</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-high">High</span></td></tr>
+        <tr><td>7</td><td>몬테루카스트는 타 치료 무반응/불내성 시에만 사용(신경정신학적 부작용 우려)</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+        <tr><td>8</td><td>NAR에 경구 류코트리엔 길항제(LTRA)는 선택하지 않음</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage rec-na">등급없음</span></td></tr>
+        <tr><td>9</td><td>매우 중증/난치성 AR에서 단기(5-7일) 경구스테로이드 고려 가능</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+        <tr><td>10</td><td>매우 중증/난치성 AR에서도 근주(depot) 스테로이드는 처방하지 않음</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-low">Low</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 권고 11-21: 비강내 단일제제</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>강도</th><th>근거</th></tr>
+        <tr><td>11</td><td>SAR 초기치료로 비강내항히스타민제(INAH) 제공</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-high">High</span></td></tr>
+        <tr><td>12</td><td>NAR 1차 단독요법으로 INAH 제공</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-high">High</span></td></tr>
+        <tr><td>13</td><td>간헐적 AR 1차 옵션으로 INAH 제공</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage rec-na">등급없음</span></td></tr>
+        <tr><td>14</td><td>지속적 AR 단독요법 선택 시 비강내스테로이드(INCS) 우선</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-high">High</span></td></tr>
+        <tr><td>15</td><td>(GRADE) 15세 이상 중등증/중증 SAR 초기치료: INCS &gt; LTRA</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-high">High</span></td></tr>
+        <tr><td>16</td><td>비강내충혈완화제는 단기·간헐적 사용으로 제한</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-low">Low</span></td></tr>
+        <tr><td>17</td><td>점막부종 심해 타 약물 전달 어려운 경우 충혈완화제 최대 5일 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage rec-na">등급없음</span></td></tr>
+        <tr><td>18</td><td>경구충혈완화제는 고령·4세 미만·심혈관질환 등에서 주의 사용</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-low">Low</span></td></tr>
+        <tr><td>19</td><td>임신 1삼분기에는 경구충혈완화제 회피</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-low">Low</span></td></tr>
+        <tr><td>20</td><td>PAR·NAR에서 콧물이 주증상이면 비강내이프라트로피움 제공</td><td><span class="stage rec-cond">조건부</span></td><td>PAR <span class="stage ev-low">Low</span> / NAR <span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>21</td><td>알레르겐 노출 직전 비강내크로몰린 사용을 옵션으로 제공</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 권고 22-31: 병용요법 (효과적/비효과적)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>강도</th><th>근거</th></tr>
+        <tr><td>22</td><td>(GRADE) 12세 이상 중등증/중증 SAR 초기치료로 INCS+INAH 병용 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-high">High</span></td></tr>
+        <tr><td>23</td><td>단독요법 무반응 중등증/중증 SAR·PAR에 INCS+INAH 병용 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>24</td><td>단독요법 무반응 중등증/중증 NAR에 INCS+INAH 병용 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-low">Low</span></td></tr>
+        <tr><td>25</td><td>INCS 사용 중 지속 콧물 시 비강내이프라트로피움 추가 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>26</td><td>INCS(±INAH) 무반응 지속 코막힘에 비강내충혈완화제 최대 4주 추가</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-low">Low</span></td></tr>
+        <tr><td>27</td><td>경구항히스타민제로 코막힘 미조절 시 슈도에페드린 추가 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>28</td><td>SAR에서 몬테루카스트+경구항히스타민제 병용은 권장하지 않음</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>29</td><td>(GRADE) 12세 이상 SAR 초기치료로 경구항히스타민제+INCS를 INCS 단독보다 우선하지 않음</td><td><span class="stage rec-strong">강</span></td><td><span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>30</td><td>SAR·PAR 전반에서 경구항히스타민제+INCS를 INCS 단독보다 우선하지 않음</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+        <tr><td>31</td><td>AR에서 몬테루카스트를 INCS에 추가하는 것에 반대</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 권고 32-37: NAR·면역요법·대체의학</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>#</th><th>권고 내용</th><th>강도</th><th>근거</th></tr>
+        <tr><td>32</td><td>NAR 1차 치료로 INCS 제공</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-low">Low-Mod</span></td></tr>
+        <tr><td>33</td><td>NAR 1차 치료로 INAH 제공</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+        <tr><td>34</td><td>회피·약물치료로 조절 안되거나 환자가 선호하는 중등증/중증 AR에 AIT(SCIT/SLIT) 공유의사결정 하에 제공</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>35</td><td>AR 동반 조절된 경증/중등증 천식에 AIT 고려</td><td><span class="stage rec-cond">조건부</span></td><td><span class="stage ev-mod">Mod</span></td></tr>
+        <tr><td>36</td><td>침술의 AR 치료 효과에 대해 찬반 권고 불가</td><td><span class="stage rec-na">N/A</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+        <tr><td>37</td><td>특정 한약제제의 AR 치료 효과에 대해 찬반 권고 불가</td><td><span class="stage rec-na">N/A</span></td><td><span class="stage ev-vlow">V.low</span></td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>권고 7·31에서 반복 강조: 몬테루카스트는 자살사고/행동을 포함한 <strong>중대한 신경정신학적 부작용</strong>이 보고되어 FDA가 박스경고를 부과했으며(2020.3), AR에는 대체요법에 반응하지 않거나 불내성인 경우에만 사용해야 한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /summary -->
+
+
+<!-- ══════════════════ TAB 3: 진단적접근 ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📝</span> 병력청취 핵심 요소</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>항목</th><th>확인 포인트</th></tr>
+        <tr><td>증상 특성</td><td>발병연령, 지속기간, 빈도, 중증도, 계절성 시기, 의심 유발요인, 발현 양상 및 경과</td></tr>
+        <tr><td>치료 반응력</td><td>과거 시행한 치료(처방약·일반약·민간요법 포함)의 성공·실패 여부</td></tr>
+        <tr><td>동반질환</td><td>천식 시사 증상(천명, 호흡곤란, 가슴답답, 기침) 확인 — 필요시 폐기능검사. 가족력·개인력상 호흡기 동반질환 확인</td></tr>
+        <tr><td>환경노출</td><td>가정·직장 환경노출력, 사회·정신과적 병력, 약물력(현재/과거)</td></tr>
+        <tr><td>진단 단서(4문항 선별)</td><td>발병연령&gt;45세, 알레르기 가족력 없음, 증상 계절성 없음, 동물 접촉과 무관 + 방향제/데오드란트 등 비알레르기 유발요인에 반응 → NAR 가능성 <strong>98%</strong> 예측</td></tr>
+      </table>
+      <div class="alert alert-diag" style="margin-top:8px"><span>💡</span><div>1차의료에서는 병력만으로 AR 진단하는 경우가 흔하다. 검증된 설문(4문항 선별도구)은 <strong>AR을 배제</strong>하는 데(음성예측도 높음) 더 유용하며, 확진용은 아니다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩺</span> 신체검사</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>눈(결막충혈·부종, 다크서클/'알레르기 그림자'), 코(비강판 개통성, 비중격 이상, 비갑개 비대·부종·창백/발적, 분비물, 비용종), 귀(고막), 구인두(치아부정교합, 편도/아데노이드 비대, 후비루), 목, 가슴(천명음), 피부를 포함해 포괄적으로 시행한다.</div>
+      <div class="alert alert-diag" style="margin-top:8px"><span>📋</span><div>병력만으로 진단할 때보다 신체검사 병행이 진단 정확도를 높이나, 단독 민감도·특이도는 낮고 검진자 간 편차가 크다. 가장 큰 효용은 <strong>비강 종양 등 드물지만 생명을 위협하는 질환의 배제</strong>다.</div></div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>🔦</span><div>점막부종이 심해 검사가 어려운 경우 국소충혈완화제 사용 후 재검진하면 비용종과 부종성 점막을 감별하는 데 도움이 된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 증상별 감별진단표 (표 V 요약)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>증상</th><th>AR</th><th>NAR</th><th>급성 상기도감염</th><th>CRS(용종없음)</th><th>CRS(용종동반)</th></tr>
+        <tr><td>맑은 콧물/재채기</td><td>매우 흔함</td><td>흔함(아형별 상이)</td><td>흔함(화농성 가능)</td><td>흔함</td><td>흔함</td></tr>
+        <tr><td>안구 가려움/충혈</td><td>매우 흔함</td><td>드묾</td><td>드묾</td><td>매우 드묾</td><td>매우 드묾</td></tr>
+        <tr><td>후비루</td><td>드묾(지속형↑)</td><td>매우 흔함</td><td>흔함</td><td>흔함</td><td>가끔</td></tr>
+        <tr><td>코/입천장/귀 가려움</td><td>흔함</td><td>매우 드묾</td><td>매우 드묾</td><td>매우 드묾</td><td>매우 드묾</td></tr>
+        <tr><td>후각 저하/소실</td><td>가끔</td><td>가끔</td><td>흔함</td><td>흔함</td><td>매우 흔함</td></tr>
+        <tr><td>안면·부비동 통증/압박감</td><td>매우 드묾</td><td>흔함</td><td>흔함</td><td>흔함</td><td>가끔</td></tr>
+      </table>
+      <small>※ 전문가 의견 기반 표로, 절대적 진단기준이 아닌 상대적 빈도 참고용</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔍</span> 비염 모방질환 및 감별진단 (표 VII 요약)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>질환</th><th>시사 병력</th><th>진단검사</th><th>치료</th></tr>
+        <tr><td>비중격만곡/천공</td><td>편측 심함, 수술·외상력</td><td>비내시경, 부비동CT</td><td>수술(비중격교정술)</td></tr>
+        <tr><td>비강판 허탈</td><td>코막힘 주증상, 약물 반응 저조</td><td>Cottle 수기 양성</td><td>비강 스트립, 수술</td></tr>
+        <tr><td>비갑개 비대</td><td>편측/양측 심한 폐쇄</td><td>비내시경, CT</td><td>INCS, 수술</td></tr>
+        <tr><td>아데노이드 비대(소아)</td><td>반복 중이염, 코골이</td><td>측면 경부X선, 내시경</td><td>INCS·몬테루카스트, 수술</td></tr>
+        <tr><td>비강 이물(소아)</td><td>편측 화농성 분비물</td><td>비내시경/경성비내시경</td><td>이물 제거(단추전지는 응급)</td></tr>
+        <tr><td>뇌척수액 비루</td><td>편측 맑은 분비물, 자세따라 증가, 최근 수술/외상</td><td>베타2-트랜스페린, 고해상도CT</td><td>수술적 누출 봉합</td></tr>
+        <tr><td>일차섬모운동이상증</td><td>반복 부비동염·중이염, 기관지확장증, 불임</td><td>비강산화질소, 전자현미경, 유전자검사</td><td>감염 관리, 수술</td></tr>
+        <tr><td>비강/부비동 종양</td><td>진행성 편측 폐쇄, 혈성분비물</td><td>내시경, CT, 조직검사</td><td>수술 등 (진단에 따라 상이)</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════════════ TAB 4: AR치료 ══════════════════ -->
+<div id="tab-ar" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 약물군별 핵심 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>약물군</th><th>발현시간</th><th>핵심 포인트</th></tr>
+        <tr><td>2세대 경구항히스타민제</td><td>60-90분</td><td>1세대 대비 진정·인지장애·항콜린 부작용 적음; 1세대는 치매위험 증가와 연관 보고(권고6)</td></tr>
+        <tr><td>비강내항히스타민제(INAH)</td><td>15-30분</td><td>아젤라스틴·올로파타딘. SAR·NAR 모두 효과, 쓴맛이 주 부작용(권고11-13)</td></tr>
+        <tr><td>비강내스테로이드(INCS)</td><td>2-12시간(최대효과 2-4주)</td><td>지속적 AR 단독요법 중 가장 효과적(권고14-15); 부작용은 국소(비출혈 등) 위주</td></tr>
+        <tr><td>비강내충혈완화제</td><td>&lt;10분</td><td>5일 초과 시 약물성비염(rebound) 위험(권고16-17)</td></tr>
+        <tr><td>경구충혈완화제(슈도에페드린)</td><td>30분</td><td>고령·심혈관질환·임신 1삼분기 주의(권고18-19)</td></tr>
+        <tr><td>비강내이프라트로피움</td><td>15분</td><td>전비루에 특화, 코막힘·재채기에는 효과 없음(권고20)</td></tr>
+        <tr><td>비강내크로몰린</td><td>1-2주(예방적 15분 이내)</td><td>안전하나 효과 제한적, 노출 직전 예방적 사용에 적합(권고21)</td></tr>
+        <tr><td>몬테루카스트(LTRA)</td><td>~5시간</td><td>항히스타민제와 유사하나 INCS보다 열등, 신경정신학적 부작용 우려로 2차 옵션(권고7)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> 알고리즘 A — 간헐적 AR (12세 이상)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-adult">
+          <div class="gear-title">경증 간헐적 (VAS &lt;5/10)</div>
+          <div class="algo-flow">
+            <div class="algo-step">1순위: 2세대 경구항히스타민제 (60분 발현)</div>
+            <div class="algo-step">2순위: INAH (15-30분) 단독 또는 경구항히스타민제+슈도에페드린</div>
+            <div class="algo-step">3순위: INCS (1-3시간, 수일 지속 시 더 효과적)</div>
+          </div>
+        </div>
+        <div class="gear-box gear-adult">
+          <div class="gear-title">중등증/중증 간헐적 (VAS ≥5/10)</div>
+          <div class="algo-flow">
+            <div class="algo-step">1순위: 2세대 경구항히스타민제</div>
+            <div class="algo-step">2-3순위: INAH 단독 또는 INCS+INAH 병용(5분 발현)</div>
+            <div class="algo-step">4순위: 경구항히스타민제+슈도에페드린</div>
+            <div class="algo-step" style="border-left-color:var(--red)">비권장 1차: LTRA 단독(5시간-2일 발현)</div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-adult" style="margin-top:8px"><span>🔁</span><div>7-14일 후 재평가하여 조절되면 유지 또는 단계적 감량, 미조절 시 대체 단독요법 또는 증상별 특이제제(비루 우세→비강내항콜린제, 코막힘 우세→비강내/경구충혈완화제) 추가를 고려한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> 알고리즘 B — 지속적 AR (12세 이상)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-adult">
+          <div class="gear-title">경증 지속적 (VAS &lt;5/10)</div>
+          <div class="algo-flow">
+            <div class="algo-step">1순위: INCS (1-3시간, 최대효과 2주 이상)</div>
+            <div class="algo-step">2순위: 2세대 경구항히스타민제(±슈도에페드린)</div>
+            <div class="algo-step">3순위: INAH 단독</div>
+            <div class="algo-step" style="border-left-color:var(--red)">1차 비권장: 비강내크로몰린, LTRA</div>
+          </div>
+        </div>
+        <div class="gear-box gear-adult">
+          <div class="gear-title">중등증/중증 지속적 (VAS ≥5/10)</div>
+          <div class="algo-flow">
+            <div class="algo-step">1순위: INCS+INAH 병용(5분 발현) 또는 INCS 단독</div>
+            <div class="algo-step">2-3순위: INAH 단독, 경구항히스타민제(±INCS/슈도에페드린)</div>
+            <div class="algo-step" style="border-left-color:var(--red)">비권장: 경구항히스타민제+LTRA</div>
+            <div class="algo-step" style="border-left-color:var(--red)">반대: 근주(depot) 스테로이드</div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>💉</span><div>초기 증상이 매우 심하거나 비강내 약물 전달을 방해하는 심한 점막부종이 있으면 <strong>단기 경구스테로이드(burst)</strong>를 고려할 수 있다(권고9). 소아(&lt;12세)에는 대부분 약제가 승인되어 있으나 비교연구는 대개 12세 이상 대상.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⏱️</span> 약물별 작용발현 시간 비교</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>약제</th><th>발현시간</th><th>최대효과 도달</th></tr>
+        <tr><td>비강내충혈완화제(옥시메타졸린)</td><td>&lt;10분</td><td>1시간 이내</td></tr>
+        <tr><td>INCS+INAH 병용</td><td>5분</td><td>2주 이상</td></tr>
+        <tr><td>INAH(아젤라스틴/올로파타딘)</td><td>15-30분</td><td>1일-4주</td></tr>
+        <tr><td>비강내항콜린제(이프라트로피움)</td><td>15분</td><td>1시간</td></tr>
+        <tr><td>경구항히스타민제</td><td>30-90분</td><td>1-8일</td></tr>
+        <tr><td>경구항히스타민제+슈도에페드린</td><td>30분</td><td>불명</td></tr>
+        <tr><td>INCS</td><td>1-8시간(제제별 상이)</td><td>2-4주</td></tr>
+        <tr><td>몬테루카스트(LTRA)</td><td>5시간 이내</td><td>2주경</td></tr>
+        <tr><td>비강내크로몰린</td><td>2주(예방적 사용 시 1-7분)</td><td>최소 2주</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /ar -->
+
+
+<!-- ══════════════════ TAB 5: NAR치료 ══════════════════ -->
+<div id="tab-nar" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> 알고리즘 C·D — 간헐적/지속적 NAR</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="gear-box gear-child">
+          <div class="gear-title">간헐적 NAR</div>
+          <div class="algo-flow">
+            <div class="algo-step">1순위: INCS 단독 (수일 사용 시 더 효과적)</div>
+            <div class="algo-step">2순위: INAH 단독</div>
+            <div class="algo-step">병용 고려: INCS+INAH (조절 불량 시)</div>
+          </div>
+        </div>
+        <div class="gear-box gear-child">
+          <div class="gear-title">지속적 NAR</div>
+          <div class="algo-flow">
+            <div class="algo-step">1순위: INCS 단독</div>
+            <div class="algo-step">2순위: INAH 단독</div>
+            <div class="algo-step">3순위: INCS+INAH 병용(조절불량시)</div>
+            <div class="algo-step">비루 우세: 비강내이프라트로피움 추가</div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-child" style="margin-top:8px"><span>ℹ️</span><div>NAR에 대한 근거는 AR 대비 전반적으로 <strong>낮은 수준</strong>이며 치료 옵션도 더 제한적이다. LTRA는 NAR에 대한 기전적 근거나 전문가 의견 지지가 없어 사용하지 않는다(권고8).</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌀</span> NAR 주요 아형: 혈관운동성비염(VMR)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>NAR의 하위형으로 온도·습도 변화(특히 찬 건조공기), 자극적 냄새(담배연기 포함), 운동에 의해 유발되며 배제진단으로 확인한다. 코막힘과 맑은 분비물 증가가 주증상이며 재채기·가려움은 적다. 부교감/교감 신경 불균형에 의한 신경성 기전이 제시된다.</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>비FDA승인 치료</th><th>근거</th></tr>
+        <tr><td>국소 캡사이신</td><td>일부 연구에서 코막힘·비루 등 개선(치료효과 최대 36주 지속), 그러나 저품질 소규모 연구 위주</td></tr>
+        <tr><td>보툴리눔독소A</td><td>과다분비·코막힘 감소 보고되나 이프라트로피움보다 효과 낮음</td></tr>
+        <tr><td>비디안신경절단술</td><td>중증 난치성 VMR에서 시행, 장기 후유증 없이 개선 보고(체계적 리뷰)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🦠</span> 감염성 비염</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div>급성 감염성 비염의 <strong>최대 98%가 바이러스성</strong>이며, 세균성 부비동염과의 임상적 감별은 어렵다. 부비동 CT에서 소아 최대 70%, 성인 최대 87%가 감기 중 이상소견을 보일 수 있어 CT는 합병증 우려가 없는 한 시행하지 않는다.</div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>💊</span><div>급성 감염성 비염 항생제 처방률이 69-79%에 달해 전체 항생제 처방의 최대 60%를 차지하나, 대부분 이득이 부족하고 내성 위험만 증가시킨다. 대부분의 지침은 증상발생 후 <strong>7-10일간 항생제 보류</strong>를 권장한다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🍽️🤰💊</span> 기타 NAR 아형: 음식·호르몬·약물유발</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>미각성비염(Gustatory)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">뜨겁고 매운 음식 섭취 후 맑은 콧물 — 비아드레날린성/비콜린성 신경반사 기전. IgE 매개 식품알레르기와는 무관하며 비염 평가에서 식품검사는 권장하지 않는다(권고4).</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>호르몬성비염</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">임신·월경주기·폐경·사춘기의 에스트로겐/프로게스테론 변화로 코막힘 유발. 갑상선기능저하증·말단비대증도 코막힘과 연관될 수 있음.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>약물유발비염</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">NSAID(국소염증성), 알파/베타차단제(신경성 — 클로니딘, 인지질 억제제 등), 비강내충혈완화제 남용(약물성비염/rebound congestion)이 대표적.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>NARES(호산구증가 비알레르기비염)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">비강호산구&gt;20%, 특이IgE 음성. 스테로이드에 특히 잘 반응. 비강용종·부비동염·NSAID과민반응 발생의 전조일 가능성 제기됨.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /nar -->
+
+
+<!-- ══════════════════ TAB 6: 아형질환 ══════════════════ -->
+<div id="tab-tests" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔍</span> 진단검사: 피부단자검사 vs 피내검사</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>검사</th><th>민감도/특이도</th><th>비고</th></tr>
+        <tr><td>피부단자검사(SPT)</td><td>민감도 85% / 특이도 77%(메타분석)</td><td>IgE매개 과민반응의 1차 선택 검사</td></tr>
+        <tr><td>피내검사(ID)</td><td>연구 부족, 위양성 우려</td><td>SPT 음성이나 임상적 의심 강할 때 제한적 사용(벌독·페니실린 등)</td></tr>
+        <tr><td>혈청 특이IgE</td><td>SPT와 상호보완적</td><td>피부질환·항히스타민제 복용 중인 경우 등 SPT 시행 곤란 시 대안</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📏</span> 중증도·조절상태 평가도구</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>VAS (시각아날로그척도)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">0-10cm 단일선. &lt;5=경증, ≥5=중등증/중증. 임상적으로 유의한 변화는 23mm. 스마트폰 앱(MASK-rhinitis)으로도 검증됨.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>비염조절평가검사(RCAT)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">6문항 5점 리커트 척도, 자가작성. 컷오프 21점=양호한 조절, 최소중요차 3점.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>알레르기비염조절검사(ARCT)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">5문항 자가평가, 천식조절검사(ACT)와 유사한 형식.</div></div>
+        <div class="acc"><div class="acc-hdr open" onclick="toggleAcc(this)"><span>CARAT (비염·천식 통합조절검사)</span><span class="acc-toggle">▾</span></div><div class="acc-body" style="display:block">10문항, 알레르기 전문의 진료 환자 대상 검증. 소아 미검증.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌡️</span> 비강생리검사: 콜 수기·비강유발검사</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div><strong>Cottle 수기</strong>: 환자 뺨을 옆으로 당겨 비강판 각도를 넓혔을 때 호흡이 개선되면 비강판 병리를 시사한다.</div>
+      <div style="margin-top:8px"><strong>비강알레르겐유발검사(NAPT)</strong>: LAR이 의심되는 경우(피부단자·특이IgE 음성이나 병력상 알레르기 강력 의심) 진단에 유용할 수 있다. 표준화된 프로토콜(EAACI position paper)이 존재하나 국내외적으로 연구·임상센터가 제한적이다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💉</span> 알레르겐면역요법(AIT) 근거 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>비교</th><th>결과</th></tr>
+        <tr><td>SCIT vs SLIT (성인)</td><td>SCIT가 증상감소에서 우위(낮은 근거수준); 두 방법 모두 안전·효과적(중등도-고도 근거)</td></tr>
+        <tr><td>SLIT-정제(SLIT-T) vs SLIT-액상(SLIT-D)</td><td>직접비교 연구 없음; 간접비교 메타분석에서 SLIT-T가 증상효과 우위 경향</td></tr>
+        <tr><td>비용효과성</td><td>증상치료 대비 5-6년 치료 후 비용효과적(영국 NIHR 분석); 미국 메디케이드 자료상 SCIT 18개월내 총의료비 38%↓</td></tr>
+        <tr><td>안전성</td><td>전신반응률 0.1%(등급1-4), 100만회당 1건 중증반응, 2330만회당 1건 사망(미국 알레르기학회 설문)</td></tr>
+      </table>
+      <div class="alert alert-tests" style="margin-top:8px"><span>📅</span><div>SCIT 첫 투여~유지용량 도달까지 클리닉에서 시행, 이후에도 아나필락시스 대응이 가능한 환경에서 지속 투여해야 한다. 통상 <strong>3-5년</strong> 치료 후 지속 여부를 재평가한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tests -->
+
+
+<!-- ══════════════════ TAB 7: 특수집단 ══════════════════ -->
+<div id="tab-specific" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧒</span> 소아청소년</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>소아 비염은 성인과 병태생리·진단·치료 원리가 유사하나, AR은 2세 미만에서는 드물다. 흔한 동반질환은 알레르기결막염, 천식, 아토피피부염이며, <strong>알레르기행진(allergic march)</strong> — 영유아기 아토피피부염/식품알레르기 → 소아·청소년기 AR·아토피천식으로 진행하는 자연경과 — 개념이 적용된다.</div>
+      <div class="alert alert-specific" style="margin-top:8px"><span>💊</span><div>대부분의 약물은 5세 이상, 다수는 2세 미만까지 승인되어 있으나 비교임상시험은 12세 이상에 집중되어 있어 <strong>용량 조절·부작용·장기 안전성</strong>에 특별한 주의가 필요하다. 어린 소아는 비강분무제 순응도가 낮다는 자료가 있다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>👴</span> 고령 환자</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>고령 인구의 최대 30%에서 비염이 발생하며 40% 이상이 중등증/중증으로 평가한다. AR이 가장 흔한 유형이나 젊은층보다는 빈도가 낮고, <strong>다약제 복용에 따른 약물유발비염</strong>(전립선비대증 알파차단제, ACE억제제 등)이 드물지 않다.</div>
+      <div class="alert alert-specific" style="margin-top:8px"><span>⚠️</span><div>노화에 따른 부교감 과다반응성으로 맑은 콧물이 70% 이상에서 주증상이며, 진정성 항히스타민제는 요폐·변비·섬망·안압변화 위험으로 회피해야 한다. 강한 항콜린 효과 약물의 누적사용은 치매 위험 증가와도 연관된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🤰</span> 임신 중 비염</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>약물군</th><th>임신 중 권고</th></tr>
+        <tr><td>비강식염수세척</td><td>안전·효과적, 1차 선택 옵션</td></tr>
+        <tr><td>INCS</td><td>대체로 안전(부데소니드는 스웨덴 출생등록 자료로 안전성 확인); <strong>트리암시놀론은 회피</strong>(선천성 호흡기 기형 위험 보고)</td></tr>
+        <tr><td>경구항히스타민제</td><td>세티리진·로라타딘 등 안전성 자료 축적, 전반적으로 안전</td></tr>
+        <tr><td>경구/비강내충혈완화제</td><td><strong>1삼분기 회피</strong>(위복벽결손·유문협착 등 위험, 권고19); 2·3삼분기는 공유의사결정</td></tr>
+        <tr><td>몬테루카스트</td><td>선천기형 위험 증가 없음(덴마크 코호트); 단 저체중출생·임신중독증과의 연관은 천식 중증도 혼란변수 가능성</td></tr>
+        <tr><td>SCIT</td><td>임신 중 신규 시작 금지, 기존 치료는 지속 가능</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /specific -->
+
+
+<!-- ══════════════════ TAB 8: AIT·대체요법 ══════════════════ -->
+<div id="tab-unexp" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--unexp)">권고34-35</span> 알레르겐면역요법(AIT)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>회피·약물요법으로 조절되지 않거나, 부작용·비용·장기약물사용을 피하고자 하거나, 천식 등 동반질환 예방·경감을 원하는 <strong>중등증/중증 AR</strong> 환자에서 공유의사결정을 통해 SCIT 또는 SLIT(정제)를 제공할 수 있다. 조절된 경증/중등증 천식 동반 AR에서도 고려 가능하다.</div>
+      <div class="alert alert-unexp" style="margin-top:8px"><span>💊</span><div>미국 내 승인된 SLIT 정제는 <strong>단일 잔디화분, 5종 잔디화분, 돼지풀, 집먼지진드기</strong> 4종. 비승인 액상 SLIT의 오프라벨 사용은 권장하지 않는다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--unexp)">권고36</span> 침술 <span class="stage rec-na" style="margin-left:6px">근거 매우낮음 · 찬반불가</span></div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>가장 크고 질 높은 다기관연구(422명)에서 삶의질·항히스타민제 사용 개선이 있었으나 사전정의된 임상적 유의성 기준은 충족하지 못했다. 소아 대상 연구(72명)에서도 증상점수는 개선되었으나 약물사용·IgE·호산구 수치에는 변화가 없었다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>✅</span><div>결과는 혼재되어 있고 임상적 의미는 불확실하나, <strong>안전성 측면에서는 심각한 부작용이 보고된 바 없다.</strong></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pico" style="background:var(--unexp)">권고37</span> 한약제제(허브요법) <span class="stage rec-na" style="margin-left:6px">근거 매우낮음 · 찬반불가</span></div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>제제</th><th>근거 요약</th></tr>
+        <tr><td>Petasites hybridus (버터버)</td><td>비진정성 항히스타민제와 유사한 증상·삶의질 개선(체계적 리뷰) — 가장 근거가 강함. 단, 미가공 식물체 함유 피롤리지딘 알칼로이드는 간독성 위험 — <strong>PA-free 인증 제품만 사용</strong></td></tr>
+        <tr><td>Yu ping feng san (옥병풍산)</td><td>위약 대비 일부 개선 경향 있으나 항히스타민제·비강스테로이드 대비 우월성 없음</td></tr>
+        <tr><td>Aller-7 (인도산 7종 혼합물)</td><td>연구간 결과 비일관적</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>미국 성인의 34%가 한 해 동안 보완요법(한약제 포함)을 사용한다고 보고되어, 임상의는 반드시 <strong>약물-한약 상호작용·독성</strong>을 확인해야 한다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /unexp -->
+
+
+<!-- ══════════════════ TAB 9: 평가·약어 ══════════════════ -->
+<div id="tab-tools" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📏</span> 지침 개발 방법론</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div>본 지침은 2008년 개정 실무변수의 업데이트로, 대부분의 권고가 <strong>합의기반진술(CBS)</strong>이며 (2012년 문서 이후 PubMed 문헌을 근거로 업데이트), 권고7·15·22·29만 2017년 발간된 계절성 AR GRADE 개정문서에서 인용되었다. GRADE 문서에 필요한 전체 문헌검색·체계적문헌고찰·메타분석을 모든 임상질문에 적용하기에는 자원 제약이 있어 이 같은 이원적 방식을 채택했다.</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>👥</span><div>작업그룹 각 위원의 이해상충(COI)을 사전 확인·공개하고, 편향 우려 시 해당 위원을 관련 투표에서 배제하는 절차를 거쳤다. 미국알레르기천식면역학회(AAAAI)·미국천식알레르기면역학회(ACAAI) 공동 승인.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔠</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 원문 출처</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>🔗</span><div>Dykewicz MS, Wallace DV, Amrol DJ, et al. Rhinitis 2020: A practice parameter update. <em>J Allergy Clin Immunol</em>. 2020;146(4):721-767. DOI: 10.1016/j.jaci.2020.07.007. 원문은 allergyparameters.org 및 학술지 원문에서 확인 가능하다.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tools -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"AR", def:"Allergic Rhinitis — 알레르기비염" },
+  { term:"NAR", def:"Nonallergic Rhinitis — 비알레르기비염" },
+  { term:"LAR", def:"Local Allergic Rhinitis — 국소알레르기비염 (entopy)" },
+  { term:"VMR", def:"Vasomotor Rhinitis — 혈관운동성비염" },
+  { term:"NARES", def:"Nonallergic Rhinitis with Eosinophilia Syndrome — 호산구증가 비알레르기비염" },
+  { term:"SAR / PAR", def:"Seasonal / Perennial Allergic Rhinitis — 계절성/통년성 알레르기비염" },
+  { term:"INCS", def:"Intranasal Corticosteroid — 비강내스테로이드" },
+  { term:"INAH", def:"Intranasal Antihistamine — 비강내항히스타민제" },
+  { term:"IND", def:"Intranasal Decongestant — 비강내충혈완화제" },
+  { term:"OAH 2G", def:"Second-Generation Oral Antihistamine — 2세대 경구항히스타민제" },
+  { term:"LTRA", def:"Leukotriene Receptor Antagonist — 류코트리엔수용체길항제 (예: 몬테루카스트)" },
+  { term:"PSE", def:"Pseudoephedrine — 슈도에페드린 (경구충혈완화제)" },
+  { term:"AIT", def:"Allergen Immunotherapy — 알레르겐면역요법" },
+  { term:"SCIT / SLIT", def:"Subcutaneous / Sublingual Immunotherapy — 피하/설하면역요법" },
+  { term:"NAPT", def:"Nasal Allergen Provocation Test — 비강알레르겐유발검사" },
+  { term:"sIgE", def:"serum-specific IgE — 혈청 특이IgE" },
+  { term:"CRS", def:"Chronic Rhinosinusitis — 만성부비동염" },
+  { term:"VAS", def:"Visual Analog Scale — 시각아날로그척도" },
+  { term:"RCAT", def:"Rhinitis Control Assessment Test — 비염조절평가검사" },
+  { term:"QOL", def:"Quality of Life — 삶의 질" },
+  { term:"GRADE", def:"Grading of Recommendations, Assessment, Development and Evaluation — 근거·권고 평가체계" },
+  { term:"CBS", def:"Consensus-Based Statement — 합의기반진술" },
+  { term:"JTFPP", def:"Joint Task Force on Practice Parameters — 실무변수 공동위원회" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

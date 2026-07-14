@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>질환별 임상 참고자료</title>
+<style>
+  :root {
+    --bg:#f6f8fa;--surface:#fff;--surface2:#f0f2f5;--border:#d0d7de;
+    --accent:#0969da;--accent2:#0550ae;--green:#1a7f37;--yellow:#9a6700;
+    --red:#cf222e;--orange:#bc4c00;--text:#1f2328;--text2:#57606a;
+    --teal:#0a7c8a;--purple:#5a3ea0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Pretendard','Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .logo-badge{background:var(--accent2);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;letter-spacing:.5px;}
+  h1{font-size:20px;font-weight:700;}
+  .sub{color:var(--text2);font-size:12px;text-align:center;margin-top:2px;}
+  .disclaimer{font-size:10px;color:var(--text2);font-style:italic;margin-top:0;}
+  .main{padding:24px 16px 60px;max-width:920px;margin:0 auto;}
+  .group-title{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin:28px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+  .group-title:first-child{margin-top:0;}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;}}
+  a.card-link{text-decoration:none;color:inherit;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;transition:box-shadow .15s,border-color .15s,transform .1s;height:100%;}
+  .card-link:hover .card{border-color:var(--accent2);box-shadow:0 3px 12px rgba(5,80,174,.12);transform:translateY(-1px);}
+  .card-body{flex:1;}
+  .card-title-kr{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;}
+  footer{text-align:center;padding:24px 16px;color:var(--text2);font-size:11px;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:10px"><span class="logo-badge">CLINIC</span><h1>질환별 임상 참고자료</h1></div>
+  <div><div class="sub">타과 질환 진료 시 참고용 요약 자료</div><div class="disclaimer">본 자료는 개인적 진료 참고용으로 제작되었으며 공식 가이드라인을 대체하지 않습니다.</div></div>
+</header>
+
+<div class="main">
+
+  <div class="group-title">🫁 호흡기</div>
+  <div class="grid">
+    <a class="card-link" href="ild.html"><div class="card"><div class="card-body"><div class="card-title-kr">간질성폐질환</div></div></div></a>
+    <a class="card-link" href="tuberculosis.html"><div class="card"><div class="card-body"><div class="card-title-kr">결핵진료지침</div></div></div></a>
+    <a class="card-link" href="chronic-cough.html"><div class="card"><div class="card-body"><div class="card-title-kr">만성기침</div></div></div></a>
+    <a class="card-link" href="hap.html"><div class="card"><div class="card-body"><div class="card-title-kr">성인 병원획득폐렴</div></div></div></a>
+    <a class="card-link" href="pulmonary-hypertension.html"><div class="card"><div class="card-body"><div class="card-title-kr">폐고혈압</div></div></div></a>
+    <a class="card-link" href="copd.html"><div class="card"><div class="card-body"><div class="card-title-kr">COPD</div></div></div></a>
+  </div>
+
+  <div class="group-title">🧂 대사·전해질</div>
+  <div class="grid">
+    <a class="card-link" href="hyperkalemia.html"><div class="card"><div class="card-body"><div class="card-title-kr">고칼륨혈증</div></div></div></a>
+  </div>
+
+  <div class="group-title">🤧 알레르기·피부</div>
+  <div class="grid">
+    <a class="card-link" href="urticaria.html"><div class="card"><div class="card-body"><div class="card-title-kr">두드러기</div></div></div></a>
+    <a class="card-link" href="rhinitis.html"><div class="card"><div class="card-body"><div class="card-title-kr">비염</div></div></div></a>
+  </div>
+
+  <div class="group-title">🧠 신경·정신</div>
+  <div class="grid">
+    <a class="card-link" href="cfs.html"><div class="card"><div class="card-body"><div class="card-title-kr">만성피로증후군</div></div></div></a>
+    <a class="card-link" href="insomnia.html"><div class="card"><div class="card-body"><div class="card-title-kr">불면증</div></div></div></a>
+    <a class="card-link" href="moh.html"><div class="card"><div class="card-body"><div class="card-title-kr">약물과용두통</div></div></div></a>
+    <a class="card-link" href="depression.html"><div class="card"><div class="card-body"><div class="card-title-kr">우울증</div></div></div></a>
+  </div>
+
+  <div class="group-title">🍽️ 소화기</div>
+  <div class="grid">
+    <a class="card-link" href="gerd.html"><div class="card"><div class="card-body"><div class="card-title-kr">역류성식도염</div></div></div></a>
+    <a class="card-link" href="liver-dysfunction.html"><div class="card"><div class="card-body"><div class="card-title-kr">간기능이상</div></div></div></a>
+  </div>
+
+  <div class="group-title">🚹 비뇨·생식내분비</div>
+  <div class="grid">
+    <a class="card-link" href="bph.html"><div class="card"><div class="card-body"><div class="card-title-kr">전립선 비대</div></div></div></a>
+    <a class="card-link" href="prostate-cancer.html"><div class="card"><div class="card-body"><div class="card-title-kr">전립선암</div></div></div></a>
+    <a class="card-link" href="menopause-hrt.html"><div class="card"><div class="card-body"><div class="card-title-kr">폐경 HRT</div></div></div></a>
+  </div>
+
+  <div class="group-title">🎗️ 종양</div>
+  <div class="grid">
+    <a class="card-link" href="pancreatic-cancer.html"><div class="card"><div class="card-body"><div class="card-title-kr">췌장암</div></div></div></a>
+  </div>
+
+</div>
+
+<footer>
+  질환별 임상 참고자료 · 개인 진료 참고용<br>
+  각 카드를 클릭하면 해당 질환의 상세 HTML 파일로 이동합니다.
+</footer>
+
+</body>
+</html>
