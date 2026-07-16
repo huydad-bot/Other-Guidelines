@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Long COVID 예방·치료 진료 지침 2026</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --accent: #0e6ba8;
+    --accent2: #0a4d7a;
+    --green: #1a7f37;
+    --yellow: #9a6700;
+    --red: #cf222e;
+    --orange: #bc4c00;
+    --blue: #0550ae;
+    --text: #1f2328;
+    --text2: #57606a;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: calc(13px * var(--fscale, 1)); line-height: 1.5; min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; position: sticky; top: 0; z-index: 100; }
+  .header-inner { width: 100%; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-badge { background: var(--accent); color: #fff; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+  header h1 { font-size: 20px; font-weight: 700; color: var(--text); }
+  .meta { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); }
+  .source-link { color: var(--blue); font-size: calc(11px * var(--fscale, 1)); text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  /* ── TABS ── */
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn {
+    display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    margin: 4px 4px 4px 6px; padding: 5px 10px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--accent2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700;
+    cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s;
+  }
+  .font-zoom-btn:hover { background: var(--border); }
+  .font-zoom-btn .fz-icon { font-size: calc(12px * var(--fscale, 1)); }
+  .tab-bar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 14px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 6px; flex-shrink: 0; position: relative; }
+
+  /* ── MAIN ── */
+  .main { padding: 12px 16px; max-width: 900px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── GRID ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 700px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  /* ── CARD ── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  /* ── STAT ── */
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; min-width: 110px; text-align: center; }
+  .stat-val { font-size: calc(20px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; }
+
+  /* ── GRADE BADGES ── */
+  .grade { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; position: relative; cursor: help; }
+  .grade::after { content: attr(data-tip); display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1f2328; color: #e6edf3; font-size: calc(11px * var(--fscale, 1)); font-weight: 400; line-height: 1.5; padding: 6px 10px; border-radius: 6px; white-space: nowrap; z-index: 500; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,.25); max-width: 260px; white-space: normal; }
+  .grade::before { content: ''; display: none; position: absolute; bottom: calc(100% + 1px); left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #1f2328; z-index: 501; pointer-events: none; }
+  .grade:hover::after,.grade:hover::before { display: block; }
+  .g-mild   { background: #dafbe1; color: #116329; border: 1px solid #1a7f37; }
+  .g-mod    { background: #fff8c5; color: #7d4e00; border: 1px solid #9a6700; }
+  .g-sev    { background: #ffebe9; color: #82071e; border: 1px solid #cf222e; }
+  .g-high   { background: #dafbe1; color: #116329; border: 1px solid #1a7f37; }
+  .g-modc   { background: #fff8c5; color: #7d4e00; border: 1px solid #9a6700; }
+  .g-low    { background: #fff3e0; color: #7c3900; border: 1px solid var(--orange); }
+  .g-vlow   { background: #ffebe9; color: #82071e; border: 1px solid #cf222e; }
+  .g-strong { background: #dafbe1; color: #116329; border: 1px solid #1a7f37; }
+  .g-cond   { background: #ddf4ff; color: #0550ae; border: 1px solid #0550ae; }
+  .g-none   { background: #eaeef2; color: #57606a; border: 1px solid #d0d7de; }
+
+  /* ── ALERT ── */
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--blue);   color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-orange  { background: #fff3e0; border-left: 3px solid var(--accent); color: #0a4d7a; }
+
+  /* ── TABLE ── */
+  .ht { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .ht th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .ht td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .ht tr:last-child td { border-bottom: none; }
+  .ht tr:hover td { background: rgba(0,0,0,.02); }
+  .ht .sr td { background: var(--surface2); color: var(--accent); font-weight: 600; font-size: calc(11px * var(--fscale, 1)); }
+
+  /* ── ACCORDION ── */
+  .osa-acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 5px; overflow: hidden; }
+  .osa-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .osa-hdr:hover { background: var(--border); }
+  .osa-hdr .osa-sub { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); font-weight: 400; }
+  .osa-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+
+  /* ── SP ── */
+  .sp-section { margin-bottom: 6px; }
+  .sp-title { background: var(--surface2); border-left: 3px solid var(--accent); padding: 7px 10px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; border-radius: 0 4px 4px 0; user-select: none; }
+  .sp-body { max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s; }
+  .sp-body.open { max-height: 4000px; padding: 8px 0; }
+
+  /* ── PILL ── */
+  .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: calc(10px * var(--fscale, 1)); font-weight: 600; white-space: nowrap; }
+  .pill-prevent { background: #dafbe1; color: #116329; }
+  .pill-treat   { background: #e8f0fe; color: #1a3980; }
+  .pill-pico    { background: #fff3e0; color: #7c3900; }
+  .pill-mild { background: #dafbe1; color: #116329; }
+  .pill-mod  { background: #fff8c5; color: #7d4e00; }
+  .pill-sev  { background: #ffebe9; color: #82071e; }
+  .pill-drug { background: #ddf4ff; color: #0550ae; }
+
+  /* ── REC LIST ── */
+  .rec-list { list-style: none; }
+  .rec-item { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-text { font-size: calc(12px * var(--fscale, 1)); color: var(--text); line-height: 1.55; }
+  .rec-text strong { color: var(--accent); }
+
+  /* ── FLOW ── */
+  .flow-box { border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; background: var(--surface); font-size: calc(12px * var(--fscale, 1)); margin-bottom: 4px; }
+  .flow-arrow { text-align: center; color: var(--text2); font-size: calc(14px * var(--fscale, 1)); margin: 2px 0; }
+
+  /* ── REC BOX (recommendation card) ── */
+  .rec-box { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+  .rec-box-hdr { background: var(--surface2); padding: 8px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 700; color: var(--accent2); border-bottom: 1px solid var(--border); }
+  .rec-box-body { padding: 10px 12px; }
+  .rec-badges { display: flex; gap: 6px; margin: 6px 0; flex-wrap: wrap; }
+  .rec-remark { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); background: var(--surface2); border-radius: 5px; padding: 6px 8px; margin-top: 6px; }
+
+  /* ── ABBR ── */
+  .abbr-grid-main { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; white-space: nowrap; }
+  .abbr-def { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  /* ── MISC ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  .num-badge { display: inline-block; background: var(--accent); color: #fff; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:10px;justify-content:center">
+      <span class="logo-badge">ERS 2026</span>
+      <h1>Long COVID 예방·치료 진료 지침</h1>
+    </div>
+    <div style="text-align:center;margin-top:3px;line-height:1.4">
+      <a href="https://doi.org/10.1183/13993003.02611-2025" class="source-link" target="_blank">Eur Respir J 2026; in press ↗</a>
+      <span class="meta"> · Cao B, Soriano JB, Wang Q, et al. · MWG-LCPG Task Force Report</span><br>
+      <span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 ERS의 공식 승인을 받은 자료가 아니며, 원문 요약·재구성본입니다</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요·역학</div>
+    <div class="tab" onclick="showTab('definition')">📋 정의·방법론</div>
+    <div class="tab" onclick="showTab('recommendations')">✅ 권고사항</div>
+    <div class="tab" onclick="showTab('respiratory')">🫁 호흡기 증상</div>
+    <div class="tab" onclick="showTab('evidence')">🔬 근거 상세</div>
+    <div class="tab" onclick="showTab('future')">🔮 향후연구·제한점</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:130px;outline:none;box-sizing:border-box;"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:480px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<div id="tab-overview" class="panel active">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--accent)">≥10%</div><div class="stat-lbl">감염 후 3개월 시점 증상 지속 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--orange)">779M+</div><div class="stat-lbl">전세계 누적 SARS-CoV-2 감염</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--red)">10</div><div class="stat-lbl">최종 권고사항 개수</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--green)">8</div><div class="stat-lbl">PICO 임상질문 개수</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗒️</span> 환자가 호소하는 주요 증상 — 호흡기 및 호흡기외</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-orange"><span>📌</span><div>서론에서는 회복자의 최소 10%가 3개월 시점에도 <strong>피로·심계항진·호흡곤란</strong>을 지속적으로 경험한다고 명시. 본 지침의 8개 PICO 질문과 근거표(Table 3–11)는 증상을 <strong>호흡기·심혈관·신경정신·근골격·위장관·이비인후(감각)·전신</strong> 7개 계통으로 분류해 다룸.</div></div>
+      <table class="ht" style="margin-top:8px">
+        <tr><th>계통</th><th>대표 증상</th><th>본 지침에서의 위치</th></tr>
+        <tr>
+          <td><span class="pill pill-mod">호흡기</span></td>
+          <td>호흡곤란(dyspnea), 만성 기침(chronic cough), 운동능력 저하</td>
+          <td>별도 섹션(Respiratory Manifestations)으로 독립 서술; 재활운동·항바이러스제 근거의 핵심 1차 결과지표</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-sev">심혈관</span></td>
+          <td>심계항진(palpitations), 흉부 불편감/심혈관 증상</td>
+          <td>서론에서 대표 증상으로 명시; NMV/r RCT(PICO2)의 결과지표 중 하나</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-drug">신경정신</span></td>
+          <td>인지장애/뇌안개(brain fog), 집중력 저하, 기억력 저하, 불면증·수면장애, 불안, 우울, 두통</td>
+          <td>CBT(PICO7)의 핵심 표적 증상군; 프로바이오틱스(PICO4)에서도 집중력·기억력·불면 개선 보고</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-mild">근골격</span></td>
+          <td>근육통(myalgia/muscle pain), 관절통(joint pain), 운동 수행 불가</td>
+          <td>프로바이오틱스(PICO4) 근거의 주요 개선 영역; 항바이러스제 예방효과 평가에도 포함(유의성 없음)</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-treat">위장관</span></td>
+          <td>위장관 불편감(복부 불편, 소화불량 등)</td>
+          <td>NMV/r RCT(PICO2) 및 프로바이오틱스(PICO4) 결과지표에 포함</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-pico">이비인후·감각</span></td>
+          <td>후각장애(hyposmia/olfactory dysfunction), 미각장애(dysgeusia)</td>
+          <td>글루코코르티코이드(PICO5)의 독립된 하위질문으로 다뤄짐</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-prevent">전신</span></td>
+          <td>피로(fatigue), 전신 권태감/불편감(malaise, general unwellness), 발열</td>
+          <td>가장 흔하고 다수 PICO(백신·항바이러스·프로바이오틱스·CBT)에서 공통적으로 다뤄지는 핵심 표적 증상</td>
+        </tr>
+      </table>
+      <div style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);margin-top:6px">※ 위 분류는 원문 Table 3–11의 계통 구분(Respiratory / Cardiovascular / Neuropsychological / Musculoskeletal / Gastrointestinal / Systemic symptoms) 및 PICO 5(후각·미각)를 따른 것으로, 실제 임상시험·SR에서 평가된 결과지표를 근거로 함.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📌</span> 지침 개요</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-orange"><span>🌍</span><div>SARS-CoV-2는 5년 넘게 전세계적으로 유행하며 약 7억 7,900만 건의 감염과 700만 명 이상의 사망을 초래. 대부분 완전히 회복하나, 회복자의 <strong>최소 10%</strong>가 발병 3개월 시점에도 피로·심계항진·호흡곤란 등 증상을 지속적으로 경험.</div></div>
+      <table class="ht" style="margin-top:8px">
+        <tr><th>항목</th><th>내용</th></tr>
+        <tr><td>대상 인구</td><td>Long COVID 성인 환자 (WHO 정의 기준)</td></tr>
+        <tr><td>주 사용자</td><td>임상 의사, 임상 약사, 간호사, 지역사회 1차진료의</td></tr>
+        <tr><td>개발 방법론</td><td>WHO 가이드북 + AGREE II 도구 + RIGHT 보고 기준 준수; 란저우대학 GRADE Center 및 WHO Collaborating Centre 방법론 지원</td></tr>
+        <tr><td>등록번호</td><td>PREPARE-2024CN123</td></tr>
+        <tr><td>작업그룹 구성</td><td>10개국 10개 전문분야 60명 (조정그룹 2명·합의그룹 24명·근거합성평가그룹 34명·사무국 3명) + 환자대표 2명</td></tr>
+        <tr><td>합의 방식</td><td>3라운드 델파이(Delphi) 설문 — 국제전문가 24인 대상, 1차 응답률 75%; 사전 정의된 합의 기준: 70% 이상 동의</td></tr>
+        <tr><td>근거 등급 체계</td><td>GRADE (Grading of Recommendations Assessment, Development and Evaluation)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 핵심 결론 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-text">① 이전 감염 여부와 무관하게 <strong>COVID-19 백신 접종</strong>, 급성기 <strong>항바이러스제 사용(고위험군)</strong>을 Long COVID 예방 목적으로 제안</div></li>
+        <li class="rec-item"><div class="rec-text">② <strong>Nirmatrelvir-ritonavir</strong> 및 <strong>글루코코르티코이드</strong>(호흡기 증상·후각장애)는 Long COVID 치료 목적 사용에 반대 제안</div></li>
+        <li class="rec-item"><div class="rec-text">③ <strong>다균종 프로바이오틱스</strong>, <strong>인지행동치료(피로 증상)</strong>, <strong>PEM 배제 후 개인 맞춤형 재활</strong>은 사용을 지지하는 방향으로 제안</div></li>
+      </ul>
+      <div class="alert alert-warn" style="margin-top:6px"><span>⚠️</span><div>근거 기반이 제한적이고 방법론적 질이 낮은 경우가 많아, <strong>전체 권고사항 모두 매우 낮음~중등도(very low–moderate) 확실성</strong>의 근거로 뒷받침됨. 강한(strong) 권고는 하나도 없음 — 전부 조건부(conditional) 또는 권고 보류.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🫁</span> 호흡기 침범 병태생리 핵심</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div style="font-size: calc(12px * var(--fscale, 1));line-height:1.9">급성기 폐 침범의 중증도·범위와 밀접히 연관 → 영상·폐기능(특히 확산능, DLCO) 이상이 수년간 지속 가능 → <strong>지속적인 폐 실질 손상 + 미세혈관 기능장애</strong>가 호흡기 Long COVID의 핵심 병태생리로 추정.</div>
+      <div class="alert alert-info" style="margin-top:6px"><span>🔬</span><div>최근 <strong>129Xe MRI</strong> 기반 클러스터 분석에서 환기·막확산·적혈구 가스교환 이상 패턴이 확인되어, 영상 기반 표현형 분류(phenotyping)가 향후 진단·연구에 유용할 가능성 제시.</div></div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+<!-- ═══════════ DEFINITION / METHODOLOGY ═══════════ -->
+<div id="tab-definition" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📖</span> 기관별 Long COVID 정의 비교</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="ht">
+        <tr><th>기관</th><th>용어</th><th>정의</th></tr>
+        <tr><td><strong>WHO</strong></td><td>Post COVID-19 condition (Long COVID)</td><td>초기 SARS-CoV-2 감염 후 3개월 시점에 새로운/지속 증상이 나타나고, 최소 2개월 이상 지속되며, 다른 원인으로 설명되지 않는 경우. <em>(본 지침의 기준 정의)</em></td></tr>
+        <tr><td><strong>NASEM</strong></td><td>Long COVID</td><td>감염연관 만성질환(IACC) — SARS-CoV-2 감염 후 발생하며 최소 3개월간 지속적/재발-완화형/진행성 질병상태로 하나 이상의 장기계통에 영향</td></tr>
+        <tr><td><strong>NICE</strong></td><td>Post-COVID-19 syndrome</td><td>COVID-19에 부합하는 감염 중/후 발생한 징후·증상이 12주 이상 지속되고 다른 진단으로 설명되지 않는 경우</td></tr>
+        <tr><td><strong>CDC</strong></td><td>Post-COVID conditions / Long COVID</td><td>(v1) 최초 감염 후 4주 이상 지속되는 건강 문제 / (v2) 감염 후 발생하여 최소 3개월간 지속되는 만성 상태</td></tr>
+      </table>
+      <div style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);margin-top:4px">본 지침은 근거 선정 시 WHO 정의 사용 연구를 우선하되, 부재 시 대안적 정의의 근거도 고려함.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> GRADE 근거 확실성 및 권고 강도 정의</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">근거의 확실성(Certainty of evidence)</div>
+      <table class="ht">
+        <tr><th></th><th>정의</th></tr>
+        <tr><td><span class="grade g-high">High</span></td><td>실제 효과가 추정치와 매우 유사할 것이라는 강한 확신</td></tr>
+        <tr><td><span class="grade g-modc">Moderate</span></td><td>실제 효과가 추정치와 유사할 가능성이 크나, 상당히 다를 가능성도 존재</td></tr>
+        <tr><td><span class="grade g-low">Low</span></td><td>추정치에 대한 확신이 제한적 — 실제 효과가 상당히 다를 수 있음</td></tr>
+        <tr><td><span class="grade g-vlow">Very low</span></td><td>추정치에 대한 확신이 매우 낮음 — 실제 효과가 상당히 다를 가능성이 큼</td></tr>
+      </table>
+      <div class="sec-sep"></div>
+      <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">권고 강도(Strength of recommendation)</div>
+      <table class="ht">
+        <tr><th></th><th>정의</th></tr>
+        <tr><td><span class="grade g-strong">Strong</span></td><td>바람직한 효과가 바람직하지 않은 효과를 확실히 상회(또는 하회)한다는 패널의 확신 — 강한 권고(찬성/반대)</td></tr>
+        <tr><td><span class="grade g-cond">Conditional</span></td><td>바람직한 효과가 상회(또는 하회)할 가능성이 크나 상당한 불확실성 존재 — 조건부 권고(찬성/반대)</td></tr>
+        <tr><td><span class="grade g-none">권고 보류 (/)</span></td><td>근거 부족 등으로 찬성·반대 권고를 제시하지 않음</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🛠️</span> 방법론 상세</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-text"><strong>임상질문 개발</strong>: ① 임상의가 PICO 형식 초안 작성 → ② 방법론자가 기존 지침·고품질 체계적문헌고찰(SR) 검토 통해 보완 → 조정·합의그룹이 8개 최종 질문 확정</div></li>
+        <li class="rec-item"><div class="rec-text"><strong>검색 데이터베이스</strong>: MEDLINE(PubMed), Web of Science, Embase, Cochrane Library, CBM, WanFang Data, Epistemonikos COVID-19 L·OVE 플랫폼; 검색기간 2020.1.1–2024.11.30; 사전출판 플랫폼(medRxiv, SSRN, ResearchSquare)·임상시험등록·구글 검색 병행</div></li>
+        <li class="rec-item"><div class="rec-text"><strong>비뚤림 위험 평가</strong>: RCT는 Cochrane ROB 1.0, 비무작위연구는 ROBINS-I, 코호트·환자대조군은 Newcastle-Ottawa Scale(NOS), 단면연구는 AHRQ 도구, 증례군/증례보고는 Murad 등 체크리스트</div></li>
+        <li class="rec-item"><div class="rec-text"><strong>권고 형성</strong>: 3라운드 델파이(1차 2025.4.1–4.21, 응답률 75%; 2차 2025.5.1–5.11; 3차 2025.9.5–9.10) — 익명 투표, 사전정의 합의기준 70% 이상 동의; 총 104건의 패널 제안 수렴</div></li>
+        <li class="rec-item"><div class="rec-text"><strong>환자 참여</strong>: Long COVID 환자대표 2인이 특히 근거 확실성이 낮은 권고에 대해 가치·선호 피드백 제공</div></li>
+      </ul>
+    </div>
+  </div>
+</div><!-- /definition -->
+
+<!-- ═══════════ RECOMMENDATIONS ═══════════ -->
+<div id="tab-recommendations" class="panel">
+
+  <div class="alert alert-info"><span>ℹ️</span><div>아래 10개 권고사항은 8개 PICO 임상질문에 대응. <span class="grade g-strong" data-tip="강한 권고">Strong</span> 등급은 없으며 전부 <span class="grade g-cond" data-tip="조건부 권고">Conditional</span> 또는 권고 보류(<span class="grade g-none">/</span>).</div></div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-prevent">예방</span> PICO 1 — 백신/약물로 Long COVID를 예방할 수 있는가?</div>
+    <div class="rec-box-body">
+      <div class="rec-text">이전 SARS-CoV-2 감염 여부와 무관하게, <strong>COVID-19 백신 접종</strong>을 Long COVID 예방 목적으로 제안. 구체적 접종 용량·시기는 가용성, 지역 요건, 환자 상태를 고려해 결정하고 이상반응을 면밀히 모니터링.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-vlow">Very low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 백신접종 (고품질 SR 3편, 관찰연구 44편, 1,484만 2,052명)</span><span>▾</span></div>
+        <div class="sp-body">
+          <table class="ht">
+            <tr><th>시점</th><th>용량</th><th>결과</th></tr>
+            <tr><td>감염 전</td><td>2회</td><td>Long COVID 위험 유의하게 감소 (OR=0.76, 95% CI 0.65–0.89, I²=93.4%, 매우낮은 확실성) — 피로·두통·후각장애·근육통에서 특히 뚜렷</td></tr>
+            <tr><td>감염 전</td><td>1회</td><td>유의하지 않음 (OR=1.01, 95% CI 0.88–1.15, I²=63.0%)</td></tr>
+            <tr><td>감염 전</td><td>3회</td><td>유의하지 않음 (OR=0.31, 95% CI 0.05–1.84, I²=97.3%)</td></tr>
+            <tr><td>감염 후</td><td>1회</td><td>위험 유의하게 감소 (OR=0.85, 95% CI 0.73–0.98, I²=77.9%, 중등도 확실성)</td></tr>
+            <tr><td>감염 후</td><td>2회</td><td>유의하지 않음 (OR=0.63, 95% CI 0.38–1.03)</td></tr>
+          </table>
+          <div class="rec-text" style="margin-top:6px">추가 SR에서는 접종군 Long COVID 유병률 9.5% vs 비접종군 14.6%, 활동제한 증상 보정OR 0.59 (95% CI 0.48–0.73). 1회 접종 시 OR 범위 0.22–1.03, 2회 0.25–1, 3회 0.16, 감염후 접종 OR 범위 0.38–0.91 (연구 간 이질성 큼).</div>
+          <div class="rec-text" style="margin-top:6px"><strong>백신 종류</strong>: mRNA(BNT162b2, OR 0.79, 95% CI 0.67–0.92) 및 아데노바이러스벡터(ChAdOx1 nCoV-19, OR 0.59, 95% CI 0.50–0.70, I²=0.0%) 모두 접종 시기와 무관하게 위험 유의하게 감소. <strong>안전성</strong>: 포함된 RCT 전반에서 중대 이상반응 보고 없음.</div>
+        </div>
+      </div>
+
+      <div class="rec-text" style="margin-top:10px">급성기(감염 후 4주 이내) <strong>항바이러스제 사용</strong>을 Long COVID 예방 목적으로 제안, 특히 고위험군에서.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-low">Low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 급성기 약물 (업데이트 메타분석 50편: RCT 6, 비무작위시험 2, 코호트 40, 환자대조군 2 / 706만 422명, ≥12세)</span><span>▾</span></div>
+        <div class="sp-body">
+          <table class="ht">
+            <tr><th>계통</th><th>결과</th></tr>
+            <tr><td>Long COVID 위험(전체)</td><td>항바이러스제 사용군에서 위험 감소 (19개 연구, OR=0.69, 95% CI 0.64–0.74, I²=98.0%); <strong>NMV/r·몰누피라비르·파비피라비르</strong>는 유의한 이득, <strong>렘데시비르·엔시트렐비르·아즈부딘</strong>은 유의하지 않음</td></tr>
+            <tr><td>단클론항체</td><td>Long COVID 또는 개별 증상에 유의한 효과 없음</td></tr>
+            <tr><td>코르티코스테로이드</td><td>Long COVID 예방 효과 유의하지 않음</td></tr>
+            <tr><td>메트포르민</td><td>RCT 1건에서 위험 감소 (HR=0.59, 95% CI 0.39–0.89); 대규모 후향연구 2건도 이득 뒷받침</td></tr>
+            <tr><td>호흡기 계통</td><td>항바이러스제, 호흡곤란에 유의한 효과 없음 (OR=0.94, 95% CI 0.72–1.23)</td></tr>
+            <tr><td>신경정신 계통</td><td>인지장애 감소 (OR=0.83, 95% CI 0.74–0.94), 수면장애 감소 (OR=0.94, 95% CI 0.89–0.98)</td></tr>
+            <tr><td>근골격 계통</td><td>근육통에 유의한 효과 없음 (OR=0.88, 95% CI 0.70–1.10)</td></tr>
+            <tr><td>전신 증상</td><td>피로 감소 (OR=0.90, 95% CI 0.84–0.97)</td></tr>
+          </table>
+          <div class="rec-text" style="margin-top:6px"><strong>안전성</strong>: 다양한 백신에도 불구, 포함 RCT 전반에서 유의한 이상반응 없음. 단클론항체 관련해서는 리툭시맙의 폐섬유화 위험 가능성을 시사한 연구 1건 존재.</div>
+        </div>
+      </div>
+
+      <div class="rec-remark">현재 COVID-19 항바이러스제는 급성감염 치료가 주 적응증이며 약물별 적응증이 상이. 본 권고가 급성기 항바이러스제 사용에 대한 기존 진료지침을 대체하거나 상충하는 것으로 해석되어서는 안 됨. 예방목적 사용은 환자의 임상상태·위험인자·약제별 적응증 및 가용성을 고려한 공유의사결정을 거쳐야 함.</div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-treat">치료</span> PICO 2 — 항바이러스제 사용 여부</div>
+    <div class="rec-box-body">
+      <div class="rec-text">성인 Long COVID 환자에서 <strong>nirmatrelvir-ritonavir 사용에 반대</strong>할 것을 제안.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-low">Low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — STOP-PASC RCT (155명, 대변 바이러스RNA 기저치 음성, 발병 후 평균 약 1.5년)</span><span>▾</span></div>
+        <div class="sp-body">
+          <div class="rec-text">NMV/r군 vs 위약-리토나비르군, 10주 시점 기저치 대비 중증도 점수 변화량 비교 — 모든 계통에서 <strong>통계적으로 유의한 차이 없음</strong>:</div>
+          <table class="ht" style="margin-top:6px">
+            <tr><th>계통/증상</th><th>NMV/r군 변화량</th><th>위약군 변화량</th></tr>
+            <tr><td>위장관 증상</td><td>-19.60</td><td>-11.30</td></tr>
+            <tr><td>뇌안개(brain fog)</td><td>-28.40</td><td>-47.20</td></tr>
+            <tr><td>근육통</td><td>-22.50</td><td>-20.80</td></tr>
+            <tr><td>심혈관 증상</td><td>-23.50</td><td>-20.80</td></tr>
+            <tr><td>피로</td><td>-23.50</td><td>-43.40</td></tr>
+            <tr><td>호흡곤란</td><td>-20.60</td><td>-24.50</td></tr>
+          </table>
+          <div class="rec-text" style="margin-top:6px"><strong>안전성</strong>: 이상반응 발생률은 NMV/r군과 위약군 간 유사.</div>
+        </div>
+      </div>
+      <div class="rec-remark">타 항바이러스제(몰누피라비르 등)에 대한 근거 부족으로, 본 권고는 주로 nirmatrelvir-ritonavir에 국한됨. 지속바이러스 병리가 Long COVID 기전 중 하나로 제안되었으나, 바이러스 지속표지자 음성 환자를 대상으로 한 본 RCT는 뚜렷한 이득을 보이지 않음 — 바이러스 지속이 확인되는 하위군에서의 효과는 별도 검증 필요.</div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-treat">치료</span> PICO 3 — 단클론항체 사용 여부</div>
+    <div class="rec-box-body">
+      <div class="rec-text">성인 Long COVID 환자에서 중화 단클론항체 사용에 대해 <strong>찬성도 반대도 권고하지 않음</strong>.</div>
+      <div class="rec-badges"><span class="grade g-none">권고 보류</span><span class="grade g-vlow">Very low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 증례보고 1건이 근거의 전부</span><span>▾</span></div>
+        <div class="sp-body">
+          <div class="rec-text">면역저하 성인 환자(흉선종, 흉막전이 동반) 1례 — casirivimab-imdevimab 투여(용량 미보고) 후 <strong>발열·전신쇠약감 완전관해</strong>. 다른 증례에서는 기침의 완전관해가 보고됨. <strong>안전성</strong>: 이상반응 보고 없음.</div>
+          <div class="alert alert-warn" style="margin-top:6px"><span>⚠️</span><div>일반 Long COVID 인구에서의 효능을 입증하는 확고한 근거는 전무. 면역저하 상태는 바이러스 재활성화·재감염 가능성을 시사하며, 이것이 외인성 중화항체 투여가 이론적으로 도움될 수 있는 생물학적 근거를 제공하나, 극히 제한된 증례 수준의 근거임.</div></div>
+          <div class="rec-text" style="margin-top:6px">고비용, 최적 환자선정기준 불확실, 효능·안전성 자료 부재로 일상적 사용 권고 불가. AER002, casirivimab-imdevimab 등 관련 임상시험 진행 중.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-treat">치료</span> PICO 4 — 프로바이오틱스 사용 여부</div>
+    <div class="rec-box-body">
+      <div class="rec-text">성인 Long COVID 환자의 증상 완화를 위해 <strong>다균종(multi-species) 프로바이오틱스 사용</strong>을 제안.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-modc">Moderate</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — RCT 3건(SIM01 합성생균제 등)</span><span>▾</span></div>
+        <div class="sp-body">
+          <div class="rec-text"><strong>SIM01 (RECOVERY trial, 463명)</strong> — 위약 대비 유의한 개선:</div>
+          <table class="ht" style="margin-top:6px">
+            <tr><th>증상</th><th>효과크기 (OR, 95% CI)</th></tr>
+            <tr><td>관절통</td><td>2.10 (1.27–3.47)</td></tr>
+            <tr><td>운동불가</td><td>2.32 (1.23–4.38)</td></tr>
+            <tr><td>근육통</td><td>1.71 (1.07–2.72)</td></tr>
+            <tr><td>집중력 저하</td><td>2.64 (1.69–4.14)</td></tr>
+            <tr><td>기억력 저하</td><td>1.97 (1.27–3.04)</td></tr>
+            <tr><td>불면증</td><td>1.76 (1.12–2.77)</td></tr>
+            <tr><td>위장관 불편감</td><td>1.99 (1.30–3.05)</td></tr>
+            <tr><td>피로</td><td>2.27 (1.52–3.40)</td></tr>
+            <tr><td>전반적 불편감</td><td>2.36 (1.43–3.90)</td></tr>
+            <tr><td>호흡곤란</td><td>1.87 (1.16–3.03)</td></tr>
+            <tr><td>기침</td><td>1.85 (1.04–3.29)</td></tr>
+          </table>
+          <div class="rec-text" style="margin-top:6px"><strong>VSL#3®(38명)</strong>: 4주 시점 Chalder Fatigue Scale 기준 위약 대비 피로 감소폭 더 큼. <strong>합성생균제(L. rhamnosus 등, 26명)</strong>: 3개월 복용 후 전신피로(P=0.03)·신체피로(P=0.03)·정신피로(P=0.03) 유의하게 감소.</div>
+          <div class="rec-text" style="margin-top:6px"><strong>안전성</strong>: 사용된 프로바이오틱스 종류와 무관하게 포함 RCT 전반에서 유의한 이상반응 없음.</div>
+        </div>
+      </div>
+      <div class="rec-remark">표준화된 제제의 가용성은 지역에 따라 다르므로, 본 권고는 현지 가용성 맥락에서 해석되어야 함. 균주·용량·치료기간의 이질성이 커서 개별 제제 간 직접 비교는 제한적.</div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-treat">치료</span> PICO 5 — 글루코코르티코이드 사용 여부</div>
+    <div class="rec-box-body">
+      <div class="rec-text">지속적 호흡기 증상이 있는 성인 Long COVID 환자에서 <strong>심폐기능 개선 목적의 글루코코르티코이드 사용에 반대</strong>할 것을 제안.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-vlow">Very low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 호흡기 증상 (6개 연구, RCT 1 + 관찰연구 5, 3,189명)</span><span>▾</span></div>
+        <div class="sp-body">
+          <div class="rec-text">결과 불일치: 일부 연구에서 6분보행거리(6MWD), FEV1, FVC, 확산능(DLCO) 개선 보고; 다른 연구에서는 유의한 효과 없음. 고용량 vs 저용량 프레드니손 비교 RCT 1건에서도 폐기능·영상 소견에 유의한 차이 없음. <strong>전반적으로 이질적이며 제한적·비일관적 이득</strong> — 임상적 효용 불확실.</div>
+        </div>
+      </div>
+
+      <div class="rec-text" style="margin-top:10px">성인 Long COVID 환자의 <strong>후각장애 치료 목적 글루코코르티코이드 사용에 반대</strong>할 것을 제안.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-low">Low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 후각장애 (10개 연구: RCT 4, 코호트 3, 전후비교 3; 업데이트 메타분석)</span><span>▾</span></div>
+        <div class="sp-body">
+          <div class="rec-text">RCT 3편 + 전후비교 1편(후각장애 성인 225명) 메타분석: 후각점수의 <strong>경미한 개선</strong>(평균차 1.66, 95% CI 1.10–2.23)이 있었으나, <strong>환자 자가보고 회복률에는 효과 없음</strong>. 국소·전신 투여 병행요법 연구 1건에서 조기 치료 시작 시 일부 이득 시사되었으나 결과가 견고하지 않음.</div>
+          <div class="rec-text" style="margin-top:6px"><strong>안전성</strong>: 중대 이상반응 없음. 국소주사 시 경미한 출혈·통증 간헐적 발생. 장기 안전성(감염, 골다공증, 위장관출혈 등)은 충분히 연구되지 않음.</div>
+        </div>
+      </div>
+      <div class="rec-remark">개선 정도가 임상적 유의성 기준(10점 척도 중 2점 초과 증가)에 미달. 최근 소규모 시험에서 내시경적 국소치료의 실행가능성·안전성이 시사되어 향후 대규모 시험 필요.</div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-treat">치료</span> PICO 6 — 면역조절제 사용 여부</div>
+    <div class="rec-box-body">
+      <div class="rec-text">간질성폐질환을 동반한 성인 Long COVID 환자에서 면역조절제(<strong>MMF, JAK 억제제, 타크로리무스</strong>) 사용에 대해 <strong>찬성도 반대도 권고하지 않음</strong>.</div>
+      <div class="rec-badges"><span class="grade g-none">권고 보류</span><span class="grade g-vlow">Very low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 코호트 1, 환자대조군 1, 증례군 1, 증례보고 3건</span><span>▾</span></div>
+        <div class="sp-body">
+          <table class="ht">
+            <tr><th>약제</th><th>연구/대상</th><th>결과</th></tr>
+            <tr><td>MMF</td><td>코호트, 95명 (간질성폐질환)</td><td>스테로이드 단독 또는 MMF+스테로이드 병용군 모두 6개월간 폐기능·산소화 개선, 내약성 양호 — 단 비면역억제 대조군 없음</td></tr>
+            <tr><td>JAK 억제제</td><td>환자대조군, 41명</td><td>baricitinib/tofacitinib 추가 시 스테로이드 감량 가속·이상반응 감소, 산소요구량 차이는 없음</td></tr>
+            <tr><td>타크로리무스</td><td>증례보고 2건</td><td>스테로이드 병용 하 폐기능 개선 및 산소치료 이탈 성공 보고</td></tr>
+            <tr><td>메토트렉세이트·레플루노마이드</td><td>증례군, 관절통 환자 3명</td><td>2명이 이상반응으로 중단</td></tr>
+            <tr><td>Anakinra(IL-1 차단)</td><td>증례보고 1건</td><td>스테로이드 의존성 다발성 염증증후군에서 효과적·내약성 양호</td></tr>
+          </table>
+          <div class="rec-text" style="margin-top:6px"><strong>안전성</strong>: 가용 연구에서 MMF·JAK억제제·타크로리무스 관련 중대 이상반응 없음.</div>
+        </div>
+      </div>
+      <div class="rec-remark">전반적 근거는 제한적이고 글루코코르티코이드 병용 상태에 국한됨. 연구 간 이질성, 소규모 표본, 용량요법·기간·병용치료·안전관리 합의 부재로 찬반 권고 불가. Anakinra, 정맥용면역글로불린, baricitinib 등 다수 임상시험 진행 중 (예: REVERSE-Long COVID, RECOVER-AUTONOMIC).</div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-treat">치료</span> PICO 7 — 인지행동치료(CBT) 사용 여부</div>
+    <div class="rec-box-body">
+      <div class="rec-text">성인 Long COVID 환자의 <strong>피로 증상 완화 목적</strong>으로 인지행동치료 사용을 제안.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-low">Low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 결과지표별 메타분석</span><span>▾</span></div>
+        <div class="sp-body">
+          <table class="ht">
+            <tr><th>결과지표</th><th>대상</th><th>효과크기</th><th>유의성</th></tr>
+            <tr><td>피로</td><td>183명 (RCT 1 + 전후비교 1)</td><td>SMD 4.01 (95% CI 1.17–6.85)</td><td style="color:var(--green);font-weight:600">유의한 개선</td></tr>
+            <tr><td>불안</td><td>93명 (전후비교 2)</td><td>SMD 0.32 (95% CI −0.19~0.83)</td><td>유의하지 않음</td></tr>
+            <tr><td>우울</td><td>93명 (전후비교 2)</td><td>SMD 0.25 (95% CI −0.10~0.61)</td><td>유의하지 않음</td></tr>
+            <tr><td>사회적 기능</td><td>87명 (RCT 1 + 전후비교 1)</td><td>SMD 5.63 (95% CI −3.91~15.17, I²=99.4%)</td><td>유의하지 않음, 이질성 매우 큼</td></tr>
+            <tr><td>스트레스</td><td>40명 (준실험연구)</td><td>메타분석 불가(연구 수 부족)</td><td>유의하게 감소(개별연구)</td></tr>
+            <tr><td>자기효능감</td><td>40명 (준실험연구)</td><td>메타분석 불가</td><td>유의하게 증가(개별연구)</td></tr>
+          </table>
+          <div class="rec-text" style="margin-top:6px"><strong>피로만이 여러 연구에 걸쳐 통계적으로 유의한 이득</strong>을 보인 유일한 결과지표. 현재 평가도구는 주로 신체증상·기능제한에 초점을 두어 인지·사회적 차원의 정신적 피로를 간과할 가능성이 있고, 신체피로와 정신피로를 명확히 구분하지 못하는 한계도 지적됨.</div>
+        </div>
+      </div>
+      <div class="rec-remark">CBT 권고는 Long COVID 환자의 피로가 심리적 원인에 기인한다는 것을 의미하지 않음. 비약물적 중재로 안전성 프로파일 양호하며 중대 이상반응 없음. 훈련된 심리치료사가 필요해 일부 지역 접근성 제한 가능. 2023년 전문가합의는 불면증 1차치료로 CBT를 지지했으나, 본 지침은 근거 부족으로 불면증 관련 권고는 제시하지 않음.</div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <div class="rec-box-hdr"><span class="pill pill-treat">치료</span> PICO 8 — 재활운동 사용 여부</div>
+    <div class="rec-box-body">
+      <div class="rec-text">성인 Long COVID 환자에서 <strong>PEM(운동후 불쾌감) 여부를 적절히 선별하여 배제한 후</strong>, 의료진의 지도·감독 하에 <strong>개인 맞춤형 재활훈련</strong>을 제안.</div>
+      <div class="rec-badges"><span class="grade g-cond">Conditional</span><span class="grade g-low">Low</span></div>
+
+      <div class="sp-section">
+        <div class="sp-title" onclick="toggleSP(this)"><span>📊 상세 근거 — 3개 SR(체계적문헌고찰 1, 리빙SR 1, 네트워크메타분석 1)</span><span>▾</span></div>
+        <div class="sp-body">
+          <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">SR① — 14 RCT, 1,244명 (usual care 대비)</div>
+          <table class="ht">
+            <tr><th>결과지표</th><th>효과크기</th><th>유의성</th></tr>
+            <tr><td>운동능력</td><td>SMD −0.56 (95% CI −0.87~−0.22)</td><td style="color:var(--green);font-weight:600">개선</td></tr>
+            <tr><td>삶의 질</td><td>SMD −0.41 (95% CI −0.73~−0.06)</td><td style="color:var(--green);font-weight:600">개선</td></tr>
+            <tr><td>하지근력·지구력</td><td>SMD −0.77 (95% CI −1.94~0.44)</td><td>유의하지 않음</td></tr>
+          </table>
+          <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin:8px 0 5px">SR② — 8 RCT, 985명 (표준물리치료·usual care 대비)</div>
+          <table class="ht">
+            <tr><th>중재</th><th>결과지표</th><th>효과크기</th></tr>
+            <tr><td>흡기근 훈련</td><td>삶의 질</td><td>MD −1.30 (95% CI −5.90~3.30, 유의하지 않음)</td></tr>
+            <tr><td>점증적 다요소 운동</td><td>신체기능</td><td>MD 6.96 (95% CI 2.7–11.22, 개선)</td></tr>
+            <tr><td>점증적 다요소 운동</td><td>정신건강</td><td>MD 2.06 (95% CI −3.52~7.64, 유의하지 않음)</td></tr>
+            <tr><td>능동호흡기법</td><td>피로</td><td>MD −9.97 (95% CI −11.17~−8.77, 개선)</td></tr>
+            <tr><td>능동호흡기법</td><td>정신건강</td><td>MD 0 (95% CI −3.69~3.69, 효과 없음)</td></tr>
+            <tr><td>간헐적 유산소 vs 지속적 유산소</td><td>신체기능</td><td>MD 3.80 (95% CI 1.12–6.48, 간헐적 우세)</td></tr>
+            <tr><td>저강도 vs 고강도 유산소근력운동</td><td>삶의 질(8주/24주)</td><td>MD 8.50 / 10.40 (저강도 우세)</td></tr>
+          </table>
+          <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin:8px 0 5px">SR③ — 네트워크메타분석, 대면재활 vs 원격재활 (10 RCT, 765명)</div>
+          <table class="ht">
+            <tr><th>비교</th><th>결과지표</th><th>비고</th></tr>
+            <tr><td>대면재활 vs usual care</td><td>신체기능 MD 29.06 (95% CI 2.76–55.37)</td><td>개선</td></tr>
+            <tr><td>원격재활 vs usual care</td><td>신체기능 MD 3.13 (95% CI −26.57~32.82)</td><td>불확실</td></tr>
+            <tr><td>대면 vs 원격 (간접비교)</td><td>신체기능(6MWT 등) MD −25.94</td><td>대면이 더 효과적 경향</td></tr>
+            <tr><td>대면 vs 원격 (간접비교)</td><td>삶의 질 정신영역 MD −4.98</td><td>원격이 더 효과적 경향</td></tr>
+          </table>
+          <div class="rec-text" style="margin-top:6px"><strong>안전성</strong>: 포함된 모든 SR에서 유의한 이상반응 보고 없음.</div>
+        </div>
+      </div>
+      <div class="alert alert-danger" style="margin-top:8px"><span>🚨</span><div><strong>PEM/PESE 환자</strong>는 재활훈련 내약성이 제한적 — 신체적 부담보다 <strong>활동관리(휴식/페이싱)</strong>에 초점. 고령 환자·중증 COVID-19로 집중치료 받은 환자는 재활전문가와 협의한 신중하고 개별화된 계획 필요.</div></div>
+      <div class="rec-remark">이전 COVID-19 입원력이 있던 환자 대상 재활프로그램의 비용효과성은 입증되었으나, 비입원 환자 자료는 부족.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌐</span> 자원 환경별 실행 고려사항 (요약)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="ht">
+        <tr><th>중재</th><th>고소득국</th><th>중저소득/자원제한 환경</th></tr>
+        <tr><td>백신·항바이러스·메트포르민</td><td>광범위 접근성, 안전성 모니터링 인프라</td><td>공급·비용 제한 → 고위험군 우선순위화; 메트포르민이 저비용·광범위 가용성으로 상대적으로 현실적</td></tr>
+        <tr><td>단클론항체</td><td>전문센터 접근 가능, 면역저하 환자 표적 사용 가능</td><td>고비용·공급제한으로 사실상 이용 불가</td></tr>
+        <tr><td>프로바이오틱스</td><td>다양한 균주·제품, 규제된 품질관리</td><td>표준화 제제 접근 제한 — 전통 발효식품이 대안 가능</td></tr>
+        <tr><td>글루코코르티코이드</td><td>모니터링 하 처방 가능</td><td>오남용 위험 ↑, 전문의 진료 외에는 권장하지 않음</td></tr>
+        <tr><td>CBT</td><td>훈련된 치료사·디지털/원격 치료 접근</td><td>정신건강 전문인력 부족 → 1차진료 위임, 저강도/디지털 CBT 활용</td></tr>
+        <tr><td>재활운동</td><td>전문 재활센터·원격재활</td><td>지역사회/재택 기반 프로그램 선호; PEM 환자는 페이싱 전략 강조</td></tr>
+      </table>
+    </div>
+  </div>
+</div><!-- /recommendations -->
+
+<!-- ═══════════ RESPIRATORY ═══════════ -->
+<div id="tab-respiratory" class="panel">
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 호흡기 Long COVID의 주요 증상 및 소견</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2" style="gap:8px">
+        <div>
+          <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">자각 증상</div>
+          <table class="ht">
+            <tr><th>증상</th><th>비고</th></tr>
+            <tr><td><strong>호흡곤란(dyspnea)</strong></td><td>가장 핵심적으로 다뤄지는 호흡기 증상; 예방·치료 근거 대부분이 이를 1차 결과지표로 사용</td></tr>
+            <tr><td><strong>만성 기침(chronic cough)</strong></td><td>호흡곤란과 함께 임상적으로 특히 우려되는 두 증상으로 명시됨</td></tr>
+            <tr><td><strong>운동능력 저하 / 운동불내성</strong></td><td>재활운동 관련 근거에서 핵심 결과지표(exercise capacity)로 평가</td></tr>
+            <tr><td><strong>저산소혈증(hypoxemia)</strong></td><td>글루코코르티코이드 용량비교 RCT의 등록기준(지속성 호흡곤란 또는 저산소혈증)에 포함</td></tr>
+          </table>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">객관적 기능·영상 소견</div>
+          <table class="ht">
+            <tr><th>소견</th><th>비고</th></tr>
+            <tr><td><strong>확산능 저하(DLCO↓)</strong></td><td>급성기 중증도와 연관된 대표적 장기 후유증 지표; 수년간 지속 가능</td></tr>
+            <tr><td>FEV1·FVC 감소</td><td>일부 연구에서 개선 보고되나 결과 비일관적</td></tr>
+            <tr><td>전폐용량(TLC)·잔기량(RV)·TLCO 이상</td><td>글루코코르티코이드 평가 연구에서 함께 측정되나 결론 도출은 어려움</td></tr>
+            <tr><td>흉부 CT 이상(CT score)</td><td>영상학적 이상 소견; 방사선학적 반응(radiological response)으로 평가</td></tr>
+            <tr><td><strong>간질성폐질환(ILD)양 표현형</strong></td><td>면역조절제·글루코코르티코이드 연구 대상군의 대표적 표현형</td></tr>
+            <tr><td>129Xe MRI 클러스터 이상</td><td>환기(ventilation)·막확산(membrane diffusion)·적혈구 가스교환(RBC gas transfer) 3개 영역의 이상 패턴 — 첨단 표현형 분류 도구로 제시</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>ℹ️</span><div>임상연구에서 실제 사용된 결과지표: <strong>6분보행거리(6MWD), 안정시 SpO₂, mMRC 호흡곤란 척도, FEV1, FVC, DLCO(mL/min/mmHg 및 %예측치), 흉부영상 반응(complete/good radiological response)</strong> 등. 호흡기 표현형의 이질성이 커서 이 지표들 간 결과가 서로 불일치하는 경우가 흔함.</div></div>
+      <div class="alert alert-orange" style="margin-top:6px"><span>🔬</span><div>병태생리적으로는 <strong>지속적 폐실질 손상 + 미세혈관 기능장애</strong>가 핵심 기전으로 추정되며, 급성기 폐 침범의 중증도·범위와 밀접히 연관.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🫁</span> 호흡기 Long COVID — 예방</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">백신접종·급성기 약물치료 등 전반적 예방전략이 Long COVID 전체 위험은 낮출 수 있으나, <strong>호흡기 증상 특이적 예방 근거는 제한적</strong>. 본 지침의 근거합성에서 급성기 항바이러스치료와 Long COVID 관련 호흡곤란 간 유의한 보호효과는 확인되지 않음(OR: 0.94, 95% CI: 0.72–1.23).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 약물치료 근거</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-text"><strong>항바이러스제</strong>: 바이러스 지속표지자 음성·발병 1.5년 경과 환자 대상 RCT에서 NMV/r이 호흡곤란 개선에 유의한 효과 없음 (10주 시점 변화량: −20.60 vs −24.50)</div></li>
+        <li class="rec-item"><div class="rec-text"><strong>단클론항체</strong>: 면역저하 환자 증례보고 1건에서 기침 완전관해 — 극히 제한적 근거</div></li>
+        <li class="rec-item"><div class="rec-text"><strong>글루코코르티코이드</strong>: 6개 연구(RCT 1 + 관찰연구 5, 3,189명) 결과 불일치 — 일부 6MWD·FEV1·FVC·DLCO 개선 보고, 일부는 유의한 효과 없음; 고용량 vs 저용량 비교 RCT 1건에서도 차이 없음 → <strong>임상적 효용 불확실</strong></div></li>
+        <li class="rec-item"><div class="rec-text"><strong>면역조절제</strong>: MMF·JAK억제제·타크로리무스 관련 코호트/증례대조/증례보고 수준 근거만 존재, 대부분 스테로이드 병용 상태에서 평가되어 단독 효과 판단 불가</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏃</span> 비약물치료 근거</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">재활운동 (PEM 없는 환자)</div>
+      <table class="ht">
+        <tr><th>중재</th><th>대상</th><th>결과</th></tr>
+        <tr><td>호흡운동 ± 저항/유산소 훈련</td><td>14 RCT, 1,244명</td><td>호흡곤란 개선 (SMD: −1.00, 95% CI: −1.94~−0.10); FEV1·FVC 유의차 없음</td></tr>
+        <tr><td>흡기근 훈련</td><td>8 RCT, 985명</td><td>호흡곤란 개선 (MD: 1.10, 95% CI: 0.44–1.76)</td></tr>
+        <tr><td>점증적 다요소 운동</td><td>-</td><td>mMRC 호흡곤란·호흡불편감·정서반응 개선 (전반적으로 저확실성 근거)</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>고령 환자·중증 COVID-19로 집중치료 받은 환자는 재활전문가와 협의한 <strong>신중하고 개별화된 계획</strong> 필요 — 불필요하거나 중복되는 중재 피할 것.</div></div>
+      <div class="sec-sep"></div>
+      <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin:6px 0">프로바이오틱스</div>
+      <div class="rec-text">RCT 1건(463명, SIM01 합성생균제): 호흡곤란 개선 (OR: 1.87, 95% CI: 1.16–3.03), 기침 개선 (OR: 1.85, 95% CI: 1.04–3.29)</div>
+      <div class="sec-sep"></div>
+      <div class="rec-text"><strong>인지행동치료(CBT)</strong>: 호흡기 증상(호흡곤란 등)에 대한 근거는 없음 — 기존 연구는 주로 피로·심리증상에 초점, 호흡기 결과지표 평가 부재.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔭</span> 향후 방향</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">호흡곤란·폐기능·영상이상 등 호흡기 결과지표가 임상시험에서 1차 평가변수로 채택되는 빈도가 낮음. <strong>129Xe MRI 기반 클러스터</strong>(환기·막확산·적혈구 가스교환 이상)와 같은 첨단 영상 표현형 분류가 진단 정교화에 기여할 잠재력 보유. 고령자·중환자실 생존자·섬유화/혈관성 폐후유증 환자에 대한 자료 특히 부족.</div>
+    </div>
+  </div>
+</div><!-- /respiratory -->
+
+<!-- ═══════════ EVIDENCE DETAIL ═══════════ -->
+<div id="tab-evidence" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 1</span> 예방 — 백신·급성기 약물</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">백신접종 (고품질 SR 3편, 관찰연구 44편, 1,484만 2,052명)</div>
+      <table class="ht">
+        <tr><th>시점</th><th>용량</th><th>결과</th></tr>
+        <tr><td>감염 전</td><td>2회</td><td>Long COVID 위험 유의하게 감소 (OR=0.76, 95% CI 0.65–0.89, I²=93.4%, 매우낮은 확실성)</td></tr>
+        <tr><td>감염 전</td><td>1회 / 3회</td><td>통계적으로 유의하지 않음</td></tr>
+        <tr><td>감염 후</td><td>1회</td><td>위험 유의하게 감소 (OR=0.85, 95% CI 0.73–0.98, I²=77.9%, 중등도 확실성)</td></tr>
+        <tr><td>감염 후</td><td>2회</td><td>통계적으로 유의하지 않음</td></tr>
+      </table>
+      <div class="rec-text" style="margin-top:6px">백신 종류: mRNA(BNT162b2, OR 0.79) 및 아데노바이러스벡터(ChAdOx1 nCoV-19, OR 0.59) 모두 접종 시기와 무관하게 위험 감소. 이상반응 보고 없음.</div>
+      <div class="sec-sep"></div>
+      <div style="font-weight:600;font-size: calc(12px * var(--fscale, 1));color:var(--accent);margin-bottom:5px">급성기 약물치료 (업데이트 메타분석 50편, 706만 422명, ≥12세)</div>
+      <div class="rec-text">선택적 항바이러스제의 잠재적 이득을 뒷받침하는 근거가 있으나 확실성은 낮음~매우낮음이며 약물 종류·표적 증상·환자 위험군에 따라 상이. <strong>비항바이러스제의 일상적 예방 목적 사용은 근거가 뒷받침하지 않음.</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 2</span> 항바이러스제 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">바이러스 지속이 Long COVID의 잠재적 기전 중 하나로 제안됨. Nirmatrelvir-ritonavir(NMV/r)는 중증진행 고위험 급성 COVID-19 성인 환자에 승인된 SARS-CoV-2 주단백분해효소 억제제. 증례군·증례보고에서 증상완화 시사되었으나 고품질 근거 제한적. 포함된 RCT(STOP-PASC, 155명)는 <strong>NMV/r이 안전하나 유의한 증상개선 없음</strong>을 확인 (발병 약 1.5년 경과, 대변 바이러스RNA 기저치 음성 환자 대상).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 3</span> 단클론항체 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">대부분의 치료용 단클론항체는 바이러스 특정 에피토프를 표적으로 하는 중화항체. 일반 Long COVID 인구에서 임상적 이득을 입증하는 확고한 근거는 없음. 증례보고 1건에서 <strong>면역저하 환자</strong>의 호흡기 증상 포함 개선 가능성 시사(재감염/바이러스 재활성화가 기전적 근거 제공). 효능·안전성 자료 부재, 고비용, 최적 환자선정 기준 불확실 → 일상적 사용 권고 불가. AER002, casirivimab-imdevimab 등 임상시험 진행 중.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 4</span> 프로바이오틱스 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">장내 미생물총 조절을 통한 면역·염증 조절 기전으로 호흡기질환에서 항바이러스 활성·면역조절 효과 보고. 균주·용량·치료기간의 이질성이 크고, 개인 반응은 기저 미생물총 구성 등에 따라 상이. 대부분 제제가 정식 의약품 형태로 상용화되어 있지 않음.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 5</span> 글루코코르티코이드 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text"><strong>후각장애</strong>: 국소·전신 글루코코르티코이드 모두 후각점수 개선 보고되었으나, 환자 자가보고 후각회복에는 유의차 없음. 개선 정도도 임상적 유의성 기준(10점 척도 중 2점 초과 증가)에 미달. 최근 소규모 시험에서 내시경적 국소치료의 실행가능성·안전성 시사, 대규모 시험 필요.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 6</span> 면역조절제 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">면역계를 증강 또는 억제하는 방식으로 조절하는 약제. 현재 임상지침에서 확립된 권고 없음. 본 지침에서 6개 연구가 잠재적 이득을 시사했으나, 전반적 근거는 제한적이고 <strong>글루코코르티코이드 병용 상태에 국한</strong>됨. 연구 간 이질성, 소규모 표본, 용량요법·기간·병용치료·안전관리에 대한 합의 부재로 찬반 권고 불가. Anakinra, 정맥용면역글로불린, baricitinib 등 다수 임상시험 진행 중.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 7</span> 인지행동치료(CBT)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">인지패턴·행동 수정에 초점을 둔 치료적 접근으로, 정서조절 개선·행동활성화를 통해 Long COVID 일부 증상 완화 가능성 시사. 근거는 소규모 표본·비일관적 결과지표·대규모 RCT 부족으로 제한적. 메타분석에서 높은 이질성 확인되었고, 대부분 결과지표에서 비유의한 개선을 보였으나 <strong>피로만이 통계적으로 유의한 이득</strong>을 보인 유일한 증상.</div>
+      <div class="alert alert-info" style="margin-top:6px"><span>ℹ️</span><div>CBT는 비약물적 중재로 안전성 프로파일 양호, 중대 이상반응 보고 없음. 다만 훈련된 심리치료사가 필요해 일부 지역에서 접근성 제한 가능. <strong>불면증에 대한 CBT는 2023년 전문가합의에서 1차치료로 권장</strong>되었으나, 본 지침은 근거 부족으로 불면증 관련 권고는 제시하지 않음.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span class="pill pill-pico">PICO 8</span> 재활운동</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">PEM이 없는 환자에서 재활운동은 Long COVID 관리의 핵심 요소. 신체기능·삶의 질 개선 가능성 있으나 <strong>효과 크기는 대체로 미미하고 근거 확실성은 낮음~매우낮음</strong>. 원격재활과 대면재활은 특정 결과지표에서 차등적 효과. 입원력이 있던 환자 대상 재활프로그램의 비용효과성 입증되었으나 비입원 환자 자료는 부족.</div>
+      <div class="alert alert-danger" style="margin-top:6px"><span>🚨</span><div><strong>PEM/PESE(운동후 증상악화) 환자</strong>는 재활훈련에 대한 내약성이 제한적 — 이 경우 신체적 부담보다 <strong>활동관리(휴식/페이싱)</strong>에 초점을 맞춰야 함.</div></div>
+    </div>
+  </div>
+</div><!-- /evidence -->
+
+<!-- ═══════════ FUTURE / LIMITATIONS ═══════════ -->
+<div id="tab-future" class="panel">
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔮</span> 향후 연구 우선순위</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-text">표준화된 Long COVID 정의·핵심 결과지표(core outcome set) 채택 — 연구 간 비교가능성 확보</div></li>
+        <li class="rec-item"><div class="rec-text">소아·취약계층 자료 확충 — 현재 매우 부족하여 포괄적 임상지침 개발에 걸림돌</div></li>
+        <li class="rec-item"><div class="rec-text">질병 부담·표현형(subtype) 규명, 위험인자·예방전략 확인</div></li>
+        <li class="rec-item"><div class="rec-text">진단·평가도구 개선</div></li>
+        <li class="rec-item"><div class="rec-text">잘 설계된 임상시험을 통한 치료효과 근거 확충</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚠️</span> 지침의 제한점</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-text">조정·합의그룹 26명 중 9명(35%)이 유럽·북미 소속 — 저중소득국 관점 반영 제한 가능; 환자대표 3인으로 참여 제한적</div></li>
+        <li class="rec-item"><div class="rec-text">비-WHO 정의를 사용한 기존 SR·단클론항체 연구도 포함되어 근거기반은 확대되었으나 이질성 증가</div></li>
+        <li class="rec-item"><div class="rec-text">대부분 근거가 질적으로 다양한 관찰연구에서 도출 — 비뚤림·비일관성(메타분석 내 높은 I²)·비정밀성으로 다수 권고가 낮음~매우낮음 확실성</div></li>
+        <li class="rec-item"><div class="rec-text">언어 제한은 두지 않았으나 포함기준은 영어 문헌에 한정 — 언어 편향 가능성</div></li>
+        <li class="rec-item"><div class="rec-text">주로 성인 대상이며, 신종 변이나 검색마감 이후 결과는 다루지 않음</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📣</span> 확산·이행 계획</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="rec-text">전문학술지·웹사이트·학술플랫폼을 통한 지침 소개, 임상의·약사·간호사 대상 특별세션 운영, 각급 의료기관 내 전담 외래 개설, 1–2년 내 확산·영향 평가(의료진 설문·인용/다운로드 추적·관찰연구 기반 환자결과 평가), <strong>3년 이내 갱신</strong> 예정.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔗</span> 참고: 함께 참조할 수 있는 기존 Long COVID 지침</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="ht">
+        <tr><th>기관</th><th>제목</th></tr>
+        <tr><td>ESCMID (2022)</td><td>ESCMID rapid guidelines for assessment and management of long COVID</td></tr>
+        <tr><td>NICE (2020, 갱신중)</td><td>COVID-19 rapid guideline: managing the long-term effects of COVID-19 (NG188)</td></tr>
+        <tr><td>대한민국 (2022)</td><td>Preliminary Guidelines for the Clinical Evaluation and Management of Long COVID</td></tr>
+        <tr><td>스페인 SEMG</td><td>Guía clínica para la atención al paciente Long COVID/persistente</td></tr>
+        <tr><td>이탈리아 (2023)</td><td>Italian good practice recommendations on management of persons with Long-COVID</td></tr>
+        <tr><td>ERS (2022)</td><td>European Respiratory Society statement on long COVID follow-up (Eur Respir J 2022;60:2102174)</td></tr>
+        <tr><td>WHO</td><td>Clinical management of COVID-19: living guideline (2022)</td></tr>
+        <tr><td>캐나다 CAN-PCC</td><td>Canadian guidelines for post COVID-19 condition</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 약어 전체 목록</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div id="abbr-main-grid" class="abbr-grid-main"></div>
+    </div>
+  </div>
+</div><!-- /future -->
+
+</div><!-- /main -->
+
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+// ─── TAB ───
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ─── CARD ───
+function toggleCard(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('collapsed');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header').forEach(hdr => {
+    if (!hdr.classList.contains('open')) hdr.nextElementSibling.classList.add('collapsed');
+  });
+});
+
+// ─── SP ───
+function toggleSP(title) {
+  const body = title.nextElementSibling;
+  body.classList.toggle('open');
+  const arrow = title.querySelector('span:last-child');
+  arrow.textContent = body.classList.contains('open') ? '▴' : '▾';
+}
+
+// ─── ABBR ───
+const abbrs = [
+  ['Long COVID','WHO 정의: 초기 SARS-CoV-2 감염 후 3개월 시점에 지속/신규 증상이 나타나고 최소 2개월 이상 지속, 다른 원인으로 설명되지 않는 상태'],
+  ['PICO','Population, Intervention, Comparison, Outcome — 임상질문 구조화 형식'],
+  ['GRADE','Grading of Recommendations Assessment, Development and Evaluation — 근거등급·권고강도 평가체계'],
+  ['SR','Systematic Review (체계적 문헌고찰)'],
+  ['RCT','Randomized Controlled Trial (무작위대조시험)'],
+  ['NMV/r','Nirmatrelvir-ritonavir — SARS-CoV-2 주단백분해효소 억제제, 급성 COVID-19 고위험군 승인 항바이러스제'],
+  ['MMF','Mycophenolate Mofetil — 면역억제제, 일부 Long COVID 간질성폐질환에서 사용'],
+  ['JAK inhibitor','Janus Kinase 억제제 (baricitinib, tofacitinib 등) — 면역조절제'],
+  ['CBT','Cognitive Behavioral Therapy (인지행동치료)'],
+  ['PEM','Post-Exertional Malaise (운동후 불쾌감/증상악화) — 활동 후 24–72시간 뒤 증상 악화가 특징인 상태; 재활운동 금기 판단의 핵심 선별기준'],
+  ['PESE','Post-Exertional Symptom Exacerbation — PEM과 유사한 개념으로 운동/활동 후 증상 악화'],
+  ['DLCO','Diffusing capacity of the Lung for Carbon Monoxide (일산화탄소 확산능) — 호흡기 Long COVID의 주요 폐기능 지표'],
+  ['FEV1 / FVC','Forced Expiratory Volume in 1 second / Forced Vital Capacity — 폐활량 지표'],
+  ['6MWD','6-Minute Walk Distance (6분보행거리) — 운동능력 평가지표'],
+  ['mMRC','Modified Medical Research Council dyspnea scale — 호흡곤란 중증도 척도'],
+  ['129Xe MRI','Hyperpolarized Xenon-129 MRI — 폐 환기·가스교환 기능을 영상화하는 첨단 MRI 기법'],
+  ['NASEM','National Academies of Sciences, Engineering, and Medicine (미국 국립학술원)'],
+  ['NICE','National Institute for Health and Care Excellence (영국)'],
+  ['CDC','Centers for Disease Control and Prevention (미국 질병통제예방센터)'],
+  ['WHO','World Health Organization (세계보건기구)'],
+  ['ERS','European Respiratory Society (유럽호흡기학회) — 본 지침 발행 학술지(Eur Respir J) 소속 학회'],
+  ['AGREE II','Appraisal of Guidelines for Research and Evaluation II — 진료지침 개발 품질평가 도구'],
+  ['RIGHT','Reporting Items for Practice Guideline in Healthcare — 진료지침 보고기준'],
+  ['ROB / ROBINS-I','Cochrane Risk of Bias tool / Risk Of Bias In Non-randomised Studies of Interventions — 비뚤림위험 평가도구'],
+  ['NOS','Newcastle-Ottawa Scale — 코호트·환자대조군 연구의 비뚤림위험 평가도구'],
+  ['AHRQ','Agency for Healthcare Research and Quality — 단면연구 평가도구 제공기관'],
+  ['MWG-LCPG','Multidisciplinary Working Group on Long COVID Practice Guidelines — 본 지침 개발 작업그룹 명칭'],
+  ['OR / MD / SMD','Odds Ratio / Mean Difference / Standardized Mean Difference — 효과크기 지표'],
+  ['CI','Confidence Interval (신뢰구간)'],
+  ['I²','메타분석 이질성 지표 (Higgins I-squared)'],
+];
+
+function buildAbbr() {
+  const items = abbrs.slice().sort((a,b)=>a[0].localeCompare(b[0]));
+  const html = items.map(a =>
+    `<div class="abbr-item" data-term="${a[0].toLowerCase()}" data-def="${a[1].toLowerCase()}">
+      <span class="abbr-term">${a[0]}</span>
+      <span class="abbr-def">${a[1]}</span>
+    </div>`).join('');
+  const mg = document.getElementById('abbr-main-grid');
+  if (mg) mg.innerHTML = html;
+  document.getElementById('abbr-grid-drop').innerHTML = html;
+  document.getElementById('abbr-count').textContent = abbrs.length;
+}
+
+function positionDropdown() {
+  const inp = document.getElementById('abbr-input');
+  const drop = document.getElementById('abbr-dropdown');
+  const rect = inp.getBoundingClientRect();
+  const dropW = 480;
+  let left = rect.right - dropW;
+  if (left < 8) left = 8;
+  drop.style.top = (rect.bottom + 4) + 'px';
+  drop.style.left = left + 'px';
+}
+
+function filterAbbr(val) {
+  const v = val.toLowerCase().trim();
+  const drop = document.getElementById('abbr-dropdown');
+  const items = document.querySelectorAll('#abbr-grid-drop .abbr-item');
+  if (!v) { drop.style.display='none'; document.getElementById('abbr-count').textContent=abbrs.length; return; }
+  positionDropdown();
+  drop.style.display = 'block';
+  let visible = 0;
+  items.forEach(el => {
+    const show = el.dataset.term.startsWith(v) || el.dataset.def.includes(v);
+    el.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('abbr-count').textContent = visible + '/' + abbrs.length;
+}
+
+document.addEventListener('click', e => {
+  const inp = document.getElementById('abbr-input');
+  const drop = document.getElementById('abbr-dropdown');
+  if (inp && !inp.contains(e.target) && drop && !drop.contains(e.target)) drop.style.display='none';
+});
+
+buildAbbr();
+</script>
+</body>
+</html>
