@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기능성 소화불량(Functional Dyspepsia) 진단·치료 가이드</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    /* 분류 4색 */
+    --eps:    #c47d00;   /* EPS(상복부 통증) — 황금 */
+    --pds:    #1a7f6e;   /* PDS(식후 불편감) — 청록 */
+    --drug:   #7c3aed;   /* 약물(신경조절제) — 보라 */
+    --severe: #9b1c2e;   /* 중증/난치 — 진홍 */
+    --accent: #0550ae;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 960px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-rk {
+    display: flex; align-items: center; gap: 0;
+    font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px;
+  }
+  .logo-rk span:nth-child(1) { background: var(--pds); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-rk span:nth-child(2) { background: var(--drug);  color:#fff; padding:3px 6px; }
+  .logo-rk span:nth-child(3) { background: var(--eps); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 19px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+  .source-link { color: var(--accent); font-size: calc(11px * var(--fscale, 1)); text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex; justify-content: center;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn {
+    display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    margin: 4px 4px 4px 6px; padding: 5px 10px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700;
+    cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s;
+  }
+  .font-zoom-btn:hover { background: var(--border); }
+  .font-zoom-btn .fz-icon { font-size: calc(12px * var(--fscale, 1)); }
+  .tab-bar-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab {
+    padding: 8px 13px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: color .15s, border-color .15s; user-select: none;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--pds); border-bottom-color: var(--pds); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  /* ── MAIN ── */
+  .main { padding: 12px 16px; max-width: 960px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── GRID ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  /* ── CARD ── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header {
+    background: var(--surface2); padding: 8px 12px;
+    font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; user-select: none;
+  }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  /* ── STAT ── */
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(20px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  /* ── ALERT ── */
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-eps     { background: #fff3cd; border-left: 3px solid var(--eps); color: #7d4e00; }
+  .alert-pds     { background: #e0f4f1; border-left: 3px solid var(--pds); color: #0f5549; }
+  .alert-drug    { background: #ede9fe; border-left: 3px solid var(--drug);  color: #5b21b6; }
+  .alert-severe  { background: #fce8eb; border-left: 3px solid var(--severe); color: var(--severe); }
+
+  /* ── TABLE ── */
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+  .tbl.small-text { font-size: calc(10px * var(--fscale, 1)); }
+
+  /* ── 등급 배지 ── */
+  .grade { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; margin: 1px; white-space: nowrap; }
+  .g-strong-high   { background: #dafbe1; color: #116329; }
+  .g-strong-mod    { background: #dafbe1; color: #116329; border:1px dashed #116329; }
+  .g-weak-low      { background: #fff3cd; color: #7d4e00; }
+  .g-weak-vlow     { background: #fce8eb; color: var(--severe); }
+  .g-strong-vlow   { background: #ddf4ff; color: #0550ae; }
+
+  /* ── ABBR ── */
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  /* ── ACCORDION ── */
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  /* ── 분류 타임라인 ── */
+  .stage-timeline { display: flex; align-items: stretch; gap: 0; margin: 10px 0; overflow-x: auto; }
+  .stage-box {
+    flex: 1; min-width: 130px; padding: 10px 10px 12px;
+    border-right: 2px solid var(--bg); text-align: center;
+    position: relative; cursor: pointer; transition: opacity .15s;
+  }
+  .stage-box:last-child { border-right: none; }
+  .stage-box:hover { opacity: .88; }
+  .stage-box .st-num { font-size: calc(14px * var(--fscale, 1)); font-weight: 800; margin-bottom: 4px; }
+  .stage-box .st-lbl { font-size: calc(10px * var(--fscale, 1)); line-height: 1.4; }
+  .st-eps { background: #fff8e1; }
+  .st-pds { background: #e0f4f1; }
+  .st-drug { background: #f3e8ff; }
+  .st-severe  { background: #fde8eb; }
+
+  /* ── GEAR ROW ── */
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-eps { background: #fff8e1; border: 1.5px solid var(--eps); color: #7d4e00; }
+  .gear-pds { background: #e0f4f1; border: 1.5px solid var(--pds); color: #0f5549; }
+  .gear-drug  { background: #f3e8ff; border: 1.5px solid var(--drug);  color: #5b21b6; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  /* ── 진행 막대(순위/효과크기 시각화) ── */
+  .pct-bar-row { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+  .pct-bar-label { width: 170px; font-size: calc(11px * var(--fscale, 1)); flex-shrink: 0; }
+  .pct-bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 16px; overflow: hidden; position: relative; }
+  .pct-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 4px; }
+  .pct-bar-val { font-size: calc(10px * var(--fscale, 1)); font-weight: 700; color: #fff; }
+
+  /* ── ALGORITHM FLOW ── */
+  .flow-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; text-align: center; font-size: calc(11px * var(--fscale, 1)); font-weight: 600; margin: 4px auto; max-width: 420px; }
+  .flow-arrow { text-align: center; color: var(--text2); font-size: calc(14px * var(--fscale, 1)); margin: 2px 0; }
+  .flow-result { background: #ede9fe; border: 1.5px solid var(--drug); color: #5b21b6; border-radius: 6px; padding: 8px 10px; text-align: center; font-size: calc(11px * var(--fscale, 1)); font-weight: 700; margin: 4px; }
+  .flow-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-rk">
+        <span>B</span><span>S</span><span>G</span>
+      </div>
+      <h1>기능성 소화불량(Functional Dyspepsia) 진단·치료 가이드</h1>
+    </div>
+    <div class="meta-line">
+      <a href="https://doi.org/10.1136/gutjnl-2022-327737" class="source-link" target="_blank">British Society of Gastroenterology Guideline · Gut 2022;71:1697–1723 ↗</a>
+      <span style="color:var(--text2)"> · Black CJ, Paine PA, Agrawal A, et al. · Published 7 Jul 2022</span><br>
+      <span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 BSG/Gut의 공식 승인을 받지 않은 개인 참고용 요약본입니다 (This tool is not officially endorsed)</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요·분류</div>
+    <div class="tab" onclick="showTab('primary')">🩺 진단·1차진료</div>
+    <div class="tab" onclick="showTab('tx1')">💊 1차 약물치료</div>
+    <div class="tab" onclick="showTab('tx2')">🧠 2차·신경조절제</div>
+    <div class="tab" onclick="showTab('severe')">⚠️ 심리치료·중증관리</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:130px;outline:none;"
+          onfocus="this.style.borderColor='var(--pds)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:460px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요·분류 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--pds)">7%</div><div class="stat-lbl">Rome IV 기준 지역사회 유병률<br>(범위: 일본 2.4%~이집트 12.3%)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--eps)">80%</div><div class="stat-lbl">소화불량 환자 중 내시경상<br>FD로 진단되는 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--drug)">2형</div><div class="stat-lbl">Rome IV 아형<br>(EPS·PDS, 중복 최대 1/3)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--severe)">US$18.4B</div><div class="stat-lbl">2009년 미국 FD<br>경제적 부담 추산</div></div>
+  </div>
+
+  <!-- 정의 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 기능성 소화불량(FD) 정의 및 개념</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-pds">
+        <span>🧠</span>
+        <div><strong>기능성 소화불량(FD)</strong> = 상복부 통증·작열감, 식후 포만감, 조기포만감 중 하나 이상이 8주 이상 지속되며, 내시경 등 검사에서 이를 설명할 구조적 이상이 없는 <strong>장-뇌 상호작용 장애(DGBI)</strong>.<br>
+        지역사회 소화불량(dyspepsia) 환자의 <strong>약 80%</strong>가 내시경 후 FD로 진단됨 — 1차진료·2차진료 모두에서 '소화불량'은 사실상 FD와 동의어로 사용 가능.<br>
+        <strong>구토는 비전형적</strong> 증상이며 존재 시 다른 질환을 의심해야 함. 가슴쓰림(heartburn)은 소화불량 증상이 아니나 공존 가능.</div>
+      </div>
+
+      <div class="gear-row" style="margin-top:10px">
+        <div class="gear-box gear-eps">
+          <div class="gear-title">🟡 EPS (상복부 통증 증후군)</div>
+          상복부 통증 또는 작열감, 주 1회 이상<br>
+          <small>식사와 무관하게 발생 가능, 대변배출로 완화되지 않음</small>
+        </div>
+        <div class="gear-box gear-pds">
+          <div class="gear-title">🟢 PDS (식후 불편감 증후군)</div>
+          식후 포만감 또는 조기포만감, 주 3회 이상<br>
+          <small>식사에 의해 주로 유발, 만복 후 트림·오심 동반 가능</small>
+        </div>
+        <div class="gear-box gear-drug">
+          <div class="gear-title">🟣 중복(overlap)</div>
+          EPS+PDS 동시 충족<br>
+          <small>3차진료 기준 최대 1/3, 개별 증상 구분이 병인 예측력은 제한적</small>
+        </div>
+      </div>
+
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div>증상만으로는 FD와 기질적 질환을 <strong>구별할 수 없음(권고 수준: strong, 근거수준: low)</strong>. Rome IV는 증상발생 6개월 전 시작 + 최근 3개월 활동성을 요구하나, 실제 임상에서는 <strong>Rome IV '임상 기준'(8주 지속만 요구)</strong> 사용을 권장.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rome IV 진단기준 표 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> Rome IV 진단기준 — EPS vs PDS</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>구분</th><th>EPS (상복부 통증 증후군)</th><th>PDS (식후 불편감 증후군)</th></tr>
+        <tr>
+          <td><strong>필수 증상</strong><br>(1개 이상, 빈도)</td>
+          <td>상복부 통증 또는 작열감<br><strong>주 1회 이상</strong>, 일상활동에 지장을 줄 정도</td>
+          <td>식후 포만감 또는 조기포만감<br><strong>주 3회 이상</strong>, 일상활동에 지장을 줄 정도(조기포만감은 일반식사를 끝내지 못할 정도)</td>
+        </tr>
+        <tr>
+          <td><strong>보조 소견</strong></td>
+          <td>통증은 식사로 유발/완화되거나 공복 시 발생 가능<br>담도통 기준 불충족<br>대변·가스 배출로 완화되면 FD 아님</td>
+          <td>식후 상복부 통증·작열감, 상복부 팽만, 트림, 오심 동반 가능<br>구토는 다른 질환 의심<br>대변·가스 배출로 완화되면 FD 아님</td>
+        </tr>
+        <tr>
+          <td><strong>공통 요건</strong></td>
+          <td colspan="2">증상 시작 <strong>6개월 이상 전</strong> + 최근 <strong>3개월 이내 활동성</strong> + 상부 내시경 등에서 구조적 질환 미발견<br>(실제 임상에서는 <strong>8주 지속</strong>만 요구하는 Rome IV 임상 기준 사용 권장)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 병인 개요 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 병태생리 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2" style="gap:8px">
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>🍽️ 운동기능 이상</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">위 배출 지연·기저부 조절(accommodation) 장애 — EPS/PDS 어느 한쪽에 특이적이지 않음. 일부에서는 오히려 위 배출이 빠름. 기저부 조절 장애는 조기포만감·식후포만감·체중감소와 연관.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>⚡ 내장 과민성</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">기계적(풍선확장)·화학적(산·지질·캡사이신) 자극에 대한 과민성. 식후 기계적 과민성 증가는 통증·팽만·트림과 연관. 증상 중증도와 과민성 정도는 비례.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>🧠 중추신경계·심리</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">뇌영상에서 통증조절·정서 관련 영역 이상. 불안·우울과 신규 FD 발생의 연관성. 스트레스가 HPA축·CRH를 통해 장 투과성·면역·미생물총에 영향.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>🦠 면역·미생물총</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">십이지장 저등급 염증(호산구·비만세포 증가)이 주요 기전으로 제기됨 — 특히 PDS와 관련성 강함. 위·십이지장 미생물총 이상(dysbiosis) 보고 증가.</div>
+        </div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px">
+        <span>⚠️</span><div>FD와 위마비(gastroparesis)는 증상·위 배출검사·병리소견 모두에서 <strong>구별이 어려운 동일 스펙트럼</strong>일 가능성. 1년 추적 시 40%가 서로 다른 군으로 이동 — "위 배출 지연 동반/미동반 FD" 표현이 더 적절할 수 있음.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 위험요인/자연경과 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📈</span> 역학·위험요인·자연경과</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>위험요인: 젊은 연령, 여성, 신체화 경향 높음, 타 DGBI(특히 IBS) 동반, 불안·우울 병력, 급성 장염 후(post-infection FD, 위장관염 후 6개월 이상 시점 발생위험 약 3배)</li>
+        <li>사회경제적 지위와의 연관성은 근거 상충. 흡연은 PDS와 연관(EPS는 아님)</li>
+        <li>사망률에는 영향 없음. 그러나 삶의 질에 상당한 영향, 의사 상담률 약 40%, 결근·태만 흔함</li>
+        <li>증상은 약 2/3에서 만성적으로 지속·변동. 연간 발생률 3~5%. 다른 DGBI로 이행하는 경우도 흔함</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 진단·1차진료 ══════════════════ -->
+<div id="tab-primary" class="panel">
+
+  <!-- 경고증상 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚩</span> 상부위장관 경고증상(Alarm) — NICE 기준</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2" style="gap:10px">
+        <div style="background:#fce8eb;border:1.5px solid var(--severe);border-radius:8px;padding:12px">
+          <div style="font-weight:700;font-size: calc(13px * var(--fscale, 1));color:var(--severe);margin-bottom:8px">🔴 확실한 긴급 내시경(2주 이내) 기준</div>
+          <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+            <li>모든 연령 — <strong>연하곤란(dysphagia)</strong></li>
+            <li>≥55세 + 체중감소 + 다음 중 하나: 소화불량, 상복부 통증, 역류</li>
+          </ul>
+        </div>
+        <div style="background:#fff3cd;border:1.5px solid var(--eps);border-radius:8px;padding:12px">
+          <div style="font-weight:700;font-size: calc(13px * var(--fscale, 1));color:#7d4e00;margin-bottom:8px">🟡 비긴급(non-urgent) 내시경 고려 기준</div>
+          <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+            <li>모든 연령 — 토혈(haematemesis)</li>
+            <li>≥55세: 치료저항성 소화불량 / 혈소판증가·오심·구토 동반 소화불량 또는 상복부통증 / 혈소판증가·오심구토 동반 역류</li>
+            <li>오심·구토 + (체중감소, 역류, 소화불량, 상복부통증 중 하나)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div>경고증상의 위암 양성예측도는 <strong>≥3%</strong> 기준으로 선정된 것으로, 단독 예측력은 제한적(모두 근거수준 very low). ≥60세 + 복통·체중감소 시 <strong>췌장암 배제 위한 긴급 CT</strong> 고려. 담도통 특징(1년 미만 지속) 아니면 복부초음파 남용 금지.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 진단 알고리즘 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> 1차진료 진단·평가 흐름</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="flow-box">소화불량 증상 호소 환자</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">병력청취 + 경고증상/징후 평가 + 신체검진</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-row">
+        <div class="flow-box" style="max-width:220px">기본검사: ≥55세 전혈구검사<br>IBS 중복 시 셀리악 혈청검사</div>
+        <div class="flow-box" style="max-width:220px">H. pylori 대변항원/요소호흡검사<br>('test and treat')</div>
+      </div>
+      <div class="flow-arrow">↓ 경고증상 없음 &amp; 추가검사 불필요 시</div>
+      <div class="flow-result">FD 확진 진단 → 병태생리·자연경과 설명(DGBI로서 소개) → 치료방침 논의</div>
+      <div class="alert alert-warn" style="margin-top:8px">
+        <span>⚠️</span>
+        <div><strong>H. pylori 혈청검사는 특이도가 낮아 권장되지 않음.</strong> 'test and treat' 후 재검사(제균 확인)는 위암 고위험군에서만 시행(강한권고, 근거수준 낮음). 셀리악 선별은 FD 단독에서는 불필요하나 IBS 중복 시 권장.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 관리전략 비교 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚖️</span> 1차진료 관리전략 비교 (네트워크 메타분석, 15 RCT·6162명)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="pct-bar-row"><div class="pct-bar-label">Test and treat (H.pylori)</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:92%;background:var(--pds)"><span class="pct-bar-val">1위 · RR 0.89</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">즉시 내시경(Prompt endoscopy)</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:88%;background:var(--drug)"><span class="pct-bar-val">2위 · RR 0.90</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">경험적 산분비억제</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:65%;background:var(--eps)"><span class="pct-bar-val">RR 미기재</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">증상기반 치료</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:55%;background:#9aa4b2"><span class="pct-bar-val">-</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">Test and scope</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:50%;background:#9aa4b2"><span class="pct-bar-val">-</span></div></div></div>
+      <small style="display:block;margin-top:8px;line-height:1.6">막대는 '12개월 시점 증상 지속 위험비(RR)'를 1-RR 기준 상대적으로 시각화한 것(수치가 낮을수록=막대가 길수록 우수). <strong>전략 간 통계적 유의차는 없었음.</strong> Test and treat군은 내시경 필요성이 유의하게 낮았으나(RR 0.23), 즉시 내시경군이 불만족도는 더 낮았음. 대부분의 근거 RCT가 15년 이상 전 자료로 H.pylori 유병률 변화 고려 필요.</small>
+      <div class="alert alert-success" style="margin-top:8px">
+        <span>✅</span><div><strong>권장 1차 전략: H. pylori 'test and treat'.</strong> 음성이거나 제균 후에도 증상 지속 시 최저용량 경험적 산분비억제요법으로 진행(강한권고, 근거수준 높음).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2차진료 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏥</span> 2차진료 의뢰 및 추가검사</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>2차진료 의뢰 적응증: 진단 불확실, 중증/치료저항성 증상, 환자가 전문의 소견 원할 때(약한권고, 근거수준 낮음)</li>
+        <li><strong>위 배출검사(scintigraphy 등) 또는 24시간 pH 모니터링은 전형적 FD 증상에서 일상적으로 시행하지 않음</strong>(강한권고, 근거수준 매우낮음) — 결과가 치료반응을 일관되게 예측하지 못함</li>
+        <li>이상적으로는 위장관전문의·영양사·생활습관 지원·심리치료 접근이 가능한 전문클리닉에서 관리(강한권고, 근거수준 매우낮음)</li>
+        <li>GORD와 EPS는 증상이 겹치며(가슴으로 방사되는 작열감 여부로 일부 감별), 최대 1/3에서 GORD 증상 동반 — 임상에서는 FD보다 GORD로 과진단되는 경향</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /primary -->
+
+
+<!-- ══════════════════ TAB 3: 1차 약물치료 ══════════════════ -->
+<div id="tab-tx1" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗺️</span> 치료 알고리즘 개요</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="flow-box">H. pylori 검사 + 제균(양성 시) + 생활습관 안내(유산소운동)</div>
+      <div class="flow-arrow">↓ 실패</div>
+      <div class="flow-row">
+        <div class="flow-box">1차: 산분비억제(PPI/H2RA)</div>
+        <div class="flow-box">1차: 프로키네틱</div>
+      </div>
+      <div class="flow-arrow">↓ 실패</div>
+      <div class="flow-box">2차: 위장관-뇌 신경조절제(TCA 우선)</div>
+      <div class="flow-arrow">↓ 실패</div>
+      <div class="flow-result">심리치료(CBT·최면치료 등) 또는 전문의뢰(항정신병약, 프레가발린, 5-HT1A작용제, 미르타자핀)</div>
+      <div class="alert alert-info" style="margin-top:8px"><span>📌</span><div>FD는 <strong>완치보다 증상·삶의 질 개선이 목표</strong>. EPS·PDS 어느 아형에 특정 약물을 우선할지에 대한 근거는 불충분.</div></div>
+    </div>
+  </div>
+
+  <!-- 생활습관/식이 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏃</span> 운동·식이 관리</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-success"><span>✅</span><div>모든 FD 환자에게 <strong>규칙적 유산소운동 권장</strong>(강한권고, 근거수준 매우낮음) — 소규모 RCT에서 통상치료 대비 유의한 증상 개선.</div></div>
+      <div class="alert alert-warn" style="margin-top:6px"><span>⚠️</span><div>저FODMAP 등 <strong>특정 식이요법을 권장할 근거는 불충분</strong>(약한권고, 근거수준 매우낮음). 인도 RCT에서 저FODMAP과 전통적 식이조언 간 유의차 없음(4주 67% vs 57%, 12주 46% vs 41%).</div></div>
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9;margin-top:6px">
+        <li>흔한 유발음식: 지방식, 유제품, 알코올, 커피, 붉은고기, 탄산음료, 채소, 매운음식, 탄수화물, 밀, 감귤류</li>
+        <li>FD 환자 최대 50%에서 <strong>ARFID(회피적 제한적 음식섭취장애)</strong> 동반 가능 — 과도한 식이제한 지도 전 SCOFF 등으로 선별 필요</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- H.pylori 제균 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🦠</span> H. pylori 제균요법</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <span class="grade g-strong-high">강한권고 · 근거수준 높음</span>
+      <p style="margin-top:6px;font-size: calc(12px * var(--fscale, 1));line-height:1.7">H. pylori 양성 FD 환자에서 효과적인 치료. 업데이트 메타분석(29 RCT, 6781명): 증상 미개선·미치유 RR 0.87(95%CI 0.83–0.92). 성공적 제균 시 효과 더 큼(RR 0.74). <strong>이상반응은 대조군보다 유의하게 많음</strong>(항생제 관련). 12개월 시점 치유 기준으로도 유의(RR 0.91).</p>
+      <div class="alert alert-info" style="margin-top:6px"><span>📌</span><div>효과는 EPS(상복부 통증·작열감)에서 더 뚜렷할 가능성. 1~2주만 복용하면 되어 <strong>비용효과적</strong>일 가능성 높음.</div></div>
+    </div>
+  </div>
+
+  <!-- 산분비억제 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 산분비억제요법 (PPI · H2RA)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2" style="gap:8px">
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>PPI <span class="grade g-strong-high" style="margin-left:4px">강한 · 높음</span></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            16 RCT(6017명): 표준용량(RR 0.86) 및 저용량(RR 0.89) 모두 위약 대비 유의한 개선. <strong>고용량은 유의한 이득 없음</strong>. 용량 간 유의차 없음(p=0.90) → <strong>증상 조절되는 최저용량 사용</strong>. 치유 기준(10 RCT, 4667명)에서도 전 용량에서 유의.<br>
+            십이지장 호산구증·투과성 개선 보고(pantoprazole). 이상반응 위약과 차이 없음.
+          </div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>H2RA <span class="grade g-weak-low" style="margin-left:4px">약한 · 낮음</span></span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">
+            12 RCT(2268명): 증상개선 RR 0.79. 치유 기준(8 RCT, 1668명) RR 0.83. 이질성 높음(I²=77~87%), 다수 노후 RCT로 현재 FD 정의와 부합 안 하는 환자 포함 가능. 이상반응·중단율은 위약과 차이 없음.
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>📌</span><div>십이지장 호산구증은 PDS와 연관성이 강해 PPI 선호 근거가 될 수 있으나, EPS·PDS 중복이 흔해 <strong>대부분 환자에서 PPI/H2RA 사용이 합리적</strong>.</div></div>
+    </div>
+  </div>
+
+  <!-- 프로키네틱 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔄</span> 프로키네틱(위장관운동촉진제)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>약물</th><th>기전</th><th>권고</th><th>비고</th></tr>
+        <tr><td>테가세로드(tegaserod)</td><td>5-HT4 작용제</td><td><span class="grade g-strong-mod">강한·중등도</span></td><td>영국 등에서 미승인, 미국 외 제한적 이용가능성</td></tr>
+        <tr><td>아코티아미드(acotiamide)</td><td>아세틸콜린에스테라제 억제</td><td><span class="grade g-weak-low">약한·낮음</span></td><td>대부분 PDS 대상 시험, 아시아 위주 사용가능</td></tr>
+        <tr><td>이토프리드(itopride)</td><td>도파민 길항제</td><td><span class="grade g-weak-low">약한·낮음</span></td><td>PDS 증상(포만감·조기포만감·팽만) 개선 보고</td></tr>
+        <tr><td>모사프리드(mosapride)</td><td>5-HT4 작용제</td><td><span class="grade g-weak-low">약한·낮음</span></td><td>네트워크분석에서는 유의한 이득 없음</td></tr>
+        <tr><td>돔페리돈·메토클로프라미드</td><td>도파민 길항제</td><td>—</td><td>위약대조 RCT 부족, 심장부정맥/추체외로 부작용 우려로 근거 불충분</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>계열 전체 메타분석(7539명)에서는 증상개선 RR 0.89이나 <strong>이질성이 매우 높아</strong> 서로 다른 기전의 약물을 묶어 해석하는 데 주의 필요. 다수 약물이 영국 등 서구권에서는 이용 불가.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tx1 -->
+
+
+<!-- ══════════════════ TAB 4: 2차·신경조절제 ══════════════════ -->
+<div id="tab-tx2" class="panel">
+
+  <!-- 네트워크메타분석 종합순위 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏆</span> 전체 약물 비교 네트워크 메타분석 (72 RCT · 19,315명)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="pct-bar-row"><div class="pct-bar-label">항정신병약(설피리드 등)</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:95%;background:var(--severe)"><span class="pct-bar-val">1위 · RR 0.49</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">프레가발린</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:88%;background:var(--drug)"><span class="pct-bar-val">2위 · RR 0.53</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">삼환계항우울제(TCA)</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:75%;background:var(--pds)"><span class="pct-bar-val">3위 · RR 0.71</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">H2RA</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:60%;background:#9aa4b2"><span class="pct-bar-val">RR 0.81</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">표준용량 PPI</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:58%;background:#9aa4b2"><span class="pct-bar-val">RR 0.84</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">저용량 PPI</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:56%;background:#9aa4b2"><span class="pct-bar-val">RR 0.86</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">이토프리드</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:52%;background:#9aa4b2"><span class="pct-bar-val">RR 0.87</span></div></div></div>
+      <div class="pct-bar-row"><div class="pct-bar-label">아코티아미드</div><div class="pct-bar-track"><div class="pct-bar-fill" style="width:48%;background:#9aa4b2"><span class="pct-bar-val">RR 0.89</span></div></div></div>
+      <small style="display:block;margin-top:8px;line-height:1.6">막대는 P-score 기반 상대순위를 시각화(값이 낮을수록 위약 대비 우수). <strong>SNRI, SSRI, 5-HT1A작용제, 고용량PPI, 돔페리돈, 테가세로드, 모사프리드는 위약 대비 유의한 이득 없음.</strong> 항정신병약·프레가발린은 소규모·질낮은 근거로 순위는 높으나 신뢰도는 낮음. <strong>TCA가 가장 근거의 질이 견고</strong>(위험도 낮은 연구만 포함 시 2위로 상승) — 1차진료에서 산분비억제제와의 직접비교 대규모 연구 필요.</small>
+    </div>
+  </div>
+
+  <!-- TCA -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💜</span> 삼환계항우울제(TCA) — 1차 선택 신경조절제</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <span class="grade g-strong-mod">강한권고 · 근거수준 중등도</span>
+      <p style="margin-top:6px;font-size: calc(12px * var(--fscale, 1));line-height:1.7">4 RCT(위험도 낮음) RR 0.75(95%CI 0.62–0.90). 1차 또는 2차진료 어디서든 시작 가능. <strong>아미트립틸린 10mg 취침 전</strong>으로 시작, <strong>주 10mg씩 증량하여 최대 30~50mg/day</strong>까지. 증상 이득 시 <strong>최소 6~12개월 지속</strong>. 어지럼·졸림은 대조군보다 유의하게 흔하나(치료중단률은 유의차 없음) 대개 1~2주 내 완화.</p>
+      <div class="alert alert-info" style="margin-top:6px"><span>📌</span><div>환자에게 "우울증 치료가 아니라 <strong>통증조절·위장관 운동/감각 작용 목적</strong>의 저용량 사용"임을 명확히 설명 — 낙인(stigma) 문제에 대한 개방적 논의 필요. EPS에서 더 유리할 수 있으나 위 조절기능도 개선시켜 PDS에도 도움 가능.</div></div>
+    </div>
+  </div>
+
+  <!-- 기타 신경조절제 표 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 기타 위장관-뇌 신경조절제 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl small-text">
+        <tr><th>약물군</th><th>용량 예시</th><th>권고/근거</th><th>비고</th></tr>
+        <tr><td><strong>항정신병약</strong><br>설피리드·레보설피리드</td><td>설피리드 100mg 1일4회<br>레보설피리드 25mg 1일3회</td><td><span class="grade g-weak-low">약한·낮음</span></td><td>3 RCT, 86명뿐 — bias 위험 불명확. 레보설피리드 영국 등 미유통</td></tr>
+        <tr><td><strong>SSRI</strong><br>설트랄린·에스시탈로프람</td><td>설트랄린 50mg, 에스시탈로프람 10mg</td><td>효과 근거 없음<br><span class="grade g-weak-low">약한·중등도</span></td><td>전신증상 개선 근거 없음</td></tr>
+        <tr><td><strong>SNRI</strong><br>벤라팍신</td><td>150mg→75mg</td><td>효과 근거 없음<br><span class="grade g-weak-low">약한·낮음</span></td><td>타 만성통증질환에서 효과적 — 추가 RCT 필요</td></tr>
+        <tr><td><strong>5-HT1A작용제</strong><br>탄도스피론</td><td>10mg 1일3회</td><td><span class="grade g-weak-low">약한·낮음</span></td><td>일본 RCT(150명) 유의. 부스피론(10mg 1일3회)은 근거 없음(위 조절기능 개선은 보고)</td></tr>
+        <tr><td><strong>프레가발린</strong></td><td>75mg 1일1회</td><td><span class="grade g-weak-low">약한·낮음</span></td><td>관리약물, <strong>전문(2차/3차)진료에서만 사용 권장</strong>. 어지럼 50% 이상에서 보고</td></tr>
+        <tr><td><strong>미르타자핀</strong></td><td>15mg 1일1회</td><td><span class="grade g-weak-vlow">약한·매우낮음</span></td><td>조기포만감·체중감소 동반 환자에 유용 가능(전신증상 개선은 근거 부족)</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>SSRI와 SNRI를 병용할 경우 <strong>세로토닌 증후군 위험</strong> 유의 — 저용량 TCA 병용 조합이 상대적으로 위험도 낮음.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tx2 -->
+
+
+<!-- ══════════════════ TAB 5: 심리치료·중증관리 ══════════════════ -->
+<div id="tab-severe" class="panel">
+
+  <!-- 심리행동치료 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧘</span> 위장관-뇌 행동치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2" style="gap:8px">
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>정신역동적 대인관계치료</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">약물치료 실패 95명 RCT — 12주 시점 대조군(지지치료) 대비 유의한 증상개선. 1년 후 효과는 심한 가슴쓰림 환자 제외 시에만 유의. <span class="grade g-weak-vlow">약한·매우낮음</span></div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>인지행동치료(CBT)·메타인지치료</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">158명 RCT: 약물+심리치료군이 약물단독보다 6개월 시점 증상·통증·전신건강·심리상태 유의 개선(단, 대조군 미완료율 높음, 45%). 메타인지치료는 노르트립틸린 대비 불안·우울 개선 우수. <span class="grade g-weak-vlow">약한·매우낮음</span></div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>스트레스 관리</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">소규모(28명) RCT에서 불안·우울·전신증상 개선. 단기간(7세션)으로 시행 가능하나 추적기간이 3주로 짧아 장기효과 불명. <span class="grade g-weak-vlow">약한·매우낮음</span></div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>최면치료(Hypnotherapy)</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">4개월 12세션 RCT: 지지치료·H2RA군 대비 단기·장기 모두 증상·불안·우울 개선 우수. 의료이용도 대폭 감소(최면군 0% vs 대조군 82~90%가 새 약물 시작). 가용성·비용·시행시간이 제한요인. <span class="grade g-weak-vlow">약한·매우낮음</span></div>
+        </div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>📌</span><div>모든 심리행동치료가 소규모·이질적 RCT로 <strong>특정 치료법을 우선할 근거는 없음</strong> — 지역 가용성·환자 선호에 따라 선택. 15~70%의 FD 환자에서 정신과적 동반이환 보고, 심리치료는 심리증상 유무와 무관하게 제안 가능.</div></div>
+    </div>
+  </div>
+
+  <!-- 중증/난치 FD -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚠️</span> 중증·치료저항성(refractory) FD 관리</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-val" style="color:var(--severe)">20~40%</div><div class="stat-lbl">1차 치료 무반응 환자 비율</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--severe)">25%</div><div class="stat-lbl">지속적/중증 증상 환자 비율</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--severe)">13%</div><div class="stat-lbl">치유 위해 감수하겠다는<br>평균 급사 위험 허용치</div></div>
+      </div>
+      <div class="alert alert-danger"><span>🚫</span><div><strong>오피오이드·불필요한 수술은 피해야 함</strong>(강한권고, 근거수준 매우낮음) — 오피오이드는 증상 악화·변비·우울·삶의 질 저하와 연관, 담낭절제술 후 증상 악화 사례 보고.</div></div>
+      <div class="alert alert-success" style="margin-top:6px"><span>✅</span><div>중증·난치 FD는 <strong>다학제팀(위장관전문의+영양사+임상심리사)</strong> 관리 권장(강한권고, 근거수준 낮음) — MANTRA 연구에서 단독진료 대비 우수한 결과.</div></div>
+      <div class="alert alert-warn" style="margin-top:6px"><span>⚠️</span><div>체중감소·식이제한 동반 시 <strong>섭식장애(ARFID 포함) 반드시 평가</strong>, <strong>조기 영양사 개입</strong>으로 과도한 제한식이 방지(모두 강한권고, 근거수준 매우낮음).</div></div>
+    </div>
+  </div>
+
+  <!-- 난치 FD 추가치료 옵션 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧪</span> 난치성 FD의 소규모 근거 기반 추가 옵션</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li><strong>가바펜틴</strong> — PPI 병용 시 치료저항성 126명에서 복통·소화불량 개선</li>
+        <li><strong>카라웨이오일+l-멘톨</strong>(십이지장 방출형) — 중증증상 95명 중 75%에서 24시간 내 상복부통·조기포만감 개선</li>
+        <li><strong>클리디늄+클로르디아제폭사이드</strong> — 78명 RCT에서 유의 개선(가용성 제한적)</li>
+        <li><strong>플루펜틱솔+멜리트라센</strong> — 25명 crossover RCT에서 잠재적 효과</li>
+        <li><strong>집중치료(위배출·감각기능 표적검사) + 심리행동치료 병합</strong> — 표준치료 대비 우수한 장기 결과 및 불안·우울 개선</li>
+        <li><strong>전침(electroacupuncture) + 필요시 gastrocaine</strong> — 132명 RCT에서 유의한 증상완화</li>
+        <li>개방표지 연구: 부스피론(조기포만감·위배출시간), 아미트립틸린(식후포만감), 아코티아미드+PPI 병용</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 개발중 약물 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 개발 중인 치료제 및 향후 연구방향</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2" style="gap:8px">
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>항생제·프로바이오틱스</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">리팍시민(홍콩 RCT)이 전신증상·식후포만감 개선. Bacillus coagulans/subtilis 병용이 위약보다 우수(68명) — Th17 감소·Faecalibacterium 증가와 연관. 한방제제 리쿤시토(rikkunshito)는 결과 상충.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>호산구/비만세포 표적 치료</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">H1RA+H2RA 동시사용(로라타딘+라니티딘) 소규모 개방연구에서 71% 반응. SIGLEC-8 표적 단클론항체 리렌텔리맙 — 호산구성 위장관질환 RCT에서 64% 증상개선(위약 15%), FD 적응증 연구 가능성 제기.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>위마비 치료제 전용가능성</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">그렐린작용제(relamorelin), 5-HT4작용제(prucalopride, velusetrag), NK1수용체 길항제(aprepitant, tradipitant) — 위마비에서 효과, FD와의 스펙트럼 중복성 고려 시 FD 대상 RCT 필요.</div>
+        </div>
+        <div class="acc">
+          <div class="acc-hdr" onclick="toggleAcc(this)"><span>칼륨경쟁적산차단제(P-CAB)</span><span class="acc-toggle">▾</span></div>
+          <div class="acc-body">GORD에서 이미 검증됨, FD 적용 연구 향후 기대. 단, FD 병태생리가 산과다분비와 무관하여 PPI와 유사하게 이득은 제한적일 가능성. 아시아 외 지역 미출시.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 약어 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+</div><!-- /severe -->
+
+</div><!-- /main -->
+
+<!-- ════ 약어 데이터 ════ -->
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const ABBR_DATA = [
+  { term:"ARFID", def:"Avoidant/Restrictive Food Intake Disorder — 회피적 제한적 음식섭취장애" },
+  { term:"BSG",   def:"British Society of Gastroenterology — 영국소화기학회" },
+  { term:"CBT",   def:"Cognitive Behavioural Therapy — 인지행동치료" },
+  { term:"DGBI",  def:"Disorder of Gut-Brain Interaction — 장-뇌 상호작용 장애" },
+  { term:"EPS",   def:"Epigastric Pain Syndrome — 상복부 통증 증후군" },
+  { term:"FD",    def:"Functional Dyspepsia — 기능성 소화불량" },
+  { term:"GORD",  def:"Gastro-Oesophageal Reflux Disease — 위식도역류질환" },
+  { term:"GP",    def:"General Practitioner — 1차진료의(전문의)" },
+  { term:"GRADE", def:"Grading of Recommendations Assessment, Development and Evaluation — 권고등급 평가체계" },
+  { term:"H2RA",  def:"Histamine-2-Receptor Antagonist — 히스타민2수용체 길항제" },
+  { term:"IBS",   def:"Irritable Bowel Syndrome — 과민성장증후군" },
+  { term:"NICE",  def:"National Institute for Health and Care Excellence — 영국 국립보건임상연구원" },
+  { term:"PDS",   def:"Postprandial Distress Syndrome — 식후 불편감 증후군" },
+  { term:"PPI",   def:"Proton Pump Inhibitor — 양성자펌프억제제" },
+  { term:"RCT",   def:"Randomised Controlled Trial — 무작위대조시험" },
+  { term:"RR",    def:"Relative Risk — 상대위험도" },
+  { term:"SNRI",  def:"Serotonin-Norepinephrine Reuptake Inhibitor — 세로토닌노르에피네프린 재흡수억제제" },
+  { term:"SSRI",  def:"Selective Serotonin Reuptake Inhibitor — 선택적세로토닌재흡수억제제" },
+  { term:"TCA",   def:"Tricyclic Antidepressant — 삼환계항우울제" },
+  { term:"TRPV1", def:"Transient Receptor Potential Vanilloid 1 — 통증·캡사이신 감작 관련 수용체" },
+];
+
+// 약어 초기 렌더
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+// 탭 전환
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+
+// 카드 토글
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+
+// 아코디언 토글
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+
+// 약어 검색
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 460) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+
+// 초기 카드 상태
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>
