@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EASL 간세포암종(HCC) 진료권고안 2024</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    /* 카테고리 7색 */
+    --prev:   #1a7f6e;   /* 예방·선별검사 — 청록 */
+    --diag:   #0550ae;   /* 진단 — 청색 */
+    --stage:  #7c3aed;   /* 병기설정·다학제 — 보라 */
+    --surg:   #9b1c2e;   /* 수술(절제·이식) — 진홍 */
+    --loco:   #c47d00;   /* 국소치료 — 황금 */
+    --sys:    #c2185b;   /* 전신치료 — 마젠타 */
+    --resp:   #57606a;   /* 반응평가 — 슬레이트 */
+    --accent: #0550ae;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-rk {
+    display: flex; align-items: center; gap: 0;
+    font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px;
+  }
+  .logo-rk span:nth-child(1) { background: var(--surg); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-rk span:nth-child(2) { background: var(--sys);  color:#fff; padding:3px 6px; }
+  .logo-rk span:nth-child(3) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 18px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+  .source-link { color: var(--accent); font-size: calc(11px * var(--fscale, 1)); text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  .tab-bar {
+    display: flex; justify-content: center;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn {
+    display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    margin: 4px 4px 4px 6px; padding: 5px 10px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700;
+    cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s;
+  }
+  .font-zoom-btn:hover { background: var(--border); }
+  .font-zoom-btn .fz-icon { font-size: calc(12px * var(--fscale, 1)); }
+  .tab-bar-inner { width: 100%; max-width: 1000px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab {
+    padding: 8px 11px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: color .15s, border-color .15s; user-select: none;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--surg); border-bottom-color: var(--surg); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 1000px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header {
+    background: var(--surface2); padding: 8px 12px;
+    font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; user-select: none;
+  }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(19px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-prev  { background: #e0f4f1; border-left: 3px solid var(--prev); color: #0f5549; }
+  .alert-diag  { background: #ddf4ff; border-left: 3px solid var(--diag); color: #0550ae; }
+  .alert-stage { background: #ede9fe; border-left: 3px solid var(--stage); color: #5b21b6; }
+  .alert-surg  { background: #fce8eb; border-left: 3px solid var(--surg); color: var(--surg); }
+  .alert-loco  { background: #fff3cd; border-left: 3px solid var(--loco); color: #7d4e00; }
+  .alert-sys   { background: #fce4ec; border-left: 3px solid var(--sys);  color: #a11256; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+  .tbl.small-text { font-size: calc(10px * var(--fscale, 1)); }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; gap: 8px; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-hdr .acc-left { display:flex; align-items:center; gap:8px; flex-wrap: wrap; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; flex-shrink:0; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  .stage-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-prev  { background: #e0f4f1; color: var(--prev); border: 1px solid var(--prev); }
+  .t-diag  { background: #ddf4ff; color: var(--diag); border: 1px solid var(--diag); }
+  .t-stage { background: #ede9fe; color: var(--stage); border: 1px solid var(--stage); }
+  .t-surg  { background: #fce8eb; color: var(--surg);  border: 1px solid var(--surg); }
+  .t-loco  { background: #fff3cd; color: var(--loco); border: 1px solid var(--loco); }
+  .t-sys   { background: #fce4ec; color: var(--sys); border: 1px solid var(--sys); }
+  .t-resp  { background: #eef1f4; color: var(--resp); border: 1px solid var(--resp); }
+  .b-strong { background:#dafbe1; color:#116329; border:1px solid var(--green); }
+  .b-weak   { background:#fff8c5; color:#7d4e00; border:1px solid var(--yellow); }
+  .b-loe1 { background:#dafbe1; color:#116329; border:1px solid var(--green); }
+  .b-loe2 { background:#ddf4ff; color:#0550ae; border:1px solid var(--accent); }
+  .b-loe3 { background:#fff3cd; color:#7d4e00; border:1px solid var(--loco); }
+  .b-loe4 { background:#ffe8cc; color:#9a4c00; border:1px solid #c47d00; }
+  .b-loe5 { background:#ffebe9; color:#82071e; border:1px solid var(--red); }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-prev  { background: #e0f4f1; border: 1.5px solid var(--prev); color: #0f5549; }
+  .gear-diag  { background: #e7f1fc; border: 1.5px solid var(--diag); color: #0550ae; }
+  .gear-stage { background: #f3e8ff; border: 1.5px solid var(--stage); color: #5b21b6; }
+  .gear-surg  { background: #fde8eb; border: 1.5px solid var(--surg);  color: var(--surg); }
+  .gear-loco  { background: #fff8e1; border: 1.5px solid var(--loco); color: #7d4e00; }
+  .gear-sys   { background: #fce4ec; border: 1.5px solid var(--sys); color: #a11256; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  .rec-card { border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:8px; background:var(--surface); }
+  .rec-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+  .rec-num { font-weight:800; color:#fff; border-radius:6px; padding:2px 8px; font-size: calc(11px * var(--fscale,1)); }
+  .rec-title { font-weight:700; font-size: calc(12.5px * var(--fscale,1)); flex:1; }
+  .rec-badges { display:flex; gap:4px; flex-wrap:wrap; }
+  .rec-body { font-size: calc(11.5px * var(--fscale,1)); line-height:1.7; color:var(--text); }
+  .rec-body ul { padding-left:16px; margin-top:4px; }
+  .sub-hdr { font-weight: 700; font-size: calc(13px * var(--fscale,1)); margin: 12px 0 6px; padding-bottom:4px; border-bottom: 2px solid var(--border); color: var(--text); }
+
+  .filter-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .filter-chip { padding:5px 11px; border-radius:14px; border:1px solid var(--border); background:var(--surface2); font-size:calc(11px * var(--fscale,1)); cursor:pointer; user-select:none; font-weight:600; color:var(--text2); }
+  .filter-chip.active { color:#fff; border-color:transparent; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-rk"><span>E</span><span>A</span><span>S</span><span style="border-radius:0 4px 4px 0">L</span></div>
+      <h1>간세포암종(HCC) 진료권고안 2024</h1>
+    </div>
+    <div class="meta-line">
+      <a href="https://doi.org/10.1016/j.jhep.2024.08.028" class="source-link" target="_blank">European Association for the Study of the Liver. J Hepatol. 2025;82(2):315-374 ↗</a>
+      <span style="color:var(--text2)"> · 2018년판 개정 · 6개 대분류 PICO 질문 기반, Delphi 합의(30인 패널)</span><br>
+      <span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 EASL의 공식 승인을 받지 않았으며, 원문 요약·재구성본입니다 (This tool is not officially endorsed)</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요·방법론</div>
+    <div class="tab" onclick="showTab('prev')">🛡️ 예방·선별검사</div>
+    <div class="tab" onclick="showTab('diag')">🩻 진단</div>
+    <div class="tab" onclick="showTab('stage')">📐 병기설정·다학제</div>
+    <div class="tab" onclick="showTab('surg')">🔪 수술(절제·이식)</div>
+    <div class="tab" onclick="showTab('loco')">🎯 국소치료</div>
+    <div class="tab" onclick="showTab('sys')">💊 전신치료</div>
+    <div class="tab" onclick="showTab('summary')">📋 전체 권고안·약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:120px;outline:none;"
+          onfocus="this.style.borderColor='var(--surg)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요·방법론 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--surg)">79개</div><div class="stat-lbl">최종 권고안<br>(하위번호 포함)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">5단계</div><div class="stat-lbl">근거수준(LoE)<br>Oxford CEBM</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--stage)">2단계</div><div class="stat-lbl">권고강도<br>강력 / 약함(open)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--loco)">30인</div><div class="stat-lbl">Delphi 패널<br>(환자대표 포함)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 가이드라인 개요</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-surg">
+        <span>🎗️</span>
+        <div>간암은 전세계 암 사망원인 3위이며, <strong>간세포암종(HCC)</strong>이 원발성 간암의 약 90%를 차지한다. HCC 관리는 만성 간질환·다양한 진단/치료수단·일부 통상적 진료에 대한 강한 근거 부족이 공존하여 복잡하다. 본 가이드라인은 2018년판을 개정한 것으로, 개인맞춤형 위험도 기반 선별검사, 간영상검사·진단기준의 표준화(LI-RADS), 복잡한 증례에서의 최소침습수술 활용, 수술·국소·전신치료 간 전환, 방사선치료의 역할, 병기별 면역치료 병용요법 등이 핵심 개정사항이다.</div>
+      </div>
+      <div class="gear-row" style="margin-top:10px">
+        <div class="gear-box gear-prev"><div class="gear-title">🛡️ 예방·선별검사</div>항바이러스치료·생활습관·HBV백신·감시전략<br><small>R1–R11</small></div>
+        <div class="gear-box gear-diag"><div class="gear-title">🩻 진단</div>LI-RADS CT/MR·CEUS·생검·병리<br><small>R12–R23</small></div>
+        <div class="gear-box gear-stage"><div class="gear-title">📐 병기설정·다학제</div>BCLC 분류, 바이오마커, MDT 접근<br><small>R24–R27</small></div>
+        <div class="gear-box gear-surg"><div class="gear-title">🔪 수술</div>간절제 적응증·최소침습수술·간이식·배분원칙<br><small>R28–R55</small></div>
+        <div class="gear-box gear-loco"><div class="gear-title">🎯 국소치료</div>TACE·TAE·SIRT·EBRT 비교 및 병용전략<br><small>R56–R69</small></div>
+        <div class="gear-box gear-sys"><div class="gear-title">💊 전신치료</div>면역관문억제제 병용요법·TKI·병인별 접근<br><small>R70–R77</small></div>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div>용어 정의: <strong>"Shall/should/is recommended"</strong> = 강력권고, <strong>"Can/may/is suggested"</strong> = 약함(개방형) 권고. 강도는 근거·일관성·위험-이득비·환자선호·윤리적의무·실행가능성을 종합해 결정된다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧪</span> 방법론 — PICO / Delphi / 합의과정</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>예방/조기발견, 진단·병기설정, 국소치료, 전신치료 등 대분류에 대해 PICO(대상-중재-비교-결과) 형식으로 질문 작성</li>
+        <li>PICO 질문은 환자대표 2인을 포함한 30인 Delphi 패널에 제출 — 관련성·문구에 대해 75% 미만 동의시 수정 후 재제출</li>
+        <li>PubMed 중심 광범위 문헌검색(전문가 판단에 따라 타 데이터베이스 확장), 신약 임상시험 자료가 아직 완전 발표되지 않은 경우 국제학회 초록도 참고문헌으로 활용</li>
+        <li>근거수준은 Oxford Centre for Evidence-based Medicine(OCEBM, 2011판 수정) 기준, 권고강도는 강력/약함(open) 2단계로 분류</li>
+        <li>Delphi 패널이 각 권고안에 투표 — 강한합의(&gt;95%), 합의(75–95%), 다수합의(50–75%), 합의미달(&lt;50%)로 구분; 최종적으로 100%가 합의에 도달</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📏</span> 근거수준(LoE)·권고강도 정의</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>LoE</th><th>기준</th></tr>
+        <tr><td><span class="stage-badge b-loe1">1</span></td><td>무작위대조시험(RCT)의 동질적 체계적문헌고찰(SR)</td></tr>
+        <tr><td><span class="stage-badge b-loe2">2</span></td><td>RCT 또는 극적효과를 보인 관찰연구; 질 낮은 SR(비무작위·후향적)</td></tr>
+        <tr><td><span class="stage-badge b-loe3">3</span></td><td>비무작위대조 코호트/추적연구, RCT의 대조군(개별연구보다 SR이 대개 우수)</td></tr>
+        <tr><td><span class="stage-badge b-loe4">4</span></td><td>증례군, 증례-대조군, 역사적 대조연구</td></tr>
+        <tr><td><span class="stage-badge b-loe5">5</span></td><td>전문가 의견(기전기반 추론)</td></tr>
+      </table>
+      <div class="sec-sep"></div>
+      <table class="tbl">
+        <tr><th>등급</th><th>표현</th><th>기준</th></tr>
+        <tr><td><span class="stage-badge b-strong">강력</span></td><td>Shall, should, is recommended / Shall not, should not, is not recommended</td><td rowspan="2">근거, 연구간 일관성, 위험-이득비, 환자선호, 윤리적의무, 실행가능성을 종합적으로 고려</td></tr>
+        <tr><td><span class="stage-badge b-weak">약함(개방형)</span></td><td>Can, may, is suggested / May not, is not suggested</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>👥</span> 다학제팀(MDT) 접근과 인지편향</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info"><span>📌</span><div>HCC는 병기와 특정치료 간 직접적 연결고리가 없는 복잡한 질환이다. 종양병기가 초기치료 접근의 기초가 되나, 간기능·문맥압항진증·전신수행능력·동반질환·환자선호에 따라 맥락화되어야 한다. MDT는 최소한 간담도/이식외과의, 간암 전문 종양내과의 또는 간전문의, 방사선종양의, 중재영상의학의, 진단영상의학의, 병리의, 전담간호사로 구성되어야 하며, 모든 HCC 환자는 초진 시점과 치료목표 변경 시마다 MDT 평가를 받아야 한다.</div></div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th>편향 유형</th><th>정의</th></tr>
+        <tr><td>과도한 경험주의</td><td>임상의 개인 경험·견해에 지나치게 의존("전에 비슷한 환자가 X치료로 사망했으니 이번 환자도 X는 안된다")</td></tr>
+        <tr><td>과도한 합리주의</td><td>단순 수치화 가능한 변수에 과도한 비중("종양크기 5.1cm은 5cm 이하 환자와 같은 치료를 받을 수 없다")</td></tr>
+        <tr><td>손실회피(이득/손실 불균형 인식)</td><td>임상이득 확률보다 이상반응 위험에 더 큰 비중을 둠</td></tr>
+        <tr><td>클러스터 원칙 결여</td><td>치료를 다단계 과정의 일부가 아닌 단독으로만 평가(전환치료 가능성 등을 간과)</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 예방·선별검사 ══════════════════ -->
+<div id="tab-prev" class="panel">
+  <div class="alert alert-prev"><span>🛡️</span><div>대부분의 HCC는 간경변 간에서 발생한다. 간경변 발생을 줄이는 정책적 노력과 더불어, 간경변 환자에서는 약물·생활습관중재로 HCC 발생위험을 낮추고, 발생 시 조기발견을 위한 감시(선별검사 반복시행)를 시행한다.</div></div>
+  <div id="rec-prev"></div>
+</div>
+
+<!-- ══════════════════ TAB 3: 진단 ══════════════════ -->
+<div id="tab-diag" class="panel">
+  <div class="alert alert-diag"><span>🩻</span><div>간경변, 만성 HBV 감염, 또는 HCC 병력이 있는 고위험군에서는 동적조영증강 영상(CT/MRI/CEUS)의 특징적 소견 조합으로 조직검사 없이 HCC를 비침습적으로 진단할 수 있다. LI-RADS v2018(CT/MR)·v2017(CEUS) 기준 사용이 표준화의 핵심이다.</div></div>
+  <div id="rec-diag"></div>
+</div>
+
+<!-- ══════════════════ TAB 4: 병기설정·다학제 ══════════════════ -->
+<div id="tab-stage" class="panel">
+  <div class="alert alert-stage"><span>📐</span><div>진단 확정 후에는 간내외 종양부담을 매핑하여 병기를 설정한다. BCLC 분류가 예후예측·치료배정 도구로 권고되며, AFP 등 혈청바이오마커가 보조적 예후정보를 제공한다.</div></div>
+  <div id="rec-stage"></div>
+</div>
+
+<!-- ══════════════════ TAB 5: 수술(절제·이식) ══════════════════ -->
+<div id="tab-surg" class="panel">
+  <div class="alert alert-surg"><span>🔪</span><div>간절제(LR)와 간이식(LT)은 모두 근치적 목적의 수술적 치료다. 간이식은 HCC와 기저 만성·발암성 간손상을 동시에 치유할 수 있는 유일한 단일 치료법이다.</div></div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 간절제 수술전 위험평가 도구 (요약)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl small-text">
+        <tr><th>도구</th><th>구분</th><th>설명</th></tr>
+        <tr><td>ALBI grade</td><td>검사수치</td><td>알부민·빌리루빈 기반 단순 간기능 평가</td></tr>
+        <tr><td>APRI</td><td>검사수치</td><td>AST/혈소판 비율 — 간부전 예측인자</td></tr>
+        <tr><td>Child-Pugh</td><td>알고리즘</td><td>빌리루빈·알부민·INR·복수·뇌증 — 절제후 결과의 우수한 예측인자</td></tr>
+        <tr><td>MELD</td><td>검사수치</td><td>빌리루빈·INR·크레아티닌 기반</td></tr>
+        <tr><td>ICG-R15</td><td>+ (경미침습)</td><td>인도시아닌그린 15분 정체율 — 대상성 간경변에서 활용</td></tr>
+        <tr><td>HVPG</td><td>++ (중재적)</td><td>간정맥압경사 직접측정 — 문맥압항진증의 가장 정확한 평가</td></tr>
+        <tr><td>CT 용적측정 / 3D 재구성</td><td>영상</td><td>예상 잔존간 용적 계산</td></tr>
+        <tr><td>간섬광조영술 / 간담도조영MRI</td><td>핵의학·영상</td><td>구역별 간기능 평가 — 대량절제 예정시 고려</td></tr>
+      </table>
+      <small style="display:block;margin-top:6px">최소한 용적측정, ICG-R15, 검사수치 기반 지표 1개 이상을 모든 절제후보에서 조합해 평가할 것을 권고. 대량간절제 예정시 섬광조영술 추가.</small>
+    </div>
+  </div>
+
+  <div class="sub-hdr">🔪 간절제(Liver Resection)</div>
+  <div id="rec-surg-lr"></div>
+
+  <div class="sub-hdr">🫀 간이식(Liver Transplantation) 및 배분원칙</div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚖️</span> 공정한 장기배분의 원칙</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl small-text">
+        <tr><th>원칙</th><th>정의</th><th>목표</th></tr>
+        <tr><td>긴급성(Urgency)</td><td>대기목록 사망위험이 가장 높은 환자에게 우선배분</td><td>대기목록 탈락/사망 최소화</td></tr>
+        <tr><td>효용성(Utility)</td><td>이식후 예후가 가장 좋을 것으로 예측되는 환자에게 배분</td><td>전체 결과 극대화</td></tr>
+        <tr><td>이식이득(Transplant benefit)</td><td>이식으로 얻는 생존연장(이식후 생존 − 비이식 대안치료 생존)이 가장 큰 환자에게 배분</td><td>대안치료·탈락을 함께 고려한 결과 극대화</td></tr>
+        <tr><td>정의(Justice)</td><td>예측 이식후 결과가 동일한 환자는 동일한 이식기회를 가져야 함</td><td>형평성 확보</td></tr>
+      </table>
+    </div>
+  </div>
+  <div id="rec-surg-lt"></div>
+
+</div><!-- /surg -->
+
+<!-- ══════════════════ TAB 6: 국소치료 ══════════════════ -->
+<div id="tab-loco" class="panel">
+  <div class="alert alert-loco"><span>🎯</span><div>비수술적 국소치료는 경피적 소작술, 동맥내 색전치료(TAE/TACE/SIRT), 외부방사선치료(EBRT)로 구성된다. 병변국한성 질환에서는 완전소작을 목표로, 그 외에는 종양부담 감소·진행지연을 통한 생존연장을 목표로 시행하며 항상 다학제 논의가 필요하다.</div></div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 국소치료 기법 개요</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li><strong>경피적 열소작술</strong>: 고주파(RFA) 또는 마이크로파(MWA)를 이용한 열에너지원</li>
+        <li><strong>TAE(경동맥색전술)</strong>: 종양영양동맥 폐쇄로 허혈성 손상 유도</li>
+        <li><strong>cTACE / DEB-TACE</strong>: 리피오돌 유화 항암제(cTACE) 또는 약물방출비드(DEB-TACE)로 국소 항암제 전달을 더함</li>
+        <li><strong>SIRT(선택적 내부방사선치료)</strong>: 이트륨-90(Y90) 또는 홀뮴-166 표지 미세구를 이용한 내부방사선원 — 방사선분절절제술(radiation segmentectomy)·방사선엽절제술(radiation lobectomy) 개념 포함</li>
+        <li><strong>EBRT</strong>: 선형가속기 이용, 정위체부방사선치료(SBRT, 광자) 또는 양성자치료로 시행</li>
+      </ul>
+    </div>
+  </div>
+  <div id="rec-loco"></div>
+</div>
+
+<!-- ══════════════════ TAB 7: 전신치료 ══════════════════ -->
+<div id="tab-sys" class="panel">
+  <div class="alert alert-sys"><span>💊</span><div>진행병기 HCC의 전신치료는 면역관문억제제(ICI)와 표적치료(다중TKI)로 구성된다. 생존이득은 간외전이·대혈관침범·국소치료에 부적합한 큰 종양부담을 가진 진행병기 환자, 또는 국소치료에 실패한 환자에서 입증되었다.</div></div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 1차 병용요법 핵심 임상시험 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl small-text">
+        <tr><th>임상시험</th><th>병용요법</th><th>대조군</th><th>중앙 전체생존</th><th>HR(OS)</th></tr>
+        <tr><td>IMbrave150</td><td>아테졸리주맙+베바시주맙</td><td>소라페닙</td><td>19.2 vs 13.4개월</td><td>0.58</td></tr>
+        <tr><td>HIMALAYA(STRIDE)</td><td>트레멜리무맙+더발루맙</td><td>소라페닙</td><td>16.43 vs 13.77개월</td><td>0.78</td></tr>
+        <tr><td>CheckMate 9DW</td><td>니볼루맙+이필리무맙</td><td>렌바티닙/소라페닙</td><td>23.7 vs 20.6개월</td><td>0.79</td></tr>
+        <tr><td>ORIENT-32(중국)</td><td>신틸리맙+베바시주맙바이오시밀러</td><td>소라페닙</td><td>미도달</td><td>0.57</td></tr>
+        <tr><td>CARES-310</td><td>캄렐리주맙+리보세라닙</td><td>소라페닙</td><td>-</td><td>0.62</td></tr>
+        <tr><td>COSMIC-312</td><td>카보잔티닙+아테졸리주맙</td><td>소라페닙</td><td>1차평가변수(OS) 미충족</td><td>0.90</td></tr>
+        <tr><td>LEAP-002</td><td>렌바티닙+펨브롤리주맙</td><td>렌바티닙</td><td>1차평가변수(OS) 미충족</td><td>0.84</td></tr>
+      </table>
+      <small style="display:block;margin-top:6px">모든 양성 임상시험은 Child-Pugh A, ECOG PS 0–1 환자만 포함하였으며, 이를 벗어난 군에서의 이득은 입증되지 않음.</small>
+    </div>
+  </div>
+  <div id="rec-sys"></div>
+</div>
+
+<!-- ══════════════════ TAB 8: 전체 권고안·약어 ══════════════════ -->
+<div id="tab-summary" class="panel">
+  <div class="alert alert-info"><span>📋</span><div>전체 79개 권고안(반응평가 관련 2개 포함, 총 81개)을 한 화면에서 확인할 수 있다. 카테고리 칩으로 필터링 가능하다.</div></div>
+
+  <div class="filter-row" id="summary-filters"></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 전체 권고안 요약표</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl small-text" id="summary-table">
+        <tr><th>번호</th><th>영역</th><th>권고 요지</th><th>LoE</th><th>강도</th></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📈</span> 반응평가 기준 (Response Assessment)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div id="rec-resp"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚠️</span> 근거의 한계 및 참고사항</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>본 가이드라인은 제한된 PICO 질문 수의 제약으로 다루지 못한 영역이 있으며, 그런 경우 2018년판 EASL 권고를 따를 것을 권고함</li>
+        <li>간호사·완화의료 전문가의 역할은 본 가이드라인에서 구체적으로 다루지 않았으나, 향후 그 중요성이 커질 것으로 전망됨</li>
+        <li>HCC는 사회·의료 자원이 상이한 다양한 환경에서 관리되는 전세계적 문제로, 각 권고는 인적·재정적 자원, 기술적 가용성, 규제, 팀 역량 등 현지 상황에 맞게 조정되어야 함</li>
+        <li>진행성 HCC에서 대리평가변수(PFS 등)의 전체생존(OS) 대리 타당성은 아직 불충분하여, 전체생존이 계속 1차평가변수로 유지됨</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+</div><!-- /summary -->
+
+</div><!-- /main -->
+
+<!-- ════ 데이터 ════ -->
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const CAT_META = {
+  prev:  { label:'예방·선별검사', color:'var(--prev)', tag:'t-prev', target:'rec-prev' },
+  diag:  { label:'진단', color:'var(--diag)', tag:'t-diag', target:'rec-diag' },
+  stage: { label:'병기설정·다학제', color:'var(--stage)', tag:'t-stage', target:'rec-stage' },
+  surglr:{ label:'수술-간절제', color:'var(--surg)', tag:'t-surg', target:'rec-surg-lr' },
+  surglt:{ label:'수술-간이식', color:'var(--surg)', tag:'t-surg', target:'rec-surg-lt' },
+  loco:  { label:'국소치료', color:'var(--loco)', tag:'t-loco', target:'rec-loco' },
+  sys:   { label:'전신치료', color:'var(--sys)', tag:'t-sys', target:'rec-sys' },
+  resp:  { label:'반응평가', color:'var(--resp)', tag:'t-resp', target:'rec-resp' }
+};
+const FILTER_CATS = { prev:'예방·선별검사', diag:'진단', stage:'병기설정·다학제', surglr:'수술-간절제', surglt:'수술-간이식', loco:'국소치료', sys:'전신치료', resp:'반응평가' };
+const GRADE_META = { strong:{label:'강력', cls:'b-strong'}, weak:{label:'약함', cls:'b-weak'} };
+const LOE_CLS = { 1:'b-loe1', 2:'b-loe2', 3:'b-loe3', 4:'b-loe4', 5:'b-loe5' };
+
+const RECS = [
+{id:'R1', cat:'prev', loe:2, grade:'strong', title:'HBV 감염 환자는 HCC 발생(신규·재발) 위험 감소를 위해 뉴클레오시드/뉴클레오타이드 유사체(NUC)로 치료해야 하며, 약제·치료기간은 EASL HBV 가이드라인을 따른다.',
+ body:['핵심 RCT(라미부딘)에서 NUC가 HCC 발생위험을 유의하게 감소시킴을 입증, 이후 다른 NUC에서도 검증됨',
+ '메타분석: NUC 치료군의 HCC 위험이 비치료군보다 유의하게 낮음(RR 0.48); 엔테카비르·테노포비어 등 권장 1차 NUC가 비1차 NUC보다 우수(RR 0.85)',
+ '테노포비어 vs 엔테카비르: HCC 발생위험 자체는 유의차 없으나(HR 0.81), 재발 중 후기재발 위험은 테노포비어군에서 더 낮음(HR 0.58)']},
+{id:'R2', cat:'prev', loe:2, grade:'strong', title:'HCV 감염 및 간섬유화가 있는 환자는 간경변 관련 합병증(HCC 포함) 위험 감소를 위해 직접작용항바이러스제(DAA)로 치료해야 한다.',
+ body:['DAA가 HCC 신규발생을 직접 낮춘다는 RCT는 없으나, DAA의 간경변 발생 억제 효과가 핵심 예방기전으로 확인됨',
+ '개별환자 메타분석(21개 연구, 977명): DAA 후 HCC 재발률 100인년당 20건 — 성향점수매칭 후 비노출군과 유의차 없음(RR 0.64, 이질성 매우 높음)이나, 실패위험 감소·생존향상 이득이 잠재적위험을 상회']},
+{id:'R3', cat:'prev', loe:3, grade:'weak', title:'HCV 감염 및 완전종양반응 상태의 HCC 진단 병력이 있는 환자도 항바이러스 치료를 받을 수 있으나, HCC 재발위험에 대한 영향은 결론적이지 않다.',
+ body:['스페인 다기관연구는 DAA 후 완전영상반응 환자의 27.6%에서 HCC 재발 보고(이탈리아도 유사)했으나, 이후 다수 메타분석에서는 재발위험 차이 없음으로 상반되게 보고']},
+{id:'R4', cat:'prev', loe:3, grade:'weak', title:'HBV·HCV 동시감염 환자는 단일감염 환자와 동일한 기준으로 치료할 수 있다.',
+ body:['DAA로 HCV 청소 후 HBV 표면/코어항체 변화는 HCC 재발을 예측하지 않았으며, 동시감염군과 HCV단독감염군간 HCC 발생률 유의차 없음']},
+{id:'R5', cat:'prev', loe:3, grade:'weak', title:'비만환자의 체중감량, 금주, 금연은 간 관련 및 기타 이상반응 위험 감소를 위해 권고되며, HCC 위험감소를 위해서도 권고될 수 있다.',
+ body:['음주와 HCC 위험 간 관계는 연구마다 상반되어 명확히 정립되지 않았으나, 금주를 권고할 이유는 많음',
+ '흡연-HCC 위험 근거도 제한적이나 간경변 환자의 금연을 권고할 이유는 많음',
+ 'MASLD 환자의 체중감량은 질환활성도 감소와 연관 — 간접적으로 HCC 위험감소에 기여 가능']},
+{id:'R6', cat:'prev', loe:3, grade:'weak', title:'커피 섭취는 HCC 위험 감소를 위해 권고될 수 있다.',
+ body:['일본 코호트연구들에서 매일음용시 발생률비 0.44–0.52로 용량-반응 보호효과 시사',
+ '관찰연구 특성상 인과관계 확정은 어려우나, 커피가 간질환 환자에 유해하다는 근거는 없음(고지방·고당 라떼류는 제외)']},
+{id:'R7', cat:'prev', loe:3, grade:'weak', title:'근거 부족으로 인해 스타틴, 아스피린, 메트포르민 사용은 현재 HCC 발생위험 감소를 위해 권고할 수 없다.',
+ body:['스타틴의 HCC 예방효과를 시사하는 메타분석이 있으나 높은 이질성으로 확고한 결론 어려움',
+ 'emulated trial 설계 연구에서는 알코올성 간경변 환자의 아스피린 사용이 HCC 위험에 영향 없음으로 결론']},
+{id:'R8', cat:'prev', loe:3, grade:'strong', title:'고위험 혈청음성자는 HCC 발생률·관련사망 감소 및 전체생존 향상을 위해 HBV 백신을 접종해야 한다.',
+ body:['WHO 전신생아 백신접종 권고, EASL HBV 가이드라인도 고위험 혈청음성 성인의 백신접종을 권고(성매개감염 위험군, 의료종사자, 만성간질환자 등)']},
+{id:'R9', cat:'prev', loe:2, grade:'strong', title:'간경변 환자는 HCC 이외 원인으로 상대적으로 사망위험이 높거나 근치적 치료가 불가능한 경우(예: 이식부적격 Child-Pugh C)가 아니라면 HCC 선별검사를 받아야 한다.',
+ body:['중국 RCT 1건 + 다수 비무작위연구 근거; 메타분석(49건)에서 감시군의 조기진단 가능성(RR 1.86)·생존 향상(HR 0.67, lead-time bias 보정후 유지) 확인',
+ '대만·일본처럼 감시가 잘 이루어지는 국가에서 HCC 진단후 생존이 더 긺; 위해(과잉진단 등)는 상대적으로 저평가되어 있음(약 10%에서 신체적 위해 보고)',
+ '개인별 위험도 기반 맞춤형 감시전략(risk-based surveillance)이 권장되는 추세']},
+{id:'R10', cat:'prev', loe:3, grade:'weak', title:'간경변이 없는 진행성 섬유화 동반 만성 간질환 환자는 일반인구보다 HCC 위험이 높으나, 근거 부족으로 이 군에서 HCC 감시는 현재 권고할 수 없다.',
+ body:['MASLD·HCV SVR 달성 환자의 F3 섬유화군 HCC 발생률(100인년당 0.4–0.52건)은 보고되었으나, 감시가 생존·조기발견에 미치는 영향평가 연구는 없음',
+ '항바이러스 치료 전(치료 후가 아닌) 섬유화 평가가 감시권고 결정의 기준이 되어야 함']},
+{id:'R11', cat:'prev', loe:3, grade:'strong', title:'HCC 선별검사로 6개월마다 간초음파검사를 권고한다. 초음파+AFP 병용은 민감도를 높이나 특이도를 낮추는 합리적 옵션이다. 축약MRI·혈청바이오마커 등 다른 유망 영상기법의 근거는 아직 제한적이다.',
+ body:['초음파 단독의 소병변 민감도는 낮음(미국 36%, 그외지역 47%); 초음파 LI-RADS 시각화점수 도입에도 간경변·MASLD 환자의 C등급(심한 제한) 비율이 높아 실효성 제한적',
+ 'AFP 병용시 조기HCC 민감도 45%→63%(특이도 92%→84%로 하락); GALAD 스코어(AFP+AFP-L3+DCP+연령+성별) 등 복합모델이 유망하나 선택편향으로 추가검증 필요']},
+
+{id:'R12', cat:'diag', loe:3, grade:'strong', title:'간영상검사의 획득·기술·보고 표준화를 위해 LI-RADS 사용을 권고한다.', body:['미국영상의학회가 2011년 도입, 2018년 최신판(OPTN 정렬) — 선별·진단·병기/의사결정·치료반응평가 4개 파트로 구성']},
+{id:'R13', cat:'diag', loe:1, grade:'strong', title:'HCC의 비침습적 진단은 LI-RADS CT/MR v2018 또는 CEUS v2017 기준에 근거한다. CT/MRI에서는 종양크기·테두리형/비테두리형 동맥기과다증강(APHE)·말초형/비말초형 조영제씻김·조영증강피막·역치성장을 종합한다. CEUS에서는 비테두리형 APHE와 지연성(60초 초과)·경도의 조영제씻김을 종합한다.',
+ body:['2001년 APHE 단독기준 → 2005년 washout(조영제씻김) 추가로 특이도 향상 → 2018 EASL 2단계 알고리즘 및 LI-RADS(2018)로 발전']},
+{id:'R14', cat:'diag', loe:3, grade:'strong', title:'LR-5 범주와 2018 EASL 알고리즘의 비침습적 진단 성능은 유사하다. LI-RADS는 LR-M·LR-TIV 등 세분화와 LR-5 미충족 결절의 확률추정을 제공하므로 우선 사용을 권고한다.',
+ body:['메타분석(49건, 9,620명): LR-5의 97%가 병리 또는 영상추적에서 HCC로 확인']},
+{id:'R15', cat:'diag', loe:1, grade:'strong', title:'HCC의 비침습적 진단을 위해 다중시기 CT 또는 동적조영증강 MRI를 우선순위 없이 권고한다.',
+ body:['전향연구에서 1–2cm 결절 진단 민감도: MRI 71%, CT 70%, CEUS 46%(특이도 각 85%, 81%, 93%)']},
+{id:'R16', cat:'diag', loe:1, grade:'strong', title:'MRI를 이용한 HCC의 비침습적 진단에는 가도세트산(gadoxetic acid)보다 세포외조영제를 우선한다.',
+ body:['다수 비교연구에서 세포외조영제 MRI가 간담도특이조영제 MRI보다 민감도·특이도 모두 우수(예: 77.9% vs 66.3%, 83.3% vs 68.1%)',
+ '간담도기 저신호강도는 washout과 동등하지 않은 부차적 소견으로만 취급해야 함']},
+{id:'R17', cat:'diag', loe:3, grade:'strong', title:'전체 간 평가에 유리하고 민감도가 더 높다는 점에서, HCC 비침습적 진단 1차 검사로 CT 또는 MRI를 CEUS보다 우선한다.', body:[]},
+{id:'R18', cat:'diag', loe:4, grade:'strong', title:'CEUS를 사용할 경우 LI-RADS 기술 권고사항에 따라 시행해야 한다.',
+ body:['대규모 후향연구(1,000례 이상): 해당 기준 사용시 HCC 양성예측도 99%에 근접, 간내담관암 오진 사례 없음']},
+{id:'R19', cat:'diag', loe:1, grade:'strong', title:'비침습적 진단기준은 간경변, 만성 HBV 감염, 또는 HCC 병력이 있는 환자에게만 적용해야 한다. 그 외 환자는 반드시 생검으로 진단을 확인한다.',
+ body:['비고위험군은 사전검사확률이 낮아 위양성 위험 증가; 간경변이 없는 MASLD 환자 등에서는 생검이 필수']},
+{id:'R20', cat:'diag', loe:1, grade:'strong', title:'HCC의 병리학적 진단은 국제컨센서스 권고안에 따라 필요한 조직학적·면역조직화학적 분석을 근거로 한다.', body:[]},
+{id:'R21', cat:'diag', loe:1, grade:'strong', title:'생검 시행 시, 종양분화도와 WHO 분류에 따른 HCC 아형을 포함한 관련 예후인자를 보고해야 한다.',
+ body:['거대소주-종괴형(macrotrabecular/massive)·전구세포형 아형은 예후불량, 림프구풍부형은 예후양호 — 병리분자통합분류로 확인됨']},
+{id:'R22', cat:'diag', loe:3, grade:'weak', title:'HCC 진단을 위한 종양생검 시행 시, 진단을 돕기 위해 비종양 간실질을 동시에 채취할 것을 제안한다.',
+ body:['조기HCC(악성)와 고등급이형성결절(전암성) 감별 및 배경 간질환의 섬유화·활성도 평가에 유용']},
+{id:'R23', cat:'diag', loe:3, grade:'strong', title:'치료결정을 신뢰성 있게 뒷받침할 수 있을 때까지, 일상적 분자분석은 권고하지 않는다.',
+ body:['향후 정밀의료 발전과 보조치료 영역 확대에 따라 중요성이 커질 전망이나 현재는 근거 불충분']},
+
+{id:'R24', cat:'stage', loe:3, grade:'weak', title:'근치적 치료(이식·간절제·열/방사선소작) 후보 환자에서는 국소병기설정 향상을 위해 가도세트산조영증강 MRI를 제안한다.',
+ body:['메타분석(29건): 3cm 미만 HCC 검출 민감도가 간담도기 포함시 유의하게 향상(84% vs 68%)',
+ '700례 후향분석: HBA-MRI 추가검사로 16.4%에서 추가결절 발견, 13.3%에서 치료계획 변경, 재발률·전체사망률 유의감소']},
+{id:'R25', cat:'stage', loe:3, grade:'strong', title:'18F-FDG 및 18F-콜린 PET/CT는 종양 병기설정에 권고하지 않는다.',
+ body:['FDG 섭취는 HCC의 40% 미만에서만 관찰; 병기변경 효과는 제한적(2.5% 미만)이나 예후불량·미세혈관침윤과 연관되어 향후 역할 연구 필요']},
+{id:'R26', cat:'stage', loe:3, grade:'strong', title:'확정적 HCC 진단 후에는 유용한 예후정보 제공을 위해 AFP 측정을 권고한다.',
+ body:['AFP·AFP-L3·DCP 고수치는 미세혈관침윤·저분화와 연관되며, 절제·이식·국소·전신치료 전반에서 예후예측인자로 작용']},
+{id:'R27', cat:'stage', loe:1, grade:'strong', title:'BCLC 분류는 종양 병기설정에 권고되며 중요한 예후정보를 제공한다.',
+ body:['프랑스식·CLIP·BCLC·CUPI·HKLC·JIS 등 6개 병기체계 중 BCLC·CUPI·HKLC만 종양부담·간기능·전신상태를 모두 포함, BCLC·HKLC만 병기별 치료옵션까지 제시',
+ '최신판(2022)은 중간병기(BCLC B)를 종양부담·권고치료가 다른 3개 하위군으로 세분화']},
+
+{id:'R28', cat:'surglr', loe:2, grade:'strong', title:'간경변 동반 HCC의 절제 적응증은 간기능·문맥압항진증·절제범위·예상 잔존간용적·전신수행능력·동반질환에 대한 다변수 복합평가에 근거해야 하며, 수술사망률 3% 미만·합병증률 20% 미만을 목표로 한다.',
+ body:['용적측정, ICG-R15, 검사수치기반지표(Child-Pugh/MELD/ALBI/APRI 중 1개 이상) 조합 권고; 대량간절제 예정시 섬광조영술 추가']},
+{id:'R29', cat:'surglr', loe:3, grade:'weak', title:'임상적으로 유의한 문맥압항진증(HVPG&gt;10mmHg)과 Child-Pugh B 간경변은 최소침습기법 제한적 절제술의 절대금기는 아니다. 위험-이득은 간이식·국소치료 등 대안과 비교해 평가해야 한다.',
+ body:['40례 전향연구: HVPG는 절제후간부전·사망률과 상관관계를 보였으나 간접소견(정맥류·비장비대)은 그렇지 않음 — 간접평가의 한계 시사']},
+{id:'R30', cat:'surglr', loe:3, grade:'strong', title:'임상적으로 유의한 문맥압항진증과 Child-Pugh B 간경변은 대량절제(2구역 초과)의 절대금기로 간주해야 한다.', body:[]},
+{id:'R31', cat:'surglr', loe:3, grade:'strong', title:'고령은 간절제의 절대금기로 간주해서는 안 된다.',
+ body:['일부 대규모 분석(NSQIP, 일본)에서 고령군의 합병증·사망률이 높게 보고되었으나, 다수 소규모연구·메타분석에서는 차이 없음',
+ '나이 자체보다 허혈성심질환·대량간절제·간경변·수혈량이 실제 사망예측인자로 확인됨']},
+{id:'R32', cat:'surglr', loe:3, grade:'strong', title:'MASLD 동반 HCC 환자는 바이러스성 병인 대비 장기생존은 더 좋을 수 있으나 수술주변합병증은 더 높을 수 있으므로, 대사관련 상태의 철저한 수술전 평가와 교정가능한 위험인자의 수술전 최적화를 권고한다.',
+ body:['NSQIP 분석(2,927례): MASLD군 중대합병증 32% vs 비MASLD 24%(성향점수매칭 후); 장기생존은 MASLD군에서 비슷하거나 더 우수한 경향',
+ '생활습관개선·금주·금연·수술전 신체재활로 2주 이내에도 지방간 감소가 가능함이 입증됨']},
+{id:'R33', cat:'surglr', loe:3, grade:'strong', title:'간경변이 없는 간에서 발생한 단일 HCC(위성결절 동반 여부 무관) 환자에서는 간절제를 우선 치료옵션으로 권고한다.',
+ body:['간경변 없는 환자는 20% 미만에서 HCC 발생; 보존된 간기능으로 더 광범위한 절제가 가능하며 예후도 대체로 양호']},
+{id:'R34', cat:'surglr', loe:3, grade:'weak', title:'여러 구역을 침범하는 다발성 종양은 수술적 절제를 고려하기 전, 시간경과에 따른 종양경과 확인을 위해 가교 또는 축소요법이 필요하다.', body:[]},
+{id:'R35', cat:'surglr', loe:4, grade:'weak', title:'간경변이 없으면서 밀란기준을 초과한 절제불가능 HCC 환자에서는 간이식을 권고하지 않는다. 예외는 비수술적 치료에 대한 지속적 반응과 이식이득 평가에 근거해야 한다.',
+ body:['UNOS 데이터베이스 분석(4,373례): 비간경변 환자의 이식후생존은 간경변군과 유사; 주로 젊은 환자나 절제불가능한 재발시 구제요법으로 제안됨']},
+{id:'R36', cat:'surglr', loe:2, grade:'strong', title:'이식대상이 아닌 대상성 간경변 환자에서 2cm 미만 단일 HCC에는 간절제(특히 최소침습적)와 열소작술을 우선순위 없이 권고한다. 대량간절제가 필요하면 소작술을 우선한다.',
+ body:['말초 위치 2cm 미만 단일 HCC는 최소침습적 절제의 이상적 대상; 소작술은 절제보다 이환율이 낮아 고위험 수술프로파일·중심부 위치 종양에서 우선']},
+{id:'R37', cat:'surglr', loe:2, grade:'strong', title:'특정 열소작술 기법(고주파 또는 마이크로파)을 다른 기법보다 우선 권고하지 않는다.', body:[]},
+{id:'R38', cat:'surglr', loe:2, grade:'strong', title:'간기능이 보존되고 충분한 잔존간용적 유지가 가능한 경우, 간경변 환자의 2cm 초과 단일 HCC에는 간절제를 권고한다.', body:[]},
+{id:'R39', cat:'surglr', loe:2, grade:'weak', title:'근거 부족으로, 다변수평가 후 절제가 가능한 다발성종양 간경변 환자에서 절제를 국소치료보다 우선하거나 그 반대로 권고할 수 없다.',
+ body:['단일기관 RCT(173례)에서는 절제군의 생존이 TACE군보다 우수(중앙생존 41 vs 14개월)했으나 표본크기·대조군 성적의 한계로 전향연구 추가 필요']},
+{id:'R40', cat:'surglr', loe:3, grade:'strong', title:'적절히 훈련된 기관에서는 실현가능한 경우, 특히 전외측·표재성 위치 종양에 대해 복강경 또는 최소침습적 접근법으로 간절제를 시행해야 한다.',
+ body:['최소침습절제는 개복술 대비 합병증·출혈량·재원기간·수술사망률 개선; 장기생존은 유사하거나 약간 우수한 경향; 로봇 대 복강경 간 확정적 우위는 없음']},
+{id:'R41', cat:'surglr', loe:3, grade:'strong', title:'수술전 치료의 생존이득 근거가 부족하므로, 신보조요법은 전향적 연구의 맥락에서만 고려해야 한다.',
+ body:['세미플리맙 단일군연구: 절제표본 20명중 4명(20%)에서 종양괴사; 니볼루맙±이필리무맙 2상: 주요병리반응 33%(단독) vs 27%(병용)']},
+{id:'R42', cat:'surglr', loe:2, grade:'strong', title:'국소치료 후 축소/병기하향(downsizing/downstaging)에 성공한 환자는 간절제 또는 간이식을 고려해야 한다.',
+ body:['병기하향 후 수술받은 환자는 다른 치료법보다 우수한 결과를 보이며, 처음부터 절제·이식을 받은 환자와 견줄만한 성적 달성']},
+{id:'R43', cat:'surglr', loe:3, grade:'weak', title:'전신치료 후 축소/병기하향에 성공한 환자도 간절제 또는 간이식을 고려할 수 있으며, 가급적 전향적 연구내에서 시행할 것을 권고한다.',
+ body:['면역치료를 이용한 병기하향의 근거는 아직 축적 중이나, 예비연구에서 면역치료 후 병기하향된 환자의 절제·이식이 양호한 조기성적을 보임']},
+{id:'R44', cat:'surglr', loe:2, grade:'strong', title:'절제 또는 소작술 후 보조치료는 권고하지 않는다.',
+ body:['인터페론·비타민K·프레레티노이드·소라페닙 등이 RCT에서 유의한 생존이득 입증 실패',
+ '아테졸리주맙+베바시주맙(IMbrave050): 초기 중간분석에서 무병생존율 개선(HR 0.72) 확인되었으나, 장기추적(중앙값35.1개월)에서 이득 유지되지 않음(HR 0.90)']},
+
+{id:'R45', cat:'surglt', loe:4, grade:'weak', title:'병리학적으로 재발고위험 소견(위성결절, 미세혈관침윤, 저분화 등, 밀란기준 외)을 보인 절제환자는 예측 이식이득이 확인되고 충분한 관찰기간(6개월 이상)이 경과했다면 간이식을 고려할 수 있다.',
+ body:['"선제적(pre-emptive)" 간이식 개념 — 재발 전 이식으로 우수한 생존 보고됨; 조기 이식후 재발 배제를 위한 최소 3–6개월 관찰기간 필요']},
+{id:'R46', cat:'surglt', loe:4, grade:'strong', title:'밀란기준을 초과한 HCC에서 간이식 적격기준 충족을 위한 병기하향 목적으로 간절제를 시행해서는 안 된다.',
+ body:['결절 일부의 절제로 종양부담을 밀란기준 이내로 줄이는 것은 종양생물학을 반영하지 못함']},
+{id:'R47', cat:'surglt', loe:2, grade:'strong', title:'절제에 부적합한(종양위치, 경계성 간기능, 기타 금기) 밀란기준 이내 HCC 환자는 간이식을 고려해야 한다. 단일 2cm 미만 HCC에는 "소작 후 대기(ablate-and-wait)" 전략을 권고할 수 있다.',
+ body:['밀란기준 이내 HCC의 이식후 5년생존율은 약 80%에 달함']},
+{id:'R48', cat:'surglt', loe:2, grade:'strong', title:'각 기관이 채택한 이식기준을 초과한 HCC 환자는 밀란기준 이내로의 성공적 병기하향 후 간이식을 고려해야 한다. 병기하향에 실패한 환자는 이식의 불량한 후보이다.',
+ body:['밀란·UCSF 기준 초과 환자도 밀란 이내로 병기하향시 처음부터 밀란기준 이내였던 환자와 견줄만한 결과, 다른 어떤 치료보다 우수한 결과 보고']},
+{id:'R49', cat:'surglt', loe:3, grade:'strong', title:'병기하향 전략의 선택은 환자·종양 특성에 근거해야 하며, 특정 국소치료 시술을 다른 것보다 우선 권고하지 않는다. 전신치료를 병기하향 요법으로 권고할 근거는 불충분하다.',
+ body:['단일치료로 병기하향이 달성되지 않으면 다중양식·순차적 접근을 권고; mRECIST 부분반응만 달성한 경우 완전반응 대비 대기목록 탈락위험이 더 높음']},
+{id:'R50', cat:'surglt', loe:3, grade:'strong', title:'AFP&gt;1,000ng/ml은 종양부담과 무관하게 간이식의 절대금기로 간주해야 한다. 밀란기준 이내로 병기하향된 환자는 등재 전 최소 3개월간 AFP&lt;1,000ng/ml을 유지해야 한다.',
+ body:['AFP&gt;1,000은 혈관침범·저분화의 대리표지자로 이식후 HCC 재발과 명확히 연관됨; 이식직전 최종 AFP 수치가 가장 예후적으로 중요']},
+{id:'R51', cat:'surglt', loe:4, grade:'strong', title:'대기시간이 6개월을 초과할 것으로 예상되는 환자에서는 간기능 이상으로 금기가 아니라면 이식전 국소치료를 고려해야 한다.',
+ body:['유럽 HCC간이식연구그룹: 대기중 국소치료 3회까지는 치료실패(등재취소·재발) 위험 유의하게 감소, 그 이상에서는 이득 소실']},
+{id:'R52', cat:'surglt', loe:4, grade:'strong', title:'HCC 유무 관계없이 공통대기자목록 내 사체이식장기 배분우선순위 결정은 복잡하며, 모든 지역에 적용가능한 단일 체계는 없다. HCC 우선순위기준은 최소한 종양부담·AFP·대기시간·종양치료 반응을 포함해야 한다.', body:[]},
+{id:'R53', cat:'surglt', loe:4, grade:'strong', title:'각 지역의 장기배분정책에서 HCC 환자의 이식이득은 전통적 이식원칙인 긴급성·효용성과 결합하여 고려해야 한다.',
+ body:['이식이득 원칙을 이식후 절대생존과 결합하면 대기목록 사망률을 낮추면서 누적생존을 극대화할 수 있음']},
+{id:'R54', cat:'surglt', loe:3, grade:'strong', title:'숙련된 기관에서 지역별 대기시간 상황을 고려하고 공여자-수혜자 이중균형(double equipoise) 원칙을 준수한다면, 선택된 HCC 환자에게 생체간이식을 고려해야 한다.',
+ body:['생체이식은 대기목록 탈락률을 낮추며, 사체이식과 이식후 성적이 비슷(특히 intention-to-treat 분석)']},
+{id:'R55', cat:'surglt', loe:3, grade:'strong', title:'간이식 가용성을 넓히기 위한 모든 접근(뇌사/심장사 공여자의 경계성 이식편, 기계관류 및 동적보존기법 등)을 HCC 환자에서 고려해야 한다.',
+ body:['MELD점수가 낮고 대상성 간경변이 많은 HCC 환자는 경계성 이식편에 상대적으로 좋은 후보',
+ '상온관류(NMP)·저온산소화관류(HOPE) 등이 초기 이식후 성적을 개선하고, 후향자료에서 HOPE가 이식후 HCC 재발을 낮출 가능성 시사']},
+
+{id:'R56', cat:'loco', loe:2, grade:'strong', title:'TACE 후보 환자에서 약물방출비드-TACE(DEB-TACE)와 통상적 TACE(cTACE)는 동등한 것으로 간주해야 한다.',
+ body:['4건의 RCT 포함 메타분석(1,449례)에서 종양반응·생존 모두 DEB-TACE의 우월성 확인되지 않음; DEB-TACE는 재원기간 단축·삶의질 개선으로 비용을 상쇄할 가능성']},
+{id:'R57', cat:'loco', loe:1, grade:'strong', title:'TACE 후보 환자에서 무색전물질 경동맥색전술(bland TAE)은 cTACE 또는 DEB-TACE의 대안으로 고려해야 한다.',
+ body:['5건의 메타분석에서 TACE(또는 DEB-TACE)와 TAE 간 전체생존 차이 없음이 일관되게 확인; TACE군에서 중대이상반응 위험이 오히려 더 높음(RR 1.33)']},
+{id:'R58', cat:'loco', loe:3, grade:'weak', title:'절제·이식에 부적합한 밀란기준 이내 단일종양에서, 크기(3cm 초과) 또는 위치(대혈관 인접 등)로 소작후 재발위험이 유의한 경우, 방사선분절절제술(radiation segmentectomy)을 경피적 소작술의 대안으로 고려할 수 있다.',
+ body:['LEGACY 연구(162례): mRECIST 객관적반응률 90%, 2년국소진행률 0%',
+ '선량측정이 핵심; 표적분절 190Gy 이상 흡수시 완전병리학적괴사율 67% vs 190Gy 미만 25%']},
+{id:'R59', cat:'loco', loe:4, grade:'weak', title:'절제·이식에 부적합한 밀란기준 이내 단일종양에서, 크기 또는 위치로 소작후 재발위험이 유의한 경우, 외부방사선치료(EBRT)를 경피적 소작술의 대안으로 고려할 수 있다.',
+ body:['양성자치료 vs RFA 3상 비열등성 RCT(154례): 2년 국소무진행생존에서 EBRT 우월(93% vs 83%), 생존율은 유사']},
+{id:'R60', cat:'loco', loe:3, grade:'weak', title:'열소작술에 부적합하거나 소작후 재발한 단일 HCC 환자에서, 특히 이식으로의 가교 또는 이후 간절제 촉진이 목적인 경우, SIRT를 TACE의 대안으로 고려할 수 있다.',
+ body:['PREMIER 연구: SIRT군의 진행까지 시간이 TACE보다 유의하게 김(26개월 초과 vs 6.8개월)이나 전체생존은 유사',
+ '방사선엽절제술(radiation lobectomy)로 미래잔존간 비대를 유도해 절제로의 가교에도 활용 가능']},
+{id:'R61', cat:'loco', loe:3, grade:'weak', title:'열소작술에 부적합하거나 소작후 재발한 절제불가능 단일종양의 선택된 환자에서 EBRT를 TACE의 대안으로 고려할 수 있다. TACE/TAE 합병증 고위험군이 EBRT 이득을 볼 가능성이 가장 크다.',
+ body:['단일기관 비교(209례): SBRT군의 2년국소제어율이 TACE보다 유의하게 우수(91% vs 23%), 보정 후 전체생존은 유의차 없음']},
+{id:'R62', cat:'loco', loe:3, grade:'strong', title:'TACE 후보에서 서양환자자료가 불충분하여, TACE 단독보다 EBRT+TACE 병용을 지지할 근거가 부족하다. 병용요법은 권고하지 않는다.',
+ body:['문맥정맥종양혈전 동반환자 RCT에서 EBRT 선행후 TACE 순서가 TACE 선행보다 무진행생존 개선(유의) — 병용시 순서 고려 필요']},
+{id:'R63', cat:'loco', loe:3, grade:'strong', title:'1–2회 연속 TACE 시행 후 반응이 없고 간기능이 보존된 병변에서는 다른 치료를 고려해야 한다.',
+ body:['TACE 반응(특히 완전반응)은 생존의 독립예후인자 — 반응군은 비반응군 대비 사망위험 42–59% 감소',
+ 'TACE 반복시행마다 9–21%에서 간기능 악화 — 이후 전신치료 이득을 저해할 수 있음']},
+{id:'R64', cat:'loco', loe:4, grade:'strong', title:'선택적 접근(작은 종양크기·수, 침윤형 외형 아님, 문맥혈류 보존)이 가능한 간국한성 질환에서는 전신치료보다 TACE/TAE를 우선해야 한다.',
+ body:['Up-to-7 기준(종양수+최대종양크기cm≤7) 이내군 중앙생존 28.3개월 vs 초과군 12.0개월',
+ 'Up-to-7 초과군에서 렌바티닙이 cTACE보다 우수한 성적을 보고한 성향점수매칭 연구 존재(RCT 진행중)']},
+{id:'R65', cat:'loco', loe:3, grade:'strong', title:'예후 또는 예측 점수는 색전술과 전신치료 간의 임상적 치료결정을 뒷받침하는 데 사용해서는 안되나, 어느 치료로도 의미있는 이득을 얻기 어려운 환자를 식별하는 데는 유용할 수 있다.',
+ body:['HAP, mHAPII/III, ART, CRAFITY, PNI 등 다양한 예후점수가 개발되었으나, 개별환자에서 TACE vs 전신치료 중 무엇이 더 유리한지 예측하는 능력은 검증되지 않음']},
+{id:'R66', cat:'loco', loe:4, grade:'weak', title:'TACE/TAE 또는 수술에 부적합한 중간병기 다발종양 환자에서 SIRT는 현재 전신치료의 대안으로 권고할 수 없으나, 전신치료가 금기이고 엽 단위 접근이 가능하다면 허용가능한 옵션이다.',
+ body:['SARAH·SIRveNIb 3상 RCT 모두 SIRT의 소라페닙 대비 생존이득 입증 실패; 선량측정 개선(예: DOSISPHERE-01)이 향후 재평가 필요성 시사']},
+{id:'R67', cat:'loco', loe:3, grade:'weak', title:'간외전이가 없는 구역/엽 문맥침범으로 인한 진행병기 환자에서, EBRT는 현재 면역관문억제제 기반 병용요법 등 전신치료의 대안으로 권고할 수 없으며, EBRT 단독 또는 TKI와의 병용을 TKI 단독보다 우선할 근거도 제한적이다.',
+ body:['NRG/RTOG1112 3상: SBRT+소라페닙 병용이 소라페닙 단독보다 전체생존 개선 경향(다변량분석 HR 0.72, P=0.042)이나 단일 RCT의 한계로 공식권고는 미흡']},
+{id:'R68', cat:'loco', loe:3, grade:'strong', title:'간외전이가 없는 구역/엽 문맥침범으로 인한 진행병기 환자에서 SIRT는 전신치료의 대안으로 권고하지 않는다.',
+ body:['SARAH·SIRveNIb 두 RCT 모두 문맥침범 동반군에서 SIRT의 생존이득 입증 실패']},
+{id:'R69', cat:'loco', loe:2, grade:'strong', title:'종양부담이 큰 중간병기 환자에서 동맥내치료(TACE/TAE 또는 SIRT)를 TKI 기반 전신치료와 병용해서는 안된다. 면역관문억제제 기반 전신치료와의 병용에 대해서는 권고할 근거가 불충분하다.',
+ body:['다수의 TACE+소라페닙/TKI RCT가 생존이득 입증에 실패; LAUNCH 3상(렌바티닙+TACE)은 예외적 개선 보고했으나 대상군이 진행병기에 가까운 전신치료 적격군',
+ 'EMERALD-1(TACE+더발루맙+베바시주맙), LEAP-012(TACE+펨브롤리주맙+렌바티닙) 모두 무진행생존 1차평가변수 충족 — 최종 전체생존 분석은 진행중']},
+
+{id:'R70', cat:'sys', loe:1, grade:'strong', title:'간기능이 보존되고(Child-Pugh A) ECOG 전신수행능력 0–1인 진행병기 HCC 환자에게는 금기가 없다면 PD-1 또는 PD-L1 억제제를 최소 1개 포함하는 병용요법을 제공해야 한다.',
+ body:['IMbrave150(아테졸리주맙+베바시주맙): 소라페닙 대비 전체생존(HR 0.58)·무진행생존(HR 0.59) 모두 유의개선',
+ 'HIMALAYA(STRIDE: 트레멜리무맙+더발루맙): 전체생존 유의개선(HR 0.78)',
+ 'CheckMate 9DW(니볼루맙+이필리무맙): 전체생존 유의개선(HR 0.79); 반응률·완전반응률·반응지속기간 모두 우수',
+ '카보잔티닙+아테졸리주맙(COSMIC-312), 렌바티닙+펨브롤리주맙(LEAP-002)은 1차평가변수(전체생존) 미충족']},
+{id:'R71', cat:'sys', loe:1, grade:'strong', title:'전신치료의 선택은 병인(원인질환)에 영향받지 않아야 한다.',
+ body:['TKI·면역치료 모두에서 병인별 효과 차이는 일관되지 않음; MASH 유래 HCC의 면역치료 저항성 우려와 달리 최신 대규모 RCT 갱신 메타분석에서는 비바이러스성 간질환군에서도 이득 확인']},
+{id:'R72', cat:'sys', loe:4, grade:'weak', title:'종양진행 또는 치료관련 이상반응으로 면역관문억제제 병용요법을 중단한 후, 선택된 환자에서는 TKI를 고려할 수 있다.',
+ body:['면역병용요법 실패후 2차치료를 평가한 RCT는 아직 없음; 카보잔티닙 2상(면역치료실패후 47례)에서 중앙생존 9.9개월(2차치료로 사용시 14.3개월)']},
+{id:'R73', cat:'sys', loe:3, grade:'weak', title:'대상부전 간경변 환자는 전향적 임상시험 외에서는 일상적으로 전신치료를 받아서는 안 된다. 경도 간기능장애(Child-Pugh 7–8)를 가진 신중히 선택된 환자에서는 전신치료를 고려할 수 있다.',
+ body:['REACH 시험(라무시루맙)의 유일한 전향적 무작위자료: Child-Pugh B군에서 3등급이상 이상반응 증가, 위약대비 생존이득 유의차 없음',
+ '다수 관찰연구에서 Child-Pugh B군의 생존은 A군의 절반 이하 수준(소라페닙 중앙생존 3.6–6개월 vs 9.5–13.6개월)']},
+{id:'R74', cat:'sys', loe:4, grade:'weak', title:'이식후 재발질환으로 수술적·국소치료가 불가능한 경우, 소라페닙 또는 렌바티닙을 이용한 전신치료를 고려할 수 있다. 장기거부반응 위험으로 면역관문억제제는 권고하지 않는다.',
+ body:['이식후재발 환자는 모든 전신치료 임상시험에서 체계적으로 제외되어 옴; 소라페닙 이식후 사용시 용량감량이 30–68%에서 필요',
+ '이식후 면역관문억제제 사용 통합분석(52례): 급성거부반응 29%, 사망률 46%로 매우 높음']},
+{id:'R75', cat:'sys', loe:5, grade:'weak', title:'전신치료에 지속반응을 보이는 환자에서 국소적 진행부위(소수전이 진행)는 전신치료를 유지하면서 국소치료로 병행 치료할 수 있다.',
+ body:['폐 소수전이(1–4개) 환자 성향매칭연구에서 전이개수가 국소치료 이득을 저해하지 않음; 메타분석(10건, 527례)에서 국소치료 병용시 객관적반응률·생존율 우수']},
+{id:'R76', cat:'sys', loe:4, grade:'weak', title:'지속반응을 보이는 환자에서 면역관문억제제 중단의 결과는 현재 알려져 있지 않다. 중단 여부는 알려진 위험-이득 정보를 바탕으로 환자와 논의하여 결정할 수 있다.',
+ body:['완전반응률은 IMbrave150 8%, HIMALAYA 11.7%, CheckMate 9DW 7%로 증가추세; "임상적 완전반응" 기준을 이용한 예비연구에서 약제중단 후에도 재발이 관찰되지 않은 사례 보고(비아시아환자 대상 전향연구 필요)']},
+{id:'R77', cat:'sys', loe:3, grade:'weak', title:'근거기반 후속치료가 없는 상황에서, 환자가 지속적인 임상이득을 얻고 있다고 판단되면 진행 이후에도 전신치료를 계속할 수 있다.',
+ body:['IMbrave150: 진행후 아테졸리주맙(±베바시주맙) 지속군의 중앙생존 14.5개월 vs 무치료군 2.0개월(선택편향 고려 필요)']},
+
+{id:'R78', cat:'resp', loe:1, grade:'strong', title:'전신치료를 평가하는 임상시험에서 반응평가는 RECIST v1.1을 1차 기준으로 해야 한다. mRECIST와 iRECIST는 적절한 경우 2차평가로 보고할 수 있다.',
+ body:['mRECIST는 국소치료(급성괴사 유발)에는 표준으로 확립되었으나, TKI·면역치료의 항혈관신생 효과 평가에서는 RECIST v1.1과의 우열이 명확히 검증되지 않음']},
+{id:'R79', cat:'resp', loe:1, grade:'strong', title:'진행병기 HCC의 무작위대조시험에서 전체생존(OS)은 계속해서 1차평가변수로 유지되어야 한다.',
+ body:['무진행생존(PFS)의 OS 대리표지자로서의 강도는 메타분석마다 상반된 결과(약함~중등도); HIMALAYA는 낮은 PFS HR에도 OS 1차평가변수 충족, COSMIC-312는 반대사례 — PFS의 대리효력은 아직 불충분']}
+];
+
+function renderRecCard(r) {
+  const g = GRADE_META[r.grade];
+  const num = r.id.replace('R','');
+  const color = CAT_META[r.cat] ? CAT_META[r.cat].color : 'var(--surg)';
+  const bodyHtml = r.body && r.body.length ? `<ul>${r.body.map(b=>`<li>${b}</li>`).join('')}</ul>` : '';
+  return `<div class="rec-card">
+    <div class="rec-head">
+      <span class="rec-num" style="background:${color}">권고 ${num}</span>
+      <span class="rec-title">${r.title}</span>
+      <div class="rec-badges"><span class="stage-badge ${g.cls}">${g.label}</span><span class="stage-badge ${LOE_CLS[r.loe]}">LoE ${r.loe}</span></div>
+    </div>
+    <div class="rec-body">${bodyHtml}</div>
+  </div>`;
+}
+
+function renderAllRecs() {
+  Object.keys(CAT_META).forEach(cat => {
+    const el = document.getElementById(CAT_META[cat].target);
+    if (!el) return;
+    const items = RECS.filter(r => r.cat === cat);
+    el.innerHTML = items.map(renderRecCard).join('');
+  });
+}
+
+function renderSummaryTable(filterCat) {
+  const tbl = document.getElementById('summary-table');
+  const rows = ['<tr><th>번호</th><th>영역</th><th>권고 요지</th><th>LoE</th><th>강도</th></tr>'];
+  RECS.filter(r => !filterCat || r.cat === filterCat).forEach(r => {
+    const g = GRADE_META[r.grade];
+    rows.push(`<tr><td><strong>${r.id}</strong></td><td><span class="stage-badge ${CAT_META[r.cat].tag}">${FILTER_CATS[r.cat]}</span></td><td>${r.title}</td><td><span class="stage-badge ${LOE_CLS[r.loe]}">${r.loe}</span></td><td><span class="stage-badge ${g.cls}">${g.label}</span></td></tr>`);
+  });
+  tbl.innerHTML = rows.join('');
+}
+
+function renderSummaryFilters() {
+  const wrap = document.getElementById('summary-filters');
+  let html = `<span class="filter-chip active" data-cat="" onclick="selectFilter('')">전체</span>`;
+  Object.keys(FILTER_CATS).forEach(cat => {
+    html += `<span class="filter-chip" data-cat="${cat}" onclick="selectFilter('${cat}')">${FILTER_CATS[cat]}</span>`;
+  });
+  wrap.innerHTML = html;
+}
+function selectFilter(cat) {
+  document.querySelectorAll('#summary-filters .filter-chip').forEach(c => {
+    const active = c.getAttribute('data-cat') === cat;
+    c.classList.toggle('active', active);
+    c.style.background = active ? (CAT_META[cat] ? CAT_META[cat].color : 'var(--surg)') : '';
+    c.style.color = active ? '#fff' : '';
+  });
+  renderSummaryTable(cat || null);
+}
+
+const ABBR_DATA = [
+  { term:"EASL", def:"European Association for the Study of the Liver — 유럽간학회" },
+  { term:"HCC", def:"Hepatocellular Carcinoma — 간세포암종" },
+  { term:"NUC", def:"Nucleos(t)ide analogue — 뉴클레오시드/뉴클레오타이드 유사체" },
+  { term:"DAA", def:"Direct-Acting Antiviral — 직접작용항바이러스제" },
+  { term:"HBV/HCV", def:"Hepatitis B/C Virus — B형/C형 간염바이러스" },
+  { term:"MASLD", def:"Metabolic dysfunction-Associated Steatotic Liver Disease — 대사이상 지방간질환" },
+  { term:"MASH", def:"Metabolic dysfunction-Associated Steatohepatitis — 대사이상 지방간염" },
+  { term:"AFP", def:"Alpha-Fetoprotein — 알파태아단백" },
+  { term:"DCP/PIVKA-II", def:"Des-gamma-carboxy prothrombin — 탈감마카르복시 프로트롬빈" },
+  { term:"LI-RADS", def:"Liver Imaging Reporting and Data System — 간영상 보고·데이터체계" },
+  { term:"APHE", def:"Arterial Phase Hyperenhancement — 동맥기과다증강" },
+  { term:"CEUS", def:"Contrast-Enhanced Ultrasound — 조영증강초음파" },
+  { term:"ECA", def:"Extracellular Contrast Agent — 세포외조영제" },
+  { term:"HBA", def:"Hepatobiliary Agent — 간담도특이조영제" },
+  { term:"BCLC", def:"Barcelona Clinic Liver Cancer — 바르셀로나 임상 간암 병기체계" },
+  { term:"ECOG PS", def:"Eastern Cooperative Oncology Group Performance Status — 동부협력종양학회 전신수행능력" },
+  { term:"MDT", def:"Multidisciplinary Team — 다학제팀" },
+  { term:"LR / LT", def:"Liver Resection / Liver Transplantation — 간절제 / 간이식" },
+  { term:"MILS", def:"Minimally Invasive Liver Surgery — 최소침습 간수술" },
+  { term:"HVPG", def:"Hepatic Venous Pressure Gradient — 간정맥압경사" },
+  { term:"ICG-R15", def:"Indocyanine Green Retention at 15min — 인도시아닌그린 15분정체율" },
+  { term:"MELD", def:"Model for End-stage Liver Disease — 말기간질환모델" },
+  { term:"ALBI", def:"Albumin-Bilirubin grade — 알부민-빌리루빈 등급" },
+  { term:"PHLF", def:"Post-Hepatectomy Liver Failure — 간절제후 간부전" },
+  { term:"RFA/MWA", def:"Radiofrequency/Microwave Ablation — 고주파/마이크로파 소작술" },
+  { term:"TAE", def:"Transarterial Embolization — 경동맥색전술(무색전물질)" },
+  { term:"TACE", def:"Transarterial Chemoembolization — 경동맥화학색전술" },
+  { term:"cTACE/DEB-TACE", def:"conventional/Drug-Eluting Bead TACE — 통상적/약물방출비드 TACE" },
+  { term:"SIRT", def:"Selective Internal Radiation Therapy — 선택적 내부방사선치료(Y90/Ho166)" },
+  { term:"EBRT", def:"External Beam Radiation Therapy — 외부방사선치료" },
+  { term:"SBRT", def:"Stereotactic Body Radiation Therapy — 정위체부방사선치료" },
+  { term:"TKI", def:"Tyrosine Kinase Inhibitor — 티로신키나아제억제제" },
+  { term:"ICI", def:"Immune Checkpoint Inhibitor — 면역관문억제제" },
+  { term:"PD-1/PD-L1", def:"Programmed cell Death protein 1 / Ligand 1 — 예정사멸단백1/리간드1" },
+  { term:"CTLA-4", def:"Cytotoxic T-Lymphocyte-Associated antigen 4 — 세포독성T림프구연관항원4" },
+  { term:"VEGF", def:"Vascular Endothelial Growth Factor — 혈관내피세포성장인자" },
+  { term:"OS/PFS/RFS", def:"Overall/Progression-Free/Recurrence-Free Survival — 전체/무진행/무재발 생존" },
+  { term:"RECIST/mRECIST/iRECIST", def:"(modified/immune) Response Evaluation Criteria in Solid Tumors — 고형암 반응평가기준" },
+  { term:"HR", def:"Hazard Ratio — 위험비" },
+  { term:"RCT", def:"Randomized Controlled Trial — 무작위대조시험" },
+  { term:"LoE", def:"Level of Evidence — 근거수준(Oxford CEBM)" },
+  { term:"PICO", def:"Population, Intervention, Comparison, Outcome — 임상질문 구성요소" },
+  { term:"UNOS", def:"United Network for Organ Sharing — 미국 장기공유네트워크" },
+  { term:"UCSF", def:"University of California, San Francisco criteria — UCSF 이식확대기준" },
+  { term:"HOPE/NMP", def:"Hypothermic Oxygenated / Normothermic Machine Perfusion — 저온산소화/상온 기계관류" }
+];
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+renderAllRecs();
+renderSummaryFilters();
+renderSummaryTable(null);
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

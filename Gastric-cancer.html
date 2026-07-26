@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대한위암학회 위암 진료권고안 2024 — 근거기반 다학제 접근</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    /* 카테고리 6색 */
+    --diag:   #0550ae;   /* 진단·병기설정 — 청색 */
+    --endo:   #1a7f6e;   /* 내시경치료 — 청록 */
+    --surg:   #9b1c2e;   /* 수술적치료 — 진홍 */
+    --chemo:  #7c3aed;   /* 수술전후 항암·방사선 — 보라 */
+    --pall:   #c2185b;   /* 전이성 전신치료 — 마젠타 */
+    --special:#b8860b;   /* 특수상황 — 다크골드 */
+    --accent: #0550ae;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 980px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+  .logo-rk {
+    display: flex; align-items: center; gap: 0;
+    font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px;
+  }
+  .logo-rk span:nth-child(1) { background: var(--surg); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-rk span:nth-child(2) { background: var(--chemo);  color:#fff; padding:3px 6px; }
+  .logo-rk span:nth-child(3) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 18px; font-weight: 700; color: var(--text); }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+  .source-link { color: var(--accent); font-size: calc(11px * var(--fscale, 1)); text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex; justify-content: center;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn {
+    display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    margin: 4px 4px 4px 6px; padding: 5px 10px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700;
+    cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s;
+  }
+  .font-zoom-btn:hover { background: var(--border); }
+  .font-zoom-btn .fz-icon { font-size: calc(12px * var(--fscale, 1)); }
+  .tab-bar-inner { width: 100%; max-width: 980px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab {
+    padding: 8px 11px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: color .15s, border-color .15s; user-select: none;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--surg); border-bottom-color: var(--surg); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  /* ── MAIN ── */
+  .main { padding: 12px 16px; max-width: 980px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── GRID ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  /* ── CARD ── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header {
+    background: var(--surface2); padding: 8px 12px;
+    font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; user-select: none;
+  }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  /* ── STAT ── */
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; }
+  .stat-val { font-size: calc(19px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  /* ── ALERT ── */
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-diag    { background: #ddf4ff; border-left: 3px solid var(--diag); color: #0550ae; }
+  .alert-endo    { background: #e0f4f1; border-left: 3px solid var(--endo); color: #0f5549; }
+  .alert-surg    { background: #fce8eb; border-left: 3px solid var(--surg); color: var(--surg); }
+  .alert-chemo   { background: #ede9fe; border-left: 3px solid var(--chemo);  color: #5b21b6; }
+  .alert-pall    { background: #fce4ec; border-left: 3px solid var(--pall);  color: #a11256; }
+  .alert-special { background: #fff3cd; border-left: 3px solid var(--special); color: #7d4e00; }
+
+  /* ── TABLE ── */
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+  .tbl.small-text { font-size: calc(10px * var(--fscale, 1)); }
+
+  /* ── ACCORDION ── */
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; gap: 8px; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-hdr .acc-left { display:flex; align-items:center; gap:8px; flex-wrap: wrap; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; flex-shrink:0; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 3px; }
+
+  /* ── BADGE (권고강도/근거수준/카테고리) ── */
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-diag  { background: #ddf4ff; color: var(--diag); border: 1px solid var(--diag); }
+  .t-endo  { background: #e0f4f1; color: var(--endo); border: 1px solid var(--endo); }
+  .t-surg  { background: #fce8eb; color: var(--surg);  border: 1px solid var(--surg); }
+  .t-chemo { background: #ede9fe; color: var(--chemo); border: 1px solid var(--chemo); }
+  .t-pall  { background: #fce4ec; color: var(--pall); border: 1px solid var(--pall); }
+  .t-special { background: #fff3cd; color: var(--special); border: 1px solid var(--special); }
+  .b-strongfor     { background:#dafbe1; color:#116329; border:1px solid var(--green); }
+  .b-condfor       { background:#fff8c5; color:#7d4e00; border:1px solid var(--yellow); }
+  .b-condagainst   { background:#ffe8cc; color:#9a4c00; border:1px solid #c47d00; }
+  .b-strongagainst { background:#ffebe9; color:#82071e; border:1px solid var(--red); }
+  .b-invest        { background:#eef1f4; color:#57606a; border:1px dashed #57606a; }
+  .b-high   { background:#dafbe1; color:#116329; border:1px solid var(--green); }
+  .b-mod    { background:#ddf4ff; color:#0550ae; border:1px solid var(--accent); }
+  .b-low    { background:#fff3cd; color:#7d4e00; border:1px solid var(--special); }
+  .b-vlow   { background:#ffebe9; color:#82071e; border:1px solid var(--red); }
+
+  /* ── ABBR ── */
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  /* ── GEAR ROW ── */
+  .gear-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  .gear-box { flex: 1; min-width: 140px; border-radius: 6px; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); }
+  .gear-diag  { background: #e7f1fc; border: 1.5px solid var(--diag); color: #0550ae; }
+  .gear-endo  { background: #e0f4f1; border: 1.5px solid var(--endo); color: #0f5549; }
+  .gear-surg  { background: #fde8eb; border: 1.5px solid var(--surg);  color: var(--surg); }
+  .gear-chemo { background: #f3e8ff; border: 1.5px solid var(--chemo); color: #5b21b6; }
+  .gear-pall  { background: #fce4ec; border: 1.5px solid var(--pall); color: #a11256; }
+  .gear-special { background: #fff8e1; border: 1.5px solid var(--special); color: #7d4e00; }
+  .gear-title { font-weight: 700; font-size: calc(13px * var(--fscale, 1)); margin-bottom: 4px; }
+
+  /* ── RECOMMENDATION CARD ── */
+  .rec-card { border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:8px; background:var(--surface); }
+  .rec-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+  .rec-num { font-weight:800; color:#fff; border-radius:6px; padding:2px 8px; font-size: calc(11px * var(--fscale,1)); }
+  .rec-title { font-weight:700; font-size: calc(12.5px * var(--fscale,1)); flex:1; }
+  .rec-badges { display:flex; gap:4px; flex-wrap:wrap; }
+  .rec-body { font-size: calc(11.5px * var(--fscale,1)); line-height:1.7; color:var(--text); }
+  .rec-body ul { padding-left:16px; margin-top:4px; }
+
+  /* ── SEARCH FILTER ── */
+  .filter-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .filter-chip { padding:5px 11px; border-radius:14px; border:1px solid var(--border); background:var(--surface2); font-size:calc(11px * var(--fscale,1)); cursor:pointer; user-select:none; font-weight:600; color:var(--text2); }
+  .filter-chip.active { color:#fff; border-color:transparent; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-rk">
+        <span>K</span><span>G</span><span>C</span>
+      </div>
+      <h1>위암 진료권고안 2024 — 근거기반 다학제 접근</h1>
+    </div>
+    <div class="meta-line">
+      <a href="https://doi.org/10.5230/jgc.2025.25.e11" class="source-link" target="_blank">Kim IH, Kang SJ, Choi W, et al. J Gastric Cancer. 2025;25(1):5-114 ↗</a>
+      <span style="color:var(--text2)"> · 대한위암학회(KGCA), 2022년판 개정(4판→5판) · 2025년 1월 발행</span><br>
+      <span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 대한위암학회의 공식 승인을 받지 않았으며, 원문 요약·재구성본입니다 (This tool is not officially endorsed)</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요·방법론</div>
+    <div class="tab" onclick="showTab('diag')">🩻 진단·병기설정</div>
+    <div class="tab" onclick="showTab('endo')">🔬 내시경치료</div>
+    <div class="tab" onclick="showTab('surg')">🔪 수술적치료</div>
+    <div class="tab" onclick="showTab('chemo')">💊 수술전후 항암·방사선</div>
+    <div class="tab" onclick="showTab('pall')">🧬 전이성·전신치료</div>
+    <div class="tab" onclick="showTab('special')">⭐ 특수상황</div>
+    <div class="tab" onclick="showTab('summary')">📋 전체 권고안·약어</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:120px;outline:none;"
+          onfocus="this.style.borderColor='var(--surg)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:440px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 1: 개요·방법론 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--surg)">34개</div><div class="stat-lbl">최종 권고안<br>(Statement, 하위번호 포함 40개)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--diag)">6개</div><div class="stat-lbl">이번 판에서 개정·신규<br>제시된 핵심질문(KQ)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--chemo)">4단계</div><div class="stat-lbl">근거수준<br>(GRADE 방법론)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--endo)">5단계</div><div class="stat-lbl">권고등급<br>(강력/조건부 for·against 등)</div></div>
+  </div>
+
+  <!-- 개요 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 가이드라인 개요</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-surg">
+        <span>🎗️</span>
+        <div>위암은 한국과 전세계에서 가장 흔한 암종 중 하나로, 2020년 전세계 고형암 중 발생률 5위·사망률 4위를 차지한다. 한국에서는 2021년 신규 위암 29,361건(전체 암의 10.6%)으로 갑상선암·대장암·폐암에 이어 4위였다. 국가·공공검진 프로그램을 통한 조기발견과 치료 발전으로 조기위암(EGC)의 수술적 치료 비율이 1995년 28.6%에서 2019년 63.6%로 증가했고, 5년생존율도 43.9%(1993–1995)에서 77.5%(2015–2019)로 향상되었다.<br>
+        본 가이드라인은 2004년 이래 5번째 개정판으로, 2022년판을 개정한 것이다. 대한위암학회(KGCA)가 대한종양내과학회, 대한소화기학회, 대한상부위장관헬리코박터학회, 대한소화기내시경학회, 대한병리학회, 대한복부영상의학회, 대한방사선종양학회, 대한핵의학회와 공동으로 개발했으며, 위 또는 위식도접합부(GEJ) 선암 환자를 대상으로 한다.</div>
+      </div>
+
+      <div class="gear-row" style="margin-top:10px">
+        <div class="gear-box gear-diag">
+          <div class="gear-title">🩻 진단·병기설정</div>
+          내시경·EUS·MDCT·MRI·PET/CT·병리·생체표지자<br>
+          <small>S1–S3 + 일반 고려사항</small>
+        </div>
+        <div class="gear-box gear-endo">
+          <div class="gear-title">🔬 내시경치료</div>
+          ESD 절대·확대적응증, 비치유절제, H.pylori 제균<br>
+          <small>S4–S9</small>
+        </div>
+        <div class="gear-box gear-surg">
+          <div class="gear-title">🔪 수술적치료</div>
+          절제범위·림프절절제·접근법(복강경/로봇)·재건<br>
+          <small>S10–S22</small>
+        </div>
+        <div class="gear-box gear-chemo">
+          <div class="gear-title">💊 수술전후 항암·방사선</div>
+          보조/수술전항암요법, 보조항암방사선요법<br>
+          <small>S23, S24, S29, S30</small>
+        </div>
+        <div class="gear-box gear-pall">
+          <div class="gear-title">🧬 전이성·전신치료</div>
+          HER2·PD-L1·CLDN18.2 표적 1–3차 고식적치료<br>
+          <small>S25–S28</small>
+        </div>
+        <div class="gear-box gear-special">
+          <div class="gear-title">⭐ 특수상황</div>
+          위출구폐쇄, 전환수술, 소수전이, 복막암종증<br>
+          <small>S31–S34</small>
+        </div>
+      </div>
+
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>📌</span>
+        <div>용어 정의: <strong>"recommend"(권고)</strong> = 강력권고, <strong>"suggest"(제안)</strong> = 조건부권고. 이번 개정에서는 전신치료(면역항암제·표적치료) 영역의 변화가 가장 커서, 해당 부분(S25–S28)의 개정·신설이 집중적으로 이루어졌다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 방법론 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧪</span> 방법론 — GRADE / 문헌선정 / 개정과정</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>실무그룹 협의를 통해 6개의 핵심질문(KQ)을 개정 또는 신규(de novo) 제안</li>
+        <li>개정 KQ는 MEDLINE·Embase·Cochrane Library·KoreaMed에서 2022년 1월–2024년 1월 기간 문헌을 체계적으로 검색(이전 검색을 이어받음)</li>
+        <li>2명의 검토자가 제목·초록 1차 스크리닝 후 전문검토로 2차 선별, 불일치 시 제3검토자가 합의 도출</li>
+        <li>질 평가: RCT는 Cochrane Risk of Bias 1.0, 비RCT는 RoBANS, 진단연구는 QUADAS-2, 체계적문헌고찰은 AMSTAR 2 사용</li>
+        <li>메타분석은 Review Manager(RevMan)로 forest plot 산출, 근거-결정 전환표는 GRADEpro 소프트웨어 활용</li>
+        <li>권고 결정요인: 근거수준, 이득, 위해, 임상적용가능성 — 실무그룹 전체 검토·논의로 합의 도출</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GRADE 표 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📏</span> 근거수준·권고등급 정의(GRADE)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>근거수준</th><th>정의</th></tr>
+        <tr><td><span class="stage b-high">높음(High)</span></td><td>실제효과가 추정효과에 근접한다는 확신이 매우 높음</td></tr>
+        <tr><td><span class="stage b-mod">중등도(Moderate)</span></td><td>중등도 확신 — 추정치와 상당히 다를 가능성 있음</td></tr>
+        <tr><td><span class="stage b-low">낮음(Low)</span></td><td>확신이 제한적 — 실제효과가 상당히 다를 수 있음</td></tr>
+        <tr><td><span class="stage b-vlow">매우낮음(Very low)</span></td><td>확신이 매우 낮음 — 실제효과가 추정치와 상당히 다를 가능성이 높음</td></tr>
+      </table>
+      <div class="sec-sep"></div>
+      <table class="tbl">
+        <tr><th>등급</th><th>정의</th></tr>
+        <tr><td><span class="stage b-strongfor">강력권고(Strong for)</span></td><td>이득이 위해보다 크고 근거수준 높음/중등도 — 대부분의 임상상황에서 강력히 권고</td></tr>
+        <tr><td><span class="stage b-condfor">조건부권고(Conditional for)</span></td><td>이득·위해가 임상상황·환자가치관에 따라 다를 수 있음 — 상황에 따라 조건부로 권고</td></tr>
+        <tr><td><span class="stage b-condagainst">조건부비권고(Conditional against)</span></td><td>이득·위해가 상황에 따라 다를 수 있어 임상에서 권고되지 않을 수 있음</td></tr>
+        <tr><td><span class="stage b-strongagainst">강력비권고(Strong against)</span></td><td>위해가 이득보다 크고 근거수준 높음/중등도 — 임상에서 권고되어서는 안됨</td></tr>
+        <tr><td><span class="stage b-invest">연구단계(Investigational)</span></td><td>근거부족·결과불일치로 권고방향 결정 불가 — 추가 근거 필요</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> 대상·이용 관련 고려사항</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info">
+        <span>📌</span>
+        <div>본 가이드라인은 <strong>위 또는 위식도접합부(GEJ) 선암</strong> 환자를 대상으로 하며, 외과·종양내과·소화기내과·내시경·복부영상의학·병리·핵의학·방사선종양학 등 다학제 진료팀이 활용하도록 설계되었다. 최소 2–4년마다 정기적으로 개정될 예정이다.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ══════════════════ TAB 2: 진단·병기설정 ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="alert alert-diag">
+    <span>🩻</span>
+    <div>선별검사부터 내시경·초음파내시경(EUS)·CT·MRI·PET/CT 영상, 병리 분류와 생체표지자 검사까지 — 위암 진단·병기설정에 관한 일반적 고려사항과 권고안(S1–S3)이다.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔎</span> 선별검사(Screening) 및 조기위암 분류</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>한국은 위암 연령표준화 발생률이 세계에서 가장 높으나, 발생률 대비 사망률은 다른 국가보다 낮음 — 국가암검진사업(KNCSP)의 역할이 큼</li>
+        <li>KNCSP는 2002년 시작, 40세 이상 전 국민에게 2년마다 내시경 또는 상부위장관조영술(UGIS) 시행 권장</li>
+        <li>내시경 검진군은 비검진군 대비 위암 사망 위험비(HR) 41% 감소 — UGIS군에서는 유의한 사망률 감소 없음. 2018년부터 내시경이 기본검사로 전환되고 UGIS는 선택적으로만 시행</li>
+        <li>조기위암(EGC) 분류(일본위암분류): 융기형(I형), 표재형(II형: IIa 융기·IIb 평탄·IIc 함몰), 함몰형(III형) — 3mm 초과 융기 병변은 I형으로 분류</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📡</span> 영상 병기설정 — EUS·CT·MRI</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <p style="font-size: calc(12px * var(--fscale, 1));line-height:1.7;margin-bottom:8px"><strong>초음파내시경(EUS)</strong>은 종양의 국소침윤깊이(T병기)와 국소림프절전이(N병기) 평가에 유용하다. Cochrane 리뷰에 따른 진단정확도는 다음과 같다.</p>
+      <table class="tbl">
+        <tr><th>비교</th><th>연구수</th><th>환자수</th><th>민감도(%)</th><th>특이도(%)</th></tr>
+        <tr><td>T1a vs T1b</td><td>20</td><td>3,321</td><td>87 (81–92)</td><td>75 (62–84)</td></tr>
+        <tr><td>T1 vs T2</td><td>46</td><td>2,742</td><td>85 (78–91)</td><td>90 (85–93)</td></tr>
+        <tr><td>T1–2 vs T3–4</td><td>50</td><td>4,397</td><td>86 (81–90)</td><td>90 (87–93)</td></tr>
+        <tr><td>N− vs N+</td><td>44</td><td>3,573</td><td>83 (79–87)</td><td>67 (61–72)</td></tr>
+      </table>
+      <small style="display:block;margin-top:6px">연구 간 이질성이 높아 EUS 진단정확도는 시술자 숙련도에 크게 좌우됨</small>
+      <div class="sec-sep"></div>
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li><strong>다중검출기 CT(MDCT)</strong>: T병기 정확도 중앙값 78.6%, N병기 중앙값 68.8%. 복막전이 발견에서 특이도는 높으나(중앙값96.5%) 민감도는 낮음(중앙값57.6%)</li>
+        <li><strong>MRI</strong>: 간전이 평가에 가장 예민한 영상기법(간특이조영제+확산강조영상) — 위암 특이적 대규모 연구는 부족하나 대장암 등 타암종 자료 근거로 활용 확대</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧫</span> 병리 — 표본처리·조직분류·바이오마커</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>표본 고정·육안형 분류·절편·조직학적분류(Lauren·WHO 분류)·종양크기·침윤깊이·절제연·항암화학요법후 반응등급·복막세척세포검사 등이 표준화된 병리보고서 구성요소</li>
+        <li>자세한 내용은 대한병리학회의 「위암 표준병리보고서 지침 제2판」을 참조</li>
+      </ul>
+      <div class="sec-sep"></div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><div class="acc-left"><strong>A. HER2</strong></div><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">전신치료 전 반드시 평가, 재발·전이 병소는 재평가 필요. IHC 3+ 양성, 0–1+ 음성, 2+는 판정보류(equivocal)로 ISH 추가시행. HER2:CEP17 비율≥2, 또는 CEP17 다염색체성이면서 비율&lt;2이나 평균 HER2 신호&gt;6이면 양성 판정.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><div class="acc-left"><strong>B. 현미부수체 불안정성(MSI)</strong></div><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">PCR(MSI-H/MSI-L/MSS 등급) 또는 IHC(MLH1·MSH2·PMS2·MSH6 미스매치복구단백)로 평가. MSI-H/dMMR은 원위부 위치·장형조직형·낮은 병기·양호한 예후와 연관되며, 고식적 치료에서 면역관문억제제 반응예측 바이오마커.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><div class="acc-left"><strong>C. EBV(엡스타인-바 바이러스)</strong></div><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">EBV-encoded RNA ISH로 검출. 근위부 위치·저분화조직형·낮은 병기·양호한 예후와 연관되는 별도 분자아형.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><div class="acc-left"><strong>D. PD-L1 발현</strong></div><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">항체클론·임상시험 설정에 따라 판정법·기준값이 다름. 대부분 combined positive score(CPS) 체계 사용. 22C3 pharmDx 검사(CPS≥1 양성기준), 28-8 pharmDx 검사(CPS≥5 기준)가 임상시험에 연계되어 사용됨. 재발·전이 병소에서 재평가 권장.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><div class="acc-left"><strong>E. Claudin 18.2(CLDN18.2)</strong></div><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">정상 위점막에 국한된 밀착연접단백으로, 악성전환시 종양세포표면에 노출되어 새로운 표적이 됨. VENTANA CLDN18(43-14A) 검사로 종양세포 75% 이상 중등도-강한 막염색시 양성. SPOTLIGHT·GLOW 임상시험에서 약 38% 양성률.</div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><div class="acc-left"><strong>F. 차세대염기서열분석(NGS)</strong></div><span class="acc-toggle">▾</span></div>
+        <div class="acc-body">HER2·MSI·PD-L1·종양변이부담(TMB)·NTRK 융합 외에 FGFR2·EGFR·MET 증폭 등 추가 표적탐색 가능. IHC/ISH/표적 PCR을 우선 고려하되, 검증된 NGS assay도 활용 가능. 검체는 10–300ng DNA/RNA, 종양분율 10–20% 이상 권장.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-row" style="margin-top:6px">
+    <span style="font-size: calc(12px * var(--fscale,1));color:var(--text2);align-self:center">진단·병기설정 관련 권고안</span>
+  </div>
+  <div id="rec-diag"></div>
+
+</div><!-- /diag -->
+
+
+<!-- ══════════════════ TAB 3: 내시경치료 ══════════════════ -->
+<div id="tab-endo" class="panel">
+
+  <div class="alert alert-endo">
+    <span>🔬</span>
+    <div>조기위암(EGC)에서 내시경점막하박리술(ESD) 등 내시경절제의 절대·확대적응증, 비치유절제 시 대응, 그리고 이시성위암 예방을 위한 H. pylori 제균치료를 다룬다.</div>
+  </div>
+
+  <div id="rec-endo"></div>
+
+</div><!-- /endo -->
+
+
+<!-- ══════════════════ TAB 4: 수술적치료 ══════════════════ -->
+<div id="tab-surg" class="panel">
+
+  <div class="alert alert-surg">
+    <span>🔪</span>
+    <div>재건방법, 절제연 확보, 절제범위(원위부/근위부/유문보존/전절제), 비장절제·종격동림프절절제 여부, 림프절절제범위(D1+/D2), 감시림프절탐색수술, 수술접근법(개복/복강경/로봇), 대망절제, 담석예방까지 수술 전반의 권고안이다.</div>
+  </div>
+
+  <div id="rec-surg"></div>
+
+</div><!-- /surg -->
+
+
+<!-- ══════════════════ TAB 5: 수술전후 항암·방사선 ══════════════════ -->
+<div id="tab-chemo" class="panel">
+
+  <div class="alert alert-chemo">
+    <span>💊</span>
+    <div>근치적 절제가 가능한 병기 II·III 위암에서의 수술후 보조항암화학요법과 국소진행위암에서의 수술전(신보조) 항암화학요법, 그리고 보조항암방사선요법의 역할에 대한 권고안이다.</div>
+  </div>
+
+  <div id="rec-chemo"></div>
+
+</div><!-- /chemo -->
+
+
+<!-- ══════════════════ TAB 6: 전이성·전신치료 ══════════════════ -->
+<div id="tab-pall" class="panel">
+
+  <div class="alert alert-pall">
+    <span>🧬</span>
+    <div>절제불가능 국소진행 또는 전이성 위암의 1차–3차 고식적 전신치료 권고안이다. HER2·PD-L1·CLDN18.2 상태에 따른 표적/면역치료 병용요법이 핵심이며, 이번 개정에서 가장 큰 변화가 있었던 영역이다.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧭</span> 바이오마커에 따른 1차 치료 선택 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="tbl">
+        <tr><th>바이오마커</th><th>1차 치료 옵션</th></tr>
+        <tr><td>HER2 음성 · PD-L1 CPS≥5</td><td>니볼루맙 + 불화피리미딘/백금기반 항암화학요법</td></tr>
+        <tr><td>HER2 음성 · PD-L1 CPS≥1</td><td>펨브롤리주맙 + 불화피리미딘/백금기반 항암화학요법</td></tr>
+        <tr><td>HER2 음성 · CLDN18.2 양성</td><td>졸베툭시맙 + CAPOX 또는 FOLFOX</td></tr>
+        <tr><td>HER2 양성</td><td>트라스투주맙 + 불화피리미딘/백금기반 항암화학요법</td></tr>
+        <tr><td>HER2 양성 · PD-L1 CPS≥1</td><td>펨브롤리주맙 + 트라스투주맙 + 항암화학요법</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div id="rec-pall"></div>
+
+</div><!-- /pall -->
+
+
+<!-- ══════════════════ TAB 7: 특수상황 ══════════════════ -->
+<div id="tab-special" class="panel">
+
+  <div class="alert alert-special">
+    <span>⭐</span>
+    <div>절제불가능 위암의 위출구폐쇄, 전신치료 반응이 좋은 stage IV 환자에서의 전환수술, 간·난소 등 소수전이에 대한 수술적 접근, 복막암종증에서의 복강내 항암화학요법 등 표준치료 범주를 벗어난 특수 임상상황에 대한 권고안이다.</div>
+  </div>
+
+  <div id="rec-special"></div>
+
+</div><!-- /special -->
+
+
+<!-- ══════════════════ TAB 8: 전체 권고안·약어 ══════════════════ -->
+<div id="tab-summary" class="panel">
+
+  <div class="alert alert-info">
+    <span>📋</span>
+    <div>전체 34개 권고안(하위번호 포함 40개)을 한 화면에서 확인할 수 있다. 카테고리 칩을 눌러 필터링할 수 있다.</div>
+  </div>
+
+  <div class="filter-row" id="summary-filters"></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 전체 권고안 요약표</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="tbl small-text" id="summary-table">
+        <tr><th>번호</th><th>영역</th><th>권고 요지</th><th>근거수준</th><th>권고등급</th></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⚠️</span> 근거의 한계 및 참고사항</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul style="font-size: calc(12px * var(--fscale, 1));padding-left:16px;line-height:1.9">
+        <li>다수 권고안이 후향적 코호트·비무작위연구에 근거하며, 전향적 무작위대조시험(RCT) 근거가 충분한 영역은 제한적(예: LDG vs ODG, 어쥬번트 항암화학요법, 일부 전신치료 영역)</li>
+        <li>전환수술·소수전이 수술·복강내 항암화학요법 등은 "연구단계(investigational)"로, 향후 근거 축적에 따라 권고가 변경될 수 있음</li>
+        <li>본 가이드라인은 위 또는 GEJ 선암에 국한되며, 식도암·위림프종·위장관기질종양(GIST) 등은 다루지 않음</li>
+        <li>생체표지자(HER2·PD-L1·CLDN18.2 등)의 검사법·판정기준값은 임상시험별로 상이하므로, 실제 처방 시 각 약제의 허가사항과 최신 검사기준을 함께 확인해야 함</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 약어 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 주요 약어 모음</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div id="abbr-main-grid" class="abbr-grid"></div>
+    </div>
+  </div>
+
+</div><!-- /summary -->
+
+</div><!-- /main -->
+
+<!-- ════ 데이터 ════ -->
+<script>
+const FONT_ZOOM_LEVELS = [1, 1.25, 1.5];
+let fontZoomIndex = 0;
+
+function applyFontZoom(scale) {
+  document.documentElement.style.setProperty('--fscale', scale);
+  const label = document.getElementById('font-zoom-label');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+}
+function cycleFontZoom() {
+  fontZoomIndex = (fontZoomIndex + 1) % FONT_ZOOM_LEVELS.length;
+  applyFontZoom(FONT_ZOOM_LEVELS[fontZoomIndex]);
+}
+
+const CAT_META = {
+  diag:    { label:'진단·병기설정', color:'var(--diag)',    tag:'t-diag',    target:'rec-diag' },
+  endo:    { label:'내시경치료',     color:'var(--endo)',    tag:'t-endo',    target:'rec-endo' },
+  surg:    { label:'수술적치료',     color:'var(--surg)',    tag:'t-surg',    target:'rec-surg' },
+  chemo:   { label:'수술전후 항암·방사선', color:'var(--chemo)', tag:'t-chemo', target:'rec-chemo' },
+  pall:    { label:'전이성·전신치료', color:'var(--pall)',    tag:'t-pall',    target:'rec-pall' },
+  special: { label:'특수상황',       color:'var(--special)', tag:'t-special', target:'rec-special' }
+};
+const GRADE_META = {
+  strongfor:     { label:'강력권고',     cls:'b-strongfor' },
+  condfor:       { label:'조건부권고',   cls:'b-condfor' },
+  condagainst:   { label:'조건부비권고', cls:'b-condagainst' },
+  strongagainst: { label:'강력비권고',   cls:'b-strongagainst' },
+  invest:        { label:'연구단계',     cls:'b-invest' }
+};
+const EVID_META = {
+  high:'b-high', mod:'b-mod', low:'b-low', vlow:'b-vlow'
+};
+const EVID_LABEL = { high:'높음', mod:'중등도', low:'낮음', vlow:'매우낮음' };
+
+const STATEMENTS = [
+{id:'S1', cat:'diag', evid:'low', grade:'strongfor',
+ title:'MDCT를 이용한 위암 병기설정 시, 축상영상(axial)에 더하여 다면재구성(MPR)영상 획득을 시행해야 한다.',
+ body:['MDCT 병기 정확도는 T병기 중앙값 78.6%, N병기 중앙값 68.8% 수준으로 보고됨',
+ '메타분석에서 axial 영상에 MPR 영상을 추가하면 T병기 정확도가 유의하게 향상(정확도차 0.10, 95% CI 0.02–0.18, P=0.01); N병기 정확도는 유의차 없음',
+ 'CT 위조영술·가상내시경 등 3차원 재구성영상은 조기위암 발견율 향상에 도움',
+ '복막전이 발견에서 MDCT는 특이도가 높으나(중앙값 96.5%) 민감도는 낮음(중앙값 57.6%)']},
+{id:'S2', cat:'diag', evid:'low', grade:'condfor',
+ title:'FDG PET/CT는 병기설정 워크업에서 추가적인 보조 진단도구로 고려할 수 있다.',
+ body:['림프절전이 진단: 풀링 민감도 45%, 특이도 87%(19개 연구, 2,195명)',
+ '원격전이 진단: 풀링 민감도 61%, 특이도 97%',
+ '미만형(Lauren)·인환세포암은 FDG 섭취가 낮아 민감도가 떨어짐 — 장형암에서 상대적으로 정확도 높음',
+ '높은 특이도를 바탕으로 진단 CT와 병용하는 보조적 병기설정 도구로 활용 가능']},
+{id:'S3', cat:'diag', evid:'low', grade:'condfor',
+ title:'FDG PET/CT는 근치적 수술 후 재발이 의심되는 위암 환자의 감별진단에 고려할 수 있다.',
+ body:['재발 진단: 풀링 민감도 81%, 특이도 88%, AUC 0.91(13개 연구, 1,567명)',
+ '조영증강 CT와 비교 시 통계적으로 유의한 정확도 차이 없음(민감도 72% vs 88%, 특이도 89% vs 83%)',
+ 'PET/CT는 골전이 발견에, 조영증강 CT는 복막전이 발견에 상대적으로 우수',
+ '종양표지자는 상승했으나 일반영상검사가 음성인 경우, PET/CT가 추가로 재발을 발견(29명 중 17명, 59%)']},
+
+{id:'S4', cat:'endo', evid:'mod', grade:'strongfor',
+ title:'고/중분화 관상 또는 유두상 조기위암 중 내시경적 추정크기≤2cm·점막암·궤양(-)를 만족하면 내시경절제를 권고한다(고전적 절대적응증).',
+ body:['한국에서 2011–2014년 ESD 23,828건 시행 — EGC의 표준 최소침습치료로 정착',
+ '고전적 절대적응증 충족 시 림프절전이 위험 극히 낮음(대규모 일본연구: 해당군에서 전이 0건)',
+ '일괄절제율 97.1–99%, 완치절제율 91.5–96.4%, 국소재발률 0.2–1.8%',
+ 'ESD군과 위절제술군 간 5년(93.6–96.4% vs 94.2–97.2%)·10년(81.9% vs 84.9%) 생존율 유의차 없음']},
+{id:'S5', cat:'endo', evid:'mod', grade:'strongfor',
+ title:'추정크기>2cm·점막암·궤양(-), 또는 추정크기≤3cm·점막암·궤양(+)을 만족하는 고/중분화 EGC는 ESD와 림프절절제 동반 위절제술 모두 적응이 될 수 있다(확대적응증).',
+ body:['해당 병리기준 충족 시 위외재발(림프절·원격전이)률 0–0.21%로 근치적위절제술과 유사',
+ 'ESD군과 근치적수술군 간 전체생존율 유사(93.3–96.4% vs 92.0–97.2%)',
+ '전향적 비교연구가 부재하여 여전히 림프절전이 우려가 남아있음',
+ 'ESD 시행이 기술적으로 어렵거나 정기 내시경 추적이 어려운 경우, 위절제술+림프절절제도 유효한 선택']},
+{id:'S6', cat:'endo', evid:'low', grade:'condfor',
+ title:'저분화 관상 또는 저응집성(인환세포암 포함) EGC 중 추정크기≤2cm·점막암·궤양(-)은 충분한 논의 후 신중하게 내시경절제를 고려할 수 있다.',
+ body:['미분화형은 분화형보다 림프절전이 위험이 높아 매우 신중한 판단 필요',
+ '해당 기준 충족 시 림프절전이 위험 0–2.3%로 보고',
+ '일본 JCOG1009/1010 전향적 관찰연구: 완치절제율 71%, 5년생존율 99.3%, 5년무재발생존율 98.9%',
+ '위험인자(크기>2cm, 점막하침윤, 궤양, 림프혈관침윤) 확인 시 추가 위절제술 필요']},
+{id:'S7', cat:'endo', evid:'low', grade:'strongfor',
+ title:'내시경절제 결과가 완치절제 기준을 충족하지 못하거나, 림프혈관침윤 또는 수직절제연 양성이 확인되면 추가수술을 권고한다.',
+ body:['17개 연구 비교분석 — 대부분 관찰군의 연령·동반질환이 높아 선택편향 존재',
+ '15개 연구 중 수술군의 5년생존율이 관찰군보다 유의하게 높음',
+ '성향점수매칭분석: 5년생존율 91.0% vs 75.5%(수술군 vs 관찰군)',
+ '추가수술 시행 시 림프절전이가 2.0–20.0%에서 확인되어, 추가수술의 근거를 뒷받침']},
+{id:'S8', cat:'endo', evid:'low', grade:'condfor',
+ title:'내시경절제 후 외측절제연 양성만 있고 나머지 완치절제 기준을 모두 충족하는 경우, ESD 재시술이나 아르곤플라즈마응고(APC) 등 내시경치료를 고려할 수 있다.',
+ body:['외측절제연 단독양성 후 관찰만 시행한 경우 5년국소재발률 11.9%, 위암관련사망은 없었음',
+ '메타분석: 재ESD/APC는 관찰보다 재발률 유의하게 낮음(RR 0.22), 위절제술보다는 재발률 높음(RR 6.45)',
+ '위암관련사망은 내시경치료·관찰·위절제술 3개군 모두에서 보고되지 않음',
+ '삶의 질과 위절제술의 이환율을 고려해 내시경치료를 선택할 수 있으며, 이후 면밀한 추적관찰이 필요']},
+{id:'S9', cat:'endo', evid:'mod', grade:'strongfor',
+ title:'H. pylori 감염이 있던 EGC 환자가 내시경절제로 성공적으로 치료된 경우, 이시성위암 예방을 위해 제균치료를 권고한다.',
+ body:['WHO는 1999년 H. pylori를 1급 발암물질로 분류; 세계인구 약 50% 감염',
+ '제균군 vs 비제균군의 이시성위암/전구병변 발생률: 4.80% vs 9.75%(HR 0.45, 95% CI 0.31–0.66)',
+ 'Fukase 등 연구에서는 이시성위암만 보아도 유의한 예방효과 확인(HR 0.34)']},
+
+{id:'S10', cat:'surg', evid:'high', grade:'condfor',
+ title:'원위부위절제술(DG) 후 Billroth I·Billroth II·Roux-en-Y 재건법 간 기능적·영양학적(체중감소, 알부민) 결과에 유의한 차이는 없다. 각 재건법마다 장단점이 있어 술자가 사례별로 판단할 수 있다.',
+ body:['Billroth I은 Billroth II 대비 수술시간·재원기간·담즙역류 측면에서 유리(합병증은 유의차 없음)',
+ 'Billroth I은 Roux-en-Y 대비 수술시간·합병증·재원기간에서 유리',
+ 'Billroth I은 철결핍성빈혈 위험감소, 소화관 연속성 유지, Petersen 탈장 위험 없음, 담도질환 시 접근 용이 등 부가적 장점']},
+{id:'S11-1', cat:'surg', evid:'low', grade:'strongfor',
+ title:'EGC에서 생존율 향상을 위해 음성절제연 확보 노력을 권고한다. 환자 상태가 양호하고 기술적으로 가능하다면 재절제 또는 재수술을 고려해야 한다.',
+ body:['병리학적 T1암에서 절제연양성 시 생존율 저하(예: 68.6% vs 97.4%; 66.7% vs 93.1%)',
+ '절제연 "길이"보다 "음성절제연 확보 자체"가 예후에 중요하다는 데 다수 문헌이 동의',
+ '냉동절편검사·술중위내시경·수술전 클리핑/염색·형광영상·초음파 등 다양한 방법을 단독 또는 병용',
+ '절제연 양성이 확인되고 환자 상태·기술적 여건이 허락하면 추가수술로 R0 절제 달성 시 생존이득 보고']},
+{id:'S11-2', cat:'surg', evid:'low', grade:'condfor',
+ title:'진행성·침윤성 위암에서도 음성절제연 확보 노력이 필요하다. 최종 병리절제연 침범이 확인되면, 생존이득이 제한적일 수 있고 합병증 위험이 있음을 고려해 재수술은 신중하게 선택해야 한다.',
+ body:['진행암에서는 육안적으로 3–8cm 절제연이 권고되어 왔으며, 냉동절편검사가 육안예측보다 정확',
+ '≥T3, ≥N2, ≥병기IIIa(AJCC 7판)에서는 미세절제연양성이 예후에 미치는 영향이 제한적이라는 보고가 다수',
+ '재수술은 병기, 환자상태, 합병증위험, 전신치료 지연가능성 등을 종합적으로 고려해 신중히 결정']},
+{id:'S12', cat:'surg', evid:'low', grade:'condfor',
+ title:'상부 1/3 위의 EGC에서 이중통로재건을 동반한 근위부위절제술(PG-DTR)은 전절제술(TG)에 비해 비타민B12결핍이 적고 생존율·역류증상이 유사하여, 두 술식 모두 고려할 수 있다.',
+ body:['상부위암은 원위부 림프절전이가 드물어 근위부절제술이 종양학적으로 안전한 선택지',
+ 'PG-DTR군은 TG군 대비 비타민B12결핍 유의하게 감소(RR 0.30, 95% CI 0.23–0.40)',
+ '체중감소·역류증상은 두 군 간 비슷, 합병증은 PG-DTR군에서 더 적음(RR 0.61)']},
+{id:'S13', cat:'surg', evid:'mod', grade:'condfor',
+ title:'유문에서 5cm 이상 근위부에 위치한 EGC에서는 유문보존위절제술(PPG)과 원위부위절제술(DG) 모두 시행할 수 있다. PPG는 담석형성감소·단백보존의 이점이 있으나, 위배출지연을 함께 고려해야 한다.',
+ body:['KLASS-04 전향적 RCT: 생존·합병증 유의차 없음, 덤핑증후군 발생률도 비슷(13.2% vs 15.8%)',
+ '3년째 역류식도염(17.8% vs 6.3%)·위배출지연(16.3% vs 4.0%)은 PPG군에서 더 흔함',
+ '반면 담즙역류(13.2% vs 24.4%)·담석형성(2.3% vs 8.7%)은 PPG군에서 더 적음',
+ '체중변화는 차이 없었으나 총단백 보존 측면에서 PPG가 유리']},
+{id:'S14', cat:'surg', evid:'high', grade:'strongagainst',
+ title:'대만곡 침범이 없는 근위부 진행위암(AGC)의 근치적절제 시, 비장문 림프절절제를 위한 예방적 비장절제는 권고하지 않는다.',
+ body:['비장문 직접침범이 없는 경우, 비장절제를 병용한 절제의 생존이득이 확인되지 않음(메타분석)',
+ '비장절제군에서 합병증 위험이 더 높게 나타나는 경향',
+ '비장·비장문·대만곡 직접침범이 있는 경우에는 치료적 비장절제가 필요할 수 있음']},
+{id:'S15', cat:'surg', evid:'low', grade:'condfor',
+ title:'장막침범이 없는 위식도접합부(GEJ, Siewert II/III) 진행위암에서는 원위부 림프절전이율이 낮아 근위부위절제술(PG)을 시행할 수 있다.',
+ body:['근위부절제술 후 림프절매핑 메타분석(5개 연구): pT2에서 원위림프절(#4d,#5,#6) 전이율 거의 0%',
+ 'pT3에서 원위림프절전이 위험비 2.48, pT4에서 10.88(pT2 대비)',
+ '한국 873례 분석: GEJ에서 종양중심까지 거리>30mm, 크기>70mm, Borrmann IV형, 장막침범이 원위림프절전이 위험인자로 확인']},
+{id:'S16-1', cat:'surg', evid:'low', grade:'condfor',
+ title:'GEJ를 침범한 진행암에서는 잠재적 전이림프절 제거를 위해 하부종격동 림프절절제를 시행할 수 있다.',
+ body:['Siewert 분류: I형(하부식도암) · II형(진성 GEJ암) · III형(분문하암)으로 구분, 절제범위 논란 지속',
+ '조기암에서는 위치와 무관하게 생존율이 우수해 종격동절제 불필요할 수 있음(93.2% vs 96.7% vs 98.7%)',
+ '진행암에서는 Siewert II형의 생존율이 III형·상부위암보다 낮아(47.9% vs 75.4% vs 71.8%) 종격동절제 필요성 시사']},
+{id:'S16-2', cat:'surg', evid:'mod', grade:'strongfor',
+ title:'절제가능한 GEJ 침범 선암에서 음성절제연 확보 및 하부종격동 림프절절제를 위해서는 경흉부접근법(TT)보다 경열공접근법(TH)을 권고한다.',
+ body:['2개 RCT 메타분석: 원내사망률·문합부누출 발생률은 TT/TH 간 유의차 없음',
+ '일본 JCOG9502 시험: 중간분석 후 조기종료되었으나 TH접근법의 5년생존율이 TT접근법에 비열등(HR 0.74, 95% CI 0.42–1.32)',
+ '합병증 감소 측면을 고려해 TH접근법을 우선 권고']},
+{id:'S17', cat:'surg', evid:'low', grade:'strongfor',
+ title:'cT1N0 EGC 환자의 수술 시 D1+ 림프절절제를 시행할 수 있다.',
+ body:['D2 절제가 장기생존자료(Dutch trial)에 근거한 표준이었으나, 복강경수술 확산과 함께 EGC에서의 필요성에 의문 제기',
+ '일본 보고: D2와 modified D2(D1+)의 5년(97% vs 98%)·10년(91% vs 91%) 생존율이 유사, cT1N0/N1에서 2차 림프절군 전이 없음',
+ 'D2 미만 절제를 시행한 복강경 vs 개복 EGC RCT들의 우수한 생존성적을 근거로 D1+ 시행을 강력히 제안']},
+{id:'S18', cat:'surg', evid:'mod', grade:'condfor',
+ title:'잘 설계된 프로토콜과 추적관찰계획 하에 시행하는 감시림프절탐색수술(SNNS)은 cT1N0이면서 크기≤3cm인 위암에서 영양학적 결과·삶의 질 개선 측면의 치료옵션으로 고려할 수 있다. 이시성암 및 구제수술 가능성에 대해 환자와 충분히 논의한 후 결정해야 한다.',
+ body:['감시림프절매핑의 풀링 검출률 93.7–97%, 민감도 80.8–89%',
+ 'SENORITA RCT: 3년무병생존율에서 SNNS의 비열등성 입증에는 실패(이시성암 발생률 차이, 91.8% vs 95.5%)',
+ '그러나 구제수술 후 2차평가지표(5년무병·전체·질병특이생존율)는 군간 유의차 없음',
+ '체중감소 감소·헤모글로빈 증가 등 영양학적 결과와 일부 삶의 질 지표에서 SNNS가 유리']},
+{id:'S19-1', cat:'surg', evid:'high', grade:'strongfor',
+ title:'임상병기 I 위암에서는 단기수술성적이 우수하고 장기생존율이 개복원위부위절제술(ODG)과 유사하여 복강경원위부위절제술(LDG)을 권고한다.',
+ body:['2000년대 초 첫 임상시험 이후 다수의 대규모 RCT가 LDG의 안전성과 단기이점(출혈량·회복)을 입증']},
+{id:'S19-2', cat:'surg', evid:'high', grade:'strongfor',
+ title:'국소진행위암(AGC)에서도 생존율이 비슷하여 LDG와 ODG 모두 권고할 수 있다.',
+ body:['KLASS-02·CLASS-01·JLSSG0901 3개 전향적 RCT 근거',
+ '메타분석: LDG는 출혈량이 적고 수술시간이 긴 경향, 재원기간·합병증률은 유의차 없음',
+ '5년생존율은 LDG와 ODG 간 유의차 없음(HR 1.05, 95% CI 0.88–1.26)']},
+{id:'S20', cat:'surg', evid:'mod', grade:'condfor',
+ title:'로봇위절제술(RG)은 생존율의 비열등성과 낮은 합병증률 측면에서 치료옵션으로 고려할 수 있다. 다만 추가비용과 긴 수술시간 등의 단점을 환자와 함께 논의해 공유의사결정을 시행해야 한다.',
+ body:['2개 RCT 메타분석: RG가 복강경(LG) 대비 합병증 유의하게 적음(RR 0.49, 95% CI 0.31–0.78)',
+ '췌장루 발생률·재수술률·재원기간은 군간 차이 없음',
+ '수술시간은 RG가 평균 47분 더 김(95% CI 30.67–63.41분)',
+ '후향연구: 5년생존율·무병생존율 차이 없음; 추가비용은 $3,000–5,000 수준으로 보고']},
+{id:'S21', cat:'surg', evid:'low', grade:'condfor',
+ title:'진행위암(AGC) 환자에서는 부분대망절제술(PO)을 고려할 수 있다.',
+ body:['전대망절제술(TO)은 근거수준이 높지 않은 채로 표준적으로 시행되어 왔으며, 복강경수술 시 기술적으로 까다롭고 시간이 소요됨',
+ '이에 대한 대안으로 PO가 여러 연구에서 검토되어 왔음']},
+{id:'S22', cat:'surg', evid:'mod', grade:'condfor',
+ title:'위절제술 후 담석형성 감소를 위해 우르소데옥시콜산(UDCA) 1년 투여를 권고할 수 있다.',
+ body:['담석형성은 위절제술의 대표적 장기합병증(미주신경절단·비만·급격한체중감소·전절제술이 위험 증가)',
+ 'RCT: 위약 대비 300mg(OR 0.27) 및 600mg(OR 0.20) UDCA 모두 담석형성 유의하게 감소',
+ '300mg과 600mg 간 예방효과 차이가 없어 일 300mg으로 충분',
+ '유문보존술식이나 미주신경 간지보존 시 담석형성이 드물어, 대상군 선정에 대한 추가연구 필요']},
+
+{id:'S23', cat:'chemo', evid:'high', grade:'strongfor',
+ title:'병리학적 병기 II 또는 III 위암 환자에서 보조항암화학요법(S-1 또는 capecitabine+oxaliplatin[CAPOX])을 권고한다.',
+ body:['ACTS-GC(일본): S-1군 3년무병생존율 72.2% vs 관찰군 59.6%(HR 0.62), 3년생존율 80.1% vs 70.1%(HR 0.68)',
+ 'CLASSIC(한·중·대): CAPOX군 3년무병생존율 74% vs 관찰군 59%(HR 0.56); 5년 추적자료도 확인',
+ '메타분석: 보조항암요법이 전체생존율(HR 0.66)·무병생존율(HR 0.62) 모두 유의하게 향상',
+ 'AJCC 6판 IB기(현행 7·8판 IIA기, pT1N2M0 및 pT3N0M0)에는 근거가 충분하지 않음에 유의']},
+{id:'S24', cat:'chemo', evid:'high', grade:'condfor',
+ title:'절제가능한 국소진행위암(AGC) 환자에서는 위주술기 항암화학요법의 일환으로 수술전(신보조) 항암화학요법(NCT)을 고려할 수 있다.',
+ body:['수술후보조항암요법 단독은 특히 III기에서 성적이 제한적이며, 수술합병증으로 치료 지연·독성증가가 흔함',
+ 'PRODIGY(한국): 수술전 DOS(docetaxel+oxaliplatin+S-1) 요법이 R0절제율 향상(95% vs 84%, P<0.001), 무진행생존율 유의개선(HR 0.70, 95% CI 0.52–0.95)',
+ '조기에 전신상태가 양호할 때 강화된 항암요법을 시행할 수 있다는 장점']},
+{id:'S29', cat:'chemo', evid:'high', grade:'condagainst',
+ title:'근치적위절제술을 시행한 병리학적 병기 II 또는 III 위암 환자에서 보조항암방사선요법은 권고하지 않는다.',
+ body:['보조항암방사선요법(CRT)은 항암화학요법 단독보다 국소재발을 유의하게 감소(HR 0.62), 3등급 이상 독성 차이는 없음',
+ '항암화학요법 단독보다 무병생존율에서 우세(HR 0.85)하나, 백금기반 복합항암요법과 비교 시 무병생존(HR 0.91)·전체생존(HR 1.03) 이득은 없음',
+ '현재의 표준 복합항암화학요법(S-1/CAPOX 등)과 비교하면 방사선 추가의 이득이 입증되지 않음']},
+{id:'S30', cat:'chemo', evid:'mod', grade:'invest',
+ title:'국소진행위암(AGC)에서 수술전 항암화학요법에 방사선을 추가하는 것에 대한 근거는 아직 결정적이지 않다.',
+ body:['POET·NeoRes 시험: 방사선 추가군에서 병리학적완전관해율(23.6% vs 6.3%)·병리학적N0율(69.9% vs 45.7%)이 더 높음',
+ 'POET 시험 장기추적에서 국소무진행생존 개선 확인(HR 0.37, 95% CI 0.16–0.85)',
+ '그러나 근거의 일관성과 전체생존 이득이 아직 불확실하여 연구단계 권고로 유지']},
+
+{id:'S25-1', cat:'pall', evid:'high', grade:'strongfor',
+ title:'HER2음성·PD-L1양성의 절제불가능 국소진행 또는 전이성 위암에서, 항PD-1항체 병용 불화피리미딘/백금기반 항암화학요법을 1차 고식적 치료로 권고한다. PD-L1 CPS≥5는 니볼루맙 병용을, CPS≥1은 펨브롤리주맙 병용을 권고한다.',
+ body:['CheckMate-649: 니볼루맙+항암화학요법이 항암화학요법 단독 대비 전체생존기간 연장(13.8 vs 11.6개월, HR 0.80), CPS≥5군에서 더 큰 이득(HR 0.71)',
+ 'ATTRACTION-4(한·중·일·대): 니볼루맙군 무진행생존기간 개선(HR 0.68)하나 전체생존 이득은 확인되지 않음',
+ 'KEYNOTE-062: 펨브롤리주맙 단독의 우월성 미입증; KEYNOTE-859: CPS≥1에서 펨브롤리주맙 병용의 전체생존 유의 개선 확인']},
+{id:'S25-2', cat:'pall', evid:'high', grade:'strongfor',
+ title:'HER2음성·CLDN18.2양성의 절제불가능 국소진행 또는 전이성 위암에서, 졸베툭시맙 병용 capecitabine 또는 fluorouracil+oxaliplatin(CAPOX/FOLFOX)을 1차 고식적 치료로 권고한다.',
+ body:['졸베툭시맙: CLDN18.2(정상 위점막 발현, 종양세포 표면 노출)를 표적하는 최초의 단클론항체',
+ 'SPOTLIGHT: 졸베툭시맙+mFOLFOX6이 무진행생존(HR 0.73)·전체생존(HR 0.78) 모두 유의하게 개선',
+ 'GLOW: 졸베툭시맙+CAPOX가 무진행생존(HR 0.68)·전체생존(HR 0.77) 모두 유의하게 개선',
+ 'CLDN18.2 양성 정의: 종양세포 75% 이상 중등도-강한 막염색(VENTANA CLDN18 검사), 임상시험상 양성률 약 38%']},
+{id:'S26', cat:'pall', evid:'high', grade:'strongfor',
+ title:'HER2양성의 절제불가능 국소진행 또는 전이성 위암에서 트라스투주맙 병용 불화피리미딘/백금기반 항암화학요법을 1차 고식적 치료로 권고한다. HER2양성이면서 PD-L1 CPS≥1인 경우 펨브롤리주맙+트라스투주맙 병용을 권고한다.',
+ body:['ToGA 시험: 트라스투주맙 추가 시 전체생존기간 연장(13.8 vs 11.1개월, HR 0.74), IHC3+ 또는 IHC2+/ISH+ 군에서 이득이 더 큼(HR 0.65)',
+ '반응률(47% vs 35%)·질병조절률(75% vs 70%) 모두 트라스투주맙군에서 우수',
+ '무진행생존기간도 트라스투주맙군에서 유의하게 연장(6.7 vs 5.5개월)']},
+{id:'S27', cat:'pall', evid:'high', grade:'strongfor',
+ title:'절제불가능 국소진행 또는 전이성 위암에서 라무시루맙 병용 파클리탁셀을 2차 고식적 치료로 권고하며, 다른 약제도 고려할 수 있다.',
+ body:['2차 전신치료는 최선지지요법 단독 대비 전체생존기간을 유의하게 연장(HR 0.69, 95% CI 0.59–0.82)',
+ '주 1회 파클리탁셀+라무시루맙 병용요법이 대표적 조합이나, 다른 세포독성/표적 약제 조합도 상황에 따라 고려 가능']},
+{id:'S28', cat:'pall', evid:'high', grade:'strongfor',
+ title:'절제불가능 국소진행 또는 전이성 위암에서 3차 고식적 전신치료를 권고하며, HER2양성 환자에서는 트라스투주맙-데룩스테칸을 우선 권고한다.',
+ body:['3차 전신치료는 최선지지요법 대비 전체생존기간을 유의하게 연장(HR 0.68, 95% CI 0.61–0.76)',
+ 'HER2양성 환자에서는 항체-약물접합체(ADC)인 트라스투주맙-데룩스테칸이 우선 권고됨']},
+
+{id:'S31', cat:'special', evid:'low', grade:'condfor',
+ title:'절제불가능 위암으로 인한 위출구폐쇄(GOO) 환자에서는 고식적 치료로 내시경스텐트(ES) 또는 수술적 위공장문합술(GJ) 모두 시행할 수 있다. 환자의 수행능력·예상임상경과·개인선호에 대한 다학제적 평가를 근거로 결정해야 한다.',
+ body:['GJ는 효과적인 증상완화를 제공하나 조기 중대합병증·시술관련사망 위험이 있음',
+ 'ES는 시술시간이 짧고 경구섭취 재개가 빠르며 재원기간이 짧은 대신, 재발·재시술률이 GJ보다 높음',
+ '15개 연구(관찰연구 12편, RCT 3편, 총 1,286명) 메타분석 — 근거수준은 낮음–매우낮음으로 평가됨']},
+{id:'S32-1', cat:'special', evid:'high', grade:'strongagainst',
+ title:'전신치료에 반응이 기대되는 stage IV 위암 환자에서, 계통적 림프절절제 없는 감축위절제술(선행 감세술)은 초기 치료옵션으로 고려해서는 안된다.',
+ body:['REGATTA 시험(유일한 관련 phase III RCT): D1절제+항암화학요법군과 항암화학요법 단독군 비교',
+ '감축수술군에서 생존이득이 확인되지 않아 1차 중간분석 후 조기종료(HR 1.08, 95% CI 0.74–1.58)']},
+{id:'S32-2', cat:'special', evid:'low', grade:'invest',
+ title:'제한적 전이를 가진 stage IV 위암 환자 중 전신치료 반응이 좋은 경우, 전환수술(conversion surgery)을 치료옵션으로 고려할 수 있다.',
+ body:['3개 후향연구+1개 전향연구 메타분석: 전신치료 후 근치적수술 시행군이 항암화학요법 단독군보다 생존 우수(HR 0.58, 95% CI 0.42–0.80)',
+ 'R0절제 달성군이 R1/R2절제군보다 생존 우수하다는 대규모 후향분석 결과',
+ '대부분 후향연구로 선택편향 가능성이 있어 근거수준은 제한적']},
+{id:'S33-1', cat:'special', evid:'vlow', grade:'invest',
+ title:'간에 소수전이(oligometastasis)가 있는 일부 위암 환자에서는 근치적위절제술+전이절제술+전신치료를 고려할 수 있다.',
+ body:['소수전이는 전통적으로 5개 미만의 전이병소, 1–2개 장기 침범으로 정의되어 왔으나 아직 표준정의는 없음',
+ 'KINGCA 2024 전문가합의회의에서 전환치료 관련 세부사항에 대한 합의 도출']},
+{id:'S33-2', cat:'special', evid:'vlow', grade:'condfor',
+ title:'난소에 소수전이가 있는 일부 위암 환자에서는 근치적위절제술+난소절제술+전신치료를 고려할 수 있다.',
+ body:['3개 후향연구 메타분석: 전이절제술 시행군이 생존 우수(HR 0.45, 95% CI 0.34–0.59)',
+ '난소전이(크루켄버그종양)는 복막파종을 동반하는 경우가 많아 예후에 불리(HR 1.74); 근치적절제를 달성한 경우에만 생존기간 연장(17개월 vs 3개월)',
+ '대동맥주위림프절 전이의 경우, 근거가 제한적이며 호의적 생존이득은 확인되지 않음']},
+{id:'S34', cat:'special', evid:'low', grade:'invest',
+ title:'복막암종증을 동반한 위암 환자에서 복강내(IP) 항암화학요법 추가는 연구목적으로만 적용해야 한다.',
+ body:['복막-혈장장벽으로 인해 전신 항암제 전달이 제한되어, 복막전이는 전신치료 반응이 낮고 예후가 불량',
+ 'Phase I/II: IP(파클리탁셀+도세탁셀)+전신항암 병용군이 전신항암 단독군보다 생존 우수(24.6 vs 15.1개월)',
+ 'Ishigami 등의 Phase III 시험에서는 IP 병용군의 유의한 생존이득 입증에 실패(HR 0.72, 95% CI 0.49–1.04, P=0.080)',
+ '국내에서 Phase I/II/III 임상시험이 진행 중이며 추가 근거 축적이 필요']}
+];
+
+function renderRecCard(s) {
+  const g = GRADE_META[s.grade];
+  const num = s.id.replace('S','');
+  return `<div class="rec-card">
+    <div class="rec-head">
+      <span class="rec-num" style="background:${CAT_META[s.cat].color}">권고 ${num}</span>
+      <span class="rec-title">${s.title}</span>
+      <div class="rec-badges"><span class="stage ${g.cls}">${g.label}</span><span class="stage ${EVID_META[s.evid]}">${EVID_LABEL[s.evid]}</span></div>
+    </div>
+    <div class="rec-body"><ul>${s.body.map(b=>`<li>${b}</li>`).join('')}</ul></div>
+  </div>`;
+}
+
+function renderAllRecs() {
+  Object.keys(CAT_META).forEach(cat => {
+    const el = document.getElementById(CAT_META[cat].target);
+    if (!el) return;
+    const items = STATEMENTS.filter(s => s.cat === cat);
+    el.innerHTML = items.map(renderRecCard).join('');
+  });
+}
+
+function renderSummaryTable(filterCat) {
+  const tbl = document.getElementById('summary-table');
+  const rows = ['<tr><th>번호</th><th>영역</th><th>권고 요지</th><th>근거수준</th><th>권고등급</th></tr>'];
+  STATEMENTS.filter(s => !filterCat || s.cat === filterCat).forEach(s => {
+    const g = GRADE_META[s.grade];
+    rows.push(`<tr><td><strong>${s.id}</strong></td><td><span class="stage ${CAT_META[s.cat].tag}">${CAT_META[s.cat].label}</span></td><td>${s.title}</td><td><span class="stage ${EVID_META[s.evid]}">${EVID_LABEL[s.evid]}</span></td><td><span class="stage ${g.cls}">${g.label}</span></td></tr>`);
+  });
+  tbl.innerHTML = rows.join('');
+}
+
+function renderSummaryFilters() {
+  const wrap = document.getElementById('summary-filters');
+  let html = `<span class="filter-chip active" data-cat="" onclick="selectFilter('')">전체</span>`;
+  Object.keys(CAT_META).forEach(cat => {
+    html += `<span class="filter-chip" data-cat="${cat}" onclick="selectFilter('${cat}')">${CAT_META[cat].label}</span>`;
+  });
+  wrap.innerHTML = html;
+}
+function selectFilter(cat) {
+  document.querySelectorAll('#summary-filters .filter-chip').forEach(c => {
+    const active = c.getAttribute('data-cat') === cat;
+    c.classList.toggle('active', active);
+    c.style.background = active ? (CAT_META[cat] ? CAT_META[cat].color : 'var(--surg)') : '';
+    c.style.color = active ? '#fff' : '';
+  });
+  renderSummaryTable(cat || null);
+}
+
+const ABBR_DATA = [
+  { term:"KGCA",  def:"Korean Gastric Cancer Association — 대한위암학회" },
+  { term:"AGC",   def:"Advanced Gastric Cancer — 진행위암" },
+  { term:"EGC",   def:"Early Gastric Cancer — 조기위암" },
+  { term:"GEJ",   def:"Gastroesophageal Junction — 위식도접합부" },
+  { term:"ESD",   def:"Endoscopic Submucosal Dissection — 내시경점막하박리술" },
+  { term:"EUS",   def:"Endoscopic Ultrasound — 초음파내시경" },
+  { term:"MDCT",  def:"Multidetector row Computed Tomography — 다중검출기 컴퓨터단층촬영" },
+  { term:"MPR",   def:"Multiplanar Reformation — 다면재구성(영상)" },
+  { term:"MRI",   def:"Magnetic Resonance Imaging — 자기공명영상" },
+  { term:"FDG PET/CT", def:"F-18 Fluorodeoxyglucose Positron Emission Tomography/CT — 양전자방출단층촬영" },
+  { term:"LN",    def:"Lymph Node — 림프절" },
+  { term:"LND",   def:"Lymph Node Dissection — 림프절절제(술)" },
+  { term:"DG",    def:"Distal Gastrectomy — 원위부위절제술" },
+  { term:"TG",    def:"Total Gastrectomy — 전절제술" },
+  { term:"PG",    def:"Proximal Gastrectomy — 근위부위절제술" },
+  { term:"PPG",   def:"Pylorus-Preserving Gastrectomy — 유문보존위절제술" },
+  { term:"DTR",   def:"Double Tract Reconstruction — 이중통로재건" },
+  { term:"BI/BII", def:"Billroth I / Billroth II — 빌로트 I·II 재건법" },
+  { term:"RY",    def:"Roux-en-Y — 루와이 재건법" },
+  { term:"LDG",   def:"Laparoscopic Distal Gastrectomy — 복강경원위부위절제술" },
+  { term:"ODG",   def:"Open Distal Gastrectomy — 개복원위부위절제술" },
+  { term:"RG",    def:"Robotic Gastrectomy — 로봇위절제술" },
+  { term:"LG",    def:"Laparoscopic Gastrectomy — 복강경위절제술" },
+  { term:"SNNS",  def:"Sentinel Node Navigation Surgery — 감시림프절탐색수술" },
+  { term:"PO/TO", def:"Partial / Total Omentectomy — 부분/전 대망절제술" },
+  { term:"UDCA",  def:"Ursodeoxycholic Acid — 우르소데옥시콜산" },
+  { term:"TH/TT", def:"Transhiatal / Transthoracic approach — 경열공/경흉부 접근법" },
+  { term:"HER2",  def:"Human Epidermal growth factor Receptor 2 — 인간표피성장인자수용체 2" },
+  { term:"IHC",   def:"Immunohistochemistry — 면역조직화학염색" },
+  { term:"ISH",   def:"In Situ Hybridization — 제자리부합법" },
+  { term:"MSI",   def:"Microsatellite Instability — 현미부수체 불안정성" },
+  { term:"dMMR",  def:"deficient Mismatch Repair — 미스매치복구결핍" },
+  { term:"EBV",   def:"Epstein-Barr Virus — 엡스타인-바 바이러스" },
+  { term:"PD-L1", def:"Programmed cell Death-Ligand 1 — 예정사멸리간드 1" },
+  { term:"CPS",   def:"Combined Positive Score — 복합양성점수(PD-L1 판정)" },
+  { term:"CLDN18.2", def:"Claudin 18.2 — 클로딘 18.2(밀착연접단백)" },
+  { term:"ICI",   def:"Immune Checkpoint Inhibitor — 면역관문억제제" },
+  { term:"NGS",   def:"Next-Generation Sequencing — 차세대염기서열분석" },
+  { term:"TMB",   def:"Tumor Mutational Burden — 종양변이부담" },
+  { term:"CAPOX", def:"Capecitabine plus Oxaliplatin — 카페시타빈+옥살리플라틴" },
+  { term:"FOLFOX", def:"Fluorouracil, Leucovorin, Oxaliplatin — 폴폭스 요법" },
+  { term:"NCT",   def:"Neoadjuvant Chemotherapy — 수술전(신보조) 항암화학요법" },
+  { term:"NCRT",  def:"Neoadjuvant Chemoradiotherapy — 수술전 항암방사선요법" },
+  { term:"CRT",   def:"Chemoradiotherapy — 항암방사선요법" },
+  { term:"pCR",   def:"pathologic Complete Response — 병리학적완전관해" },
+  { term:"GOO",   def:"Gastric Outlet Obstruction — 위출구폐쇄" },
+  { term:"ES",    def:"Endoscopic Stenting — 내시경스텐트삽입술" },
+  { term:"GJ",    def:"Gastrojejunostomy — 위공장문합술" },
+  { term:"IP",    def:"Intraperitoneal (chemotherapy) — 복강내(항암화학요법)" },
+  { term:"OS",    def:"Overall Survival — 전체생존(기간)" },
+  { term:"DFS/RFS", def:"Disease/Recurrence-Free Survival — 무병/무재발생존" },
+  { term:"PFS",   def:"Progression-Free Survival — 무진행생존" },
+  { term:"HR",    def:"Hazard Ratio — 위험비" },
+  { term:"RR",    def:"Relative Risk — 상대위험도" },
+  { term:"OR",    def:"Odds Ratio — 오즈비" },
+  { term:"CI",    def:"Confidence Interval — 신뢰구간" },
+  { term:"RCT",   def:"Randomized Controlled Trial — 무작위대조시험" },
+  { term:"GRADE", def:"Grading of Recommendations, Assessment, Development and Evaluation — 근거수준·권고등급 평가체계" },
+  { term:"KQ",    def:"Key Question — 핵심질문" },
+  { term:"KNCSP", def:"Korean National Cancer Screening Program — 국가암검진사업" },
+  { term:"AJCC",  def:"American Joint Committee on Cancer — 미국암합동위원회(병기분류)" }
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+renderAllRecs();
+renderSummaryFilters();
+renderSummaryTable(null);
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 440) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>

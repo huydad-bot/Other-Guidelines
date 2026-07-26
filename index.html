@@ -6,90 +6,249 @@
 <title>질환별 임상 참고자료</title>
 <style>
   :root {
-    --bg:#f6f8fa;--surface:#fff;--surface2:#f0f2f5;--border:#d0d7de;
-    --accent:#0969da;--accent2:#0550ae;--green:#1a7f37;--yellow:#9a6700;
-    --red:#cf222e;--orange:#bc4c00;--text:#1f2328;--text2:#57606a;
-    --teal:#0a7c8a;--purple:#5a3ea0;
+    --bg:#f4f6f9;
+    --surface:#ffffff;
+    --surface2:#f0f2f5;
+    --border:#dde3ea;
+    --text:#1b2430;
+    --text2:#5b6675;
+    --text3:#8892a0;
+    --accent:#0969da;
+    --accent2:#0b4d94;
+
+    /* 진료과별 강조색 */
+    --c-resp:#0a7c8a;    --c-resp-bg:#e3f4f5;
+    --c-metab:#9a6700;   --c-metab-bg:#fbf1dc;
+    --c-derm:#a3216b;    --c-derm-bg:#fbe6f1;
+    --c-neuro:#5a3ea0;   --c-neuro-bg:#efe9fb;
+    --c-gi:#1a7f47;      --c-gi-bg:#e2f5ea;
+    --c-uro:#0b4d94;     --c-uro-bg:#e3edfa;
+    --c-onco:#a3222c;    --c-onco-bg:#fbe7e8;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Pretendard','Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
-  header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;}
-  .logo-badge{background:var(--accent2);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;letter-spacing:.5px;}
-  h1{font-size:20px;font-weight:700;}
-  .sub{color:var(--text2);font-size:12px;text-align:center;margin-top:2px;}
-  .disclaimer{font-size:10px;color:var(--text2);font-style:italic;margin-top:0;}
-  .main{padding:24px 16px 60px;max-width:920px;margin:0 auto;}
-  .group-title{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin:28px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
-  .group-title:first-child{margin-top:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Pretendard','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(11,77,148,0.05), transparent 42%),
+      radial-gradient(circle at 100% 10%, rgba(10,124,138,0.05), transparent 38%),
+      var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ── HEADER ── */
+  header{
+    position:relative;
+    background:linear-gradient(160deg,#0b4d94 0%,#0a3b73 55%,#0a2d59 100%);
+    color:#fff;
+    padding:26px 16px;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    overflow:hidden;
+  }
+  header::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.09) 1px, transparent 1.4px);
+    background-size:16px 16px;
+    opacity:.5;
+    pointer-events:none;
+  }
+  header::after{
+    content:"";
+    position:absolute;right:-60px;top:-60px;width:220px;height:220px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(10,124,138,.35), transparent 70%);
+    pointer-events:none;
+  }
+  .header-inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;}
+  .title-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;}
+  .logo-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.28);
+    color:#eaf2ff;font-size:11px;font-weight:700;
+    padding:5px 12px;border-radius:20px;letter-spacing:1.5px;
+    backdrop-filter:blur(4px);
+    white-space:nowrap;
+  }
+  .logo-badge .dot{width:6px;height:6px;border-radius:50%;background:#5fd0c7;box-shadow:0 0 8px #5fd0c7;}
+  h1{font-size:21px;font-weight:800;letter-spacing:-.3px;}
+  .sub{color:#c9d9ee;font-size:12.5px;text-align:center;margin-top:2px;}
+  .disclaimer{font-size:10.5px;color:#93a9c6;font-style:italic;margin-top:5px;text-align:center;}
+
+  /* ── MAIN ── */
+  .main{padding:30px 16px 60px;max-width:920px;margin:0 auto;}
+
+  .group{margin-bottom:8px;scroll-margin-top:14px;}
+  .group-title{
+    display:flex;align-items:center;gap:10px;
+    margin:32px 0 12px;
+  }
+  .group:first-child .group-title{margin-top:0;}
+  .group-icon{
+    width:30px;height:30px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;flex-shrink:0;
+  }
+  .group-name{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.2px;}
+  .group-count{font-size:11px;color:var(--text3);font-weight:600;margin-left:2px;}
+  .group-line{flex:1;height:1px;background:linear-gradient(90deg, var(--border), transparent);}
+
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
   @media(max-width:680px){.grid{grid-template-columns:1fr;}}
-  a.card-link{text-decoration:none;color:inherit;}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;transition:box-shadow .15s,border-color .15s,transform .1s;height:100%;}
-  .card-link:hover .card{border-color:var(--accent2);box-shadow:0 3px 12px rgba(5,80,174,.12);transform:translateY(-1px);}
-  .card-body{flex:1;}
-  .card-title-kr{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;}
-  footer{text-align:center;padding:24px 16px;color:var(--text2);font-size:11px;border-top:1px solid var(--border);}
+
+  a.card-link{text-decoration:none;color:inherit;display:block;}
+  .card{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--card-accent, var(--border));
+    border-radius:9px;
+    padding:13px 14px 13px 12px;
+    display:flex;align-items:center;gap:11px;
+    height:100%;
+    transition:box-shadow .16s ease, border-color .16s ease, transform .12s ease, background .16s ease;
+  }
+  .card-link:hover .card{
+    border-color:var(--card-accent);
+    box-shadow:0 6px 18px -6px rgba(15,40,80,.18);
+    transform:translateY(-2px);
+    background:linear-gradient(180deg, var(--surface) 0%, var(--card-tint, var(--surface)) 140%);
+  }
+  .card-icon{
+    width:34px;height:34px;border-radius:8px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;
+    background:var(--card-tint, var(--surface2));
+  }
+  .card-body{flex:1;min-width:0;}
+  .card-title-kr{font-size:13.5px;font-weight:700;color:var(--text);line-height:1.35;}
+  .card-arrow{
+    font-size:13px;color:var(--text3);flex-shrink:0;
+    transition:transform .15s ease, color .15s ease;
+  }
+  .card-link:hover .card-arrow{transform:translateX(2px);color:var(--card-accent);}
+
+  footer{
+    text-align:center;padding:26px 16px 30px;color:var(--text3);
+    font-size:11px;border-top:1px solid var(--border);
+    background:var(--surface);
+  }
+  footer strong{color:var(--text2);}
 </style>
 </head>
 <body>
 
 <header>
-  <div style="display:flex;align-items:center;gap:10px"><span class="logo-badge">CLINIC</span><h1>질환별 임상 참고자료</h1></div>
-  <div><div class="sub">타과 질환 진료 시 참고용 요약 자료</div><div class="disclaimer">본 자료는 개인적 진료 참고용으로 제작되었으며 공식 가이드라인을 대체하지 않습니다.</div></div>
+  <div class="header-inner">
+    <div class="title-row">
+      <div class="logo-badge"><span class="dot"></span>CLINICAL REFERENCE</div>
+      <h1>질환별 임상 참고자료</h1>
+    </div>
+    <div class="sub">타과 질환 진료 시 참고용 요약 자료</div>
+    <div class="disclaimer">본 자료는 개인적 진료 참고용으로 제작되었으며 공식 가이드라인을 대체하지 않습니다.</div>
+  </div>
 </header>
 
 <div class="main">
 
-  <div class="group-title">🫁 호흡기</div>
-  <div class="grid">
-    <a class="card-link" target="_blank" rel="noopener" href="ild.html"><div class="card"><div class="card-body"><div class="card-title-kr">간질성폐질환</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="tuberculosis.html"><div class="card"><div class="card-body"><div class="card-title-kr">결핵진료지침</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="chronic-cough.html"><div class="card"><div class="card-body"><div class="card-title-kr">만성기침</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="hap.html"><div class="card"><div class="card-body"><div class="card-title-kr">성인 병원획득폐렴</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="pulmonary-hypertension.html"><div class="card"><div class="card-body"><div class="card-title-kr">폐고혈압</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="copd.html"><div class="card"><div class="card-body"><div class="card-title-kr">COPD</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="https://huydad-bot.github.io/Other-Guidelines/Long-COVID.html"><div class="card"><div class="card-body"><div class="card-title-kr">Long COVID</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="https://huydad-bot.github.io/Other-Guidelines/Long-Vax.html"><div class="card"><div class="card-body"><div class="card-title-kr">Long Vax Syndrome</div></div></div></a>
+  <div class="group" id="g-resp">
+    <div class="group-title">
+      <div class="group-icon" style="background:var(--c-resp-bg)">🫁</div>
+      <span class="group-name">호흡기</span><span class="group-count">8</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="grid" style="--card-accent:var(--c-resp);--card-tint:var(--c-resp-bg)">
+      <a class="card-link" target="_blank" rel="noopener" href="ild.html"><div class="card"><div class="card-icon">🫁</div><div class="card-body"><div class="card-title-kr">간질성폐질환</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="tuberculosis.html"><div class="card"><div class="card-icon">🦠</div><div class="card-body"><div class="card-title-kr">결핵진료지침</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="chronic-cough.html"><div class="card"><div class="card-icon">😮‍💨</div><div class="card-body"><div class="card-title-kr">만성기침</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="hap.html"><div class="card"><div class="card-icon">🏥</div><div class="card-body"><div class="card-title-kr">성인 병원획득폐렴</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="pulmonary-hypertension.html"><div class="card"><div class="card-icon">❤️‍🩹</div><div class="card-body"><div class="card-title-kr">폐고혈압</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="copd.html"><div class="card"><div class="card-icon">💨</div><div class="card-body"><div class="card-title-kr">COPD</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="https://huydad-bot.github.io/Other-Guidelines/Long-COVID.html"><div class="card"><div class="card-icon">🦠</div><div class="card-body"><div class="card-title-kr">Long COVID</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="https://huydad-bot.github.io/Other-Guidelines/Long-Vax.html"><div class="card"><div class="card-icon">💉</div><div class="card-body"><div class="card-title-kr">Long Vax Syndrome</div></div><span class="card-arrow">›</span></div></a>
+    </div>
   </div>
 
-  <div class="group-title">🧂 대사·전해질</div>
-  <div class="grid">
-    <a class="card-link" target="_blank" rel="noopener" href="hyperkalemia.html"><div class="card"><div class="card-body"><div class="card-title-kr">고칼륨혈증</div></div></div></a>
+  <div class="group" id="g-metab">
+    <div class="group-title">
+      <div class="group-icon" style="background:var(--c-metab-bg)">🧂</div>
+      <span class="group-name">대사·전해질</span><span class="group-count">1</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="grid" style="--card-accent:var(--c-metab);--card-tint:var(--c-metab-bg)">
+      <a class="card-link" target="_blank" rel="noopener" href="hyperkalemia.html"><div class="card"><div class="card-icon">🧂</div><div class="card-body"><div class="card-title-kr">고칼륨혈증</div></div><span class="card-arrow">›</span></div></a>
+    </div>
   </div>
 
-  <div class="group-title">🤧 알레르기·피부</div>
-  <div class="grid">
-    <a class="card-link" target="_blank" rel="noopener" href="urticaria.html"><div class="card"><div class="card-body"><div class="card-title-kr">두드러기</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="rhinitis.html"><div class="card"><div class="card-body"><div class="card-title-kr">비염</div></div></div></a>
+  <div class="group" id="g-derm">
+    <div class="group-title">
+      <div class="group-icon" style="background:var(--c-derm-bg)">🤧</div>
+      <span class="group-name">알레르기·피부</span><span class="group-count">2</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="grid" style="--card-accent:var(--c-derm);--card-tint:var(--c-derm-bg)">
+      <a class="card-link" target="_blank" rel="noopener" href="urticaria.html"><div class="card"><div class="card-icon">🔴</div><div class="card-body"><div class="card-title-kr">두드러기</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="rhinitis.html"><div class="card"><div class="card-icon">🤧</div><div class="card-body"><div class="card-title-kr">비염</div></div><span class="card-arrow">›</span></div></a>
+    </div>
   </div>
 
-  <div class="group-title">🧠 신경·정신</div>
-  <div class="grid">
-    <a class="card-link" target="_blank" rel="noopener" href="cfs.html"><div class="card"><div class="card-body"><div class="card-title-kr">만성피로증후군</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="insomnia.html"><div class="card"><div class="card-body"><div class="card-title-kr">불면증</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="moh.html"><div class="card"><div class="card-body"><div class="card-title-kr">약물과용두통</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="depression.html"><div class="card"><div class="card-body"><div class="card-title-kr">우울증</div></div></div></a>
+  <div class="group" id="g-neuro">
+    <div class="group-title">
+      <div class="group-icon" style="background:var(--c-neuro-bg)">🧠</div>
+      <span class="group-name">신경·정신</span><span class="group-count">4</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="grid" style="--card-accent:var(--c-neuro);--card-tint:var(--c-neuro-bg)">
+      <a class="card-link" target="_blank" rel="noopener" href="cfs.html"><div class="card"><div class="card-icon">🪫</div><div class="card-body"><div class="card-title-kr">만성피로증후군</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="insomnia.html"><div class="card"><div class="card-icon">🌙</div><div class="card-body"><div class="card-title-kr">불면증</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="moh.html"><div class="card"><div class="card-icon">💊</div><div class="card-body"><div class="card-title-kr">약물과용두통</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="depression.html"><div class="card"><div class="card-icon">🌧️</div><div class="card-body"><div class="card-title-kr">우울증</div></div><span class="card-arrow">›</span></div></a>
+    </div>
   </div>
 
-  <div class="group-title">🍽️ 소화기</div>
-  <div class="grid">
-    <a class="card-link" target="_blank" rel="noopener" href="gerd.html"><div class="card"><div class="card-body"><div class="card-title-kr">역류성식도염</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="liver-dysfunction.html"><div class="card"><div class="card-body"><div class="card-title-kr">간기능이상</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="functional-dyspepsia.html"><div class="card"><div class="card-body"><div class="card-title-kr">기능성 소화불량</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="colon-cancer-screening.html"><div class="card"><div class="card-body"><div class="card-title-kr">대장암 선별</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="constipation.html"><div class="card"><div class="card-body"><div class="card-title-kr">변비</div></div></div></a>
+  <div class="group" id="g-gi">
+    <div class="group-title">
+      <div class="group-icon" style="background:var(--c-gi-bg)">🍽️</div>
+      <span class="group-name">소화기</span><span class="group-count">5</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="grid" style="--card-accent:var(--c-gi);--card-tint:var(--c-gi-bg)">
+      <a class="card-link" target="_blank" rel="noopener" href="gerd.html"><div class="card"><div class="card-icon">🔥</div><div class="card-body"><div class="card-title-kr">역류성식도염</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="liver-dysfunction.html"><div class="card"><div class="card-icon">🫘</div><div class="card-body"><div class="card-title-kr">간기능이상</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="functional-dyspepsia.html"><div class="card"><div class="card-icon">🌀</div><div class="card-body"><div class="card-title-kr">기능성 소화불량</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="colon-cancer-screening.html"><div class="card"><div class="card-icon">🔬</div><div class="card-body"><div class="card-title-kr">대장암 선별</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="constipation.html"><div class="card"><div class="card-icon">🚽</div><div class="card-body"><div class="card-title-kr">변비</div></div><span class="card-arrow">›</span></div></a>
+    </div>
   </div>
 
-  <div class="group-title">🚹 비뇨·생식내분비</div>
-  <div class="grid">
-    <a class="card-link" target="_blank" rel="noopener" href="bph.html"><div class="card"><div class="card-body"><div class="card-title-kr">전립선 비대</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="prostate-cancer.html"><div class="card"><div class="card-body"><div class="card-title-kr">전립선암</div></div></div></a>
-    <a class="card-link" target="_blank" rel="noopener" href="menopause-hrt.html"><div class="card"><div class="card-body"><div class="card-title-kr">폐경 HRT</div></div></div></a>
+  <div class="group" id="g-uro">
+    <div class="group-title">
+      <div class="group-icon" style="background:var(--c-uro-bg)">🚹</div>
+      <span class="group-name">비뇨·생식내분비</span><span class="group-count">3</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="grid" style="--card-accent:var(--c-uro);--card-tint:var(--c-uro-bg)">
+      <a class="card-link" target="_blank" rel="noopener" href="bph.html"><div class="card"><div class="card-icon">🚹</div><div class="card-body"><div class="card-title-kr">전립선 비대</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="prostate-cancer.html"><div class="card"><div class="card-icon">🎗️</div><div class="card-body"><div class="card-title-kr">전립선암</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="menopause-hrt.html"><div class="card"><div class="card-icon">🌸</div><div class="card-body"><div class="card-title-kr">폐경 HRT</div></div><span class="card-arrow">›</span></div></a>
+    </div>
   </div>
 
-  <div class="group-title">🎗️ 종양</div>
-  <div class="grid">
-    <a class="card-link" target="_blank" rel="noopener" href="pancreatic-cancer.html"><div class="card"><div class="card-body"><div class="card-title-kr">췌장암</div></div></div></a>
+  <div class="group" id="g-onco">
+    <div class="group-title">
+      <div class="group-icon" style="background:var(--c-onco-bg)">🎗️</div>
+      <span class="group-name">종양</span><span class="group-count">3</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="grid" style="--card-accent:var(--c-onco);--card-tint:var(--c-onco-bg)">
+      <a class="card-link" target="_blank" rel="noopener" href="pancreatic-cancer.html"><div class="card"><div class="card-icon">🎗️</div><div class="card-body"><div class="card-title-kr">췌장암</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="Gastric-cancer.html"><div class="card"><div class="card-icon">🎗️</div><div class="card-body"><div class="card-title-kr">위암</div></div><span class="card-arrow">›</span></div></a>
+      <a class="card-link" target="_blank" rel="noopener" href="hepatocellular-carcinoma.html"><div class="card"><div class="card-icon">🎗️</div><div class="card-body"><div class="card-title-kr">간세포암</div></div><span class="card-arrow">›</span></div></a>
+    </div>
   </div>
 
 </div>
