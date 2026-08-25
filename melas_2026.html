@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MELAS(미토콘드리아뇌근병증·젖산산증·뇌졸중양발작) — Clinical Reference 2026</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --diag:   #0f6e5c;  /* 개요·진단 — 청록 */
+    --gene:   #0550ae;  /* 유전학·검사 — 청 */
+    --evid:   #9b1c2e;  /* 관리·치료 — 진홍 */
+    --preg:   #7c3aed;  /* 유전상담·임신 — 보라 */
+    --future: #b45309;  /* 자연경과·향후과제 — 호박색 */
+    --accent: #7c3aed;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --yellow: #9a6700;
+    --fscale: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: calc(13px * var(--fscale, 1));
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { width: 100%; max-width: 1020px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .logo-dr {
+    display: flex; align-items: center; gap: 0;
+    font-size: calc(11px * var(--fscale, 1)); font-weight: 800; letter-spacing: 1px;
+  }
+  .logo-dr span:nth-child(1) { background: var(--diag); color:#fff; padding:3px 6px; border-radius:4px 0 0 4px; }
+  .logo-dr span:nth-child(2) { background: var(--evid); color:#fff; padding:3px 6px; border-radius:0 4px 4px 0; }
+  header h1 { font-size: 16px; font-weight: 700; color: var(--text); text-align:center; }
+  .meta-line { color: var(--text2); font-size: calc(11px * var(--fscale, 1)); text-align: center; line-height: 1.6; }
+  .source-link { color: var(--accent); font-size: calc(11px * var(--fscale, 1)); text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  .tab-bar {
+    display: flex; justify-content: center;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .font-zoom-btn {
+    display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    margin: 4px 4px 4px 6px; padding: 5px 10px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text2); font-size: calc(11px * var(--fscale, 1)); font-weight: 700;
+    cursor: pointer; user-select: none; white-space: nowrap; transition: background .15s;
+  }
+  .font-zoom-btn:hover { background: var(--border); }
+  .tab-bar-inner { width: 100%; max-width: 1020px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab {
+    padding: 8px 10px; font-size: calc(12px * var(--fscale, 1)); color: var(--text2);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: color .15s, border-color .15s; user-select: none;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--diag); border-bottom-color: var(--diag); font-weight: 600; }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  .main { padding: 12px 16px; max-width: 1020px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header {
+    background: var(--surface2); padding: 8px 12px;
+    font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; user-select: none;
+  }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; text-transform:none; }
+  .card-header .toggle { font-size: calc(14px * var(--fscale, 1)); transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; text-align: center; min-width: 90px; cursor: pointer; transition: box-shadow .15s, transform .1s, border-color .15s; position: relative; }
+  .stat-box:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); transform: translateY(-1px); border-color: var(--accent); }
+  .stat-box::after { content: '자세히 ▸'; position: absolute; right: 8px; bottom: 6px; font-size: calc(9px * var(--fscale, 1)); color: var(--text2); opacity: .6; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,18,22,.55); z-index: 500; align-items: center; justify-content: center; padding: 16px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--surface); border-radius: 10px; max-width: 600px; width: 100%; max-height: 82vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+  .modal-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; position: sticky; top: 0; background: var(--surface); }
+  .modal-head-title { font-size: calc(15px * var(--fscale, 1)); font-weight: 700; }
+  .modal-head-val { font-size: calc(12px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; }
+  .modal-close { cursor: pointer; font-size: calc(18px * var(--fscale, 1)); color: var(--text2); line-height: 1; padding: 4px 6px; border-radius: 5px; user-select: none; }
+  .modal-close:hover { background: var(--surface2); color: var(--text); }
+  .modal-body { padding: 14px 16px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.75; }
+  .modal-body ul { padding-left: 18px; margin: 4px 0; }
+  .modal-body li { margin-bottom: 6px; }
+  .modal-body .alert { margin: 8px 0; }
+  .stat-val { font-size: calc(17px * var(--fscale, 1)); font-weight: 700; }
+  .stat-lbl { font-size: calc(10px * var(--fscale, 1)); color: var(--text2); margin-top: 2px; line-height: 1.35; }
+
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: calc(12px * var(--fscale, 1)); margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ede9fe; border-left: 3px solid var(--accent); color: #5b21b6; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+  .alert-diag    { background: #e0f4f1; border-left: 3px solid var(--diag);  color: #0f5549; }
+  .alert-gene    { background: #ddf4ff; border-left: 3px solid var(--gene); color: #0550ae; }
+  .alert-evid    { background: #fce8eb; border-left: 3px solid var(--evid); color: var(--evid); }
+  .alert-preg    { background: #ede9fe; border-left: 3px solid var(--preg);  color: #5b21b6; }
+  .alert-future  { background: #fff1e0; border-left: 3px solid var(--future);  color: #7d4400; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: calc(11px * var(--fscale, 1)); }
+  .tbl th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: calc(10px * var(--fscale, 1)); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; }
+  .tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: rgba(0,0,0,.02); }
+  .tbl-wrap { overflow-x: auto; }
+
+  .freq-vhigh { background: #f5c6cb; color: #721c24; font-weight: 700; text-align: center; }
+  .freq-high  { background: #ffd8a8; color: #7d3b00; font-weight: 700; text-align: center; }
+  .freq-mod   { background: #fff3cd; color: #856404; font-weight: 700; text-align: center; }
+  .freq-low   { background: #d4edda; color: #155724; font-weight: 700; text-align: center; }
+
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: calc(12px * var(--fscale, 1)); font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: #e5e9ef; }
+  .acc-toggle { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .acc-toggle { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: calc(12px * var(--fscale, 1)); line-height: 1.65; }
+  .acc-body ul { padding-left: 16px; margin: 4px 0; }
+  .acc-body li { margin-bottom: 4px; }
+  .acc-body .rgrade { color: var(--text2); font-weight: 700; font-size: calc(10.5px * var(--fscale,1)); }
+
+  .stage { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: calc(10px * var(--fscale, 1)); font-weight: 700; white-space: nowrap; }
+  .t-diag    { background: #e0f4f1; color: var(--diag); border: 1px solid var(--diag); }
+  .t-gene    { background: #ddf4ff; color: var(--gene); border: 1px solid var(--gene); }
+  .t-evid    { background: #fce8eb; color: var(--evid); border: 1px solid var(--evid); }
+  .t-preg    { background: #ede9fe; color: var(--preg); border: 1px solid var(--preg); }
+  .t-future  { background: #fff1e0; color: var(--future); border: 1px solid var(--future); }
+  .t-pref    { background: #dafbe1; color: var(--green); border: 1px solid var(--green); }
+  .t-notpref { background: #fff3cd; color: #7d4e00; border: 1px solid var(--yellow); }
+  .t-neg     { background: #fce8eb; color: var(--evid); border: 1px solid var(--evid); }
+  .t-strong  { background: #dafbe1; color: var(--green); border: 1px solid var(--green); }
+  .t-mod     { background: #fff3cd; color: #7d4e00; border: 1px solid var(--yellow); }
+  .t-limited { background: #fce8eb; color: var(--evid); border: 1px solid var(--evid); }
+  .t-prelim  { background: #f0f2f5; color: var(--text2); border: 1px solid var(--border); }
+  .t-1st     { background: #dafbe1; color: var(--green); border: 1px solid var(--green); }
+  .t-2nd     { background: #fff3cd; color: #7d4e00; border: 1px solid var(--yellow); }
+  .t-caution { background: #fce8eb; color: var(--evid); border: 1px solid var(--evid); }
+
+  .abbr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; }
+  .abbr-term { font-weight: 700; color: var(--accent); font-size: calc(12px * var(--fscale, 1)); font-family: 'Courier New', monospace; }
+  .abbr-def  { font-size: calc(11px * var(--fscale, 1)); color: var(--text2); line-height: 1.45; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  small { color: var(--text2); font-size: calc(10px * var(--fscale, 1)); }
+
+  .gene-acc-hdr { display:flex; align-items:center; gap:8px; }
+  .gene-badge { font-family:'Courier New',monospace; font-weight:800; font-size: calc(11.5px * var(--fscale,1)); }
+
+  .algo-step { display: flex; gap: 10px; align-items: flex-start; padding: 8px 4px; border-bottom: 1px dashed var(--border); cursor: pointer; border-radius: 6px; transition: background .15s; position: relative; }
+  .algo-step:last-child { border-bottom: none; }
+  .algo-step:hover { background: var(--surface2); }
+  .algo-num { flex-shrink:0; width: 22px; height: 22px; border-radius: 50%; background: var(--evid); color:#fff; font-weight:700; font-size: calc(11px * var(--fscale,1)); display:flex; align-items:center; justify-content:center; }
+  .algo-txt { font-size: calc(12px * var(--fscale, 1)); line-height: 1.6; flex: 1; }
+  .algo-more { flex-shrink:0; font-size: calc(10px * var(--fscale, 1)); color: var(--text2); opacity: .7; align-self: center; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-dr"><span>M</span><span>E</span></div>
+      <h1>MELAS(미토콘드리아뇌근병증·젖산산증·뇌졸중양발작) — 진단·관리 Clinical Reference</h1>
+    </div>
+    <div class="meta-line">
+      <span class="source-link">El-Hattab AW, Almannai M, Scaglia F. MELAS. 2001 Feb 27 [Updated 2018 Nov 29]. In: Adam MP, et al., eds. GeneReviews® [Internet]. Seattle (WA): University of Washington; 1993-2026.</span><br>
+      <span style="font-size: calc(10px * var(--fscale, 1));color:var(--text2);font-style:italic">본 도구는 학회의 공식 승인을 받지 않은 개인 참고자료(GeneReviews 요약 재구성)이며, 실제 진료는 원문 및 최신 근거를 함께 확인할 것</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div id="font-zoom-btn" class="font-zoom-btn" onclick="cycleFontZoom()"><span class="fz-icon">🔠</span><span id="font-zoom-label">100%</span></div>
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diag')">🧬 진단</div>
+    <div class="tab" onclick="showTab('mgmt')">💊 관리·치료</div>
+    <div class="tab" onclick="showTab('genet')">🤰 유전상담·임신</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size: calc(12px * var(--fscale, 1));pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size: calc(12px * var(--fscale, 1));width:130px;outline:none;"
+          onfocus="this.style.borderColor='var(--diag)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size: calc(10px * var(--fscale, 1));color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:460px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="stat-modal-overlay" class="modal-overlay" onclick="if(event.target===this) closeStatModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <div id="stat-modal-title" class="modal-head-title">제목</div>
+        <div id="stat-modal-val" class="modal-head-val">수치</div>
+      </div>
+      <span class="modal-close" onclick="closeStatModal()">✕</span>
+    </div>
+    <div id="stat-modal-body" class="modal-body">내용</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════ TAB 0: 개요 ══════════════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box" onclick="openStatModal('onset')"><div class="stat-val" style="color:var(--diag)">2–40세</div><div class="stat-lbl">발병연령 범위<br>(65–76%는 ≤20세)</div></div>
+    <div class="stat-box" onclick="openStatModal('mttl1')"><div class="stat-val" style="color:var(--gene)">&gt;80%</div><div class="stat-lbl">m.3243A&gt;G(MT-TL1)<br>변이가 차지하는 비율</div></div>
+    <div class="stat-box" onclick="openStatModal('prevalence')"><div class="stat-val" style="color:var(--gene)">16–18/10만</div><div class="stat-lbl">m.3243A&gt;G 변이 유병률<br>(핀란드 기준)</div></div>
+    <div class="stat-box" onclick="openStatModal('mortality')"><div class="stat-val" style="color:var(--future)">34.5±19세</div><div class="stat-lbl">평균 사망연령<br>(범위 10.2–81.8세)</div></div>
+    <div class="stat-box" onclick="openStatModal('survival')"><div class="stat-val" style="color:var(--future)">16.9년</div><div class="stat-lbl">중앙생존기간<br>(국소신경증상 발병 후)</div></div>
+    <div class="stat-box" onclick="openStatModal('cohort')"><div class="stat-val" style="color:var(--evid)">20.8%</div><div class="stat-lbl">5년 내 사망률<br>(일본 96명 코호트)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> 핵심 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li>MELAS는 모계유전(maternal inheritance)되는 <strong>다장기 미토콘드리아 질환</strong>으로, 뇌졸중양발작·뇌병증(경련·치매)·젖산산증/근병증(RRF)을 핵심축으로 다양한 증상이 동반된다.</li>
+        <li>가장 흔한 원인은 <strong>MT-TL1 유전자의 m.3243A&gt;G 변이(&gt;80%)</strong>이며, MT-ND5 변이가 &lt;10%, 나머지 20여 개 변이가 나머지를 차지한다.</li>
+        <li>진단은 <strong>임상진단기준 충족 + 병원성 변이 확인</strong>의 두 축으로 이루어지며, 근생검은 필수가 아니고 분자유전학적 검사로 대체 가능한 경우가 많다.</li>
+        <li>치료는 <strong>전반적으로 지지적(supportive)</strong>이며, 근거수준이 가장 높은 개입은 급성기·예방적 <strong>아르기닌(arginine) 요법</strong>이다.</li>
+        <li>동일한 MT-TL1 변이가 <strong>MIDD(모계유전 당뇨-난청)</strong>와 같은 경증 표현형부터 MELAS와 같은 중증 표현형까지 스펙트럼을 이루므로, heteroplasmy·조직분포가 표현형을 결정하는 핵심 변수다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 초기 임상 증상(Initial Manifestations)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>빈도</th><th>증상</th></tr>
+          <tr><td class="freq-vhigh">≥25%</td><td>경련, 반복성 두통, 뇌졸중양발작, 피질성 시력저하, 근력저하, 반복성 구토, 저신장</td></tr>
+          <tr><td class="freq-high">10–24%</td><td>의식변화, 인지기능저하, 청력장애, 당뇨병(1형 또는 2형)</td></tr>
+          <tr><td class="freq-mod">&lt;10%</td><td>발달지연, 발열</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧩</span> 계통별 임상 특징(Additional Manifestations)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>빈도</th><th>증상</th></tr>
+          <tr><td class="freq-vhigh">≥90%</td><td>뇌졸중양발작, 치매, 간질, 젖산혈증, 근생검 RRF</td></tr>
+          <tr><td class="freq-high">7–89%</td><td>편마비, 피질성 시력저하, 반복성 두통, 청력장애, 근력저하</td></tr>
+          <tr><td class="freq-mod">50–74%</td><td>말초신경병증, 학습장애, 기억력저하, 반복성 구토, 저신장</td></tr>
+          <tr><td class="freq-mod">25–49%</td><td>기저핵 석회화, 근간대경련, 운동실조, 삽화성 의식변화, 보행장애, 우울·불안·정신병적 장애, 당뇨병</td></tr>
+          <tr><td class="freq-low">&lt;25%</td><td>시신경위축, 색소성망막병증, 진행성외안근마비(PEO), 운동발달지연, 심근병증, 심전도전도이상, 신병증, 백반증</td></tr>
+        </table>
+      </div>
+      <div class="alert alert-diag" style="margin-top:8px"><span>🫀</span><div>심장: 비폐쇄성 동심성 비대가 더 전형적(확장형·비후형 심근병증도 보고), Wolff-Parkinson-White 등 전도이상 동반 가능. 위장관: 반복/주기성 구토가 흔하고 설사·변비·위배출지연·장위가폐쇄·췌장염도 보고. 내분비: 당뇨병(평균발병 38세, 1형/2형 모두 가능), 저신장, 드물게 성장호르몬결핍·갑상선기능저하·성선기능저하·부갑상선기능저하.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📈</span> 자연경과 및 예후</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li>질병은 뇌졸중양발작을 중심으로 삽화적으로 악화되며 개인차가 크다.</li>
+        <li>m.3243A&gt;G 성인 33명 3년 추적에서 감각신경 기능·좌심실비대·EEG 이상·전반적 중증도가 진행성으로 악화됨(Majamaa-Voltti 2006).</li>
+        <li>MELAS 환자 31명 + 무증상/유증상 보인자 54명의 최대 10.6년 추적 자연경과 연구: MELAS 환자군에서만 신경학적검사·신경심리검사·일상생활능력이 유의하게 악화, 보인자 친척은 유의한 악화 없음. 사망률은 완전발현군에서 보인자 대비 17배 이상 높음(Kaufmann 2011).</li>
+        <li>국소신경질환 발병 후 <strong>중앙생존기간 16.9년</strong>(완전발현 환자 기준).</li>
+        <li>일본 96명 전향적 코호트: 5년 이내 급속 진행 확인, <strong>20.8%가 진단 후 중앙 7.3년 내 사망</strong>(Yatsuga 2012).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧪</span> 병태생리 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li>MELAS 관련 변이는 대부분 <strong>미토콘드리아 단백질 합성(주로 tRNA 유전자)을 손상</strong>시켜 전자전달계(ETC) 복합체 아단위 합성 저하 → 에너지생산 장애를 유발한다.</li>
+        <li>에너지결핍이 미토콘드리아 증식을 자극하며, 소혈관 평활근·내피세포의 미토콘드리아 증식으로 인한 <strong>혈관병증(angiopathy)</strong>이 미세혈류장애를 일으켜 뇌졸중양발작의 주요 기전으로 제안된다.</li>
+        <li><strong>산화질소(NO) 결핍</strong>도 병태생리에 기여하는 것으로 알려져 있으며, 이는 아르기닌(NO 전구체) 요법의 근거가 된다.</li>
+        <li>표현형 다양성의 3대 결정인자: <strong>heteroplasmy(변이/정상 mtDNA 비율)</strong>, <strong>조직별 변이 분포</strong>, <strong>조직별 역치효과(threshold effect)</strong> — 명확한 유전형-표현형 상관관계는 아직 확립되지 않았다.</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+<!-- ══════════════════ TAB 1: 진단 ══════════════════ -->
+<div id="tab-diag" class="panel">
+
+  <div class="alert alert-diag"><span>🧭</span><div>MELAS 진단은 <strong>① 임상진단기준 충족 + ② 원인 유전자의 병원성(또는 병원성 가능) 변이 확인</strong>의 두 축으로 확립된다. 근생검은 필수가 아니며, 분자유전학적 검사가 근생검을 대체하는 경우가 많다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🩺</span> 임상적으로 MELAS를 의심할 소견</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li>40세 이전 뇌졸중양발작</li>
+        <li>경련 및/또는 치매를 동반한 후천성 뇌병증</li>
+        <li>반복성 두통 · 근력저하 및 운동불내성</li>
+        <li>피질성 시력저하 · 편마비 · 반복성 구토</li>
+        <li>저신장 · 청력장애 · 말초신경병증 · 학습장애</li>
+        <li>정상적인 조기 정신운동발달(발병 전까지는 정상발달인 경우가 전형적)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>✅</span> 임상진단기준(2가지 버전)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="acc">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span class="gene-acc-hdr">Ⅰ. Hirano 기준(1992)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">
+          <p style="margin-bottom:6px"><strong>다음 3개 주기준을 모두 충족</strong>:</p>
+          <ul>
+            <li>40세 이전 뇌졸중양발작</li>
+            <li>경련 및/또는 치매를 특징으로 하는 뇌병증</li>
+            <li>젖산산증 및/또는 근생검 RRF로 확인되는 미토콘드리아 근병증</li>
+          </ul>
+          <p style="margin:6px 0"><strong>AND 다음 중 2개 이상</strong>:</p>
+          <ul>
+            <li>정상적인 조기 정신운동발달</li>
+            <li>반복성 두통</li>
+            <li>반복성 구토 삽화</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span class="gene-acc-hdr">Ⅱ. Yatsuga 기준(2012)</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">
+          <p style="margin-bottom:6px"><strong>Category A 중 2개 이상 AND Category B 중 2개 이상</strong>을 충족하면 임상진단 가능:</p>
+          <div class="grid2">
+            <div>
+              <p style="font-weight:700;margin-bottom:4px;color:var(--diag)">Category A</p>
+              <ul>
+                <li>구토를 동반한 두통</li>
+                <li>경련</li>
+                <li>편마비</li>
+                <li>피질성 시력상실</li>
+                <li>신경영상에서의 급성 국소병변</li>
+              </ul>
+            </div>
+            <div>
+              <p style="font-weight:700;margin-bottom:4px;color:var(--gene)">Category B</p>
+              <ul>
+                <li>혈장 또는 CSF 젖산 상승</li>
+                <li>근생검 미토콘드리아 이상소견</li>
+                <li>MELAS 관련 병원성 변이</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧠</span> 뇌영상 소견</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li><strong>뇌 MRI</strong>: 급성기 병변은 T2 신호 증가, <strong>전형적 혈관분포와 일치하지 않음</strong>("stroke-like"의 유래), 비대칭적, <strong>후두엽·측두엽·두정엽 등 후방대뇌를 주로 침범</strong>, 피질에 국한되거나 피질하 백질까지 침범 가능</li>
+        <li>발병 수 주에 걸쳐 병변이 서서히 확산되는 경향(T2 연속촬영으로 확인)</li>
+        <li><strong>확산강조영상(DWI)</strong>: 허혈성 뇌졸중과 달리 <strong>ADC(겉보기확산계수) 증가</strong> 소견 — 감별점</li>
+        <li>MR 혈관조영술은 대개 정상; <strong>MR 분광법</strong>에서 N-acetylaspartate 감소, 젖산 축적 소견</li>
+        <li><strong>Head CT</strong>: 기저핵 석회화가 간헐적으로 관찰됨</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧫</span> 검사실 소견 · 근생검</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li><strong>혈액·CSF 젖산산증</strong>이 매우 흔함(CSF 단백질은 100 mg/dL를 넘는 경우는 드묾). 젖산은 MELAS에 특이적이지 않으며(다른 미토콘드리아·대사질환, 급성신경사건에서도 상승 가능) 일부 환자는 젖산이 정상일 수 있음</li>
+        <li><strong>근생검</strong>: modified Gomori trichrome 염색에서 <strong>ragged red fibers(RRF)</strong>; SDH 염색에서도 강하게 염색(ragged blue). MELAS의 RRF는 대부분 <strong>cytochrome c oxidase(COX) 염색에 양성</strong>인 점이 다른 미토콘드리아질환(대개 COX 음성)과의 감별점</li>
+        <li>근내 혈관 평활근·내피세포에 미토콘드리아 과다축적 — SDH 염색에서 <strong>SSV(strongly SDH-reactive vessels)</strong></li>
+        <li>호흡사슬 효소검사: 흔히 <strong>복합체 Ⅰ 및/또는 Ⅳ의 부분결손</strong>이 다발성으로 나타나나, 생화학검사가 정상일 수도 있음</li>
+        <li><strong>근생검은 진단에 필수가 아니며</strong>, 분자유전학적 검사로 대체되는 경우가 많음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 분자유전학적 검사 전략</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="acc">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span class="gene-acc-hdr">Option 1 — 표현형이 MELAS를 강하게 시사하는 경우</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">
+          <ul>
+            <li><strong>1단계</strong>: 말초혈액 백혈구 DNA에서 <strong>m.3243A&gt;G(MT-TL1)</strong> 표적검사(전형적 임상소견 환자의 약 80%에서 확인)</li>
+            <li><strong>2단계(1단계 음성 시)</strong>: MT-TL1의 m.3271T&gt;C·m.3252A&gt;G, MT-ND5의 m.13513G&gt;A 등 표적검사</li>
+            <li>또는 MT-TL1·MT-ND5 등을 포함한 <strong>다중유전자 패널</strong> 검사</li>
+            <li><strong>전체 미토콘드리아 유전체 시퀀싱(entire mtDNA sequencing)</strong>이 원인 확인 가능성을 가장 높이면서 무관한 VUS 검출은 최소화</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc">
+        <div class="acc-hdr open" onclick="toggleAcc(this)"><span class="gene-acc-hdr">Option 2 — 경련·근력저하 등 비특이적 표현형인 경우</span><span class="acc-toggle">▾</span></div>
+        <div class="acc-body" style="display:block">
+          <ul>
+            <li>원인 유전자를 특정하기 어려운 경우 <strong>포괄적 유전체검사(exome/genome sequencing)</strong>가 최선 — 검사기관에 미토콘드리아 유전체 포함 여부를 반드시 명시해야 함</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert alert-gene" style="margin-top:8px"><span>⚠️</span><div><strong>Heteroplasmy 주의</strong>: 전형적 MELAS 환자는 대개 백혈구 mtDNA에서 변이가 검출되나, heteroplasmy로 인해 조직별 변이 분포가 달라 <strong>백혈구 검사가 음성이어도 배제되지 않음</strong> — 구강점막, 배양 피부섬유아세포, 모낭, 요침사, (가장 신뢰도 높은) 골격근에서 검출될 수 있음.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 원인 유전자별 비율(Table 1)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>유전자</th><th>MELAS 중 차지 비율</th><th>비고</th></tr>
+          <tr><td><span class="gene-badge">MT-TL1</span></td><td class="freq-vhigh">&gt;80%</td><td>m.3243A&gt;G가 대표 변이</td></tr>
+          <tr><td><span class="gene-badge">MT-ND5</span></td><td class="freq-high">&lt;10%</td><td>m.13513G&gt;A 등</td></tr>
+          <tr><td><span class="gene-badge">MT-TC / MT-TF / MT-TH / MT-TK / MT-TL2 / MT-TQ / MT-TV / MT-TW / MT-TS1 / MT-TS2 / MT-ND1 / MT-ND6 / MT-CO2 / MT-CO3 / MT-CYB</span></td><td class="freq-low">드묾(각 &gt;1%)</td><td>tRNA 유전자 11종 + 단백질코딩 유전자 6종</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔀</span> 감별진단</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li>젊은 연령 급성 뇌졸중의 감별진단: 심장질환, 경동맥·척추동맥질환, 겸상적혈구병, 혈관병증, 지단백질이상증, 정맥혈전증, 모야모야병, 복합편두통(가족성반신마비편두통 포함), 파브리병, 시스타티오닌베타합성효소결핍 호모시스틴뇨증 등 — 모계 유전 가족력(저신장·편두통·난청·당뇨병)이 감별의 단서가 됨</li>
+        <li>핵유전자(nuclear gene) 결함에 의한 MELAS-유사 표현형: <strong>MRM2</strong>, <strong>FASTKD2</strong>, <strong>POLG</strong> 관련 질환이 보고됨</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /diag -->
+
+<!-- ══════════════════ TAB 2: 관리·치료 ══════════════════ -->
+<div id="tab-mgmt" class="panel">
+
+  <div class="alert alert-evid"><span>💊</span><div>MELAS 치료는 <strong>전반적으로 지지적(supportive)</strong>이다. 무작위대조시험에 기반한 근거는 제한적이며, 가장 명확한 근거를 가진 개입은 급성/예방적 <strong>아르기닌 요법</strong>이다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚨</span> 아르기닌 요법 — 뇌졸중양발작</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="algo-step" onclick="openStatModal('arg_acute')"><div class="algo-num">급성</div><div class="algo-txt"><strong>증상 발생 3시간 이내 정맥 아르기닌 볼루스</strong>(소아 500 mg/kg, 성인 10 g/m² 체표면적) 투여 후, 이후 3–5일간 <strong>동일용량을 24시간 지속정주</strong></div><div class="algo-more">자세히 ▸</div></div>
+      <div class="algo-step" onclick="openStatModal('arg_proph')"><div class="algo-num">예방</div><div class="algo-txt">첫 뇌졸중양발작 이후 재발 위험 감소를 위해 <strong>경구 아르기닌 150–300 mg/kg/day를 3회 분복</strong>으로 예방적 투여</div><div class="algo-more">자세히 ▸</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> 증상별 치료(Table 6 요약)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>증상/영역</th><th>치료</th><th>비고</th></tr>
+          <tr><td>전반적 질병경과</td><td>CoQ10(소아 5–10 mg/kg/day, 성인 200–400 mg/day 3분복), L-carnitine(소아 100 mg/kg/day, 성인 3 g/day 3분복), Creatine(소아 100 mg/kg/day, 성인 2–5 g/day 3분복)</td><td>일부 환자에서 도움 보고</td></tr>
+          <tr><td>안검하수</td><td>표준치료(eyelid crutch, 안검성형술, 전두근-안검이식 고려)</td><td>—</td></tr>
+          <tr><td>감각신경성난청</td><td>표준치료, 인공와우 성공사례 있음</td><td>—</td></tr>
+          <tr><td>심근병증·전도이상</td><td>표준 약물치료(심장내과 협진)</td><td>—</td></tr>
+          <tr><td>신병증</td><td>표준치료</td><td>—</td></tr>
+          <tr><td>운동불내성·근력저하</td><td>유산소운동</td><td>—</td></tr>
+          <tr><td>뇌졸중양발작</td><td>아르기닌 요법(위 참고)</td><td>급성기 이후 물리·작업치료 병행</td></tr>
+          <tr><td>경련</td><td>전통적 항경련제</td><td><strong>발프로산 회피</strong></td></tr>
+          <tr><td>편두통</td><td>표준 진통제</td><td>—</td></tr>
+          <tr><td>당뇨병</td><td>식이조절 → 경구혈당강하제(주로 설폰요소제) → 인슐린</td><td><strong>메트포르민 회피</strong>, 내분비내과 협진</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 진단 시 권장 평가(Table 5)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>영역</th><th>평가</th><th>비고</th></tr>
+          <tr><td>성장</td><td>신장·체중 측정</td><td>—</td></tr>
+          <tr><td>눈</td><td>안과 평가</td><td>안검하수·시신경위축·색소성망막병증·안근마비·시력저하 선별</td></tr>
+          <tr><td>귀</td><td>청력검사</td><td>난청 확인</td></tr>
+          <tr><td>심장</td><td>심초음파, 심전도</td><td>심근병증, 전도이상 — 심장내과 협진 고려</td></tr>
+          <tr><td>신장</td><td>요검사, 요아미노산 분석</td><td>신세뇨관병증 평가</td></tr>
+          <tr><td>근골격</td><td>물리·작업치료 평가</td><td>신경학적결손 동반 시</td></tr>
+          <tr><td>신경계</td><td>신경학적진찰, 뇌 MRI+MRS, EEG(경련 의심 시), 신경심리검사</td><td>기저 병변평가, 치매 여부 평가 — 신경과 협진 고려</td></tr>
+          <tr><td>내분비</td><td>공복혈당, 경구당부하검사</td><td>당뇨병 선별 — 내분비내과 협진 고려</td></tr>
+          <tr><td>기타</td><td>임상유전학자·유전상담사 상담</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🗓️</span> 연간 정기감시(Table 7)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>영역</th><th>연간 평가</th></tr>
+          <tr><td>눈</td><td>안과 검진</td></tr>
+          <tr><td>귀</td><td>청력검사</td></tr>
+          <tr><td>심장</td><td>심전도, 심초음파</td></tr>
+          <tr><td>신장</td><td>요검사</td></tr>
+          <tr><td>내분비</td><td>공복혈당</td></tr>
+        </table>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px"><span>💉</span><div>발열성 질환이 급성 악화를 유발할 수 있어, 표준 소아 예방접종·독감백신·폐렴구균백신 접종이 권장된다.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>⛔</span> 회피해야 할 약물·상황</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger"><span>⚠️</span><div>
+        <ul>
+          <li><strong>미토콘드리아 독성물질</strong>: 아미노글리코사이드 항생제, 리네졸리드, 흡연, 음주</li>
+          <li><strong>발프로산(valproic acid)</strong>: 경련치료 시 회피 — MELAS에서 간질 악화 보고</li>
+          <li><strong>메트포르민</strong>: 젖산산증 유발 경향으로 회피</li>
+          <li><strong>디클로로아세테이트(DCA)</strong>: 젖산을 낮추나 <strong>말초신경병증 위험 증가</strong>로 MELAS에서 시행된 무작위대조시험이 신경병증 발생/악화로 조기중단됨(Kaufmann 2006a)</li>
+        </ul>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 연구 중인 치료</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li>변이 mtDNA를 가진 수정란·접합자에서 핵을 제핵된 수용세포로 옮기는 <strong>핵이식(pronuclear transfer)</strong> 기법이 이론적으로 mtDNA질환 전달을 차단할 수 있음이 비정상수정 접합자에서 개념증명됨(Craven 2010)</li>
+        <li>ClinicalTrials.gov(미국) 및 EU Clinical Trials Register에서 진행 중인 임상연구 확인 가능</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /mgmt -->
+
+<!-- ══════════════════ TAB 3: 유전상담·임신 ══════════════════ -->
+<div id="tab-genet" class="panel">
+
+  <div class="alert alert-preg"><span>🧬</span><div>MELAS는 <strong>mtDNA 병원성 변이에 의한 모계유전(maternal inheritance)</strong> 질환이다. 아버지는 변이를 전달하지 않으며, 변이를 가진 여성은 모든 자녀에게 변이를 전달한다.</div></div>
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>👪</span> 가족 구성원별 위험도</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>대상</th><th>위험도</th></tr>
+          <tr><td>先증자의 아버지</td><td>mtDNA 변이를 갖지 않음</td></tr>
+          <tr><td>先증자의 어머니</td><td>대개 변이를 가지며 유증상/무증상일 수 있음. 백혈구에서 검출 안 되면 구강점막·피부섬유아세포·모낭·요침사·골격근에서 확인 필요(선증자는 드물게 de novo 체세포성 변이일 수도 있음)</td></tr>
+          <tr><td>형제자매</td><td>어머니가 변이를 가지면 모든 형제자매가 변이를 물려받으며 유증상/무증상 가능. 혈중 변이량이 높은 어머니일수록 유증상 자녀 가능성↑</td></tr>
+          <tr><td>자녀</td><td>변이를 가진 여성의 모든 자녀는 변이를 물려받음. 변이를 가진 남성의 자녀는 위험 없음</td></tr>
+          <tr><td>기타 친척</td><td>어머니가 변이를 가지면 그 형제·모친도 위험군</td></tr>
+        </table>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px"><span>❓</span><div>무증상 위험군 가족구성원의 검사결과 해석은 매우 어려우며, <strong>검사결과만으로 표현형을 예측할 수 없다</strong>.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 출생 전 검사 · 착상전유전검사(PGT)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li>어머니의 특정 mtDNA 병원성 변이가 확인되면 출생전검사·PGT가 <strong>가능은 하나, 임상적 유용성은 불확실</strong>하다.</li>
+        <li>m.3243A&gt;G 가계 5명 여성의 9회 임신을 평가한 소규모 연구에서 융모막융모(1회 분석)·양수세포(임신 중 1–2회 분석)의 변이량은 비교적 안정적이었음(Bouchet 2006)</li>
+        <li>태아 변이량 35% 이하인 11회 임신(출생전검사 또는 PGT로 평가)은 모두 건강하게 출생해 1개월–5년 추적됨; 63% 변이량인 1건은 임신중지됨(Monnot 2011, Treff 2012)</li>
+        <li><strong>해석의 한계</strong>: ① 산모/태아조직(양수세포·융모막융모)의 변이량이 다른 태아조직과 일치하지 않을 수 있음, ② 출생 전·후 무작위 유사분열 분리로 변이량이 변동할 수 있음, ③ 표현형·발병연령·중증도·진행속도는 예측 불가능</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🤰</span> 임신 관리</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li>일부 환자는 <strong>불임으로 임신이 제한</strong>될 수 있음</li>
+        <li>MELAS 여성은 임신 전 <strong>유전상담</strong>을 받아야 하며(자녀 위험도·생식 옵션 논의 포함), 젊은 성인 환자·위험군에게 유전상담(잠재적 위험·생식 관련 선택지 논의)을 제공하는 것이 적절함</li>
+        <li>임신 중 유증상 또는 위험군 여성은 <strong>당뇨병·호흡부전 발생 여부를 모니터링</strong>해야 하며, 치료적 개입이 필요할 수 있음(Díaz-Lobato 2005)</li>
+        <li>가족계획에서 유전위험 평가·출생전/착상전유전검사 논의의 <strong>최적 시점은 임신 전</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📚</span> 환자단체·자원</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul>
+        <li>United Mitochondrial Disease Foundation — umdf.org</li>
+        <li>International Mito Patients — mitopatients.org</li>
+        <li>Mito Foundation(호주) — mito.org.au</li>
+        <li>Muscular Dystrophy Association(미국) — mda.org</li>
+        <li>The Lily Foundation(영국) — thelilyfoundation.org.uk</li>
+        <li>RDCRN Patient Contact Registry: North American Mitochondrial Disease Consortium</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /genet -->
+
+</div><!-- /main -->
+
+<script>
+const STAT_DETAILS = {
+  onset: {
+    title: "발병연령",
+    val: "2–40세(65–76%는 ≤20세)",
+    color: "var(--diag)",
+    html: `
+      <div class="alert alert-diag"><span>📅</span><div>대다수 환자는 <strong>2–40세 사이</strong>에 증상이 발현하며, <strong>65–76%가 20세 이전</strong>에 발병한다.</div></div>
+      <ul>
+        <li>2세 미만 발병: 5–8%</li>
+        <li>40세 초과 발병: 1–6%</li>
+        <li>대부분에서 발병 초기부터 여러 증상이 동시에 나타나는 경우가 흔함(경련·두통·뇌졸중양발작·시력저하·근력저하·구토·저신장 등)</li>
+      </ul>
+    `
+  },
+  mttl1: {
+    title: "MT-TL1(m.3243A>G)이 차지하는 비율",
+    val: ">80%",
+    color: "var(--gene)",
+    html: `
+      <div class="alert alert-gene"><span>🧬</span><div>MT-TL1 유전자의 <strong>m.3243A&gt;G</strong> 변이가 MELAS 원인의 80% 이상을 차지하며, 가장 먼저 표적검사하는 변이다.</div></div>
+      <ul>
+        <li>MT-ND5 변이(대표적으로 m.13513G&gt;A)가 &lt;10%를 차지</li>
+        <li>나머지 20여 개 변이(MT-TC, MT-TF, MT-TH, MT-TK, MT-TL2, MT-TQ, MT-TV, MT-TW, MT-TS1, MT-TS2, MT-ND1, MT-ND6, MT-CO2, MT-CO3, MT-CYB)가 각각 1% 미만씩 차지</li>
+        <li>같은 MT-TL1 변이가 표현형 스펙트럼(무증상 보인자~PEO~당뇨병/난청(MIDD)~심근병증~MELAS)을 만들어내며, 명확한 유전형-표현형 상관관계는 확립되어 있지 않음</li>
+      </ul>
+    `
+  },
+  prevalence: {
+    title: "m.3243A>G 변이 유병률",
+    val: "16–18/100,000(핀란드)",
+    color: "var(--gene)",
+    html: `
+      <div class="alert alert-gene"><span>🌍</span><div>MELAS 자체의 유병률은 일본에서 <strong>0.2:100,000</strong>으로 추정(Yatsuga 2012)되며, m.3243A&gt;G 변이 보유율은 인구집단에 따라 차이가 크다.</div></div>
+      <ul>
+        <li>핀란드: 16–18:100,000(Majamaa 1998, Uusimaa 2007)</li>
+        <li>호주: 236:100,000으로 더 높게 보고(Manwaring 2007)</li>
+        <li>변이 보유자 대부분이 MELAS의 완전한 표현형을 나타내는 것은 아니며, MIDD 등 경한 표현형이 더 흔함</li>
+      </ul>
+    `
+  },
+  mortality: {
+    title: "평균 사망연령",
+    val: "34.5±19세(범위 10.2–81.8세)",
+    color: "var(--future)",
+    html: `
+      <div class="alert alert-future"><span>⚰️</span><div>완전발현 MELAS 환자군의 관찰된 평균 사망연령은 <strong>34.5±19세</strong>이며, 사망의 <strong>22%는 18세 미만</strong>에서 발생했다(Kaufmann 2011).</div></div>
+      <ul>
+        <li>완전발현 환자의 사망률은 무증상/유증상 보인자 친척 대비 <strong>17배 이상</strong> 높음</li>
+        <li>개인차가 매우 커서(범위 10.2–81.8세), 예후는 heteroplasmy·조직분포·동반질환에 따라 크게 달라짐</li>
+      </ul>
+    `
+  },
+  survival: {
+    title: "중앙생존기간",
+    val: "16.9년(국소신경증상 발병 후)",
+    color: "var(--future)",
+    html: `
+      <div class="alert alert-future"><span>📉</span><div>완전발현 환자를 기준으로, <strong>국소신경학적질환 발병 시점부터의 중앙생존기간은 16.9년</strong>으로 추정된다(Kaufmann 2011).</div></div>
+      <ul>
+        <li>31명의 MELAS 환자와 54명의 유증상/무증상 보인자 친척을 최대 10.6년 추적한 자연경과 연구에 기반</li>
+        <li>MELAS 환자군에서만 신경학적검사·신경심리검사·일상생활능력 점수가 유의하게 저하되었고, 보인자 친척군에서는 유의한 저하가 없었음</li>
+      </ul>
+    `
+  },
+  cohort: {
+    title: "5년 내 사망률(일본 코호트)",
+    val: "20.8%(중앙 7.3년)",
+    color: "var(--evid)",
+    html: `
+      <div class="alert alert-evid"><span>📊</span><div>일본의 MELAS 환자 96명 전향적 코호트연구에서 <strong>5년 이내 급속한 진행</strong>이 확인되었으며, <strong>20.8%가 진단 후 중앙 7.3년 내 사망</strong>했다(Yatsuga 2012).</div></div>
+      <ul>
+        <li>이 코호트는 Yatsuga 2012 임상진단기준(Category A/B)의 근거가 된 연구이기도 함</li>
+      </ul>
+    `
+  },
+  arg_acute: {
+    title: "급성 뇌졸중양발작 — 아르기닌 요법",
+    val: "증상발생 3시간 이내 볼루스 + 3–5일 지속정주",
+    color: "var(--evid)",
+    html: `
+      <div class="alert alert-evid"><span>🚨</span><div>급성 뇌졸중양발작 관리에 관한 아르기닌 권고안이 발표되어 있다(Koenig 2016).</div></div>
+      <ul>
+        <li><strong>볼루스</strong>: 증상발생 3시간 이내 정맥 아르기닌 — 소아 500 mg/kg, 성인 10 g/m² 체표면적</li>
+        <li><strong>유지</strong>: 이후 동일 용량을 24시간에 걸쳐 지속정주, 3–5일간 유지</li>
+        <li>병태생리적 근거: MELAS에서 시사되는 산화질소(NO) 결핍을 아르기닌(NO 전구체) 보충으로 개선하여 미세혈관 관류를 돕는다는 개념</li>
+      </ul>
+    `
+  },
+  arg_proph: {
+    title: "예방적 아르기닌 요법",
+    val: "경구 150–300 mg/kg/day, 3분복",
+    color: "var(--evid)",
+    html: `
+      <div class="alert alert-evid"><span>🛡️</span><div>첫 뇌졸중양발작 이후에는 재발 위험을 낮추기 위해 <strong>예방적 경구 아르기닌</strong> 투여가 권고된다(Koenig 2016, El-Hattab 2017).</div></div>
+      <ul>
+        <li>용량: <strong>150–300 mg/kg/day, 3회 분복</strong></li>
+        <li>급성기 볼루스/지속정주 요법과 별개로, 이후 장기간의 경구 유지요법으로 시행</li>
+      </ul>
+    `
+  }
+};
+
+function openStatModal(key) {
+  const d = STAT_DETAILS[key];
+  if (!d) return;
+  document.getElementById('stat-modal-title').textContent = d.title;
+  const valEl = document.getElementById('stat-modal-val');
+  valEl.textContent = d.val;
+  valEl.style.color = d.color;
+  valEl.style.fontWeight = '700';
+  valEl.style.fontSize = 'calc(14px * var(--fscale, 1))';
+  document.getElementById('stat-modal-body').innerHTML = d.html;
+  document.getElementById('stat-modal-overlay').classList.add('open');
+}
+function closeStatModal() {
+  document.getElementById('stat-modal-overlay').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeStatModal(); });
+
+const ABBR_DATA = [
+  { term:"MELAS", def:"Mitochondrial Encephalomyopathy, Lactic Acidosis, and Stroke-like episodes — 미토콘드리아뇌근병증·젖산산증·뇌졸중양발작" },
+  { term:"MIDD", def:"Maternally Inherited Diabetes and Deafness — 모계유전 당뇨-난청 증후군(같은 유전적 결함의 경증 표현형)" },
+  { term:"MERRF", def:"Myoclonic Epilepsy with Ragged Red Fibers — 근간대성간질과 RRF를 특징으로 하는 미토콘드리아질환(감별진단·중첩표현형)" },
+  { term:"mtDNA", def:"Mitochondrial DNA — 미토콘드리아 DNA" },
+  { term:"MT-TL1", def:"Mitochondrially encoded tRNA leucine 1 — 가장 흔한 MELAS 원인 유전자" },
+  { term:"MT-ND5", def:"Mitochondrially encoded NADH dehydrogenase 5 — 두 번째로 흔한 원인 유전자" },
+  { term:"m.3243A>G", def:"MT-TL1 유전자의 대표적 병원성 점돌연변이(MELAS의 80% 이상 차지)" },
+  { term:"Heteroplasmy", def:"한 개체·조직·세포 내에 정상 mtDNA와 변이 mtDNA가 혼재하는 비율" },
+  { term:"Threshold effect", def:"조직별로 미토콘드리아 기능장애에 대한 취약성(역치)이 달라 표현형에 영향을 미치는 현상" },
+  { term:"RRF", def:"Ragged Red Fibers — 근생검 modified Gomori trichrome 염색에서 관찰되는 미토콘드리아 증식 소견" },
+  { term:"SSV", def:"Strongly SDH-reactive Vessels — 근내 혈관 평활근/내피세포의 미토콘드리아 과다축적 소견" },
+  { term:"COX", def:"Cytochrome c Oxidase — MELAS의 RRF는 대부분 COX 염색 양성(타 미토콘드리아질환과의 감별점)" },
+  { term:"SDH", def:"Succinate Dehydrogenase — 근생검 조직화학염색법" },
+  { term:"ADC", def:"Apparent Diffusion Coefficient — 확산강조MRI에서 측정하는 겉보기확산계수(MELAS 병변은 증가, 허혈성뇌졸중은 감소)" },
+  { term:"MRS", def:"Magnetic Resonance Spectroscopy — MR 분광법" },
+  { term:"CSF", def:"Cerebrospinal Fluid — 뇌척수액" },
+  { term:"PEO", def:"Progressive External Ophthalmoplegia — 진행성외안근마비" },
+  { term:"NO", def:"Nitric Oxide — 산화질소(MELAS 병태생리에서 결핍이 시사되며 아르기닌 요법의 근거)" },
+  { term:"CoQ10", def:"Coenzyme Q10 — 코엔자임Q10" },
+  { term:"DCA", def:"Dichloroacetate — 젖산 저하제, MELAS에서 말초신경병증 위험으로 회피" },
+  { term:"ETC", def:"Electron Transport Chain — 전자전달계" },
+  { term:"PGT", def:"Preimplantation Genetic Testing — 착상전유전검사" },
+  { term:"VUS", def:"Variant of Uncertain Significance — 의의미상변이" },
+  { term:"EEG", def:"Electroencephalogram — 뇌파검사" },
+];
+
+function renderAbbrMain() {
+  const g = document.getElementById('abbr-main-grid');
+  if (g) g.innerHTML = ABBR_DATA.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+renderAbbrMain();
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${id}')`) t.classList.add('active');
+  });
+}
+
+function toggleCard(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+
+function toggleAcc(hdr) {
+  hdr.classList.toggle('open');
+  const body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'block' ? 'none' : 'block';
+}
+
+function filterAbbr(q) {
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  q = q.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; cnt.textContent = ''; return; }
+  const hits = ABBR_DATA.filter(a =>
+    a.term.toLowerCase().includes(q) || a.def.toLowerCase().includes(q)
+  );
+  cnt.textContent = hits.length || '';
+  if (!hits.length) { drop.style.display = 'none'; return; }
+  drop.style.display = 'block';
+  const inp = document.getElementById('abbr-input');
+  const rect = inp.getBoundingClientRect();
+  drop.style.top  = (rect.bottom + 4) + 'px';
+  drop.style.left = Math.max(8, rect.right - 460) + 'px';
+  grid.innerHTML = hits.map(a =>
+    `<div class="abbr-item"><div class="abbr-term">${a.term}</div><div class="abbr-def">${a.def}</div></div>`
+  ).join('');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) {
+    document.getElementById('abbr-dropdown').style.display = 'none';
+    document.getElementById('abbr-count').textContent = '';
+  }
+});
+
+const FONT_ZOOM_STEPS = [100, 125, 150];
+let fontZoomIdx = 0;
+function cycleFontZoom() {
+  fontZoomIdx = (fontZoomIdx + 1) % FONT_ZOOM_STEPS.length;
+  const pct = FONT_ZOOM_STEPS[fontZoomIdx];
+  document.documentElement.style.setProperty('--fscale', pct / 100);
+  document.getElementById('font-zoom-label').textContent = pct + '%';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.card-header:not(.open)').forEach(h => {
+    const b = h.nextElementSibling;
+    if (b) b.classList.add('collapsed');
+  });
+});
+</script>
+</body>
+</html>
