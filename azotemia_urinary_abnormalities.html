@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>질소혈증과 요이상 | Harrison's 21e Ch.52</title>
+<style>
+  :root{
+    --bg:#F5F8F7;
+    --paper:#FFFFFF;
+    --ink:#232B29;
+    --ink-soft:#57625F;
+    --line:#DCE6E3;
+    --main:#1F6E5C;
+    --main-soft:#DCEFE8;
+    --main-deep:#154A3D;
+    --accent:#B85C38;
+    --accent-soft:#F6E3D8;
+    --accent-deep:#8A3E22;
+    --tx-bg:#E9F1F7;
+    --tx-border:#4E7FA0;
+    --tx-ink:#1E3A4C;
+    --table-head:#2E3B38;
+    --flow-box:#F4FAF8;
+    --fz:16px;
+  }
+  *{box-sizing:border-box;}
+  html{font-size:var(--fz);}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+    line-height:1.75;
+    padding-bottom:60px;
+  }
+  header.top{
+    background:linear-gradient(135deg,#1B3F35 0%, #16302A 100%);
+    color:#EAF4F0;
+    padding:36px 24px 28px;
+  }
+  header.top .chapno{font-size:0.85rem;letter-spacing:0.06em;color:#9FC4B7;margin-bottom:6px;}
+  header.top h1{font-family:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;font-size:1.85rem;margin:0 0 8px;font-weight:700;}
+  header.top .sub{font-size:0.95rem;color:#CFE3DB;}
+  header.top .meta{margin-top:14px;font-size:0.82rem;color:#93B2A7;border-top:1px solid #2B4B41;padding-top:12px;}
+
+  .controls{max-width:960px;margin:0 auto;padding:10px 24px 0;display:flex;justify-content:flex-end;}
+  .fzbtn{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:6px 12px;font-size:0.82rem;color:var(--ink-soft);cursor:pointer;}
+  .fzbtn:hover{border-color:var(--ink-soft);}
+
+  nav.tabs{
+    position:sticky;top:0;z-index:50;background:var(--bg);
+    padding:14px 24px 0;max-width:960px;margin:0 auto;
+    display:flex;gap:4px;border-bottom:2px solid var(--line);
+    overflow-x:auto;
+  }
+  nav.tabs button{
+    background:transparent;border:none;border-bottom:3px solid transparent;
+    padding:10px 12px 12px;font-size:0.92rem;font-weight:600;color:var(--ink-soft);
+    cursor:pointer;font-family:inherit;white-space:nowrap;
+  }
+  nav.tabs button.active{color:var(--ink);border-bottom-color:var(--main);}
+
+  main{max-width:960px;margin:0 auto;padding:24px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 24px;margin-bottom:18px;}
+  h2.sect{font-family:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;font-size:1.2rem;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);color:var(--main-deep);}
+  h3.subsect{font-size:1.02rem;margin:18px 0 8px;color:var(--accent-deep);font-weight:700;}
+
+  p{margin:0 0 14px;}
+  p:last-child{margin-bottom:0;}
+
+  table{width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:0.9rem;}
+  caption{text-align:left;font-weight:700;padding:8px 10px;background:var(--table-head);color:#fff;border-radius:6px 6px 0 0;}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+  th{background:#EDF4F1;font-weight:700;}
+  tr.cat td{background:#EEF6F2;font-weight:700;}
+  .abbr-note{font-size:0.8rem;color:var(--ink-soft);margin-top:6px;padding:0 2px;}
+
+  .formula-box{
+    background:#F4FAF8;border:1px solid var(--main);border-radius:8px;
+    padding:14px 18px;margin:12px 0;font-size:0.95rem;
+  }
+  .formula-box .flabel{font-weight:700;color:var(--main-deep);margin-bottom:6px;}
+  .frac{display:inline-block;vertical-align:middle;text-align:center;margin:0 4px;}
+  .frac .num{display:block;border-bottom:1.5px solid var(--ink);padding:0 4px 2px;}
+  .frac .den{display:block;padding:2px 4px 0;}
+
+  .note-box{
+    background:var(--tx-bg);border:1px solid var(--tx-border);border-left:6px solid var(--tx-border);
+    border-radius:8px;padding:18px 20px;margin-top:14px;
+  }
+  .note-box .note-label{display:inline-block;background:var(--tx-border);color:#fff;font-size:0.75rem;font-weight:700;letter-spacing:0.03em;padding:3px 10px;border-radius:4px;margin-bottom:10px;}
+  .note-box p{color:var(--tx-ink);}
+
+  .accent-box{
+    background:var(--accent-soft);border:1px solid #D9A278;border-left:6px solid var(--accent);
+    border-radius:8px;padding:16px 20px;margin-top:14px;
+  }
+  .accent-box .alabel{display:inline-block;background:var(--accent);color:#fff;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:4px;margin-bottom:8px;}
+  .accent-box p{color:var(--accent-deep);}
+
+  /* ---- Flowchart component ---- */
+  .flow-wrap{background:var(--flow-box);border:1px solid var(--line);border-radius:10px;padding:20px;margin:14px 0;overflow-x:auto;}
+  .flow-title{font-weight:700;color:var(--main-deep);margin-bottom:14px;font-size:0.98rem;}
+  .flow-col{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .flow-row{display:flex;justify-content:center;align-items:flex-start;gap:18px;flex-wrap:wrap;margin:6px 0;}
+  .fnode{
+    background:#fff;border:1.5px solid var(--main);border-radius:8px;
+    padding:9px 14px;font-size:0.85rem;text-align:center;min-width:120px;max-width:220px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.05);
+  }
+  .fnode.top{background:var(--main);color:#fff;font-weight:700;border-color:var(--main-deep);}
+  .fnode.decision{border-color:var(--accent);background:#FFF8F2;}
+  .fnode.outcome{border-color:var(--main-deep);background:var(--main-soft);font-weight:700;}
+  .fnode.small{font-size:0.78rem;padding:6px 10px;min-width:90px;}
+  .fnode ul{margin:4px 0 0;padding-left:16px;text-align:left;}
+  .fnode ul li{margin-bottom:2px;}
+  .farrow{color:var(--ink-soft);font-size:1.1rem;line-height:1;}
+  .flabelmini{font-size:0.72rem;color:var(--accent-deep);font-weight:700;background:var(--accent-soft);border-radius:10px;padding:1px 8px;margin:2px 0;}
+  .fbranch{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;}
+  .fbranch-col{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:280px;}
+
+  .refs{list-style:none;padding:0;margin:0;}
+  .refs li{padding:12px 0;border-bottom:1px solid var(--line);font-size:0.93rem;}
+  .refs li:last-child{border-bottom:none;}
+  .refs .jr{color:var(--ink-soft);}
+
+  .overview-hero{background:linear-gradient(180deg,#EEF7F3,var(--bg));border:1px solid var(--line);border-radius:10px;padding:24px;margin-bottom:18px;}
+
+  footer.src{max-width:960px;margin:20px auto 0;padding:0 24px;font-size:0.78rem;color:#8B978F;text-align:center;}
+
+  @media (max-width:600px){
+    header.top h1{font-size:1.4rem;}
+    .card{padding:16px;}
+    .fnode{min-width:100px;max-width:160px;font-size:0.78rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="chapno">PART 2 · Cardinal Manifestations and Presentation of Diseases · CHAPTER 52</div>
+  <h1>질소혈증과 요이상</h1>
+  <div class="sub">Azotemia and Urinary Abnormalities — David B. Mount</div>
+  <div class="meta">Harrison's Principles of Internal Medicine, 21st Edition · 원문 pp. 331–338 · 한글 번역본 (누락 없이 전체 번역)</div>
+</header>
+
+<div class="controls">
+  <button class="fzbtn" id="fzToggle">글자 크기 100%</button>
+</div>
+
+<nav class="tabs">
+  <button class="active" data-tab="overview">개요</button>
+  <button data-tab="azotemia">질소혈증(AZOTEMIA)</button>
+  <button data-tab="approach">환자 접근·병인</button>
+  <button data-tab="urine">요침사 이상</button>
+  <button data-tab="protein">단백뇨</button>
+  <button data-tab="volume">요량 이상</button>
+  <button data-tab="refs">참고문헌</button>
+</nav>
+
+<main>
+
+  <!-- ================= 개요 ================= -->
+  <section class="panel active" id="panel-overview">
+    <div class="overview-hero">
+      <h2 class="sect" style="border:none;padding-bottom:0;">신질환 증후군 개관</h2>
+      <p>정상적인 신장 기능은 체내 항상성을 유지하기 위한 수많은 세포 과정을 통해 이루어진다. 이러한 기능 중 어느 하나라도 장애가 발생하면 생존에 해로울 수 있는 이상이 초래될 수 있다. 이러한 질환들의 임상 양상은 신손상의 병태생리에 따라 달라지며, 흔히 특정 증후군을 구성하는 증상, 이상 신체 소견, 검사실 소견의 복합체로 확인된다. 이러한 신질환 증후군(Table 52-1)은 전신 질환에서 기인하거나 일차성 신질환으로 나타날 수 있다.</p>
+      <p>신질환 증후군은 대개 기저 병리 과정을 반영하는 여러 요소로 구성되며, 전형적으로 다음 중 하나 이상을 포함한다:</p>
+      <p>
+        (1) 사구체여과율(GFR) 감소<br>
+        (2) 요침사 이상 (적혈구[RBC], 백혈구[WBC], 원주, 결정)<br>
+        (3) 혈청 단백의 비정상적 요배설 (단백뇨)<br>
+        (4) 요량 장애 (핍뇨, 무뇨, 다뇨)<br>
+        (5) 고혈압 및/또는 체액량 증가(부종)의 존재<br>
+        (6) 전해질 이상<br>
+        (7) 일부 증후군에서 발열/통증
+      </p>
+      <p>이러한 소견의 특정 조합을 통해 주요 신질환 증후군(Table 52-1) 중 하나를 확인하고 감별진단을 좁혀 적절한 진단 및 치료 방침을 결정할 수 있다. 이러한 모든 증후군과 관련 질환은 이후 장들에서 더 상세히 논의된다. 이 장에서는 이러한 과정들을 감별하는 데 결정적으로 중요한 신장 이상의 세 가지 측면 — ① GFR 감소, ② 요침사 및/또는 단백 배설의 변화, ③ 요량 이상 — 에 초점을 맞춘다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">TABLE 52-1. 신장학 주요 증후군 정의를 위한 초기 임상·검사 데이터베이스</h2>
+      <table>
+        <tr><th>증후군</th><th>진단에 중요한 단서</th><th>흔한 소견</th><th>관련 논의 장</th></tr>
+
+        <tr><td rowspan="3">급성 또는 급속 진행성 신부전</td><td>무뇨</td><td>고혈압, 혈뇨</td><td rowspan="3">310, 314, 316, 319</td></tr>
+        <tr><td>핍뇨</td><td>단백뇨, 농뇨</td></tr>
+        <tr><td>최근 GFR 감소가 확인됨</td><td>원주, 부종</td></tr>
+
+        <tr><td rowspan="3">급성 신염</td><td>혈뇨, RBC 원주</td><td>단백뇨</td><td rowspan="3">314</td></tr>
+        <tr><td>질소혈증, GFR 감소, 핍뇨</td><td>농뇨</td></tr>
+        <tr><td>부종, 고혈압</td><td>순환울혈</td></tr>
+
+        <tr><td rowspan="4">만성 신부전</td><td>3개월 초과 지속되는 질소혈증</td><td>단백뇨, 원주</td><td rowspan="4">311</td></tr>
+        <tr><td>요독증상/징후(후기소견), 원주</td><td>저칼슘혈증, 고인산혈증, 부갑상선기능항진증</td></tr>
+        <tr><td>신성골이영양증 증상/징후</td><td>다뇨, 야뇨</td></tr>
+        <tr><td>양측 신장 크기 감소 / 요침사 내 광범위원주</td><td>부종, 고혈압 / 고칼륨혈증, 대사성산증</td></tr>
+
+        <tr><td rowspan="4">신증후군</td><td>단백뇨 >3.5 g/24h/1.73m²</td><td>원주</td><td rowspan="4">314</td></tr>
+        <tr><td>저알부민혈증</td><td>지질뇨</td></tr>
+        <tr><td>부종</td><td>과응고상태</td></tr>
+        <tr><td>고지혈증</td><td></td></tr>
+
+        <tr><td rowspan="3">무증상 요이상</td><td>혈뇨</td><td></td><td rowspan="3">314</td></tr>
+        <tr><td>단백뇨(신증후군 미만)</td><td></td></tr>
+        <tr><td>무균성 농뇨, 원주</td><td></td></tr>
+
+        <tr><td rowspan="4">요로감염/신우신염</td><td>세균뇨 (>10⁵ cfu/mL)</td><td>혈뇨</td><td rowspan="4">135</td></tr>
+        <tr><td>다른 감염원이 요에서 확인됨</td><td>경도 질소혈증 및 GFR 감소</td></tr>
+        <tr><td>농뇨, 백혈구원주</td><td>경도 단백뇨</td></tr>
+        <tr><td>빈뇨, 절박뇨 / 방광압통, 옆구리압통</td><td>발열</td></tr>
+
+        <tr><td rowspan="4">신세뇨관결손</td><td>전해질장애</td><td>혈뇨</td><td rowspan="4">315, 316</td></tr>
+        <tr><td>다뇨, 야뇨</td><td>"세뇨관성" 단백뇨 (<1 g/24h)</td></tr>
+        <tr><td>신석회화 / 큰 신장</td><td>유뇨증</td></tr>
+        <tr><td>신세뇨관수송결손</td><td>전해질 및/또는 산염기 이상 / 기타 전해질 문제(예: 저마그네슘혈증)</td></tr>
+
+        <tr><td rowspan="3">고혈압</td><td>수축기/이완기 고혈압</td><td>단백뇨</td><td rowspan="3">277, 317</td></tr>
+        <tr><td></td><td>원주</td></tr>
+        <tr><td></td><td>질소혈증</td></tr>
+
+        <tr><td rowspan="3">신결석증</td><td>이전 결석 배출/제거 병력</td><td>혈뇨</td><td rowspan="3">318</td></tr>
+        <tr><td>방사선상 결석 관찰 병력</td><td>농뇨</td></tr>
+        <tr><td>신산통</td><td>빈뇨, 절박뇨</td></tr>
+
+        <tr><td rowspan="4">요로폐색</td><td>질소혈증, 핍뇨, 무뇨</td><td>혈뇨</td><td rowspan="4">319</td></tr>
+        <tr><td>다뇨, 야뇨, 요저류</td><td>농뇨</td></tr>
+        <tr><td>요류 감소</td><td>유뇨증, 배뇨통</td></tr>
+        <tr><td>전립선 비대, 신장 비대 / 옆구리압통, 배뇨후 방광충만</td><td></td></tr>
+      </table>
+      <div class="abbr-note">약어: cfu, 집락형성단위; GFR, 사구체여과율; RBC, 적혈구.</div>
+    </div>
+  </section>
+
+  <!-- ================= AZOTEMIA (GFR평가) ================= -->
+  <section class="panel" id="panel-azotemia">
+    <div class="card">
+      <h2 class="sect">AZOTEMIA — GFR 평가</h2>
+      <p>입원 및 외래 환경 모두에서 GFR 모니터링은 중요하며, 여러 방법론이 이용 가능하다. GFR은 신장 "기능"의 주된 지표이며, 직접 측정에는 사구체에서 여과되어 요공간으로 들어가지만 세뇨관을 통해 재흡수도 분비도 되지 않는 방사성 동위원소(이눌린이나 iothalamate 등)의 투여가 필요하다. GFR — 즉 이눌린이나 iothalamate의 청소율(mL/min) — 은 수시간에 걸쳐 요 중 동위원소 출현 속도로부터 계산된다.</p>
+      <p>대부분의 임상 상황에서 직접적인 GFR 측정은 실행 가능하지 않으며, 혈장 크레아티닌 수치가 GFR을 추정하는 대체 지표로 사용된다. 혈장 크레아티닌(P<sub>Cr</sub>)은 GFR에 가장 널리 사용되는 표지자이며, 요크레아티닌(U<sub>Cr</sub>) 배설과는 직접적으로, P<sub>Cr</sub>과는 역으로 관련된다. 이러한 관계에 근거하여(아래에서 논의할 몇 가지 중요한 주의사항을 감안하면) GFR은 P<sub>Cr</sub> 상승과 대략 반비례하여 감소한다. 약물 용량 조절 시 GFR 감소를 고려하지 않으면 약물 독성(예: 디곡신, imipenem)으로 인한 상당한 이환율 및 사망률을 초래할 수 있다.</p>
+      <p>외래 환경에서는 P<sub>Cr</sub>이 GFR의 추정치로 사용된다(정확도는 훨씬 낮음). 만성 진행성 신질환 환자에서는 1/P<sub>Cr</sub>(y축)과 시간(x축) 사이에 대략적인 선형 관계가 존재한다. 이 직선의 기울기는 개인마다 일정하게 유지되며, 값이 벗어나면 급성 과정이 중첩되었는지(예: 체액 소실, 약물 반응) 조사해야 한다. 요독증(신부전과 관련된 임상 증상 복합체)의 징후와 증상은 환자(체격, 연령, 성별), 기저 신질환, 동반 질환 유무, 실제 GFR에 따라 상당히 다른 P<sub>Cr</sub> 수준에서 발생한다. 일반적으로 환자는 신부전이 중증(GFR <15 mL/min)이 될 때까지 증상성 요독증이 발생하지 않는다.</p>
+      <p>유의하게 감소한 GFR(급성이든 만성이든)은 대개 P<sub>Cr</sub> 상승으로 반영되어, 요소와 같은 질소성 노폐물의 저류(질소혈증으로 정의됨)를 초래한다. 질소혈증은 신관류 감소, 내인성 신질환, 또는 신후성 과정(요관폐색)에서 기인할 수 있다. GFR의 정확한 결정은 문제가 되는데, 이는 흔히 측정되는 두 지표(요소와 크레아티닌) 모두 청소율 표지자로서의 정확도에 영향을 미치는 특성을 가지고 있기 때문이다. 요소 청소율은 세뇨관에 의한 요소 재흡수 때문에 GFR을 유의하게 과소평가할 수 있다. 이와 대조적으로 크레아티닌은 크레아틴의 근육 대사에서 유래하며, 그 생성량은 하루하루 거의 변동이 없다.</p>
+
+      <p>크레아티닌 청소율(CrCl)은 GFR의 근사치로, 정해진 기간(대개 24시간) 동안의 혈장 및 요 크레아티닌 배설률로부터 측정되며 분당 밀리리터로 표시된다:</p>
+      <div class="formula-box">
+        <div class="flabel">크레아티닌 청소율</div>
+        CrCl (mL/min) = (U<sub>vol</sub> × U<sub>Cr</sub>) / (P<sub>Cr</sub> × T<sub>min</sub>)
+      </div>
+      <p>요 채집의 "적절성" 또는 "완전성"은 요량과 크레아티닌 함량으로 추정되며, 크레아티닌은 근육에서 생성되어 비교적 일정한 속도로 배설된다. 20-50세 남성의 경우 크레아티닌 배설량은 체중 kg당 18.5-25.0 mg이어야 하며, 같은 연령대 여성의 경우 체중 kg당 16.5-22.4 mg이어야 한다. 예를 들어 체중 80 kg 남성은 "적절한" 채집에서 약 1500-2000 mg의 크레아티닌을 배설해야 한다. 크레아티닌은 세뇨관에서 재흡수되지 않는 작고 자유롭게 여과되는 용질이므로 GFR 추정에 유용하다. 그러나 P<sub>Cr</sub> 수치는 조리된 육류 섭취에 의해 급성으로 상승할 수 있으며, 크레아티닌은 (특히 진행된 만성 신장병[CKD]에서) 유기 양이온 경로를 통해 근위세뇨관으로 분비될 수 있어 GFR을 과대평가하게 만들 수 있다. CrCl에 대한 시간제한 채집이 불가능한 경우, 약물 용량에 대한 결정은 P<sub>Cr</sub> 단독에 근거해야 한다. P<sub>Cr</sub>로부터 신기능을 추정하는 데 널리 사용되는 두 가지 공식은 ① Cockcroft-Gault와 ② 4변수 MDRD(Modification of Diet in Renal Disease)이다.</p>
+
+      <div class="formula-box">
+        <div class="flabel">Cockcroft-Gault 공식</div>
+        CrCl (mL/min) = [ (140 − 연령) × 이상체중(kg) ] / [ 혈청 크레아티닌(mg/dL) × 72 ] × (여성인 경우 0.85)
+      </div>
+      <div class="formula-box">
+        <div class="flabel">MDRD 공식</div>
+        eGFR (mL/min/1.73 m²) = 186.3 × P<sub>Cr</sub><sup>(−1.154)</sup> × 연령<sup>(−0.203)</sup> × (여성인 경우 0.742) × (흑인인 경우 1.21)
+      </div>
+      <p>이러한 계산을 돕는 다수의 웹사이트가 있다(www.kidney.org/professionals/kdoqi/gfr_calculator.cfm). 직접 측정된 GFR 자료를 보유한 여러 코호트를 통합하여 개발된 더 새로운 만성신장병역학협력(CKD-EPI) 추정 GFR(eGFR)이 더 정확한 것으로 보인다:</p>
+      <div class="formula-box">
+        <div class="flabel">CKD-EPI 공식</div>
+        eGFR = 141 × min(P<sub>Cr</sub>/k, 1)<sup>a</sup> × max(P<sub>Cr</sub>/k, 1)<sup>(−1.209)</sup> × 0.993<sup>연령</sup> × 1.018(여성인 경우) × 1.159(흑인인 경우)
+        <p style="margin-top:8px;font-size:0.85rem;">여기서 P<sub>Cr</sub>은 혈장 크레아티닌, k는 여성 0.7·남성 0.9, a는 여성 −0.329·남성 −0.411이며, min은 P<sub>Cr</sub>/k 또는 1 중 최소값을, max는 P<sub>Cr</sub>/k 또는 1 중 최대값을 나타낸다. (https://www.mdcalc.com/ckd-epi-equations-glomerular-filtration-rate-gfr)</p>
+      </div>
+
+      <p>크레아티닌 기반 GFR 추정치에는 모두 한계가 있다. 각 공식은 24시간 요채집을 통한 크레아티닌 청소율 측정과 마찬가지로, 환자가 급변하는 GFR로 인한 P<sub>Cr</sub>의 매일의 증감 없이 정상상태(steady state)에 있다는 가정에 근거한다. MDRD 공식은 GFR이 60 mL/min/1.73 m² 미만일 때 실제 GFR과 더 잘 상관관계를 보인다. 만성 질환, 만성 당질코르티코이드 사용, 영양실조로 인한 점진적인 근육 소실은 P<sub>Cr</sub>의 작거나 감지하기 어려운 변화로 GFR의 유의한 변화를 가릴 수 있다.</p>
+
+      <p>CKD-EPI 공식에서 자가보고 흑인 인종을 보정하는 계수 1.159는, 공식 개발에 사용된 데이터셋에서 유사한 연령·성별·크레아티닌을 가진 경우 측정된 GFR이 비흑인보다 흑인에서 16% 더 높았다는 것을 반영한다. 인종은 생물학적 구성이 아니라 사회적 구성이므로, CKD-EPI 및 기타 공식에서 eGFR 계산 시 "인종 보정계수"를 사용하는 것에 대해 면밀한 검토가 이루어지고 있다. 특히 자가보고 인종을 이용해 임상 검사 결과를 보정하는 것의 함의를 고려하여, 많은 의료기관은 최근 인종 보정계수를 사용해 계산된 eGFR 보고를 중단했다. 이러한 변화는 특히 흑인 환자가 더 이른 단계의 CKD에서 신이식 대기자 명단에 등록될 수 있는 접근성 개선과 같은 긍정적 결과를 가져올 것으로 예상된다. 잠재적인 부정적 결과로는 CKD의 "과잉진단", 신장을 통해 배설되는 약물(예: 메트포르민)의 부적절하거나 부정확한 용량 조절, 더 낮게 보고된 eGFR을 가진 CKD 흑인 환자에 대한 영상 검사 접근성 감소, 흑인의 생체 신장 기증 감소 등이 포함된다. 크레아티닌 기반 eGFR의 이러한 한계 및 기타 한계로 인해 GFR을 추정하는 대안적 방법이 개발되어 왔다.</p>
+
+      <p>시스타틴 C는 시스테인 프로테아제 억제제 시스타틴 상과의 일원으로, 모든 유핵세포에서 비교적 일정한 속도로 생성된다. 혈청 시스타틴 C는 P<sub>Cr</sub>보다 초기 GFR 저하에 더 민감한 표지자로서, 순환 수치에 대한 근육량의 영향이 적은 것으로 제안되어 왔다. 그러나 시스타틴 C 수치는 환자의 성별, 당뇨병 유무, 흡연, 염증의 영향을 받는다. 시스타틴 C 기반 eGFR 계산이 자가보고 인종과 근육량의 영향을 덜 받는 한, 이는 크레아티닌 기반 eGFR에 대한 점점 더 중요한 보조 수단이 되고 있다.</p>
+    </div>
+  </section>
+
+  <!-- ================= 환자 접근·병인 ================= -->
+  <section class="panel" id="panel-approach">
+    <div class="card">
+      <h2 class="sect">APPROACH TO THE PATIENT: 질소혈증</h2>
+      <div class="note-box">
+        <span class="note-label">환자 평가</span>
+        <p>GFR 감소가 확인되면, 의사는 이것이 급성 신손상을 나타내는지 만성 신손상을 나타내는지를 결정해야 한다. 임상 상황, 병력, 검사 자료가 흔히 이러한 감별을 용이하게 한다. 그러나 빈혈, 저칼슘혈증, 고인산혈증을 포함한 만성 신부전의 특징적인 검사 이상은 급성 신부전으로 내원하는 환자에서도 흔히 나타난다. 신성골이영양증의 방사선학적 증거(제311장)는 만성 신부전에서만 볼 수 있으나 매우 후기 소견으로, 전형적으로 투석 유지 중인 말기신질환(ESRD) 환자에서 나타난다. 요검사와 신초음파는 급성과 만성 신부전을 감별하는 데 도움이 될 수 있다.</p>
+        <p>진행된 만성 신부전 환자는 흔히 일부 단백뇨, 비농축뇨(등장뇨증; 혈장과 등삼투압), 초음파상 에코발생 증가와 피질 얇아짐을 특징으로 하는 작은 신장을 보인다. 치료는 신질환의 진행을 늦추고 부종, 산증, 빈혈, 고인산혈증에 대한 증상적 완화를 제공하는 데 중점을 두어야 하며, 이는 제311장에서 논의된다. 급성 신부전(제310장)은 혈류와 사구체 관류에 영향을 미치는 과정(신전성 질소혈증), 내인성 신질환(소혈관, 사구체, 또는 세뇨관에 영향), 또는 신후성 과정(요관, 방광, 요도에서의 요흐름 폐색)(제319장)에서 기인할 수 있다.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">신전성 신부전 (PRERENAL FAILURE)</h2>
+      <p>신관류 감소는 급성 신부전 증례의 40-80%를 차지하며, 적절히 치료되면 쉽게 가역적이다. 신전성 질소혈증의 병인에는 순환 혈액량 감소의 모든 원인(위장관 출혈, 화상, 설사, 이뇨제), 체액 격리(췌장염, 복막염, 횡문근융해증), 또는 유효 동맥혈량 감소(심인성 쇼크, 패혈증)가 포함된다. 신 및 사구체 관류는 말초 혈관확장(패혈증, 약물)에 의한 심박출량 감소나 심한 신혈관수축(중증 심부전, 간신증후군, 비스테로이드성 소염제[NSAID] 등의 약제)에 의해서도 영향을 받을 수 있다. 진성 또는 "유효" 동맥혈량저하는 평균동맥압 하강을 초래하며, 이는 교감신경계 및 레닌-안지오텐신-알도스테론계의 활성화와 바소프레신(AVP) 분비를 포함한 일련의 신경 및 체액성 반응을 촉발한다. GFR은 프로스타글란딘 매개 수입세동맥 확장과 안지오텐신 II 매개 수출세동맥 수축에 의해 유지된다. 평균동맥압이 80 mmHg 미만으로 떨어지면 GFR은 급격히 감소한다.</p>
+      <p>NSAID에 의한 프로스타글란딘 생성 차단은 중증 혈관수축과 급성 신부전을 초래할 수 있다. 안지오텐신전환효소(ACE) 억제제나 안지오텐신 수용체 차단제(ARB)로 안지오텐신 작용을 차단하면 수출세동맥 긴장도가 감소하고 이에 따라 사구체 모세혈관 관류압이 감소한다. NSAID 및/또는 ACE 억제제/ARB를 복용하는 환자는 혈액량이나 동맥관류압이 어떤 이유로든 감소할 때 혈류역학적으로 매개되는 급성 신부전에 가장 취약한데, 이러한 상황에서 GFR 보존은 프로스타글란딘에 의한 수입세동맥 확장과 안지오텐신 II에 의한 수출세동맥 수축에 의존하기 때문이다. 양측성 신동맥협착(또는 단일 신장의 협착)이 있는 환자도 사구체여과압 유지를 위해 수출세동맥 혈관수축에 의존할 수 있으며, ACE 억제제나 ARB 투여 시 GFR의 급격한 감소에 특히 취약하다.</p>
+      <p>지속적인 신관류저하는 급성세뇨관괴사(ATN, 내인성 신질환)로 이어질 수 있다. 요검사와 요전해질 측정은 신전성 질소혈증과 ATN을 감별하는 데 유용할 수 있다(Table 52-2). 신전성 질소혈증 환자의 요 나트륨과 삼투질농도는 노르에피네프린, 안지오텐신 II, AVP, 알도스테론의 자극작용과 낮은 세뇨관액 유속으로부터 예측할 수 있다. 신전성 상태에서는 세뇨관이 정상이어서 농축된 요(>500 mosmol), 왕성한 나트륨 재흡수(요 나트륨 농도 <20 mmol/L; 나트륨 분획배설률[FE<sub>Na</sub>] <1%), U<sub>Cr</sub>/P<sub>Cr</sub> >40을 초래한다(Table 52-2). FE<sub>Na</sub>는 전형적으로 ATN에서 >1%이지만, 경증의 비핍뇨성 ATN(예: 횡문근융해증에서 기인) 환자나 울혈성 심부전(CHF), 간경변, 간신증후군과 같은 기저 "신전성" 질환이 있는 환자에서는 <1%일 수 있다. 신전성 요침사는 대개 정상이거나 초자원주 및 과립원주를 보이는 반면, ATN의 침사는 대개 세포 잔해, 세뇨관상피원주, 짙은(진흙갈색) 과립원주로 가득 차 있다. 세뇨관손상과 관련된 요바이오마커 측정은 불현성 ATN을 발견하고/하거나 급성 신부전의 정확한 원인 진단에 도움이 되는 유망한 기법이다.</p>
+
+      <table>
+        <caption>TABLE 52-2. 급성 신부전에서의 검사 소견</caption>
+        <tr><th>지표</th><th>신전성 질소혈증</th><th>핍뇨성 급성 신부전</th></tr>
+        <tr><td>BUN/P<sub>Cr</sub> 비</td><td>>20:1</td><td>10–15:1</td></tr>
+        <tr><td>요 나트륨 U<sub>Na</sub>, meq/L</td><td>&lt;20</td><td>&gt;40</td></tr>
+        <tr><td>요삼투질농도, mosmol/L H₂O</td><td>&gt;500</td><td>&lt;350</td></tr>
+        <tr><td>나트륨 분획배설률<sup>a</sup></td><td>&lt;1%</td><td>&gt;2%</td></tr>
+        <tr><td>요/혈장 크레아티닌 U<sub>Cr</sub>/P<sub>Cr</sub></td><td>&gt;40</td><td>&lt;20</td></tr>
+        <tr><td>요검사 (원주)</td><td>없음 또는 초자/과립원주</td><td>진흙갈색</td></tr>
+      </table>
+      <div class="formula-box" style="margin-top:2px;">
+        <sup>a</sup>FE<sub>Na</sub> = (U<sub>Na</sub> × P<sub>Cr</sub> × 100) / (P<sub>Na</sub> × U<sub>Cr</sub>)
+      </div>
+      <div class="abbr-note">약어: BUN, 혈중요소질소; P<sub>Cr</sub>, 혈장 크레아티닌 농도; P<sub>Na</sub>, 혈장 나트륨 농도; U<sub>Cr</sub>, 요 크레아티닌 농도; U<sub>Na</sub>, 요 나트륨 농도.</div>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">신후성 질소혈증 (POSTRENAL AZOTEMIA)</h2>
+      <p>요로폐색은 급성 신부전 증례의 5% 미만을 차지하지만 대개 가역적이며 평가 초기에 배제되어야 한다. 단일 신장으로도 적절한 청소율이 가능하므로, 완전 폐쇄성 급성 신부전은 요도나 방광출구의 폐색, 양측 요관폐색, 또는 단일 기능신장 환자에서의 일측성 폐색을 필요로 한다. 폐색은 대개 신초음파상 요관 및 신우 확장의 존재로 진단된다. 그러나 폐색 초기이거나 요관이 확장될 수 없는 경우(예: 골반강 또는 요관주위 종양이나 후복막섬유증에 의한 포위) 초음파 검사는 음성일 수 있다. 폐쇄성 요로병증의 존재 또는 부재를 더 명확히 규명하기 위해 furosemide 신장조영술(MAG3 핵의학 검사)과 같은 다른 영상검사가 필요할 수 있다. 폐색을 유발하는 특정 비뇨기과적 상태는 제319장에서 논의된다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">내인성 신질환 (INTRINSIC RENAL DISEASE)</h2>
+      <p>신전성 및 신후성 질소혈증이 신부전의 병인으로 배제되면, 내인성 신실질 질환이 존재하는 것이다. 내인성 신질환은 대신혈관, 신내미세혈관 및 사구체, 또는 세뇨관간질을 침범하는 과정에서 기인할 수 있다. 허혈성 및 독성 ATN이 급성 내인성 신부전 증례의 약 90%를 차지한다. 임상 상황과 요검사는 가능한 병인을 구별하는 데 도움이 된다. 신전성 질소혈증과 ATN은 신관류저하의 스펙트럼의 일부이다. ATN에서는 구조적 세뇨관손상의 증거가 존재하는 반면, 신전성 질소혈증은 적절한 신관류가 회복되면 신속히 가역적이다. 따라서 ATN은 흔히 요검사와 요전해질 조성으로 신전성 질소혈증과 감별할 수 있다(Table 52-2). 허혈성 ATN은 대수술, 외상, 중증 혈액량저하, 압도적 패혈증, 광범위 화상을 겪은 환자에서 가장 흔하게 관찰된다. 신독성 ATN은 흔히 신내 혈관수축, 직접적 세뇨관독성, 및/또는 세뇨관폐색의 조합을 유발하여 많은 흔한 약물의 투여를 복잡하게 만든다. 신장은 풍부한 혈류 공급(심박출량의 25%)과 독소를 농축·대사하는 능력으로 인해 독성 손상에 취약하다. 저혈압과 신독소에 대한 면밀한 조사는 대개 ATN의 특정 병인을 밝혀낸다. 신독소 중단과 혈압 안정화만으로도 대개 투석 없이 충분하며, 세뇨관세포의 지속적 재생이 이루어진다. ATN과 관련된 잠재적 약물 및 독소의 광범위한 목록은 제310장에 있다.</p>
+      <p>세뇨관과 간질을 침범하는 과정은 급성 신부전의 한 아형인 급성신손상(AKI)을 초래할 수 있다. 이러한 과정에는 약물 유발 간질성 신염(특히 항생제, NSAID, 이뇨제에 의한), 중증 감염(세균성 및 바이러스성 모두), 전신 질환(예: 전신홍반루푸스), 전신 장애(예: 사르코이드증, Sjögren 증후군, 림프종, 백혈병)가 포함된다. 알레르기성 간질성 신염과 관련된 약물 목록은 제316장에 있다. 요검사는 대개 경도에서 중등도의 단백뇨, 혈뇨, 농뇨(증례의 약 75%)와 때때로 백혈구원주를 보인다. 간질성 신염에서 RBC 원주 소견이 보고된 바 있으나 이는 사구체질환에 대한 조사를 촉구해야 한다. 때때로 이러한 가능성들을 감별하기 위해 신생검이 필요할 수 있다. 알레르기성 간질성 신염의 전형적 침사 소견은 Wright 또는 Hansel 염색에서 요 호산구의 우세(>10%)이나, 요 호산구는 AKI의 여러 다른 원인에서도 증가할 수 있어 요 호산구 측정은 신질환에서 진단적 유용성이 없다.</p>
+      <p>동맥과 정맥을 포함한 큰 신혈관의 폐색은 급성 신부전의 드문 원인이다. 이 기전에 의한 유의한 GFR 감소는 양측성 과정, 또는 단일 기능신장 환자에서는 일측성 과정을 시사한다. 기존 신동맥협착이 있는 환자에서는 시간이 지나면서 상당한 신측부순환이 발달하여 완전 신동맥폐색 시에도 신관류를 유지할 수 있으나, 전형적으로 사구체여과를 유지하기에는 충분하지 않다. 신동맥은 죽상색전, 혈전색전, 제자리혈전증, 대동맥박리, 또는 혈관염에 의해 폐색될 수 있다. 죽상색전성 신부전은 자연발생할 수 있으나 대개 최근의 대동맥 조작과 관련된다. 색전은 콜레스테롤이 풍부하며 중소 신동맥에 위치하여 그 결과 호산구가 풍부한 염증반응을 초래한다. 죽상색전성 급성 신부전 환자는 흔히 정상 요검사를 보이나, 요에 호산구와 원주가 포함될 수 있다. 진단은 신생검으로 확인할 수 있으나 죽상색전의 다른 징후(그물울혈반, 원위부 말초경색, 호산구증가증)가 있을 때는 이 시술이 흔히 불필요하다. 신동맥혈전증은 경도의 단백뇨와 혈뇨를 초래할 수 있는 반면, 신정맥혈전증은 전형적으로 심한 단백뇨와 혈뇨의 맥락에서 발생한다. 이러한 혈관 합병증은 흔히 확진을 위해 혈관조영술이 필요하며 제317장에서 논의된다.</p>
+      <p>사구체 질환(사구체신염 및 혈관염)과 신미세혈관 질환(용혈요독증후군, 혈전성 혈소판감소자반증, 악성 고혈압)은 대개 사구체손상의 다양한 조합, 즉 단백뇨, 혈뇨, GFR 감소, 그리고 고혈압·부종·순환울혈(급성신염증후군)로 이어지는 나트륨 배설의 변화를 동반하여 나타난다. 이러한 소견은 일차성 신질환으로 또는 전신 질환의 신장 발현으로 나타날 수 있다. 임상 상황과 기타 검사 자료는 일차성 신질환과 전신 질환을 감별하는 데 도움이 된다. 요 중 RBC 원주의 발견은 조기 신생검의 지표이다. 이는 병리학적 패턴이 진단, 예후, 치료에 중요한 함의를 가지기 때문이다. RBC 원주가 없는 혈뇨도 사구체 질환의 지표일 수 있는데, RBC 원주는 사구체신염에 대해 매우 특이적이지만 매우 둔감하기 때문이다. 요현미경검사의 특이도는 사구체 질환과 관련된 이형적혈구("극피세포")를 검출할 수 있는 위상차현미경으로 요를 검사함으로써 높일 수 있다. 이 평가는 Fig. 52-2(요침사 이상 탭)에 요약되어 있다. 사구체신염과 신미세혈관 질환에 대한 상세한 논의는 제316장에 있다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">FIGURE 52-1. 질소혈증 환자에 대한 접근</h2>
+      <div class="flow-wrap">
+        <div class="flow-title">질소혈증 → 요검사 및 신초음파</div>
+        <div class="flow-col">
+          <div class="fnode decision">수신증(hydronephrosis)?</div>
+          <div class="fbranch">
+            <div class="fbranch-col">
+              <div class="flabelmini">음성 (−)</div>
+              <div class="fnode small">신실질 크기 · 요검사</div>
+              <div class="farrow">↓</div>
+              <div class="fbranch">
+                <div class="fbranch-col">
+                  <div class="fnode">작은 신장, 얇은 피질, 정상적 침사, 등장뇨, 단백 &lt;3.5 g/24h</div>
+                  <div class="farrow">↓</div>
+                  <div class="fnode outcome">만성 신부전<br><span style="font-weight:400;font-size:0.78rem;">증상적 치료, 진행 지연, 말기 시 투석 준비</span></div>
+                </div>
+                <div class="fbranch-col">
+                  <div class="fnode">정상 크기 신장, 실질 보존</div>
+                  <div class="farrow">↓</div>
+                  <div class="fnode outcome" style="background:var(--accent-soft);border-color:var(--accent);">급성 신부전</div>
+                  <div class="farrow">↓</div>
+                  <div class="fbranch">
+                    <div class="fbranch-col">
+                      <div class="fnode small">정상 요검사 + 핍뇨</div>
+                      <div class="farrow">↓</div>
+                      <div class="fnode small">요 전해질</div>
+                      <div class="farrow">↓</div>
+                      <div class="fbranch">
+                        <div class="fbranch-col">
+                          <div class="fnode small">FeNa &lt;1%<br>요삼투압 &gt;500 mosmol</div>
+                          <div class="farrow">↓</div>
+                          <div class="fnode outcome" style="font-size:0.78rem;">신전성 질소혈증<br><span style="font-weight:400;">체액량감소, 심부전, 혈관확장, 약물, 패혈증, 신혈관수축, 자동조절 장애</span></div>
+                        </div>
+                        <div class="fbranch-col">
+                          <div class="fnode small">FeNa &gt;1%<br>요삼투압 &lt;350 mosmol</div>
+                          <div class="farrow">↓</div>
+                          <div class="fnode outcome" style="font-size:0.78rem;">급성세뇨관괴사(ATN)</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="fbranch-col">
+                      <div class="fnode small">이상 요검사</div>
+                      <div class="farrow">↓</div>
+                      <div class="fbranch">
+                        <div class="fbranch-col">
+                          <div class="fnode small">진흙갈색원주, 무정형침사 + 단백</div>
+                          <div class="farrow">↓</div>
+                          <div class="fnode small">(신생검)</div>
+                        </div>
+                        <div class="fbranch-col">
+                          <div class="fnode small">백혈구, 원주, 호산구</div>
+                          <div class="farrow">↓</div>
+                          <div class="fnode outcome" style="font-size:0.78rem;">간질성 신염</div>
+                        </div>
+                        <div class="fbranch-col">
+                          <div class="fnode small">적혈구, RBC원주, 단백뇨</div>
+                          <div class="farrow">↓</div>
+                          <div class="fnode small">혈관조영 →</div>
+                          <div class="fnode outcome" style="font-size:0.78rem;">신동맥/신정맥 폐색</div>
+                        </div>
+                      </div>
+                      <div class="farrow">↓</div>
+                      <div class="fnode outcome" style="font-size:0.78rem;">사구체신염 또는 혈관염<br><span style="font-weight:400;">면역복합체, 항GBM질환</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="fbranch-col">
+              <div class="flabelmini">양성 (+)</div>
+              <div class="fnode outcome" style="background:var(--accent-soft);border-color:var(--accent);">비뇨기과 평가<br>폐색 해소</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="abbr-note">FeNa, 나트륨 분획배설률; GBM, 사구체기저막; RBC, 적혈구; U, 요; WBC, 백혈구.</div>
+    </div>
+  </section>
+
+  <!-- ================= 요침사 이상 (혈뇨/농뇨/원주) ================= -->
+  <section class="panel" id="panel-urine">
+    <div class="card">
+      <h2 class="sect">핍뇨와 무뇨 (OLIGURIA AND ANURIA)</h2>
+      <p>핍뇨란 24시간 요량이 400 mL 미만인 것을 의미하며, 무뇨는 요생성이 완전히 없는 상태(100 mL 미만)를 의미한다. 무뇨는 완전 양측 요로폐색; 혈관재앙(박리 또는 동맥폐색); 신정맥혈전증; 골수종에서의 급성 원주신병증; 신피질괴사; 중증 ATN; NSAID, ACE 억제제, 및/또는 ARB의 병용요법; 저혈량성, 심인성, 또는 패혈성 쇼크에 의해 유발될 수 있다. 핍뇨는 결코 정상이 아닌데, 이는 필수적인 일일 삼투질 부하를 배설하려면 최소 400 mL의 최대 농축된 요가 생성되어야 하기 때문이다. 비핍뇨란 급성 또는 만성 질소혈증 환자에서 요량이 400 mL/일을 초과하는 것을 의미한다. 비핍뇨성 ATN에서는 핍뇨 환자에 비해 칼륨 및 수소 균형 장애가 덜 심하며, 정상 신기능으로의 회복이 대개 더 빠르다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">혈뇨, 농뇨, 원주 (HEMATURIA, PYURIA, AND CASTS)</h2>
+      <p>단백뇨, 다른 세포, 원주가 없는 단독 혈뇨는 흔히 요로에서의 출혈을 나타낸다. 혈뇨는 고배율시야(HPF)당 적혈구 2-5개로 정의되며 딥스틱으로 검출될 수 있다. 혈뇨에 대한 딥스틱 위양성(요현미경검사에서 RBC가 관찰되지 않음)은 흔히 횡문근융해증의 상황에서 미오글로빈뇨가 있을 때 발생할 수 있다. 단독 혈뇨의 흔한 원인으로는 결석, 신생물, 결핵, 외상, 전립선염이 있다. 혈전을 동반한 육안적 혈뇨는 대개 내인성 신과정이 아니라 요집합계의 신후성 원인을 시사한다.</p>
+      <p>현미경적 혈뇨로 내원하는 환자의 평가는 Fig. 52-2에 개괄되어 있다. 단회 요검사에서의 혈뇨는 흔하며 월경, 바이러스질환, 알레르기, 운동, 경미한 외상에서 기인할 수 있다. 지속적이거나 유의한 혈뇨(3회의 요검사에서 HPF당 RBC 3개 초과, 단회 요검사에서 RBC 100개 초과, 또는 육안적 혈뇨)는 증례의 9.1%에서 유의한 신장 또는 비뇨기과적 병변과 관련된다. 무통성 단독 혈뇨와 비이형 RBC를 보이는 환자에서 비뇨생식기 신생물에 대한 의심 수준은 연령이 증가할수록 높아진다. 신생물은 소아 인구에서 드물며, 단독 혈뇨는 "특발성"이거나 선천성 이상과 관련될 가능성이 더 높다. 농뇨와 세균뇨를 동반한 혈뇨는 감염의 전형적 소견으로, 적절한 배양 후 항생제로 치료해야 한다. 여성의 급성 방광염이나 요도염은 육안적 혈뇨를 유발할 수 있다. 고칼슘뇨증과 고요산뇨증도 소아와 성인 모두에서 원인불명 단독 혈뇨의 위험인자이다. 이러한 환자의 일부(50-60%)에서는 식이 중재를 통해 칼슘과 요산 배설을 줄이면 현미경적 혈뇨가 사라질 수 있다.</p>
+      <p>단독 현미경적 혈뇨는 사구체 질환의 발현일 수 있다. 사구체 기원의 RBC는 위상차현미경으로 검사할 때 흔히 이형적이다. RBC의 불규칙한 형태는 원위 네프론을 따라 발생하는 pH와 삼투질농도 변화에서도 기인할 수 있다. 이형 RBC 검출에서의 관찰자간 변이는 흔하다. 단독 사구체성 혈뇨의 가장 흔한 병인은 IgA 신병증, 유전성 신염, 얇은기저막병이다. IgA 신병증과 유전성 신염은 삽화성 육안적 혈뇨를 초래할 수 있다. 유전성 신염에서는 흔히 신부전의 가족력이 있으며, 얇은기저막병 환자는 흔히 현미경적 혈뇨를 가진 가족구성원이 있다. 이러한 질환의 확진에는 신생검이 필요하며, 이는 제314장에서 더 상세히 논의된다. 이형 RBC, RBC 원주, 500 mg/일 초과의 단백 배설을 동반한 혈뇨는 사구체신염을 사실상 진단할 수 있다. RBC 원주는 세뇨관액으로 들어간 RBC가 겔화된 Tamm-Horsfall 단백의 원통형 주형에 갇혀 형성된다. 질소혈증이 없더라도 이러한 환자는 Fig. 52-2에 개괄된 바와 같이 혈청학적 평가와 신생검을 받아야 한다.</p>
+      <p>단독 농뇨는 흔하지 않은데, 이는 신장이나 집합계의 염증반응이 혈뇨와도 관련되기 때문이다. 세균의 존재는 감염을 시사하며, 세균을 동반한 백혈구원주는 신우신염을 나타낸다. 요세균배양이 음성인 "무균성 농뇨"는 비뇨생식기 결핵에서 나타날 수 있다. 백혈구 및/또는 백혈구원주는 급성 사구체신염뿐 아니라 간질성 신염이나 이식거부와 같은 세뇨관간질 과정에서도 나타날 수 있다.</p>
+      <p>원주는 만성 신질환에서 관찰될 수 있다. 왁스원주 또는 광범위원주로 불리는 변성된 세포원주(감소된 신장량에 대한 보상성 비대를 겪은 확장된 세뇨관에서 발생)가 요에서 관찰될 수 있다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">FIGURE 52-2. 혈뇨 환자에 대한 접근</h2>
+      <div class="flow-wrap">
+        <div class="flow-title">혈뇨</div>
+        <div class="flow-col">
+          <div class="fnode decision">단백뇨(&gt;500 mg/24h), 이형 RBC 또는 RBC 원주 동반?</div>
+          <div class="fbranch">
+            <div class="fbranch-col">
+              <div class="flabelmini">양성 (+)</div>
+              <div class="fbranch">
+                <div class="fbranch-col">
+                  <div class="fnode small">혈청학적·혈액학적 평가: 혈액배양, 항GBM항체, ANCA, 보체 수치, 한랭글로불린, B/C형간염 혈청검사, VDRL, HIV, ASLO</div>
+                </div>
+                <div class="fbranch-col">
+                  <div class="fnode outcome">신생검</div>
+                </div>
+              </div>
+            </div>
+            <div class="fbranch-col">
+              <div class="flabelmini">음성 (−)</div>
+              <div class="fnode decision">농뇨, 백혈구원주?</div>
+              <div class="fbranch">
+                <div class="fbranch-col">
+                  <div class="flabelmini">양성 (+)</div>
+                  <div class="fnode small">요배양, 요 호산구</div>
+                </div>
+                <div class="fbranch-col">
+                  <div class="flabelmini">음성 (−)</div>
+                  <div class="fnode small">헤모글로빈 전기영동, 요세포검사, 가족구성원 요검사, 24시간 요칼슘/요산</div>
+                  <div class="farrow">↓</div>
+                  <div class="fnode decision">IVP ± 신초음파</div>
+                  <div class="fbranch">
+                    <div class="fbranch-col">
+                      <div class="flabelmini">양성 (+)</div>
+                      <div class="fnode small">지시 시: 역행성신우조영술, 동맥조영, 낭종흡인</div>
+                    </div>
+                    <div class="fbranch-col">
+                      <div class="flabelmini">음성 (−)</div>
+                      <div class="fnode small">방광경</div>
+                      <div class="farrow">↓</div>
+                      <div class="fbranch">
+                        <div class="fbranch-col"><span class="flabelmini">양성</span><div class="fnode small">비뇨생식기 생검 및 평가</div></div>
+                        <div class="fbranch-col">
+                          <span class="flabelmini">음성</span>
+                          <div class="fnode small">신 CT 스캔</div>
+                          <div class="farrow">↓</div>
+                          <div class="fbranch">
+                            <div class="fbranch-col"><span class="flabelmini">양성</span><div class="fnode small">종괴/병변 신생검</div></div>
+                            <div class="fbranch-col"><span class="flabelmini">음성</span><div class="fnode outcome" style="font-size:0.78rem;">주기적 요검사 추적</div></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="abbr-note">약어: ANCA, 항호중구세포질항체; ASLO, 항스트렙토리신 O; CT, 전산화단층촬영; GBM, 사구체기저막; IVP, 정맥신우조영술; RBC, 적혈구; UA, 요검사; VDRL, 성병연구소검사; WBC, 백혈구.</div>
+    </div>
+  </section>
+
+  <!-- ================= 단백뇨 ================= -->
+  <section class="panel" id="panel-protein">
+    <div class="card">
+      <h2 class="sect">단백뇨 (PROTEINURIA)</h2>
+      <p>단백뇨 평가는 Fig. 52-3에 도식적으로 제시되어 있으며, 전형적으로 딥스틱 검사에서 단백뇨가 검출된 후 시작된다. 딥스틱 측정은 알부민만을 검출하며 pH >7.0이거나 요가 매우 농축되었거나 혈액에 오염된 경우 위양성 결과를 보인다. 딥스틱이 요 알부민 농도에 의존하므로, 매우 희석된 요는 딥스틱 검사에서 유의한 단백뇨를 가릴 수 있다. 스팟 요검체(이상적으로는 아침 첫 소변)에서 알부민/크레아티닌비(ACR) 측정을 통한 요 알부민 정량화는 24시간 알부민 배설률(AER)을 근사하는 데 도움이 되며, ACR(mg/g) ≈ AER(mg/24h)이다. 또한 주로 알부민에 의한 것이 아닌 단백뇨는 딥스틱 선별검사에서 놓칠 수 있다. 이 정보는 다발골수종 환자의 요 중 Bence-Jones 단백질 검출에 특히 중요하다. 총 요단백농도를 정확히 측정하는 검사는 술포살리실산이나 트리클로로아세트산을 이용한 침전법에 의존한다. 알부민뇨와 마찬가지로, 무작위 "스팟" 요에서의 단백/크레아티닌비도 단백 배설의 대략적인 추정치를 제공할 수 있다. 예를 들어 단백/크레아티닌비 3.0은 하루 약 3.0 g의 단백뇨에 해당한다. 요단백 배설의 공식적 평가에는 24시간 요단백 채집이 필요하다(앞의 "GFR의 측정" 참고).</p>
+
+      <p>단백뇨의 정도와 요 중 조성은 단백질 소실을 초래하는 신손상 기전에 따라 달라진다. 정상적으로 전하 및 크기 선택성은 거의 모든 혈장 알부민, 글로불린 및 기타 고분자량 단백질이 사구체벽을 통과하는 것을 막는다. 그러나 이 장벽이 파괴되면 혈장 단백질이 요로 유출될 수 있다(사구체성 단백뇨). 작은 단백질(&lt;20 kDa)은 자유롭게 여과되지만 근위세뇨관에서 쉽게 재흡수된다. 전형적으로 건강한 개인은 하루 총단백 150 mg 미만, 알부민 30 mg 미만을 배설한다. 그러나 알부민뇨 수치가 30 mg/일 미만이라도 현성 신병증이나 이후 심혈관질환으로의 진행 위험은 증가한다. 요 중 나머지 단백질은 세뇨관에서 분비되거나(Tamm-Horsfall 단백, IgA, urokinase) 여과된 소량의 β₂-마이크로글로불린, 아포단백, 효소, 펩타이드 호르몬을 나타낸다. 단백뇨의 또 다른 기전은 세뇨관의 재흡수 능력을 초과하는 비정상 단백질의 과도한 생성을 수반하며, 이는 면역글로불린 경쇄의 단클론성 생성과 관련된 다발골수종, 아밀로이드증, 림프종과 같은 혈장세포이상증에서 가장 흔히 발생한다.</p>
+
+      <p>정상 사구체내피세포는 혈구는 보유하지만 대부분 단백질의 통과에는 거의 장애가 되지 않는 약 100 nm 크기의 공극으로 구성된 장벽을 형성한다. 사구체기저막은 대부분의 큰 단백질(&gt;100 kDa)을 포획하며, 상피세포(발세포)의 발돌기는 사구체기저막의 요측을 덮고 작은 용질과 물은 통과시키지만 단백질은 통과시키지 않는 일련의 좁은 통로(슬릿횡격막)를 형성한다. 미세변화병과 같은 일부 사구체질환은 사구체상피세포 발돌기의 융합을 초래하여 주로 "선택적" 알부민 소실을 일으킨다. 다른 사구체질환은 기저막과 슬릿횡격막의 파괴(예: 면역복합체 침착에 의한)를 동반할 수 있어 알부민 및 기타 혈장단백질의 소실을 초래한다. 발돌기의 융합은 모세혈관기저막 전반의 압력을 증가시켜 더 큰 공극 크기를 가진 부위(및 더 중증의 "비선택적" 단백뇨)를 초래한다.</p>
+
+      <p>하루 총 요단백 배설이 3.5 g을 초과하면 저알부민혈증, 고지혈증, 부종(신증후군)도 흔히 동반된다. 그러나 하루 총 요단백 배설이 3.5 g을 초과하면서도 당뇨병을 포함한 다양한 다른 신질환에서 신증후군의 다른 특징 없이 발생할 수 있다. 혈장세포이상증(다발골수종)은 딥스틱으로 검출되지 않을 수 있는 다량의 경쇄가 요로 배설되는 것과 관련될 수 있다. 경쇄는 사구체에서 여과되어 근위세뇨관의 재흡수 능력을 압도한다. 이러한 질환에 의한 신부전은 근위세뇨관손상, 세뇨관폐색(원주신병증), 아밀로이드 침착, 경쇄 침착을 포함하되 이에 국한되지 않는 다양한 기전을 통해 발생한다(제316장). 특정 신병변은 단클론 경쇄의 서열 및 구조적 특성에 의해 결정되나, 배설되는 모든 경쇄가 신독성을 갖는 것은 아니다.</p>
+
+      <p>신증후군에서의 저알부민혈증은 과도한 요 소실과 여과된 알부민의 근위세뇨관 이화 증가를 통해 발생한다. 부종은 신장의 나트륨 저류와 감소한 혈장 교질삼투압에 의해 발생하며, 이는 모세혈관에서 간질로의 체액 이동을 촉진한다. 유효 혈관내 용적의 감소를 인지된 것으로 보상하기 위해 레닌-안지오텐신계 활성화, AVP 자극, 교감신경계 활성화가 일어나 지속적인 신 염분·수분 재흡수와 진행성 부종을 촉진한다. 정상적으로 사구체여과장벽에 의해 보유되는 여과된 프로테아제는 신증후군에서 주세포의 상피성 나트륨채널(ENaC)을 통한 나트륨 재흡수를 직접 활성화할 수도 있다. 이러한 변화에도 불구하고, 신증후군을 초래하는 일차성 신질환에서는 고혈압이 흔하지 않다(제314장). 조절 단백질의 요 소실과 간합성의 변화는 신증후군의 다른 발현에 기여한다. 과응고상태는 항트롬빈 III의 요 소실, 단백질 S 및 C의 혈청 수치 감소, 고섬유소원혈증, 혈소판응집 증가에서 기인할 수 있다. 고콜레스테롤혈증은 심할 수 있으며 간의 지단백 합성 증가에서 기인한다. 면역글로불린 소실은 감염 위험 증가에 기여한다. 여러 질환과 약물이 신증후군을 유발할 수 있으며, 전체 목록은 제314장에 있다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">FIGURE 52-3. 단백뇨 환자에 대한 접근</h2>
+      <div class="flow-wrap">
+        <div class="flow-title">요 딥스틱 단백뇨</div>
+        <div class="flow-col">
+          <div class="fnode decision">24시간 요단백·알부민 정량 또는 아침 첫 소변 스팟 알부민/크레아티닌비로 정량화</div>
+          <div class="farrow">↓</div>
+          <div class="fbranch">
+            <div class="fbranch-col">
+              <div class="fnode small">중등도증가 알부민뇨<br>30–300 mg/d 또는 mg/g<br><span style="font-size:0.7rem;">(과거 "미세알부민뇨")</span></div>
+              <div class="farrow">↓</div>
+              <div class="fnode decision">RBC 또는 RBC 원주?</div>
+              <div class="farrow">→ 양성(+): 혈뇨 접근(Fig 52-2)로</div>
+              <div class="fnode outcome" style="font-size:0.78rem;">고려할 질환: 초기 당뇨병, 본태성 고혈압, 사구체신염 초기단계(특히 RBC, RBC원주 동반 시)</div>
+            </div>
+            <div class="fbranch-col">
+              <div class="fnode small">중증증가 알부민뇨<br>300–3500 mg/d 또는 mg/g<br><span style="font-size:0.7rem;">(과거 "대량알부민뇨")</span></div>
+              <div class="farrow">↓</div>
+              <div class="fnode outcome" style="font-size:0.78rem;">상기 원인 외 고려: 골수종연관 신질환(요단백전기영동 확인), 간헐성 단백뇨, 기립성 단백뇨, 울혈성 심부전, 발열, 운동</div>
+            </div>
+            <div class="fbranch-col">
+              <div class="fnode small">신증후군 범위<br>&gt;3500 mg/d 또는 mg/g</div>
+              <div class="farrow">↓</div>
+              <div class="fnode outcome" style="font-size:0.78rem;">신증후군: 당뇨병, 아밀로이드증, 미세변화병, FSGS, 막성사구체병증, IgA 신병증</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="abbr-note">중등도·중증증가 알부민뇨는 과거 각각 "미세알부민뇨", "대량알부민뇨"로 불렸다. 관례적 딥스틱은 주로 알부민을 검출하며 반정량적 평가(trace, 1+, 2+, 3+)를 제공하는데, 이는 요비중(최소 &lt;1.005; 최대 1.030)에 반영되는 요 농축도에 영향을 받는다. 그러나 보다 정확한 단백뇨 판정에는 아침 스팟 단백/크레아티닌비(mg/g)나 24시간 요채집(mg/24h)을 사용해야 한다. 약어: FSGS, 국소분절사구체경화증; RBC, 적혈구; UPEP, 요단백전기영동.</div>
+    </div>
+  </section>
+
+  <!-- ================= 요량 이상 ================= -->
+  <section class="panel" id="panel-volume">
+    <div class="card">
+      <h2 class="sect">다뇨 (POLYURIA)</h2>
+      <p>병력상 환자가 요빈도(흔히 소량)를 진성 다뇨(&gt;3 L/일)와 구별하기는 흔히 어려우며, 24시간 요채집에 의한 요량의 정량화가 필요할 수 있다(Fig. 52-4). 다뇨는 두 가지 잠재적 기전에서 기인한다: ① 비흡수성 용질(포도당 등)의 배설, 또는 ② 수분의 배설(대개 AVP 생성이나 신반응성 결함에서 기인). 용질이뇨와 수분이뇨를 구별하고 이뇨가 임상 상황에 적절한지를 판단하기 위해 요삼투질농도를 측정한다. 평균적인 사람은 하루 600-800 mosmol의 용질을 주로 요소와 전해질 형태로 배설한다. 요량이 3 L/일을 초과하고 요가 희석되어 있다면(&lt;250 mosmol/L), 총 삼투질 배설은 정상이며 수분이뇨가 존재한다. 이러한 상황은 다음(多飮), AVP 분비 부족(중추성 요붕증), 또는 신세뇨관의 AVP 반응 실패(신성 요붕증)에서 기인할 수 있다. 요량이 3 L/일을 초과하고 요삼투질농도가 300 mosmol/L를 초과하면 용질이뇨가 명확히 존재하며 원인 용질에 대한 조사가 필수적이다.</p>
+
+      <p>포도당이나 만니톨과 같이 재흡수가 잘 안 되는 용질의 과도한 여과는 근위세뇨관에서의 NaCl 및 수분 재흡수를 억제하여 요 중 배설을 증가시킬 수 있다. 당뇨(glucosuria)를 동반한 조절되지 않는 당뇨병(diabetes mellitus)은 용질이뇨의 가장 흔한 원인으로, 체액량 감소와 혈청 고장성을 초래한다. 요 나트륨 농도가 혈액보다 낮으므로 나트륨보다 수분이 더 많이 소실되어 고나트륨혈증과 고장성을 유발한다. 흔한 의원성 용질이뇨는 만니톨 투여, 방사선조영제, 고단백 급식(경장 또는 비경구)과 관련되어 요소 생성과 배설이 증가한다. 덜 흔하게는 낭성 신질환이나 Bartter 증후군에서, 또는 세뇨관간질 과정(예: 회복 중인 ATN) 중에 과도한 나트륨 소실이 발생할 수 있다. 이러한 이른바 염분소모질환에서는 세뇨관 손상이 나트륨 재흡수를 직접적으로 손상시키고 간접적으로 세뇨관의 알도스테론 반응성을 감소시킨다. 대개 나트륨 소실은 경미하며 필수 요량은 &lt;2 L/일이다. 회복 중인 ATN과 폐색후 이뇨는 예외로, 유의한 나트륨뇨와 다뇨를 동반할 수 있다.</p>
+
+      <p>다량의 희석뇨 형성은 대개 다음상태나 요붕증에 기인한다. 일차성 다음은 습관, 정신과 질환, 신경학적 병변, 또는 약물에서 기인할 수 있다. 의도적 다음 중에는 세포외액량이 정상이거나 확장되어 있으며, 혈청 삼투질농도가 정상 하한에 가까워지는 경향이 있어 혈장 AVP 수치가 감소한다. 요삼투질농도도 50 mosmol/L로 최대한 희석된다.</p>
+
+      <p>중추성 요붕증은 특발성일 수 있거나, 뇌하수체절제술, 외상, 신생물성, 염증성, 혈관성, 또는 감염성 시상하부 질환을 포함한 다양한 상태에 이차적일 수 있다. 특발성 중추성 요붕증은 시삭상핵 및 실방핵의 AVP 분비 뉴런의 선택적 파괴와 관련되며, 상염색체 우성 형질로 유전되거나 산발적으로 발생할 수 있다. 신성 요붕증은 Fig. 52-4에 요약된 바와 같이 다양한 임상 상황에서 발생할 수 있다.</p>
+
+      <p>혈장 AVP 수치는 중추성과 신성 요붕증을 구별하는 가장 좋은 방법으로 권장된다. 후엽에서의 축삭수송 중 pre-pro-AVP에서 절단되는 펩타이드인 순환 copeptin에 대한 검사도 이제 많은 기관에서 이용 가능하다. 수분제한검사와 외인성 AVP 투여는 일차성 다음을 중추성 및 신성 요붕증과 구별할 수 있다. 이용 가능하다면 고장성 식염수 자극 혈장 copeptin 측정이 수분제한검사를 대체할 수 있다. 상세한 논의는 제381장을 참고하라.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">FIGURE 52-4. 다뇨 환자에 대한 접근</h2>
+      <div class="flow-wrap">
+        <div class="flow-title">다뇨 (&gt;3 L/24h)</div>
+        <div class="flow-col">
+          <div class="fnode decision">요삼투질농도</div>
+          <div class="fbranch">
+            <div class="fbranch-col">
+              <div class="fnode small">&lt;250 mosmol</div>
+              <div class="fbranch">
+                <div class="fbranch-col">
+                  <div class="fnode small">병력, 낮은 혈청 나트륨</div>
+                  <div class="farrow">↓</div>
+                  <div class="fnode outcome" style="font-size:0.78rem;">일차성 다음<br><span style="font-weight:400;">정신성, 시상하부 질환, 약물(thioridazine, chlorpromazine, 항콜린제)</span></div>
+                </div>
+                <div class="fbranch-col">
+                  <div class="fnode small">수분제한검사 또는 ADH 수치</div>
+                  <div class="farrow">↓</div>
+                  <div class="fnode decision">요붕증(DI)</div>
+                </div>
+              </div>
+            </div>
+            <div class="fbranch-col">
+              <div class="fnode small">&gt;300 mosmol</div>
+              <div class="farrow">↓</div>
+              <div class="fnode outcome" style="font-size:0.78rem;">용질이뇨<br><span style="font-weight:400;">포도당, 만니톨, 방사선조영제, 요소(고단백 급식), 수질낭성질환, 회복 중 ATN, 폐색, 이뇨제</span></div>
+            </div>
+          </div>
+          <div class="farrow">↓ (요붕증 확인 시)</div>
+          <div class="fbranch">
+            <div class="fbranch-col">
+              <div class="fnode outcome">중추성 DI (바소프레신-감수성)</div>
+              <div class="fnode small">뇌하수체절제술 후, 외상, 천막상/천막하 종양·낭종, 조직구증/육아종, 동맥류에 의한 압박, Sheehan 증후군, 감염, Guillain-Barré, 지방색전, 빈 안장</div>
+            </div>
+            <div class="fbranch-col">
+              <div class="fnode outcome" style="background:var(--accent-soft);border-color:var(--accent);">신성 DI (바소프레신-비반응성)</div>
+              <div class="fnode small"><strong>후천성 세뇨관질환</strong>: 신우신염, 진통제신병증, 다발골수종, 아밀로이드증, 폐색, 사르코이드증, 고칼슘혈증, 저칼륨혈증, Sjögren 증후군, 겸상적혈구빈혈<br><br><strong>약물/독소</strong>: 리튬, demeclocycline, methoxyflurane, ethanol, diphenylhydantoin, propoxyphene, amphotericin<br><br><strong>선천성</strong>: 유전성, 다낭성 또는 수질낭성 질환</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="abbr-note">약어: ADH, 항이뇨호르몬; ATN, 급성세뇨관괴사.</div>
+    </div>
+  </section>
+
+  <!-- ================= 참고문헌 ================= -->
+  <section class="panel" id="panel-refs">
+    <div class="card">
+      <h2 class="sect">감사의 글 (Acknowledgment)</h2>
+      <p>19판에서 Julie Lin과 Brad Denker가 이 장에 기여하였으며, 해당 장의 일부 내용이 여기에 유지되었다.</p>
+    </div>
+    <div class="card">
+      <h2 class="sect">추가 참고문헌 (Further Reading)</h2>
+      <ul class="refs">
+        <li>Emmett M et al: Approach to the patient with kidney disease, in <em>Brenner and Rector's The Kidney</em>, 10th ed, K Skorecki et al (eds). <span class="jr">Philadelphia, W.B. Saunders &amp; Company, 2016, pp. 754–779.</span></li>
+        <li>Eneanya ND et al: Reconsidering the consequences of using race to estimate kidney function. <span class="jr">JAMA 322:113, 2019.</span></li>
+        <li>Köhler H et al: Acanthocyturia — a characteristic marker for glomerular bleeding. <span class="jr">Kidney Int 40:115, 1991.</span></li>
+        <li>Perazella MA: The urine sediment as a biomarker of kidney disease. <span class="jr">Am J Kidney Dis 66:748, 2015.</span></li>
+        <li>Powe NR: Black kidney function matters: Use or misuse of race? <span class="jr">JAMA 324:737, 2020.</span></li>
+        <li>Weisord SD et al: Prevention and management of acute kidney injury in <em>Brenner and Rector's The Kidney</em>, 11th ed, ASL Yu et al (eds). <span class="jr">Philadelphia, W.B. Saunders &amp; Company, 2020, pp. 940–977.</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="src">Harrison's Principles of Internal Medicine, 21st Edition — Chapter 52: Azotemia and Urinary Abnormalities (David B. Mount). 원문 전체 내용(본문·표·그림)을 누락 없이 한글로 번역함.</footer>
+
+<script>
+  const tabs = document.querySelectorAll('nav.tabs button');
+  const panels = {
+    overview: document.getElementById('panel-overview'),
+    azotemia: document.getElementById('panel-azotemia'),
+    approach: document.getElementById('panel-approach'),
+    urine: document.getElementById('panel-urine'),
+    protein: document.getElementById('panel-protein'),
+    volume: document.getElementById('panel-volume'),
+    refs: document.getElementById('panel-refs'),
+  };
+  tabs.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabs.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      Object.values(panels).forEach(p=>p.classList.remove('active'));
+      panels[btn.dataset.tab].classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  const fzLevels = [16,20,24];
+  const fzLabels = ['100%','125%','150%'];
+  let fzIdx = 0;
+  const fzBtn = document.getElementById('fzToggle');
+  fzBtn.addEventListener('click', ()=>{
+    fzIdx = (fzIdx+1) % fzLevels.length;
+    document.documentElement.style.setProperty('--fz', fzLevels[fzIdx]+'px');
+    fzBtn.textContent = '글자 크기 ' + fzLabels[fzIdx];
+  });
+</script>
+
+</body>
+</html>

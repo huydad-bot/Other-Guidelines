@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고칼슘혈증·저칼슘혈증 | Harrison's 21e Ch.54</title>
+<style>
+  :root{
+    --bg:#FAF8F4;
+    --paper:#FFFFFF;
+    --ink:#2A2723;
+    --ink-soft:#5B564E;
+    --line:#E4DED2;
+    --hyper:#B8622E;
+    --hyper-soft:#F5E4D6;
+    --hyper-deep:#8C4A20;
+    --hypo:#2E6E7E;
+    --hypo-soft:#DCEBEE;
+    --hypo-deep:#1F4E5A;
+    --tx-bg:#EEF3E4;
+    --tx-border:#8FA671;
+    --tx-ink:#40531F;
+    --table-head:#3A362F;
+    --fz:16px;
+  }
+  *{box-sizing:border-box;}
+  html{font-size:var(--fz);}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+    line-height:1.75;
+    padding-bottom:60px;
+  }
+  .serif{font-family:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;}
+
+  header.top{
+    background:linear-gradient(135deg,#3A362F 0%, #2A2723 100%);
+    color:#F3EFE6;
+    padding:36px 24px 28px;
+  }
+  header.top .chapno{
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    color:#C9BFA8;
+    margin-bottom:6px;
+  }
+  header.top h1{
+    font-family:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;
+    font-size:1.9rem;
+    margin:0 0 8px;
+    font-weight:700;
+  }
+  header.top .sub{
+    font-size:0.95rem;
+    color:#D8D2C4;
+  }
+  header.top .meta{
+    margin-top:14px;
+    font-size:0.82rem;
+    color:#B5AD98;
+    border-top:1px solid #55503F;
+    padding-top:12px;
+  }
+
+  .controls{
+    max-width:900px;
+    margin:0 auto;
+    padding:10px 24px 0;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .fzbtn{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:6px 12px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .fzbtn:hover{border-color:var(--ink-soft);}
+
+  nav.tabs{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--bg);
+    padding:14px 24px 0;
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    gap:6px;
+    border-bottom:2px solid var(--line);
+  }
+  nav.tabs button{
+    background:transparent;
+    border:none;
+    border-bottom:3px solid transparent;
+    padding:10px 14px 12px;
+    font-size:0.95rem;
+    font-weight:600;
+    color:var(--ink-soft);
+    cursor:pointer;
+    font-family:inherit;
+  }
+  nav.tabs button.active{
+    color:var(--ink);
+    border-bottom-color:var(--hyper);
+  }
+  nav.tabs button[data-tab="hypo"].active{
+    border-bottom-color:var(--hypo);
+  }
+
+  main{
+    max-width:900px;
+    margin:0 auto;
+    padding:24px;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:18px;
+  }
+  h2.sect{
+    font-family:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;
+    font-size:1.25rem;
+    margin:0 0 12px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--line);
+  }
+  .hyper h2.sect{color:var(--hyper-deep);}
+  .hypo h2.sect{color:var(--hypo-deep);}
+
+  p{margin:0 0 14px;}
+  p:last-child{margin-bottom:0;}
+
+  .figure{
+    background:#F6F3EC;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 20px;
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    margin:14px 0;
+  }
+  .figure .fcap{font-weight:700;color:var(--ink);margin-bottom:6px;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:10px 0 6px;
+    font-size:0.92rem;
+  }
+  caption{
+    text-align:left;
+    font-weight:700;
+    padding:8px 10px;
+    background:var(--table-head);
+    color:#fff;
+    border-radius:6px 6px 0 0;
+  }
+  th,td{
+    border:1px solid var(--line);
+    padding:8px 10px;
+    text-align:left;
+    vertical-align:top;
+  }
+  tr.cat td{
+    background:#F1ECE0;
+    font-weight:700;
+  }
+  td.indent{padding-left:22px;}
+  .abbr-note{
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    margin-top:6px;
+    padding:0 2px;
+  }
+
+  .tx-box{
+    background:var(--tx-bg);
+    border:1px solid var(--tx-border);
+    border-left:6px solid var(--tx-border);
+    border-radius:8px;
+    padding:20px 22px;
+    margin-top:16px;
+  }
+  .tx-box .tx-label{
+    display:inline-block;
+    background:var(--tx-border);
+    color:#fff;
+    font-size:0.75rem;
+    font-weight:700;
+    letter-spacing:0.03em;
+    padding:3px 10px;
+    border-radius:4px;
+    margin-bottom:10px;
+  }
+  .tx-box p{color:var(--tx-ink);}
+  .tx-box strong{color:#2E3D14;}
+
+  .drugline{
+    background:#fff;
+    border:1px solid var(--tx-border);
+    border-radius:6px;
+    padding:10px 14px;
+    margin:10px 0;
+    font-size:0.93rem;
+  }
+  .drugline b{color:var(--tx-deep,#2E3D14);}
+
+  .global-box{
+    background:#F1EAF6;
+    border:1px solid #C6AEDA;
+    border-left:6px solid #8C63A8;
+    border-radius:8px;
+    padding:18px 20px;
+    margin-top:10px;
+  }
+  .global-box h2.sect{color:#5C3D75;border-bottom:1px solid #D9C7E6;}
+
+  .refs{list-style:none;padding:0;margin:0;}
+  .refs li{
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    font-size:0.94rem;
+  }
+  .refs li:last-child{border-bottom:none;}
+  .refs .jr{color:var(--ink-soft);}
+
+  .overview-hero{
+    background:linear-gradient(180deg,#FFF8ED,#FAF8F4);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:24px;
+    margin-bottom:18px;
+  }
+  .badgebar{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .badge{
+    font-size:0.82rem;
+    padding:5px 12px;
+    border-radius:20px;
+    font-weight:600;
+  }
+  .badge.n{background:var(--hyper-soft);color:var(--hyper-deep);}
+  .badge.lo{background:var(--hypo-soft);color:var(--hypo-deep);}
+
+  footer.src{
+    max-width:900px;
+    margin:20px auto 0;
+    padding:0 24px;
+    font-size:0.78rem;
+    color:#9A9484;
+    text-align:center;
+  }
+
+  @media (max-width:600px){
+    header.top h1{font-size:1.5rem;}
+    nav.tabs{overflow-x:auto;}
+    .card{padding:16px 16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="chapno">PART 2 · Cardinal Manifestations and Presentation of Diseases · CHAPTER 54</div>
+  <h1>고칼슘혈증과 저칼슘혈증</h1>
+  <div class="sub">Hypercalcemia and Hypocalcemia — Sundeep Khosla</div>
+  <div class="meta">Harrison's Principles of Internal Medicine, 21st Edition · 원문 pp. 356–358 (상세 논의는 제410장 참고) · 한글 번역본</div>
+</header>
+
+<div class="controls">
+  <button class="fzbtn" id="fzToggle">글자 크기 100%</button>
+</div>
+
+<nav class="tabs">
+  <button class="active" data-tab="overview">개요</button>
+  <button data-tab="hyper">고칼슘혈증</button>
+  <button data-tab="hypo">저칼슘혈증</button>
+  <button data-tab="refs">참고문헌</button>
+</nav>
+
+<main>
+
+  <!-- ================= 개요 ================= -->
+  <section class="panel active" id="panel-overview">
+    <div class="overview-hero">
+      <h2 class="sect" style="border:none;padding-bottom:0;">칼슘 항상성의 되먹임 기전</h2>
+      <p>칼슘 이온은 신경근 신호전달, 심근 수축력, 호르몬 분비, 혈액응고 등 다양한 생리적 과정을 조절하는 정상 세포 기능과 신호전달에서 핵심적인 역할을 한다. 따라서 세포외액 칼슘 농도는 부갑상선호르몬(PTH)과 활성형 비타민 D 대사산물인 1,25-dihydroxyvitamin D [1,25(OH)<sub>2</sub>D]가 관여하는 일련의 되먹임 기전을 통해 매우 좁은 범위 내에서 유지된다. 이러한 되먹임 기전은 부갑상선, 신장, 장, 뼈 사이의 신호를 통합하여 조율된다.</p>
+
+      <div class="figure">
+        <div class="fcap">FIGURE 54-1. 세포외액 칼슘 농도를 좁은 생리적 범위(8.9–10.1 mg/dL [2.2–2.5 mM]) 내로 유지하는 되먹임 기전</div>
+        세포외액(ECF) 칼슘(Ca²⁺)의 감소는 부갑상선 세포의 칼슘감지수용체를 통해 부갑상선호르몬(PTH) 분비를 증가시킨다 <b>①</b>. PTH는 이어서 신장에서의 칼슘 세뇨관 재흡수를 증가시키고 <b>②</b> 뼈에서 칼슘을 흡수(재흡수)시키며 <b>②</b>, 신장에서 1,25(OH)<sub>2</sub>D 생성을 자극한다 <b>③</b>. 1,25(OH)<sub>2</sub>D는 주로 장에서 칼슘 흡수를 증가시키는 방식으로 작용한다 <b>④</b>. 이러한 항상성 기전들은 종합적으로 혈청 칼슘 수치를 정상으로 회복시키는 역할을 한다.
+        <br><br>
+        <span style="color:var(--ink);">부갑상선 → PTH ↑ (①) → 신장(세뇨관 재흡수 ②, 1,25(OH)₂D 생성 ③) · 뼈(재흡수 ②) → 1,25(OH)₂D → 장(칼슘 흡수 ④) → 세포외액 칼슘 회복</span>
+      </div>
+
+      <p>혈청 칼슘 농도 이상은 비교적 흔하며 종종 기저 질환의 전조 증상으로 나타난다. 이 장에서는 혈청 칼슘 수치 이상 환자에 대한 접근법을 간략히 요약한다. 이 주제에 대한 상세한 논의는 <strong>제410장</strong>을 참고하라.</p>
+
+      <div class="badgebar">
+        <span class="badge n">정상 혈청 칼슘 8.9–10.1 mg/dL (2.2–2.5 mM)</span>
+        <span class="badge lo">보정칼슘 = 총칼슘 + 0.8mg/dL × (4.1 − 알부민)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">이 장의 구성</h2>
+      <p>상단 탭에서 <strong>고칼슘혈증</strong>과 <strong>저칼슘혈증</strong> 각각의 병인·임상양상·진단적 접근·치료를 확인할 수 있다. 두 상태 모두 PTH 수치를 기준으로 감별하는 접근법이 핵심이며, 치료 부분은 원문의 세부 용법·용량을 누락 없이 수록하였다.</p>
+    </div>
+  </section>
+
+  <!-- ================= 고칼슘혈증 ================= -->
+  <section class="panel hyper" id="panel-hyper">
+
+    <div class="card">
+      <h2 class="sect">병인 (Etiology)</h2>
+      <p>고칼슘혈증의 원인은 혈청 칼슘을 조절하는 정상 되먹임 기전의 이상에 근거하여 이해하고 분류할 수 있다(Table 54-1). 상승한 혈청 칼슘 농도에 의해 적절히 억제되지 않는 과도한 PTH 생성은 부갑상선의 일차성 신생물성 질환(부갑상선 선종, 과형성, 드물게 암종)에서 발생하며, 이는 부갑상선 세포 질량 증가 및 칼슘에 의한 되먹임 억제 장애와 관련이 있다.</p>
+      <p>주변 혈청 칼슘 수치에 대해 부적절한 PTH 분비는 가족성 저칼슘뇨성 고칼슘혈증(FHH)에서도 발생하는데, 이는 상염색체 우성 증후군으로 가장 흔하게는 칼슘감지수용체(CaSR; FHH 제1형)의 불활성화 돌연변이를 수반하며, 드물게 Gα<sub>11</sub> 단백질(<em>GNA11</em>; FHH 제2형) 또는 어댑터 관련 단백질 복합체 2의 σ-2 소단위(<em>AP2S1</em>; FHH 제3형)의 돌연변이를 갖는 가계도 있다. 이러한 돌연변이들은 모두 부갑상선과 신장에서의 세포외 칼슘 감지를 손상시켜 부적절한 PTH 분비와 신세뇨관 칼슘 재흡수 증가를 초래한다.</p>
+      <p>종양에 의한 PTH 분비는 극히 드물지만, 많은 고형암은 PTH의 처음 13개 아미노산과 상동성을 가지며 PTH 수용체에 결합하여 뼈와 신장에 대한 PTH의 효과를 모방하는 PTH 관련 펩타이드(PTHrP)를 생성한다. PTHrP 매개 악성종양의 고칼슘혈증에서는 높은 혈청 칼슘 수치에 의해 PTH 수치가 억제된다.</p>
+      <p>육아종성 질환(예: 사르코이드증)이나 림프종과 관련된 고칼슘혈증은 25(OH)D가 강력한 활성형인 1,25(OH)<sub>2</sub>D로 전환되는 것이 촉진되어 발생한다. 이러한 질환에서 1,25(OH)<sub>2</sub>D는 장의 칼슘 흡수를 증가시켜 고칼슘혈증과 PTH 억제를 초래한다.</p>
+      <p>갑상선기능항진증이나 골용해성 전이와 같이 뼈로부터 칼슘 동원을 직접적으로 증가시키는 질환도 고칼슘혈증을 유발하는데, 우유-알칼리 증후군에서처럼 PTH 분비가 억제된 상태이거나 과도한 칼슘 보충을 동반한 총비경구영양에서처럼 외인성 칼슘 과부하가 있는 경우도 마찬가지다.</p>
+
+      <table>
+        <caption>TABLE 54-1. 고칼슘혈증의 원인</caption>
+        <tr class="cat"><td colspan="2">과도한 PTH 생성</td></tr>
+        <tr><td class="indent">일차성 부갑상선기능항진증</td><td>선종, 과형성, 드물게 암종</td></tr>
+        <tr><td class="indent">삼차성 부갑상선기능항진증</td><td>신부전에서의 장기간 PTH 분비 자극</td></tr>
+        <tr><td class="indent">이소성 PTH 분비</td><td>극히 드묾</td></tr>
+        <tr><td class="indent">FHH</td><td>가족성 저칼슘뇨성 고칼슘혈증</td></tr>
+        <tr><td class="indent">CaSR 기능 이상</td><td>리튬 치료</td></tr>
+
+        <tr class="cat"><td colspan="2">악성종양의 고칼슘혈증</td></tr>
+        <tr><td class="indent">PTHrP 과잉생성</td><td>다수의 고형암</td></tr>
+        <tr><td class="indent">용해성 골전이</td><td>유방암, 골수종</td></tr>
+
+        <tr class="cat"><td colspan="2">과도한 1,25(OH)₂D 생성</td></tr>
+        <tr><td class="indent">육아종성 질환</td><td>사르코이드증, 결핵, 규폐증</td></tr>
+        <tr><td class="indent">림프종</td><td>—</td></tr>
+        <tr><td class="indent">비타민 D 중독</td><td>—</td></tr>
+
+        <tr class="cat"><td colspan="2">뼈 흡수의 일차적 증가</td></tr>
+        <tr><td class="indent">갑상선기능항진증</td><td>—</td></tr>
+        <tr><td class="indent">부동화(고정)</td><td>—</td></tr>
+
+        <tr class="cat"><td colspan="2">과도한 칼슘 섭취</td></tr>
+        <tr><td class="indent">우유-알칼리 증후군</td><td>—</td></tr>
+        <tr><td class="indent">총비경구영양</td><td>—</td></tr>
+
+        <tr class="cat"><td colspan="2">기타 원인</td></tr>
+        <tr><td class="indent">내분비 질환</td><td>부신기능부전, 갈색세포종, VIPoma</td></tr>
+        <tr><td class="indent">약물</td><td>티아지드, 비타민 A, 항에스트로겐제</td></tr>
+      </table>
+      <div class="abbr-note">약어: CaSR, 칼슘감지수용체; FHH, 가족성 저칼슘뇨성 고칼슘혈증; PTH, 부갑상선호르몬; PTHrP, PTH 관련 펩타이드.</div>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">임상양상 (Clinical Manifestations)</h2>
+      <p>경도의 고칼슘혈증(11–11.5 mg/dL까지)은 대개 무증상이며 일상적인 칼슘 측정에서만 발견된다. 일부 환자는 집중력 저하, 성격 변화, 우울증을 포함한 모호한 신경정신과적 증상을 호소할 수 있다. 다른 발현 증상으로는 소화성 궤양이나 신결석증이 포함될 수 있으며, 골절 위험이 증가할 수 있다.</p>
+      <p>보다 심한 고칼슘혈증(12–13 mg/dL 초과), 특히 급성으로 발생하는 경우 무기력, 혼미, 혼수뿐 아니라 위장관 증상(오심, 식욕부진, 변비, 췌장염)을 초래할 수 있다. 고칼슘혈증은 신장의 농축 능력을 감소시켜 다뇨와 다음(多飮)을 유발할 수 있다. 장기간의 부갑상선기능항진증이 있는 환자는 골통이나 병적 골절로 나타날 수 있다.</p>
+      <p>마지막으로 고칼슘혈증은 서맥, 방실차단, QT 간격 단축을 포함한 유의한 심전도 변화를 초래할 수 있으며, 혈청 칼슘 변화는 QT 간격 추적을 통해 모니터링할 수 있다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">진단적 접근 (Diagnostic Approach)</h2>
+      <p>고칼슘혈증 또는 저칼슘혈증의 진단 평가의 첫 단계는 혈청 칼슘 수치의 변화가 알부민 농도 이상에 의한 것이 아님을 확인하는 것이다. 총 칼슘의 약 50%는 이온화된 형태이며 나머지는 주로 알부민에 결합되어 있다. 이온화 칼슘의 직접 측정이 가능하지만 채취 방법 및 기타 인공적 요인에 쉽게 영향을 받으므로, 일반적으로 총 칼슘과 알부민을 함께 측정하여 혈청 칼슘을 "보정"하는 것이 바람직하다. 혈청 알부민 농도가 감소한 경우, 보정 칼슘 농도는 알부민 기준치 4.1 g/dL 대비 혈청 알부민이 1.0 g/dL 감소할 때마다 총 칼슘 수치에 0.2 mM(0.8 mg/dL)을 더하여 계산하며, 알부민이 상승한 경우는 반대로 계산한다.</p>
+      <p>상세한 병력은 고칼슘혈증의 병인에 대한 중요한 단서를 제공할 수 있다(Table 54-1). 만성 고칼슘혈증은 가장 흔하게는 일차성 부갑상선기능항진증에 의해 발생하며, 그 다음으로 흔한 원인은 기저 악성종양이다. 병력 청취에는 약물 복용력, 이전 경부 수술력, 사르코이드증이나 림프종을 시사하는 전신 증상이 포함되어야 한다.</p>
+      <p>진성 고칼슘혈증이 확인되면, 진단 평가에서 두 번째로 중요한 검사는 완전 호르몬에 대한 two-site assay를 이용한 PTH 수치 측정이다. PTH 상승은 흔히 저인산혈증을 동반한다. 또한 신기능 평가를 위해 혈청 크레아티닌을 측정해야 한다. 고칼슘혈증은 신기능을 손상시킬 수 있으며, PTH의 신장 청소율은 검사법이 검출하는 단편에 따라 달라질 수 있다. 상승한 칼슘과 낮은 인산 소견에서 PTH 수치가 상승(또는 "부적절하게 정상")되어 있다면, 진단은 거의 항상 일차성 부갑상선기능항진증이다.</p>
+      <p>FHH 환자도 경도의 PTH 상승과 고칼슘혈증을 보일 수 있으므로, 이 진단을 반드시 고려하고 배제해야 하는데, 이는 이 질환에서 부갑상선 수술이 효과가 없기 때문이다. 칼슘/크레아티닌 청소율 비(요칼슘/혈청칼슘을 요크레아티닌/혈청크레아티닌으로 나눈 값)가 0.01 미만이면 FHH를 시사하며, 특히 경도의 무증상 고칼슘혈증의 가족력이 있는 경우 더욱 그러하다. 또한 FHH의 확진을 위해 현재 <em>CASR</em> 유전자의 염기서열 분석이 흔히 시행되고 있으나, 앞서 언급한 바와 같이 드문 가계에서는 FHH가 <em>GNA11</em>이나 <em>AP2S1</em> 유전자의 돌연변이에 의해 발생할 수 있으며, 이 경우 환자는 유전자 검사 비용을 본인 부담해야 할 수 있다. 이소성 PTH 분비는 극히 드물다.</p>
+      <p>고칼슘혈증 상황에서 PTH 수치가 억제되어 있다면 이는 비부갑상선성 매개 고칼슘혈증에 합당하며, 가장 흔한 원인은 기저 악성종양이다. 고칼슘혈증을 유발하는 종양은 대개 명확하게 드러나지만, 악성종양의 고칼슘혈증 진단을 위해 PTHrP 수치가 필요할 수 있다. 육아종성 질환에서는 혈청 1,25(OH)<sub>2</sub>D 수치가 상승하며, 임상 평가와 검사 소견을 종합하면 일반적으로 Table 54-1에 열거된 다양한 질환에 대한 진단이 가능하다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">치료 (Treatment)</h2>
+      <div class="tx-box">
+        <span class="tx-label">TREATMENT — 고칼슘혈증</span>
+        <p>경도의 무증상 고칼슘혈증은 즉각적인 치료가 필요하지 않으며, 관리는 기저 진단에 따라 결정되어야 한다. 반면, 유의한 증상을 동반한 고칼슘혈증은 고칼슘혈증의 병인과 무관하게 대개 치료적 개입이 필요하다.</p>
+
+        <p><strong>① 수액 보충.</strong> 유의한 고칼슘혈증의 초기 치료는 수액 보충으로 시작하는데, 이는 고칼슘혈증이 예외 없이 탈수를 초래하기 때문이다. 첫 24시간 동안 4–6 L의 정맥 내 생리식염수가 필요할 수 있으며, 이때 기저 동반질환(예: 울혈성 심부전)이 있는 경우 나트륨 및 칼슘 배설을 촉진하기 위해 루프이뇨제 사용이 필요할 수 있음을 고려해야 한다. 다만 루프이뇨제는 체액 상태가 정상으로 회복되기 전까지는 시작해서는 안 된다.</p>
+
+        <p><strong>② 뼈 흡수 억제.</strong> 뼈로부터 칼슘 동원이 증가된 경우(악성종양이나 중증 부갑상선기능항진증에서와 같이) 뼈 흡수를 억제하는 약물을 고려해야 한다.</p>
+        <div class="drugline"><b>연어 칼시토닌</b> — 4–8 IU/kg, 근육 내 또는 피하로 6–12시간마다 (때때로 사용)</div>
+        <div class="drugline"><b>졸레드론산</b> — 4 mg을 약 30분에 걸쳐 정맥 투여 (비스포스포네이트, 성인 악성종양 고칼슘혈증에 흔히 사용)</div>
+        <div class="drugline"><b>파미드로네이트</b> — 60–90 mg을 2–4시간에 걸쳐 정맥 투여 (비스포스포네이트)</div>
+        <p>비스포스포네이트는 치료의 근간이며, 작용 발현은 1–3일 이내이고 환자의 60–90%에서 혈청 칼슘 수치가 정상화된다. 고칼슘혈증이 재발하는 경우 비스포스포네이트 주입을 반복해야 할 수 있다.</p>
+        <div class="drugline"><b>데노수맙</b> — 120 mg 피하 투여, 1일·8일·15일·29일 시행 후 이후 4주마다 (RANKL에 대한 항체, 비스포스포네이트 불응성 고칼슘혈증에 효과)</div>
+        <div class="drugline"><b>갈륨 질산염</b> — 200 mg/m²를 5일간 매일 정맥 투여 (비스포스포네이트·데노수맙의 대안, 효과적이나 신독성 가능성)</div>
+        <p>드문 경우 투석이 필요할 수 있다. 마지막으로, 정맥 내 인산염은 칼슘을 킬레이트화하여 혈청 칼슘 수치를 감소시키지만, 칼슘-인산염 복합체가 조직에 침착하여 광범위한 장기 손상을 일으킬 수 있으므로 이 치료는 독성을 나타낼 수 있다.</p>
+
+        <p><strong>③ 1,25(OH)₂D 매개 고칼슘혈증.</strong> 이 경우 당질코르티코이드가 1,25(OH)<sub>2</sub>D 생성을 감소시키므로 우선적으로 선택되는 치료이다.</p>
+        <div class="drugline"><b>히드로코르티손(정맥)</b> — 1일 100–300 mg, 3–7일간</div>
+        <div class="drugline"><b>프레드니손(경구)</b> — 1일 40–60 mg, 3–7일간 (가장 흔히 사용)</div>
+        <p>케토코나졸, 클로로퀸, 히드록시클로로퀸과 같은 다른 약물들도 1,25(OH)<sub>2</sub>D 생성을 감소시킬 수 있어 때때로 사용된다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 저칼슘혈증 ================= -->
+  <section class="panel hypo" id="panel-hypo">
+
+    <div class="card">
+      <h2 class="sect">병인 (Etiology)</h2>
+      <p>저칼슘혈증의 원인은 혈청 PTH 수치가 낮은지(부갑상선기능저하증) 또는 높은지(속발성 부갑상선기능항진증)에 따라 구분할 수 있다. 저칼슘혈증에는 다양한 잠재적 원인이 있으나, PTH 생성 장애와 비타민 D 생성 장애가 가장 흔한 병인이다(Table 54-2, 제410장). PTH는 저칼슘혈증에 대한 주된 방어 기전이므로, PTH 생성이나 분비가 결핍된 질환은 심각한 생명을 위협하는 저칼슘혈증과 관련될 수 있다.</p>
+      <p>성인에서 부갑상선기능저하증은 가장 흔하게는 갑상선 또는 부갑상선 수술 중 4개 선 모두에 대한 의도치 않은 손상으로 발생한다. 부갑상선기능저하증은 자가면역성 내분비병증(제388장)의 주요 특징이며, 드물게 사르코이드증과 같은 침윤성 질환과 연관될 수 있다. PTH 분비 장애는 마그네슘 결핍이나 CaSR 또는 CaSR 신호전달을 매개하는 G단백질의 활성화 돌연변이(상염색체 우성 저칼슘혈증)에 이차적으로 발생할 수 있으며, 이는 PTH를 억제하여 FHH에서 발생하는 것과 반대되는 효과를 초래한다.</p>
+      <p>비타민 D 결핍, 장애된 1,25(OH)<sub>2</sub>D 생성(주로 신부전에 이차적), 또는 비타민 D 저항성도 저칼슘혈증을 유발할 수 있다. 그러나 이러한 질환에서의 저칼슘혈증 정도는 일반적으로 부갑상선기능저하증에서 보이는 것만큼 심하지 않은데, 이는 부갑상선이 PTH 분비의 보상적 증가를 일으킬 수 있는 능력이 있기 때문이다.</p>
+      <p>저칼슘혈증은 화상, 횡문근융해증, 종양용해, 췌장염과 같은 중증 조직 손상과 관련된 상태에서도 발생할 수 있다. 이러한 상황에서의 저칼슘혈증의 원인은 저알부민혈증, 고인산혈증, 칼슘의 조직 침착, PTH 분비 장애의 조합을 포함할 수 있다.</p>
+
+      <table>
+        <caption>TABLE 54-2. 저칼슘혈증의 원인</caption>
+        <tr class="cat"><td colspan="2">낮은 부갑상선호르몬 수치 (부갑상선기능저하증)</td></tr>
+        <tr><td class="indent">부갑상선 무형성</td><td>단독성 / DiGeorge 증후군</td></tr>
+        <tr><td class="indent">부갑상선 파괴</td><td>수술 / 방사선 / 전이 또는 전신질환에 의한 침윤 / 자가면역</td></tr>
+        <tr><td class="indent">부갑상선 기능 저하</td><td>저마그네슘혈증 / 상염색체 우성 저칼슘혈증</td></tr>
+
+        <tr class="cat"><td colspan="2">높은 부갑상선호르몬 수치 (속발성 부갑상선기능항진증)</td></tr>
+        <tr><td class="indent">비타민 D 결핍 또는 1,25(OH)₂D 생성/작용 장애</td><td>영양성 비타민 D 결핍(섭취·흡수 부족) / 1,25(OH)₂D 생성장애 동반 신부전 / 수용체 결함 포함 비타민 D 저항성</td></tr>
+        <tr><td class="indent">부갑상선호르몬 저항 증후군</td><td>PTH 수용체 돌연변이 / 가성부갑상선기능저하증(G단백질 돌연변이)</td></tr>
+        <tr><td class="indent">약물</td><td>칼슘 킬레이트제 / 뼈흡수 억제제(비스포스포네이트, 플리카마이신) / 비타민 D 대사 변화(페니토인, 케토코나졸)</td></tr>
+        <tr><td class="indent">기타 원인</td><td>급성 췌장염 / 급성 횡문근융해증 / 부갑상선절제술 후 기아골증후군 / 조골성 전이로 뼈 형성이 현저히 자극(전립선암)</td></tr>
+      </table>
+      <div class="abbr-note">약어: PTH, 부갑상선호르몬.</div>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">임상양상 (Clinical Manifestations)</h2>
+      <p>저칼슘혈증 환자는 혈청 칼슘 감소가 비교적 경미하고 만성적인 경우 무증상일 수 있으나, 생명을 위협하는 합병증으로 나타날 수도 있다. 중등도에서 중증의 저칼슘혈증은 주로 손가락, 발가락, 입 주위의 감각이상과 관련이 있으며, 이는 신경근 자극 증가에 의해 발생한다.</p>
+      <p>신체 검진에서 <strong>Chvostek 징후</strong>(귀 앞쪽의 안면신경을 가볍게 두드릴 때 입 주위 근육의 경련)가 유발될 수 있으나, 이는 정상인의 약 10%에서도 나타날 수 있다. 손목경련은 혈압계 커프를 환자의 수축기 혈압보다 20 mmHg 높게 3분간 팽창시켜 유발할 수 있다(<strong>Trousseau 징후</strong>).</p>
+      <p>중증 저칼슘혈증은 경련, 손발경련, 기관지경련, 후두경련, QT 간격 연장을 유발할 수 있다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">진단적 접근 (Diagnostic Approach)</h2>
+      <p>혈청 칼슘 측정 외에도 알부민, 인산, 마그네슘 수치를 확인하는 것이 유용하다. 고칼슘혈증 평가와 마찬가지로, 저칼슘혈증 평가에서도 PTH 수치 측정이 핵심이다.</p>
+      <p>저칼슘혈증 상황에서 PTH 수치가 억제되어 있거나 "부적절하게 낮은" 경우, 이는 PTH 분비의 소실 또는 감소(부갑상선기능저하증)가 저칼슘혈증의 원인임을 확립한다. 이후 병력 청취를 통해 흔히 기저 원인(즉, 부갑상선 무형성 대 파괴)을 파악할 수 있다.</p>
+      <p>반면 PTH 수치가 상승된 경우(속발성 부갑상선기능항진증)에는 저칼슘혈증의 원인으로서 비타민 D 축에 주의를 기울여야 한다. 영양성 비타민 D 결핍은 비타민 D 저장량을 반영하는 혈청 25-hydroxyvitamin D 수치 측정을 통해 가장 잘 평가된다. 신부전이나 비타민 D 저항성이 의심되는 상황에서는 혈청 1,25(OH)<sub>2</sub>D 수치가 유용한 정보를 제공한다.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="sect">치료 (Treatment)</h2>
+      <div class="tx-box">
+        <span class="tx-label">TREATMENT — 저칼슘혈증</span>
+        <p>치료 접근법은 저칼슘혈증의 중증도, 발생 속도, 동반 합병증(예: 경련, 후두경련)에 따라 달라진다.</p>
+
+        <p><strong>① 급성 증상성 저칼슘혈증.</strong></p>
+        <div class="drugline"><b>글루콘산칼슘</b> — 10 mL (10% wt/vol, 90 mg 또는 2.2 mmol)을 5% 포도당 또는 0.9% 생리식염수 50 mL에 희석하여 5분에 걸쳐 정맥 투여</div>
+        <p>지속되는 저칼슘혈증에는 흔히 지속적인 정맥 내 주입이 필요하다.</p>
+        <div class="drugline"><b>지속 정맥 주입</b> — 전형적으로 글루콘산칼슘 10 앰플 또는 칼슘 900 mg을 5% 포도당 또는 0.9% 생리식염수 1 L에 넣어 24시간에 걸쳐 투여</div>
+        <p>동반된 저마그네슘혈증이 있는 경우 적절한 마그네슘 보충으로 치료해야 한다.</p>
+
+        <p><strong>② 부갑상선기능저하증으로 인한 만성 저칼슘혈증.</strong></p>
+        <div class="drugline"><b>칼슘 보충제</b> — 1일 원소칼슘 1000–1500 mg, 분할 투여</div>
+        <div class="drugline"><b>비타민 D₂ 또는 D₃</b> — 1일 25,000–100,000 U</div>
+        <div class="drugline"><b>칼시트리올 [1,25(OH)₂D]</b> — 1일 0.25–2 μg</div>
+        <p>디히드로타키스테롤, 알파칼시돌과 같은 다른 비타민 D 대사산물은 현재 사용 빈도가 줄어들었다. 중요하게는, <strong>PTH(1-84)(제품명 Natpara)</strong>가 이제 불응성 부갑상선기능저하증 치료제로 미국 식품의약국(FDA)의 승인을 받아 이들 환자의 치료에 중요한 진전을 나타내고 있다.</p>
+
+        <p><strong>③ 비타민 D 결핍.</strong> 결핍 정도와 기저 원인에 따라 용량을 결정하여 비타민 D 보충으로 치료하는 것이 가장 좋다.</p>
+        <div class="drugline"><b>영양성 비타민 D 결핍</b> — 비교적 낮은 용량(50,000 IU를 수개월간 주 2–3회)에 반응</div>
+        <div class="drugline"><b>흡수장애로 인한 비타민 D 결핍</b> — 훨씬 더 높은 용량(1일 100,000 IU 이상) 필요할 수 있음</div>
+        <p>치료 목표는 혈청 칼슘을 정상 하한 범위로 회복시키고, 신결석증을 유발할 수 있는 고칼슘뇨증을 피하는 것이다.</p>
+      </div>
+    </div>
+
+    <div class="card global-box">
+      <h2 class="sect">국제적 고려사항 (Global Considerations)</h2>
+      <p>의료 접근성이 제한적이거나 혈청 칼슘 수치에 대한 선별 검사 접근성이 제한적인 국가에서는, 선진국에서 흔한 무증상 형태와 대조적으로 일차성 부갑상선기능항진증이 골격 합병증(낭성 섬유성 골염, osteitis fibrosa cystica)을 동반한 중증 형태로 흔히 발현한다. 또한 비타민 D 결핍은 일부 국가(예: 인도)에서 충분한 일광 노출에도 불구하고 역설적으로 흔한데, 이는 일광 노출 회피와 식이 비타민 D 섭취 부족에 기인한다.</p>
+    </div>
+  </section>
+
+  <!-- ================= 참고문헌 ================= -->
+  <section class="panel" id="panel-refs">
+    <div class="card">
+      <h2 class="sect">추가 참고문헌 (Further Reading)</h2>
+      <ul class="refs">
+        <li>Bilezikian JP et al: Hyperparathyroidism. <span class="jr">Lancet 391:168, 2018.</span></li>
+        <li>Brandi ML et al: Management of hypoparathyroidism: Summary statement and guidelines. <span class="jr">J Clin Endocrinol Metab 101:2273, 2016.</span></li>
+        <li>Hannan FM et al: The calcium-sensing receptor in physiology and in calcitropic and noncalcitropic diseases. <span class="jr">Nat Rev Endocrinol 15:33, 2018.</span></li>
+        <li>Minisola S et al: The diagnosis and management of hypercalcemia. <span class="jr">BMJ 350:h2723, 2015.</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="src">Harrison's Principles of Internal Medicine, 21st Edition — Chapter 54: Hypercalcemia and Hypocalcemia (Sundeep Khosla). 원문 전체 내용을 누락 없이 한글로 번역함.</footer>
+
+<script>
+  const tabs = document.querySelectorAll('nav.tabs button');
+  const panels = {
+    overview: document.getElementById('panel-overview'),
+    hyper: document.getElementById('panel-hyper'),
+    hypo: document.getElementById('panel-hypo'),
+    refs: document.getElementById('panel-refs'),
+  };
+  tabs.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabs.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      Object.values(panels).forEach(p=>p.classList.remove('active'));
+      panels[btn.dataset.tab].classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  const fzLevels = [16,20,24];
+  const fzLabels = ['100%','125%','150%'];
+  let fzIdx = 0;
+  const fzBtn = document.getElementById('fzToggle');
+  fzBtn.addEventListener('click', ()=>{
+    fzIdx = (fzIdx+1) % fzLevels.length;
+    document.documentElement.style.setProperty('--fz', fzLevels[fzIdx]+'px');
+    fzBtn.textContent = '글자 크기 ' + fzLabels[fzIdx];
+  });
+</script>
+
+</body>
+</html>
